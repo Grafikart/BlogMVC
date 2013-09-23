@@ -1,0 +1,25 @@
+1379904986
+s:1050:"
+<div class="col-md-4 sidebar">
+
+    <h4>Categories</h4>
+    <div class="list-group">
+                <a href="/Dropbox/Ressources/Blog/CakePHP/category/category-1" class="list-group-item">
+            <span class="badge">2</span>
+            Category #1        </a>
+                <a href="/Dropbox/Ressources/Blog/CakePHP/category/category-2" class="list-group-item">
+            <span class="badge">2</span>
+            Category #2        </a>
+                <a href="/Dropbox/Ressources/Blog/CakePHP/category/category-3" class="list-group-item">
+            <span class="badge">2</span>
+            Category #3        </a>
+            </div>
+
+    <h4>Last posts</h4>
+    <div class="list-group">
+            <a href="/Dropbox/Ressources/Blog/CakePHP/the-route-of-all-evil" class="list-group-item">
+            The Route of All Evil        </a>
+            <a href="/Dropbox/Ressources/Blog/CakePHP/space-pilot-3000" class="list-group-item">
+            Space Pilot 3000        </a>
+        </div>
+</div><!-- /.sidebar -->";
