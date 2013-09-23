@@ -1,1 +1,2 @@
-/CakePHP/app/tmp
+/CakePHP/Vendor
+/CakePHP/composer.lock
