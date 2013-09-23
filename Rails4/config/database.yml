@@ -11,10 +11,10 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: Rails4_development
+  database: demo_blog
   pool: 5
-  username: root
-  password:
+  username: demo
+  password: demo
   socket: /var/run/mysqld/mysqld.sock
 
 # Warning: The database defined as "test" will be erased and
@@ -25,8 +25,8 @@ test:
   encoding: utf8
   database: Rails4_test
   pool: 5
-  username: root
-  password:
+  username: demo
+  password: demo
   socket: /var/run/mysqld/mysqld.sock
 
 production:
@@ -34,6 +34,6 @@ production:
   encoding: utf8
   database: Rails4_production
   pool: 5
-  username: root
-  password:
+  username: demo
+  password: demo
   socket: /var/run/mysqld/mysqld.sock
