@@ -53,6 +53,7 @@ With great power, comes great routing ! (No seriously don't make the SEO guy ang
 
 ### Additional rules
 
+* code for php >= 5.4 (it means you can use <?= !)
 * Post content is written using Markdown, you have to include a plugin (homemade or not) to convert this Markdown into HTML. (It's used to show how plugin work within each framework).
 * You have to login to access to the backend. The login is "admin" and the password is "admin" (use the users table to manage user).
 * Pagination is limited to 5 posts.
