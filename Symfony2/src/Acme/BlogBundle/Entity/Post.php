@@ -107,7 +107,8 @@ class Post
      * Generate slug if is not defined
      */
     public function preSave(){
-        if($this->getSlug() === null || empty(Urlizer::urlize($this->getSlug())))
+        $slugifiedSlug = Urlizer::urlize($this->getSlug());
+        if($this->getSlug() === null || empty($slugifiedSlug))
             $this->slug = Urlizer::urlize($this->getName());
     }
 
