@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('title')
+Admin
+@stop
+
 @section('content')
 	<h1>Manage posts</h1>
 
