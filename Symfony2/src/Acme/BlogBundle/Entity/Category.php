@@ -151,4 +151,45 @@ class Category
     {
         return $this->postCount;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add posts
+     *
+     * @param \Acme\BlogBundle\Entity\Post $posts
+     *
+     * @return Category
+     */
+    public function addPost(\Acme\BlogBundle\Entity\Post $posts)
+    {
+        $this->posts[] = $posts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove posts
+     *
+     * @param \Acme\BlogBundle\Entity\Post $posts
+     */
+    public function removePost(\Acme\BlogBundle\Entity\Post $posts)
+    {
+        $this->posts->removeElement($posts);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
 }

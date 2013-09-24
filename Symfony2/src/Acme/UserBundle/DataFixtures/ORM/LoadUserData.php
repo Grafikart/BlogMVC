@@ -34,9 +34,10 @@ class LoadUserData  extends AbstractFixture implements OrderedFixtureInterface, 
         // Create Admin User
         $userAdmin = new User();
         $encoder = $factory->getEncoder($userAdmin);
-        $userAdmin->setUsername('admin')
-                  ->setEmail('admin@blogmvc.com')
-                  ->setPassword($encoder->encodePassword('admin', $userAdmin->getSalt()))
+        $userAdmin
+            ->setUsername('admin')
+            ->setEmail('admin@blogmvc.com')
+            ->setPassword($encoder->encodePassword('admin', $userAdmin->getSalt()))
         ;
 
         $userAdmin->addRole('ROLE_ADMIN');

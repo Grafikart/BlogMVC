@@ -16,8 +16,9 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
         // Create 3 categories
         for($i = 0; $i < 3; $i++){
             $category = new Category();
-            $category->setName('Category #' . $i)
-                     ->setPostCount(2)
+            $category
+                ->setName('Category #' . $i)
+                ->setPostCount(2)
             ;
 
             $manager->persist($category);

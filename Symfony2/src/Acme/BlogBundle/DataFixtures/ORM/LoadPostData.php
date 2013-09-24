@@ -4,8 +4,7 @@ namespace Acme\BlogBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Acme\BlogBundle\Entity\Post,
-    Acme\BlogBundle\Entity\Category;
+use Acme\BlogBundle\Entity\Post;
 
 class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -36,18 +35,19 @@ class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
     {
 
         // Create posts
-        foreach($postsData as $postData){
+        foreach($this->postsData as $postData){
             $post = new Post();
 
-            $category = $manager->getRepository('AcmeUserBundle:User')->find($postData[0]);
+            $category = $manager->getRepository('AcmeBlogBundle:Category')->find($postData[0]);
             $author = $manager->getRepository('AcmeUserBundle:User')->find($postData[1]);
 
-            $post->setCategory($category)
-                 ->setAuthor($author)
-                 ->setName($postData[2])
-                 ->setSlug($postData[3])
-                 ->setContent($postData[4])
-                 ->setCreated(new \DateTime($postData[5]))
+            $post
+                ->setCategory($category)
+                ->setUser($author)
+                ->setName($postData[2])
+                ->setSlug($postData[3])
+                ->setContent($postData[4])
+                ->setCreated(new \DateTime($postData[5]))
             ;
 
             $manager->persist($post);

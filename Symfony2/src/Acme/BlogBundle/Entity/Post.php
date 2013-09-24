@@ -51,6 +51,17 @@ class Post
 
     /**
      * @ORM\ManyToOne(
+     *      targetEntity="Acme\UserBundle\Entity\User"
+     * )
+     * @ORM\JoinColumn(
+     *      name="user_id",
+     *      referencedColumnName="id"
+     * )
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(
      *      targetEntity="Category",
      *      inversedBy="posts"
      * )
@@ -175,5 +186,94 @@ class Post
     public function getCreated()
     {
         return $this->created;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set category
+     *
+     * @param \Acme\BlogBundle\Entity\Category $category
+     *
+     * @return Post
+     */
+    public function setCategory(\Acme\BlogBundle\Entity\Category $category = null)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \Acme\BlogBundle\Entity\Category 
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Acme\BlogBundle\Entity\Comment $comments
+     *
+     * @return Post
+     */
+    public function addComment(\Acme\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Acme\BlogBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Acme\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Acme\UserBundle\Entity\User $user
+     *
+     * @return Post
+     */
+    public function setUser(\Acme\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Acme\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
