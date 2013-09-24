@@ -3,6 +3,8 @@ Rails4::Application.routes.draw do
   match "/login" => 'user#login', as: :login, via: [:get, :post]
   get "/logout" => 'user#logout', as: :logout
 
+  get '/category/:id' => 'posts#category', as: :category
+
   scope '/admin' do
     get '/' => 'admin#index', as: :admin
     get '/posts/new' => 'posts#new', as: :new_post
