@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('title')
+Edit {{{ $post->name }}}
+@stop
+
 @section('content')
 	<h1>Edit post</h1>
 

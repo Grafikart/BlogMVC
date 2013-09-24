@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('title')
+Login
+@stop
+
 @section('content')
 	@if (Session::has('flash_error'))
 		<div class="alert alert-danger">

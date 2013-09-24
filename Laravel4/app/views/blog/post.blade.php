@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('title')
+{{{ $post->name }}}
+@stop
+
 @section('content')
 	<div class="col-md-8">
 		<div class="page-header">

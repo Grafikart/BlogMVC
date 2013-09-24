@@ -6,7 +6,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Blog | Laravel 4</title>
+        <title>Blog | @yield('title', 'Laravel 4')</title>
 
         <!-- Bootstrap core CSS -->
         <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet">
