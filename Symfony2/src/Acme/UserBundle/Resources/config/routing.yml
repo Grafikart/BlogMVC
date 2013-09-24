@@ -1,3 +1,6 @@
-acme_user_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: AcmeUserBundle:Default:index }
+login:
+    pattern:  /login
+    defaults: { _controller: AcmeUserBundle:Security:login }
+
+login_check:
+    pattern:  /login_check

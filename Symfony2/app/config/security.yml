@@ -14,9 +14,23 @@ security:
             entity: { class: AcmeUserBundle:User, property: username }
 
     firewalls:
-        admin_area:
-            pattern:    ^/admin
-            http_basic: ~
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern: .*
+            form_login:
+                login_path:  login
+                check_path:  login_check
+            anonymous: true
+            switch_user: true
 
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        # Make login public
+        - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # Protect admin access
+        - { path: ^/admin, role: ROLE_ADMIN }
+
+        # All rest is public
+        - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

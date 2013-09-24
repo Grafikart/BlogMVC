@@ -235,7 +235,9 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         $roles = $this->roles;
-        $roles[] = static::ROLE_DEFAULT;
+
+        // Add default role
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }

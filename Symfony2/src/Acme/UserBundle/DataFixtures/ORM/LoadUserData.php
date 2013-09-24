@@ -3,18 +3,41 @@ namespace Acme\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Acme\UserBundle\Entity\User;
 
-class LoadUserData implements FixtureInterface
+class LoadUserData implements FixtureInterface, ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
+        $factory = $this->container->get('security.encoder_factory');
+
+        // Create Admin User
         $userAdmin = new User();
-        $userAdmin->setUsername('admin');
-        $userAdmin->setPassword('admin');
+        $encoder = $factory->getEncoder($userAdmin);
+        $userAdmin->setUsername('admin')
+                  ->setEmail('admin@blogmvc.com')
+                  ->setPassword($encoder->encodePassword('admin', $userAdmin->getSalt()))
+        ;
+
+        $userAdmin->addRole('ROLE_ADMIN');
 
         $manager->persist($userAdmin);
         $manager->flush();
