@@ -65,7 +65,7 @@ class Category
      * Generate slug if is not defined
      */
     public function preSave(){
-        if($this->getSlug() === null)
+        if($this->getSlug() === null || empty(Urlizer::urlize($this->getSlug())))
             $this->slug = Urlizer::urlize($this->getName());
     }
 

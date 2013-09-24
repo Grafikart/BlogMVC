@@ -13,7 +13,6 @@ use Acme\BlogBundle\Form\PostType;
  */
 class AdminPostController extends Controller
 {
-
     /**
      * List all posts
      */
@@ -51,14 +50,16 @@ class AdminPostController extends Controller
             'method' => 'POST',
         ));
 
+        // If it's a submit, valid and save
+        if('POST' == $request->getMethod()){
+            $form->handleRequest($request);
 
-        $form->handleRequest($request);
+            if ($form->isValid()) {
+                $em->persist($post);
+                $em->flush();
 
-        if ($form->isValid()) {
-            $em->persist($post);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('acme_blog_post_admin'));
+                return $this->redirectAdmin();
+            }
         }
 
         return $this->render('AcmeBlogBundle:AdminPost:manage.html.twig', array(
@@ -75,13 +76,21 @@ class AdminPostController extends Controller
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository('AcmeBlogBundle:Post')->find($id);
 
-        if (!$post) {
+        if (!$post)
             throw $this->createNotFoundException('Unable to find this post.');
-        }
 
         $em->remove($post);
         $em->flush();
 
+        return $this->redirectAdmin();
+    }
+
+
+    /**
+     * Custom redirect helper to admin index
+     */
+    public function redirectAdmin()
+    {
         return $this->redirect($this->generateUrl('acme_blog_post_admin'));
     }
 }
