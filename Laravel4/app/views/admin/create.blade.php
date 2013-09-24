@@ -1,5 +1,9 @@
 @extends('layouts.blog')
 
+@section('title')
+Add a new post
+@stop
+
 @section('content')
 	<h1>Add a new post</h1>
 
