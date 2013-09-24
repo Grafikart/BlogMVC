@@ -67,12 +67,18 @@ class User implements UserInterface, \Serializable
 
 
 
-
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->isActive = true;
         $this->salt = md5(uniqid(null, true));
         $this->roles = array();
+    }
+
+    public function __toString(){
+        return $this->getUsername();
     }
 
 

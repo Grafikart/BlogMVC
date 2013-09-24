@@ -63,6 +63,13 @@ class Comment
 
 
 
+
+    public function __toString(){
+        return $this->getContent();
+    }
+
+
+
     /**
      * Get id
      *

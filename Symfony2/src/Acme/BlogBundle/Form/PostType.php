@@ -17,10 +17,9 @@ class PostType extends AbstractType
         $builder
             ->add('name')
             ->add('slug')
-            ->add('content')
-            ->add('created')
             ->add('user')
             ->add('category')
+            ->add('content')
         ;
     }
     

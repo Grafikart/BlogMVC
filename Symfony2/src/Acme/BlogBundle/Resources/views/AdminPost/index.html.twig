@@ -1,10 +1,10 @@
-{% extends '::base.html.twig' %}
+{% extends '::admin.html.twig' %}
 
 {% block body %}
     <h1>Manage posts</h1>
 
     <p>
-        <a href="{{ path('acme_blog_post_new') }}" class="btn btn-primary">
+        <a href="{{ path('acme_blog_post_manage') }}" class="btn btn-primary">
             Add a new post
         </a>
     </p>
@@ -20,15 +20,15 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
+        {% for post in posts %}
             <tr>
-                <td>{{ entity.id }}</td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.created|date('Y-m-d H:i') }}</td>
-                <td>{{ entity.category.name }}</td>
+                <td>{{ post.id }}</td>
+                <td>{{ post.name }}</td>
+                <td>{{ post.created|date('Y-m-d H:i') }}</td>
+                <td>{{ post.category.name }}</td>
                 <td>
-                    <a href="{{ path('acme_blog_post_edit', { 'id': entity.id }) }}" class="btn btn-primary">Edit</a>
-                    <a href="{{ path('acme_blog_post_delete', { 'id': entity.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+                    <a href="{{ path('acme_blog_post_manage', { 'id': post.id }) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ path('acme_blog_post_delete', { 'id': post.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
                 </td>
             </tr>
         {% endfor %}

@@ -12,7 +12,7 @@ class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
      * Posts to save
      *
      * 0 => slug of category
-     * 1 => user_id
+     * 1 => username of author
      * 2 => name
      * 3 => slug
      * 4 => content

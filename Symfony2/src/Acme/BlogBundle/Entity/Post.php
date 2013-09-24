@@ -3,12 +3,17 @@
 namespace Acme\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Acme\BlogBundle\Util\Urlizer;
 
 /**
- * Post
+ * Category
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Acme\BlogBundle\Entity\PostRepository")
+ * @ORM\HasLifecycleCallbacks
+ *
+ * @UniqueEntity(fields="slug", message="This slug is already used")
  */
 class Post
 {
@@ -55,7 +60,8 @@ class Post
      * )
      * @ORM\JoinColumn(
      *      name="user_id",
-     *      referencedColumnName="id"
+     *      referencedColumnName="id",
+     *      nullable=false
      * )
      */
     private $user;
@@ -68,7 +74,8 @@ class Post
      * )
      * @ORM\JoinColumn(
      *      name="category_id",
-     *      referencedColumnName="id"
+     *      referencedColumnName="id",
+     *      nullable=false
      * )
      */
     private $category;
@@ -91,6 +98,21 @@ class Post
     public function __construct(){
         $this->created = new \DateTime();    
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     * Generate slug if is not defined
+     */
+    public function preSave(){
+        if($this->getSlug() === null)
+            $this->slug = Urlizer::urlize($this->getName());
+    }
+
+    public function __toString(){
+        return $this->getName();
     }
 
 

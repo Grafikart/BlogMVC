@@ -1,0 +1,42 @@
+{% extends '::admin.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block form_row %}
+    <div class="form-group">
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form, { 'attr' : { 'class': 'form-control' } }) }}
+    </div>
+{% endblock form_row %}
+
+{% block body -%}
+    <h1>Edit post</h1>
+
+    <p><a href="{{ path('acme_blog_post_admin') }}">< Back to posts</a></p>
+
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.slug) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.category) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.user) }}
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+    <div class="submit">
+        <input class="btn btn-primary" type="submit" value="Edit">
+    </div>
+{% endblock %}
