@@ -57,7 +57,18 @@ class Category
     private $posts;
 
 
-
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     *
+     * Generate slug if is not defined
+     */
+    public function preSave(){
+        $slugifiedSlug = Urlizer::urlize($this->getSlug());
+        if($this->getSlug() === null || empty($slugifiedSlug))
+            $this->slug = Urlizer::urlize($this->getName());
+    }
+    
     public function __toString(){
         return $this->getName();
     }
