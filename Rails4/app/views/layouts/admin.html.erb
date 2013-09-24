@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Blog | MyDomain.com</title>
+
+    <!-- Bootstrap core CSS -->
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+    <style>
+        body {
+            padding-top: 50px;
+            background-color: #EEE;
+        }
+        .sidebar{
+            margin-top: 50px;
+        }
+    </style>
+  </head>
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Blog</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li><%= link_to '< Back to front', root_path %></li>
+            <% if user_signed_in? %>
+              <li><%= link_to 'Logout', logout_path %></li>
+            <% end %>
+          </ul>
+        </div>
+
+      </div><!-- /.container -->
+    </div>
+
+    <div class="container">
+
+      <% if flash[:error] %>
+        <div class="alert alert-danger">
+          <a class="close" data-dismiss="alert">×</a>
+          <%= raw flash[:error] %>
+        </div>
+      <% end %>
+
+      <% if flash[:notice] %>
+        <div class="alert alert-success">
+          <a class="close" data-dismiss="alert">×</a>
+          <%= raw flash[:notice] %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+  </body>
+</html>

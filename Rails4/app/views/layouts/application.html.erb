@@ -1,14 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rails4</title>
+  <title>Blog | MyDomain.com</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+  <style>
+    body {
+      padding-top: 50px;
+      background-color: #EEE;
+    }
+    .sidebar{
+      margin-top: 50px;
+    }
+  </style>
 </head>
 <body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">Blog</a>
+      </div>
 
-<%= yield %>
+      <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+        <ul class="nav navbar-nav">
+          <li><%= link_to 'Admin', (user_signed_in? ? admin_path : login_path) %></li>
+        </ul>
+      </div>
+
+    </div><!-- /.container -->
+  </div>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-8">
+
+        <% if flash[:error] %>
+          <div class="alert alert-danger">
+            <a class="close" data-dismiss="alert">×</a>
+            <%= raw flash[:error] %>
+          </div>
+        <% end %>
+
+        <% if flash[:notice] %>
+          <div class="alert alert-success">
+            <a class="close" data-dismiss="alert">×</a>
+            <%= raw flash[:notice] %>
+          </div>
+        <% end %>
+
+        <%= yield %>
+
+      </div>
+
+      <div class="col-md-4 sidebar">
+
+        <h4>Categories</h4>
+        <div class="list-group">
+          <% Category.all.each do |category| %>
+            <a href="category.html" class="list-group-item">
+              <span class="badge"><%= category.post_count %></span>
+              <%= category.name %>
+            </a>
+          <% end %>
+        </div>
+
+        <h4>Last posts</h4>
+        <div class="list-group">
+          <a href="post.html" class="list-group-item">
+            The Route of All Evil
+          </a>
+          <a href="post.html" class="list-group-item">
+            Good news everyone !
+          </a>
+        </div>
+      </div><!-- /.sidebar -->
+    </div>
+  </div><!-- /.container -->
 
 </body>
 </html>

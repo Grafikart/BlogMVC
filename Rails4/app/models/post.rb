@@ -8,6 +8,8 @@ class Post < ActiveRecord::Base
 
   validates :name, presence: true
   validates :content, presence: true
+  validates :category, presence: true
+  validates :user, presence: true
 
   after_create :set_post_count
   after_destroy :set_post_count

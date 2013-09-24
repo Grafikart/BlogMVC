@@ -45,3 +45,8 @@ end
 # gem 'debugger', group: [:development, :test]
 
 gem "friendly_id", "~> 5.0.0.beta1"
+
+gem "simple_form", "~> 3.0.0"
+
+gem 'will_paginate', "~> 3.0.3"
+gem 'will_paginate-bootstrap'

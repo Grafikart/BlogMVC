@@ -1,9 +1,21 @@
 Rails4::Application.routes.draw do
+  get "admin/index"
+  match "/login" => 'user#login', as: :login, via: [:get, :post]
+  get "/logout" => 'user#logout', as: :logout
+
+  scope '/admin' do
+    get '/' => 'admin#index', as: :admin
+    get '/posts/new' => 'posts#new', as: :new_post
+    get '/posts/:id/edit' => 'posts#edit', as: :edit_post
+  end
+
+  resources :posts
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -39,7 +51,7 @@ Rails4::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
