@@ -11,7 +11,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table blog.categories
-CREATE TABLE IF NOT EXISTS `categories` (
+DROP TABLE IF EXISTS `categories`;
+
+CREATE TABLE `categories` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `slug` varchar(50) NOT NULL,
@@ -30,14 +32,18 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `post_count`) VALUES
 
 
 -- Dumping structure for table blog.comments
-CREATE TABLE IF NOT EXISTS `comments` (
+DROP TABLE IF EXISTS `comments`;
+
+CREATE TABLE `comments` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `post_id` int(10) NOT NULL DEFAULT '0',
+  `post_id` int(10) NOT NULL,
   `username` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
   `content` mediumtext NOT NULL,
   `created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_comments_posts1_idx` (`post_id`),
+  CONSTRAINT `fk_comments_posts1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table blog.comments: ~3 rows (environ)
@@ -51,17 +57,21 @@ INSERT INTO `comments` (`id`, `post_id`, `username`, `mail`, `content`, `created
 
 
 -- Dumping structure for table blog.posts
-CREATE TABLE IF NOT EXISTS `posts` (
+DROP TABLE IF EXISTS `posts`;
+
+CREATE TABLE `posts` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `category_id` int(10) NOT NULL DEFAULT '0',
-  `user_id` int(10) NOT NULL DEFAULT '0',
+  `category_id` int(10) NOT NULL,
+  `user_id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
   `slug` varchar(255) NOT NULL,
   `content` longtext NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `category_id` (`category_id`),
-  KEY `user_id` (`user_id`)
+  KEY `fk_posts_categories_idx` (`category_id`),
+  KEY `fk_posts_users1_idx` (`user_id`),
+  CONSTRAINT `fk_posts_categories` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_posts_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table blog.posts: ~6 rows (environ)
@@ -78,7 +88,9 @@ INSERT INTO `posts` (`id`, `category_id`, `user_id`, `name`, `slug`, `content`, 
 
 
 -- Dumping structure for table blog.users
-CREATE TABLE IF NOT EXISTS `users` (
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
