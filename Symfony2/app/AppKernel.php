@@ -22,6 +22,7 @@ class AppKernel extends Kernel
 
             // Own Bundles
             new Acme\UserBundle\AcmeUserBundle(),
+            new Acme\BlogBundle\AcmeBlogBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

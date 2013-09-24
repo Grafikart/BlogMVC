@@ -1,18 +1,20 @@
 <?php
 namespace Acme\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\AbstractFixture,
+    Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Acme\UserBundle\Entity\User;
 
-class LoadUserData implements FixtureInterface, ContainerAwareInterface
+class LoadUserData  extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var ContainerInterface
      */
     private $container;
+
 
     /**
      * {@inheritDoc}
@@ -41,5 +43,13 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
 
         $manager->persist($userAdmin);
         $manager->flush();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getOrder()
+    {
+        return 1;
     }
 }

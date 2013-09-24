@@ -1,0 +1,11 @@
+acme_blog_homepage:
+    path:  /
+    defaults: { _controller: AcmeBlogBundle:Public:index }
+
+acme_blog_category:
+    path:  /category/{slug}
+    defaults: { _controller: AcmeBlogBundle:Public:category }
+
+acme_blog_author:
+    path:  /author/{id}
+    defaults: { _controller: AcmeBlogBundle:Public:author }
