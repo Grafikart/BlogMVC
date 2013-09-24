@@ -1,0 +1,3 @@
+acme_blog_post_admin:
+    resource: "@AcmeBlogBundle/Resources/config/routing/post.yml"
+    prefix:   /

@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Post creation</h1>
+
+    {{ form(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('acme_blog_post_admin') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

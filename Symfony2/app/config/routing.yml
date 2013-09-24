@@ -1,6 +1,6 @@
 acme_blog:
     resource: "@AcmeBlogBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /blog
 
 acme_blog_admin:
     resource: "@AcmeBlogBundle/Resources/config/routing_admin.yml"

@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Post list</h1>
+
+
+    {% for entity in entities %}
+        <tr>
+            <td><a href="{{ path('acme_blog_post_show', { 'slug': entity.slug }) }}">{{ entity.id }}</a></td>
+            <td>{{ entity.name }}</td>
+            <td>{{ entity.slug }}</td>
+            <td>{{ entity.content }}</td>
+            <td>{{ entity.created|date('Y-m-d H:i:s') }}
+    {% endfor %}
+{% endblock %}

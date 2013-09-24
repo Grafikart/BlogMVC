@@ -1,11 +1,15 @@
 acme_blog_homepage:
-    path:  /
+    pattern:  /
     defaults: { _controller: AcmeBlogBundle:Public:index }
 
 acme_blog_category:
-    path:  /category/{slug}
+    pattern:  /category/{slug}
     defaults: { _controller: AcmeBlogBundle:Public:category }
 
 acme_blog_author:
-    path:  /author/{id}
+    pattern:  /author/{id}
     defaults: { _controller: AcmeBlogBundle:Public:author }
+
+acme_blog_post_show:
+    pattern:  /{slug}
+    defaults: { _controller: "AcmeBlogBundle:Post:show" }

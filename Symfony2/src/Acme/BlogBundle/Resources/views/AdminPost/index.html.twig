@@ -1,0 +1,44 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <h1>Manage posts</h1>
+
+    <p>
+        <a href="{{ path('acme_blog_post_new') }}" class="btn btn-primary">
+            Add a new post
+        </a>
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Publication date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>{{ entity.id }}</td>
+                <td>{{ entity.name }}</td>
+                <td>{{ entity.created|date('Y-m-d H:i') }}</td>
+                <td>{{ entity.category.name }}</td>
+                <td>
+                    <a href="{{ path('acme_blog_post_edit', { 'id': entity.id }) }}" class="btn btn-primary">Edit</a>
+                    <a href="{{ path('acme_blog_post_delete', { 'id': entity.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        <li class="prev"><a href="#" rel="prev">Previous</a></li>
+        <li><a href="#">1</a></li>
+        <li class="active"><a>2</a></li>
+        <li class="disabled"><a>Next</a></li>
+    </ul>
+{% endblock %}

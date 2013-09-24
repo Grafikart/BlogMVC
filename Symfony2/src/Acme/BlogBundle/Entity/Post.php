@@ -63,7 +63,8 @@ class Post
     /**
      * @ORM\ManyToOne(
      *      targetEntity="Category",
-     *      inversedBy="posts"
+     *      inversedBy="posts",
+     *      fetch="EAGER"
      * )
      * @ORM\JoinColumn(
      *      name="category_id",
@@ -75,10 +76,23 @@ class Post
     /**
      * @ORM\OneToMany(
      *      targetEntity="Comment",
-     *      mappedBy="post"
+     *      mappedBy="post",
+     *      fetch="EAGER"
      * )
      */
     private $comments;
+
+
+
+
+    /**
+     * Constructor
+     */
+    public function __construct(){
+        $this->created = new \DateTime();    
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
 
 
 
@@ -186,13 +200,6 @@ class Post
     public function getCreated()
     {
         return $this->created;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
