@@ -4,6 +4,6 @@
 - ToDo
 
 ## Install
+- Copy *app/config/parameters.dist.yml* to *app/config/parameters.yml* and change parameters for your database configuration
 - Import Symfony2 using composer : *composer install*
-- Configure database configuration in *app/config/parameters.yml*
 - Enjoy !
