@@ -52,6 +52,7 @@ class Category
      *      targetEntity="Post",
      *      mappedBy="category"
      * )
+     * @ORM\OrderBy({"created"="DESC"})
      */
     private $posts;
 

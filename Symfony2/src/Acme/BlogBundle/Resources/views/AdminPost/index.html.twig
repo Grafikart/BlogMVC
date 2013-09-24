@@ -24,8 +24,8 @@
             <tr>
                 <td>{{ post.id }}</td>
                 <td>{{ post.name }}</td>
-                <td>{{ post.created|date('Y-m-d H:i') }}</td>
                 <td>{{ post.category.name }}</td>
+                <td>{{ post.created|date('Y-m-d H:i') }}</td>
                 <td>
                     <a href="{{ path('acme_blog_post_manage', { 'id': post.id }) }}" class="btn btn-primary">Edit</a>
                     <a href="{{ path('acme_blog_post_delete', { 'id': post.id }) }}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>

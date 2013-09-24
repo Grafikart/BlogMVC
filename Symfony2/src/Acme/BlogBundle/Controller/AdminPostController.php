@@ -20,7 +20,7 @@ class AdminPostController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $posts = $em->getRepository('AcmeBlogBundle:Post')->findAll();
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findAll(array(), array('id' => 'desc'));
 
         return $this->render('AcmeBlogBundle:AdminPost:index.html.twig', array(
             'posts' => $posts,

@@ -83,9 +83,9 @@ class Post
     /**
      * @ORM\OneToMany(
      *      targetEntity="Comment",
-     *      mappedBy="post",
-     *      fetch="EAGER"
+     *      mappedBy="post"
      * )
+     * @ORM\OrderBy({"created"="DESC"})
      */
     private $comments;
 
