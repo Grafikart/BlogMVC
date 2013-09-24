@@ -35,10 +35,5 @@
         </tbody>
     </table>
 
-    <ul class="pagination">
-        <li class="prev"><a href="#" rel="prev">Previous</a></li>
-        <li><a href="#">1</a></li>
-        <li class="active"><a>2</a></li>
-        <li class="disabled"><a>Next</a></li>
-    </ul>
+    {{ paginator.paginate(posts) }}
 {% endblock %}

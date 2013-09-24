@@ -12,10 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-	/**
-	 * Override default findAll method
-	 */
-	public function findAll(){
-		return $this->findBy(array(), array('created' => 'DESC'));
+	public function findAllQuery(){
+		$qb = $this->createQueryBuilder('p')
+			->select('p, c')
+			->leftJoin('p.category', 'c')
+			->orderBy('p.created', 'DESC')
+			->getQuery()
+		;
+		return $qb;
 	}
 }

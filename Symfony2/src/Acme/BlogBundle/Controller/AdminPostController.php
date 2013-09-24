@@ -3,15 +3,15 @@
 namespace Acme\BlogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Acme\BlogBundle\Entity\Post;
-use Acme\BlogBundle\Form\PostType;
+use Acme\BlogBundle\Controller\AbstractPaginatorController,
+    Acme\BlogBundle\Entity\Post,
+    Acme\BlogBundle\Form\PostType;
 
 /**
  * Admin Post controller
  */
-class AdminPostController extends Controller
+class AdminPostController extends AbstractPaginatorController
 {
     /**
      * List all posts
@@ -20,7 +20,9 @@ class AdminPostController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $posts = $em->getRepository('AcmeBlogBundle:Post')->findAll(array(), array('id' => 'desc'));
+        $query = $em->getRepository('AcmeBlogBundle:Post')->findAllQuery();
+
+        $posts = $this->paginate($query);
 
         return $this->render('AcmeBlogBundle:AdminPost:index.html.twig', array(
             'posts' => $posts,
