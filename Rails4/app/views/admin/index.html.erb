@@ -1,0 +1,31 @@
+<h1>Manage posts</h1>
+
+<p><%= link_to 'Add a new post', new_post_path, class: 'btn btn-primary' %></p>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Publication date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for post in @posts %>
+      <tr>
+        <td><%= post.id %></td>
+        <td><%= post.name %></td>
+        <td><%= post.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+        <td><%= post.category.name %></td>
+        <td>
+          <%= link_to 'Edit', edit_post_path(post), class: 'btn btn-primary' %>
+          <%= link_to 'Delete', post, method: :delete, class: 'btn btn-danger', data: {confirm: 'Are you sure ?'} %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate @posts, renderer: BootstrapPagination::Rails %>
