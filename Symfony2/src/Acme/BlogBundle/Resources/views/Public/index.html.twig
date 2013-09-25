@@ -17,12 +17,12 @@
                 <p><small>
                     Category : 
                     <a href="{{ path('acme_blog_category', { slug: post.category.slug }) }}">
-                    	{{ post.category }}
+                    	{{ post.category -}}
                     </a>,
 
                     by 
                     <a href="{{ path('acme_blog_author', { id: post.user.id }) }}">
-                    	{{ post.user }}
+                    	{{ post.user -}}
                     </a>
                     on <em>{{ post.created|date("F jS, H:i") }}</em>
                 </small></p>
