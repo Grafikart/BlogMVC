@@ -8,5 +8,5 @@
 - Import Symfony2 using composer : ```composer install```
 - Create database : ```doctrine:database:create```
 - Create schema of database : ```doctrine:schema:create```
-- Load DataFixtures : ```doctrine:fixture:load``` and validate with **Y** to continue
+- Load DataFixtures : ```doctrine:fixtures:load``` and validate with **Y** to continue
 - Enjoy !
