@@ -2,9 +2,9 @@
     <h4>Categories</h4>
     <div class="list-group">
         {% for c in categories %}
-            <a href="{{ path('acme_blog_category', { slug: c[0].slug }) }}" class="list-group-item">
+            <a href="{{ path('acme_blog_category', { slug: c[0].category.slug }) }}" class="list-group-item">
                 <span class="badge">{{ c.postCount }}</span>
-                {{ c[0] }}
+                {{ c[0].category }}
             </a>
         {% endfor %}
     </div>
