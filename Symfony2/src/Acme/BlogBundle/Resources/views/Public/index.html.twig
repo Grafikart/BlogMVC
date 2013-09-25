@@ -1,0 +1,43 @@
+{% extends 'AcmeBlogBundle:Public:layout.html.twig' %}
+
+{% block bodyblog -%}
+    <div class="col-md-8">
+	    <div class="page-header">
+            <h1>Blog</h1>
+            <p class="lead">Welcome on my blog</p>
+        </div>
+
+		{% for post in posts %}
+            <article>
+                <h2>
+                	<a href="{{ path('acme_blog_post_show', { slug: post.slug }) }}">
+                		{{ post }}
+                	</a>
+                </h2>
+                <p><small>
+                    Category : 
+                    <a href="{{ path('acme_blog_category', { slug: post.category.slug }) }}">
+                    	{{ post.category -}}
+                    </a>,
+
+                    by 
+                    <a href="{{ path('acme_blog_author', { id: post.user.id }) }}">
+                    	{{ post.user -}}
+                    </a>
+                    on <em>{{ post.created|date("F jS, H:i") }}</em>
+                </small></p>
+
+                <p>{{ post.content|markdown|striptags|truncate(450) }}</p>
+
+                <p class="text-right">
+                	<a href="{{ path('acme_blog_post_show', { slug: post.slug }) }}" class="btn btn-primary">
+                		Read more...
+                	</a>
+                </p>
+            </article>
+            <hr>
+	    {% endfor %}
+
+	    {{ paginator.paginate(posts) }}
+    </div>
+{% endblock %}
