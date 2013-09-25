@@ -1,5 +1,4 @@
 Rails4::Application.routes.draw do
-  get "admin/index"
   match "/login" => 'user#login', as: :login, via: [:get, :post]
   get "/logout" => 'user#logout', as: :logout
 
