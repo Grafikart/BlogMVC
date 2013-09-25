@@ -5,3 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+# User.create(username: 'admin', password: 'admin')
+
+5.times {|i| Category.create(name: "Category ##{i+1}")}
