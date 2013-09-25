@@ -48,7 +48,7 @@ class AdminPostController extends AbstractPaginatorController
 
         // Create form
         $form = $this->createForm(new PostType(), $post, array(
-            'action' => $this->generateUrl('acme_blog_post_manage'),
+            'action' => $this->generateUrl('acme_blog_post_manage', array('id' => $post->getId())),
             'method' => 'POST',
         ));
 

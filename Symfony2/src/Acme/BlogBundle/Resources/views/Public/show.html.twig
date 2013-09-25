@@ -36,24 +36,15 @@
 
                 
                 {{ form_start(form) }}
-                    {% if not form.vars.valid %}
-                        <div class="alert alert-danger">
-                            <strong>Oh snap !</strong> you did some errors : <br>
-                            {{ form_errors(form.username) }}
-                            {{ form_errors(form.mail) }}
-                            {{ form_errors(form.content) }}
-                        </div>
-                    {% endif %}
-
                     <div class="row">
                         <div class="col-md-6">
-                            {{ form_row(form.mail, { displayErrors: false }) }}
+                            {{ form_row(form.mail) }}
                         </div>
                         <div class="col-md-6">
-                            {{ form_row(form.username, { displayErrors: false }) }}
+                            {{ form_row(form.username) }}
                         </div>
                     </div>
-                    {{ form_row(form.content, { displayErrors: false }) }}
+                    {{ form_row(form.content) }}
 
                     <div class="submit">
                         <input class="btn btn-primary" type="submit" value="Submit my comment">

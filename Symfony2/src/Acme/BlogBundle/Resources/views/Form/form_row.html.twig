@@ -1,11 +1,21 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_start %}
+	{{ parent() }}
+
+    {% if not form.vars.valid %}
+        <div class="alert alert-danger">
+            <strong>Oh snap !</strong> you did some errors : <br>
+            {% for field in form.iterator %}
+                {{ form_errors(field) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock form_start %}
+
 {% block form_row %}
     <div class="form-group {% if required %}required{% endif %} {% if errors %}has-error{% endif %}">
         {{ form_label(form) }}
-        
-        {% if displayErrors is not defined or displayErrors %}
-        	{{ form_errors(form) }}
-        {% endif %}
-
         {{ form_widget(form, { 'attr' : { 'class': 'form-control' } }) }}
     </div>
 {% endblock form_row %}
