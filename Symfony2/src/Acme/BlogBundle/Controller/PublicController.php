@@ -93,4 +93,20 @@ class PublicController extends AbstractPaginatorController
             'form'  => $form->createView(),
         ));
     }
+
+
+    /**
+     * Sidebar action
+     */
+    public function sidebarAction(){
+        $em = $this->getDoctrine()->getManager();
+
+        $categories = $em->getRepository('AcmeBlogBundle:Category')->findAll();
+        $posts = array();
+
+        return $this->render('AcmeBlogBundle:Public:sidebar.html.twig', array(
+            'categories'    => $categories,
+            'posts'         => $posts,
+        ));
+    }
 }

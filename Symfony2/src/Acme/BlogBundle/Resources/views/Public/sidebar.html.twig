@@ -1,0 +1,20 @@
+<div class="col-md-4 sidebar">
+    <h4>Categories</h4>
+    <div class="list-group">
+        {% for c in categories %}
+            <a href="{{ path('acme_blog_category', { slug: c.slug }) }}" class="list-group-item">
+                <span class="badge">{{ c.postCount }}</span>
+                {{ c }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <h4>Last posts</h4>
+    <div class="list-group">
+        {% for p in posts %}
+            <a href="{{ path('acme_blog_post_view', { slug: p.slug }) }}" class="list-group-item">
+                {{ p }}
+            </a>
+        {% endfor %}
+    </div>
+</div>

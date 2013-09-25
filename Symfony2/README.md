@@ -1,7 +1,8 @@
 # Symfony 2
 
 ## Todo-List
-- Sidebar (+ cache)
+- Sidebar last posts
+- Invalide HTTP Cache after add/delete post (update is useless)
 
 ## Install
 - Copy ```app/config/parameters.dist.yml``` to ```app/config/parameters.yml``` and change parameters for your database configuration

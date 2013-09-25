@@ -3,7 +3,7 @@ imports:
     - { resource: security.yml }
 
 framework:
-    #esi:             ~
+    esi: { enabled: true }
     #translator:      { fallback: %locale% }
     secret:          %secret%
     router:
@@ -18,7 +18,9 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
-    fragments:       ~
+    fragments:
+        enabled: true
+        path: /_fragment
     http_method_override: true
 
 # Twig Configuration
