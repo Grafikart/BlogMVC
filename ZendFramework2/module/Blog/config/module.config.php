@@ -30,7 +30,7 @@ return array(
             'posts' => array(
                 'type'    => 'Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route'    => '/posts',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Blog\Controller',
                         'controller'    => 'Post',
@@ -39,24 +39,38 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'list'    => array(
+                    'list' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => '[page/:page]',
+                            'route'    => '[/page/:page][/category/:category][/user/:user]',
                             'defaults' => array(
                                 'page' => 1,
                             ),
                             'constraints' => array(
-                                'page' => '[0-9]+',
+                                'page'     => '[0-9]+',
+                                'category' => '[a-zA-Z\-0-9]+',
+                                'user'     => '[0-9]+',
                             ),
                         ),
                     ),
-                    'show'    => array(
+                    'show' => array(
                         'type'    => 'segment',
                         'options' => array(
                             'route'    => '[:slug]',
                             'defaults' => array(
                                 'action' => 'show',
+                            ),
+                            'constraints' => array(
+                                'slug' => '[a-zA-Z\-0-9]+',
+                            ),
+                        ),
+                    ),
+                    'category' => array(
+                        'type'    => 'segment',
+                        'options' => array(
+                            'route'    => 'category/[:slug]',
+                            'defaults' => array(
+                                'action' => 'category',
                             ),
                             'constraints' => array(
                                 'slug' => '[a-zA-Z\-0-9]+',

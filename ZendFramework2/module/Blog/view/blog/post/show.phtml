@@ -2,8 +2,8 @@
     <h1><?php echo $post->getName() ?></h1>
     <p>
         <small>
-            Category : <a href="#"><?php echo $post->getCategory()->getName() ?></a>,
-            by <a href="#"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
+            Category : <a href="<?php echo $this->url('posts/list', array('category' => $post->getCategory()->getSlug())) ?>"><?php echo $post->getCategory()->getName() ?></a>,
+            by <a href="<?php echo $this->url('posts/list', array('user' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
         </small>
     </p>
 </div>

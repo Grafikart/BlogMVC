@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-    public function getActivePost()
+    public function getActivePost(array $criteria = array())
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -21,7 +21,24 @@ class PostRepository extends EntityRepository
             ->from('Blog\Entity\Post', 'p')
             ->where('p.created < :now')
             ->setParameter('now', new \DateTime())
+            ->orderBy('p.created', 'DESC')
         ;
+
+        if (isset($criteria['category'])) {
+            $qb = $qb
+                ->leftJoin('p.category', 'c')
+                ->andWhere('c.slug = :category')
+                ->setParameter('category', $criteria['category'])
+            ;
+        }
+
+        if (isset($criteria['user'])) {
+            $qb = $qb
+                ->leftJoin('p.user', 'u')
+                ->andWhere('u.id = :user')
+                ->setParameter('user', $criteria['user'])
+            ;
+        }
 
         return $qb->getQuery();
     }

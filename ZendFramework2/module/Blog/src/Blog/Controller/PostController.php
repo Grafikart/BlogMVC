@@ -16,12 +16,23 @@ class PostController extends CoreController
 {
     public function indexAction()
     {
-        $paginator = $this->getPaginator('Blog\Entity\Post', 'getActivePost');
-        $posts     = $paginator->getCurrentItems();
+        $criteria = array();
+
+        if (null != $this->params()->fromRoute('category')) {
+            $criteria['category'] = $this->params()->fromRoute('category');
+        }
+
+        if (null != $this->params()->fromRoute('user')) {
+            $criteria['user'] = $this->params()->fromRoute('user');
+        }
+
+        $data = $this->getPaginator('Blog\Entity\Post', 'getActivePost', array('criteria' => $criteria));
 
         return array(
-            'paginator' => $paginator,
-            'posts'     => $posts,
+            'paginator' => $data['paginator'],
+            'posts'     => $data['items'],
+            'category'  => (isset($criteria['category']) ? $criteria['category'] : null),
+            'user'      => (isset($criteria['user']) ? $criteria['user'] : null),
         );
     }
 
