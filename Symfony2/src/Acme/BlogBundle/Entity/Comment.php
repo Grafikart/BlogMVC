@@ -56,7 +56,8 @@ class Comment
      * )
      * @ORM\JoinColumn(
      *      name="post_id",
-     *      referencedColumnName="id"
+     *      referencedColumnName="id",
+     *      nullable=false
      * )
      */
     private $post;

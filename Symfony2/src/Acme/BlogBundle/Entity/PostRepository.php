@@ -12,11 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-	public function findAllQuery(){
+	public function findAllQuery($conditions = array()){
 		$qb = $this->createQueryBuilder('p')
-			->select('p, c')
+			->select('p, c, u')
 			->leftJoin('p.category', 'c')
+			->leftJoin('p.user', 'u')
 			->orderBy('p.created', 'DESC')
+		;
+
+		foreach($conditions as $k => $v)
+			$qb->andWhere("$k = '$v'");
+
+		$qb
 			->getQuery()
 		;
 		return $qb;

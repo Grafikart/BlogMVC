@@ -12,4 +12,4 @@ acme_blog_author:
 
 acme_blog_post_show:
     pattern:  /{slug}
-    defaults: { _controller: "AcmeBlogBundle:Post:show" }
+    defaults: { _controller: "AcmeBlogBundle:Public:show" }

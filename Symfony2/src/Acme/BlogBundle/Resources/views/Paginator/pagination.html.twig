@@ -1,6 +1,9 @@
 {% macro paginate(paginator) %}
 	{% set page = app.request.get('page') ?: 1 %}
-	{% set countPages = paginator|length % paginator.query.maxResults %}
+	{% set countPages = (paginator|length > paginator.query.maxResults)
+		? paginator|length % paginator.query.maxResults 
+		: 1
+	%}
 
 	{% if(countPages > 1) %}
 

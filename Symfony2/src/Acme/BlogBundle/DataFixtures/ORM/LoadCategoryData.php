@@ -14,7 +14,7 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         // Create 3 categories
-        for($i = 0; $i < 3; $i++){
+        for($i = 1; $i < 4; $i++){
             $category = new Category();
             $category
                 ->setName('Category #' . $i)
