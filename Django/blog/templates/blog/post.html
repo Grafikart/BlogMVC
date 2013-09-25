@@ -1,0 +1,12 @@
+<h4>Last posts</h4>
+{% load cache %}
+{% if posts %}
+    <div class="list-group">
+        {% for post in posts %}
+         <a href="{% url "post_details" post.slug %}" class="list-group-item">
+            {{post.title}}
+        </a>
+        {% endfor %}
+        </div>
+    </div>
+{% endif %}
