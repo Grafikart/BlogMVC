@@ -2,3 +2,8 @@
 /CakePHP/composer.lock
 /ZendFramework2/ZendFramework2.sublime-project
 /ZendFramework2/ZendFramework2.sublime-workspace
+
+/ZendFramework2/data/DoctrineORMModule/Proxy/__CG__BlogEntityCategory.php
+/ZendFramework2/data/DoctrineORMModule/Proxy/__CG__BlogEntityUser.php
+/ZendFramework2/data/log/httpd_access.log
+/ZendFramework2/data/log/httpd_error.log
