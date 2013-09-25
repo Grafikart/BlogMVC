@@ -1,0 +1,17 @@
+<% for post in @posts %>
+
+  <article>
+    <h2><%= link_to post.name, post %></h2>
+    <p><small>
+      Category : <%= link_to post.category.name, category_path(post.category) %>,
+      by <%= link_to post.user.username, author_path(post.user) %>, on <em><%= post.created_at.strftime("%b %d %Y") %></em>
+    </small></p>
+    <p><%= truncate post.content, length: 450 %></p>
+    <p class="text-right"><%= link_to 'Read mode...', post, class: 'btn btn-primary' %></p>
+  </article>
+
+  <hr>
+
+<% end %>
+
+<%= will_paginate @posts, renderer: BootstrapPagination::Rails, previous_label: '&laquo;', next_label: '&raquo;' %>
