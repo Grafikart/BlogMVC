@@ -7,15 +7,15 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Blog\Application\Post\Controller;
+namespace Blog\Application\Admin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class ConnexionController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        return array();
     }
 }

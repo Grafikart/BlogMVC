@@ -23,6 +23,17 @@ return array(
                     ),
                 ),
             ),
+            'admin' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/admin',
+                    'defaults' => array(
+                        'controller'    => 'Blog\Application\Connexion',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+            ),
             'posts' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -100,7 +111,8 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'Blog\Application\Post' => 'Blog\Application\Post\Controller\PostController'
+            'Blog\Application\Post'      => 'Blog\Application\Post\Controller\PostController',
+            'Blog\Application\Connexion' => 'Blog\Application\Admin\Controller\ConnexionController',
         ),
     ),
 
@@ -112,6 +124,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'admin/layout'            => __DIR__ . '/../view/layout/admin.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',

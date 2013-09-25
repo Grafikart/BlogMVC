@@ -19,6 +19,15 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH,
+            function($e){
+                if (0 === strpos($e->getRouteMatch()->getMatchedRouteName(), 'admin')) {
+                    $controller = $e->getTarget();
+                    $controller->layout('admin/layout');
+                }
+            }
+        );
     }
 
     public function getConfig()
