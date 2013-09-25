@@ -68,6 +68,15 @@ class Category
         if($this->getSlug() === null || empty($slugifiedSlug))
             $this->slug = Urlizer::urlize($this->getName());
     }
+
+    /**
+     * @ORM\PreFlush()
+     *
+     * Update postCount
+     */
+    public function preFlush(){
+        $this->postCount = count($this->posts);
+    }
     
     public function __toString(){
         return $this->getName();

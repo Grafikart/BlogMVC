@@ -102,11 +102,13 @@ class PublicController extends AbstractPaginatorController
         $em = $this->getDoctrine()->getManager();
 
         $categories = $em->getRepository('AcmeBlogBundle:Category')->findAll();
-        $posts = array();
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findLast(2);
 
-        return $this->render('AcmeBlogBundle:Public:sidebar.html.twig', array(
+        $sidebar = $this->render('AcmeBlogBundle:Public:sidebar.html.twig', array(
             'categories'    => $categories,
             'posts'         => $posts,
         ));
+
+        return $sidebar;
     }
 }

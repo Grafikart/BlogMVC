@@ -12,7 +12,7 @@
     <h4>Last posts</h4>
     <div class="list-group">
         {% for p in posts %}
-            <a href="{{ path('acme_blog_post_view', { slug: p.slug }) }}" class="list-group-item">
+            <a href="{{ path('acme_blog_post_show', { slug: p.slug }) }}" class="list-group-item">
                 {{ p }}
             </a>
         {% endfor %}

@@ -28,4 +28,15 @@ class PostRepository extends EntityRepository
 		;
 		return $qb;
 	}
+
+
+	public function findLast($limit = 1){
+		return $this->createQueryBuilder('p')
+			->select('p')
+			->orderBy('p.created', 'DESC')
+			->getQuery()
+			->setMaxResults($limit)
+			->getResult()
+		;
+	}
 }

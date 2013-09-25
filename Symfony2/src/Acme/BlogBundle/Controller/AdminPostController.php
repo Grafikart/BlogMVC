@@ -60,6 +60,10 @@ class AdminPostController extends AbstractPaginatorController
                 $em->persist($post);
                 $em->flush();
 
+                // New post : update post count
+                if($post->getId() == null)
+                    $this->updateCategoryPostCount($post->getCategory());
+
                 return $this->redirectAdmin();
             }
         }
@@ -84,6 +88,8 @@ class AdminPostController extends AbstractPaginatorController
         $em->remove($post);
         $em->flush();
 
+        $this->clearCache();
+
         return $this->redirectAdmin();
     }
 
@@ -91,8 +97,15 @@ class AdminPostController extends AbstractPaginatorController
     /**
      * Custom redirect helper to admin index
      */
-    public function redirectAdmin()
+    protected function redirectAdmin()
     {
         return $this->redirect($this->generateUrl('acme_blog_post_admin'));
+    }
+
+    /**
+     * Update countPost on a category
+     */
+    protected function clearCache()
+    {
     }
 }

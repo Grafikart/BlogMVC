@@ -4,8 +4,7 @@
     <div class="row">
 		{% block bodyblog %}{% endblock %}
         {% block aside %}
-        	{# Sidebar with 5 minutes of cache #}
-        	{{ render_esi(controller('AcmeBlogBundle:Public:sidebar', { max: 300 })) }}
+        	{{ render(controller('AcmeBlogBundle:Public:sidebar')) }}
         {% endblock %}
     </div>
 {% endblock %}
