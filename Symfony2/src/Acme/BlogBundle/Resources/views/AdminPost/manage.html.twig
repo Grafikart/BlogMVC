@@ -1,15 +1,5 @@
 {% extends '::admin.html.twig' %}
 
-{% form_theme form _self %}
-
-{% block form_row %}
-    <div class="form-group {% if required %}required{% endif %}">
-        {{ form_label(form) }}
-        {{ form_errors(form) }}
-        {{ form_widget(form, { 'attr' : { 'class': 'form-control' } }) }}
-    </div>
-{% endblock form_row %}
-
 {% block body -%}
     <h1>Edit post</h1>
 

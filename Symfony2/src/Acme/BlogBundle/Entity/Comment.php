@@ -3,6 +3,7 @@
 namespace Acme\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comment
@@ -25,6 +26,7 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255)
+     * @Assert\NotBlank(message="Username cannot be blank")
      */
     private $username;
 
@@ -32,6 +34,8 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="mail", type="string", length=255)
+     * @Assert\Email(message="Email is not valid")
+     * @Assert\NotBlank(message="Email cannot be blank")
      */
     private $mail;
 
@@ -39,6 +43,7 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank(message="Content cannot be blank")
      */
     private $content;
 
@@ -65,9 +70,17 @@ class Comment
 
 
 
+    /**
+     * Constructor
+     */
+    public function __construct(){
+        $this->created = new \DateTime();
+    }
+
     public function __toString(){
         return $this->getContent();
     }
+
 
 
 

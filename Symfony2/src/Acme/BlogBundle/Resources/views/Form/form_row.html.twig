@@ -1,0 +1,11 @@
+{% block form_row %}
+    <div class="form-group {% if required %}required{% endif %} {% if errors %}has-error{% endif %}">
+        {{ form_label(form) }}
+        
+        {% if displayErrors is not defined or displayErrors %}
+        	{{ form_errors(form) }}
+        {% endif %}
+
+        {{ form_widget(form, { 'attr' : { 'class': 'form-control' } }) }}
+    </div>
+{% endblock form_row %}

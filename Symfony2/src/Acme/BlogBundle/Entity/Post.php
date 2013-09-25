@@ -96,7 +96,7 @@ class Post
      * Constructor
      */
     public function __construct(){
-        $this->created = new \DateTime();    
+        $this->created = new \DateTime(); 
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -104,9 +104,12 @@ class Post
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      *
+     * Update created date
      * Generate slug if is not defined
      */
     public function preSave(){
+        $this->created = new \DateTime(); 
+
         $slugifiedSlug = Urlizer::urlize($this->getSlug());
         if($this->getSlug() === null || empty($slugifiedSlug))
             $this->slug = Urlizer::urlize($this->getName());

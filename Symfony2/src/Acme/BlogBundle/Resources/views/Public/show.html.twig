@@ -35,12 +35,33 @@
                 <h3>Comment this post</h3>
 
                 
-                <!--
-                  ==== TODO : Comment Form
-                -->
+                {{ form_start(form) }}
+                    {% if not form.vars.valid %}
+                        <div class="alert alert-danger">
+                            <strong>Oh snap !</strong> you did some errors : <br>
+                            {{ form_errors(form.username) }}
+                            {{ form_errors(form.mail) }}
+                            {{ form_errors(form.content) }}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_row(form.mail, { displayErrors: false }) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_row(form.username, { displayErrors: false }) }}
+                        </div>
+                    </div>
+                    {{ form_row(form.content, { displayErrors: false }) }}
+
+                    <div class="submit">
+                        <input class="btn btn-primary" type="submit" value="Submit my comment">
+                    </div>
+                {{ form_end(form) }}
 
 
-                <h3>
+                <h3 id="comments">
                     {% set count = post.comments|length %}
                     {% transchoice count %}
                         {0} Aucun commentaire|{1} Un commentaire|]1,Inf] %count% commentaires

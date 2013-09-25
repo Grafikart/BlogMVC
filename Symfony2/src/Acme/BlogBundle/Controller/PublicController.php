@@ -2,7 +2,9 @@
 
 namespace Acme\BlogBundle\Controller;
 
-use Acme\BlogBundle\Controller\AbstractPaginatorController;
+use Acme\BlogBundle\Controller\AbstractPaginatorController,
+    Acme\BlogBundle\Entity\Comment,
+    Acme\BlogBundle\Form\CommentType;
 
 /**
  * Public controller
@@ -64,8 +66,31 @@ class PublicController extends AbstractPaginatorController
         if (!$post)
             throw $this->createNotFoundException('Unable to find this post.');
 
+        $request = $this->getRequest();
+
+        // Create form
+        $comment = new Comment();
+        $comment->setPost($post);
+        $form = $this->createForm(new CommentType(), $comment, array(
+            'method' => 'POST',
+        ));
+
+        // If it's a submit, valid and save the comment
+        if('POST' == $request->getMethod()){
+            $form->handleRequest($request);
+
+            if ($form->isValid()){
+                $em->persist($comment);
+                $em->flush();
+
+                return $this->redirect($request->headers->get('referer') . '#comments');
+            }
+        }
+
+
         return $this->render('AcmeBlogBundle:Public:show.html.twig', array(
-            'post'      => $post,
+            'post'  => $post,
+            'form'  => $form->createView(),
         ));
     }
 }
