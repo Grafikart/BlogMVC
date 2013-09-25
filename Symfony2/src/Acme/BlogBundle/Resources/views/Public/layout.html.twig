@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+		{% block bodyblog %}{% endblock %}
+        {% block aside %}
+        	{{ render(controller('AcmeBlogBundle:Public:sidebar')) }}
+        {% endblock %}
+    </div>
+{% endblock %}
