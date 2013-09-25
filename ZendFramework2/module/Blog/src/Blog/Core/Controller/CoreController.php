@@ -4,18 +4,22 @@
  *
  * @link http://www.groupeastek.com
  */
-namespace Blog\Controller;
+namespace Blog\Core\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
+
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;
 
 abstract class CoreController extends AbstractActionController
 {
     private $entityManager = null;
 
     private $config = null;
+
+    private $translator = null;
 
     public function getEntityManager()
     {
@@ -24,6 +28,15 @@ abstract class CoreController extends AbstractActionController
         }
 
         return $this->entityManager;
+    }
+
+    public function getTranslation($msgid, array $args = array())
+    {
+        if (null === $this->translator) {
+            $this->translator = $this->getServiceLocator()->get('translator');
+        }
+
+        return vsprintf($this->translator->translate($msgid), $args);
     }
 
     public function getConfig()
@@ -47,5 +60,10 @@ abstract class CoreController extends AbstractActionController
             'paginator' => $paginator,
             'items'     => $paginator->getCurrentItems(),
         );
+    }
+
+    public function getDoctrineEntityHydrator()
+    {
+        return (new DoctrineEntity($this->getEntityManager()));
     }
 }

@@ -1,9 +1,11 @@
+<?php $this->headTitle($post->getName()) ?>
+
 <div class="page-header">
     <h1><?php echo $post->getName() ?></h1>
     <p>
         <small>
             Category : <a href="<?php echo $this->url('posts/list', array('category' => $post->getCategory()->getSlug())) ?>"><?php echo $post->getCategory()->getName() ?></a>,
-            by <a href="<?php echo $this->url('posts/list', array('user' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
+            by <a href="<?php echo $this->url('posts/list', array('author' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
         </small>
     </p>
 </div>
@@ -18,28 +20,33 @@
 
     <h3>Comment this post</h3>
 
-    <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+    <?php $form->prepare() ?>
+    <?php echo $this->form()->openTag($form); ?>
 
-    <form role="form">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Your email">
+                    <?php echo $this->formInput($form->get('mail')) ?>
+                    <?php echo $this->formElementErrors($form->get('mail')) ?>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group has-error">
-                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+                <div class="form-group">
+                    <?php echo $this->formInput($form->get('username')) ?>
+                    <?php echo $this->formElementErrors($form->get('username')) ?>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <textarea class="form-control" rows="3" placeholder="Your comment"></textarea>
+            <?php echo $this->formTextarea($form->get('content')) ?>
+            <?php echo $this->formElementErrors($form->get('content')) ?>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <?php echo $this->formSubmit($form->get('submit')) ?>
         </div>
-    </form>
+
+    <?php echo $this->formHidden($form->get('csrf')) ?>
+    <?php echo $this->form()->closeTag() ?>
 
     <h3><?php echo count($post->getComments()) . ' ' . $this->translatePlural('Comment', 'Comments', count($post->getComments())) ?></h3>
 

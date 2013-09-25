@@ -18,22 +18,17 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Blog\Controller\Post',
+                        'controller' => 'Blog\Application\Post',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'posts' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/posts',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Blog\Controller',
-                        'controller'    => 'Post',
+                        'controller'    => 'Blog\Application\Post',
                         'action'        => 'index',
                     ),
                 ),
@@ -42,21 +37,21 @@ return array(
                     'list' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => '[/page/:page][/category/:category][/user/:user]',
+                            'route'    => '[/page/:page][/category/:category][/author/:author]',
                             'defaults' => array(
                                 'page' => 1,
                             ),
                             'constraints' => array(
                                 'page'     => '[0-9]+',
                                 'category' => '[a-zA-Z\-0-9]+',
-                                'user'     => '[0-9]+',
+                                'author'   => '[0-9]+',
                             ),
                         ),
                     ),
                     'show' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => '[:slug]',
+                            'route'    => '/:slug',
                             'defaults' => array(
                                 'action' => 'show',
                             ),
@@ -68,7 +63,7 @@ return array(
                     'category' => array(
                         'type'    => 'segment',
                         'options' => array(
-                            'route'    => 'category/[:slug]',
+                            'route'    => 'category/:slug',
                             'defaults' => array(
                                 'action' => 'category',
                             ),
@@ -91,6 +86,7 @@ return array(
             'translator' => 'MvcTranslator',
         ),
     ),
+
     'translator' => array(
         'locale' => 'en_EN',
         'translation_file_patterns' => array(
@@ -101,11 +97,13 @@ return array(
             ),
         ),
     ),
+
     'controllers' => array(
         'invokables' => array(
-            'Blog\Controller\Post' => 'Blog\Controller\PostController'
+            'Blog\Application\Post' => 'Blog\Application\Post\Controller\PostController'
         ),
     ),
+
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
@@ -122,13 +120,6 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
 
     // Doctrine config
     'doctrine' => array(
@@ -143,7 +134,7 @@ return array(
             ),
             'orm_default' => array(
                 'drivers' => array(
-                    __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
+                    __NAMESPACE__ . '\Business\Entity' => __NAMESPACE__ . '_driver'
                 ),
             ),
         ),
@@ -152,10 +143,10 @@ return array(
     // View Helper
     'view_helpers' => array(
         'invokables' => array(
-            'Markdown' => 'Blog\Helper\View\Markdown',
-            'Truncate' => 'Blog\Helper\View\Truncate',
-            'Gravatar' => 'Blog\Helper\View\Gravatar',
-            'TimeAgo'  => 'Blog\Helper\View\TimeAgo',
+            'Markdown'      => 'Blog\Core\Helper\View\Markdown',
+            'Truncate'      => 'Blog\Core\Helper\View\Truncate',
+            'Gravatar'      => 'Blog\Core\Helper\View\Gravatar',
+            'TimeAgo'       => 'Blog\Core\Helper\View\TimeAgo',
         )
     ),
 );

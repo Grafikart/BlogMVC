@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Entity;
+namespace Blog\Business\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Category
  *
  * @ORM\Table(name="categories")
- * @ORM\Entity(repositoryClass="Blog\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="Blog\Business\Repository\CategoryRepository")
  */
 class Category
 {
@@ -45,7 +45,7 @@ class Category
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Blog\Entity\Post", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Blog\Business\Entity\Post", mappedBy="category")
      */
     private $posts;
 
@@ -101,7 +101,7 @@ class Category
         return $this;
     }
 
-    function addPost(\Blog\Entity\Post $post)
+    function addPost(\Blog\Business\Entity\Post $post)
     {
         if (! $this->posts->contains($post)) {
             $this->posts->add($post);
@@ -110,7 +110,7 @@ class Category
         return $this;
     }
 
-    function removePost(\Blog\Entity\Post $post)
+    function removePost(\Blog\Business\Entity\Post $post)
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);

@@ -9,9 +9,17 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.2.*",
-        "doctrine/doctrine-orm-module": "0.7.*",
-        "webino/zf2nette-debug": "1.*",
+
+        "doctrine/doctrine-orm-module" : "0.8.0-beta3",
+        "doctrine/doctrine-module" : "0.8.0-beta1",
+        "doctrine/dbal" : "2.4.0",
+        "doctrine/common" : "2.4.1",
+        "doctrine/orm" : "2.4.0",
+
+        "zendframework/zendframework": "*"
+    },
+    "require-dev": {
+        "webino/zf2nette-debug": "dev-master",
         "zendframework/zend-developer-tools": "dev-master"
     }
 }

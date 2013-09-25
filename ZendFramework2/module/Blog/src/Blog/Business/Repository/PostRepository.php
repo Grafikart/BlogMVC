@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Repository;
+namespace Blog\Business\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -18,7 +18,7 @@ class PostRepository extends EntityRepository
 
         $qb = $qb
             ->select('p')
-            ->from('Blog\Entity\Post', 'p')
+            ->from($this->getClassName(), 'p')
             ->where('p.created < :now')
             ->setParameter('now', new \DateTime())
             ->orderBy('p.created', 'DESC')
@@ -41,5 +41,24 @@ class PostRepository extends EntityRepository
         }
 
         return $qb->getQuery();
+    }
+
+    public function getLastPost($limit = 2)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb = $qb
+            ->select('p')
+            ->from($this->getClassName(), 'p')
+            ->where('p.created < :now')
+            ->setParameter('now', new \DateTime())
+            ->orderBy('p.created', 'DESC')
+        ;
+
+        return $qb
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->getResult()
+        ;
     }
 }

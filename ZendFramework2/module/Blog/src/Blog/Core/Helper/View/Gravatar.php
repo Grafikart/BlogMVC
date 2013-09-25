@@ -2,11 +2,9 @@
 /**
  * Blog
  */
-namespace Blog\Helper\View;
+namespace Blog\Core\Helper\View;
 
 use Zend\View\Helper\AbstractHelper;
-use Zend\Paginator;
-use Zend\View\Exception;
 
 /**
  * View Helper

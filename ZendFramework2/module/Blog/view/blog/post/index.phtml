@@ -11,11 +11,11 @@
         <h2><a href="<?php echo $this->url('posts/show', array('slug' => $post->getSlug())) ?>" title="<?php echo $post->getName() ?>"><?php echo $post->getName() ?></a></h2>
         <p>
             <small>
-                Category : <a href="<?php echo $this->url('posts/list', array('page' => $paginator->getCurrentPageNumber(), 'category' => $post->getCategory()->getSlug())) ?>"><?php echo $post->getCategory()->getName() ?></a>,
-                by <a href="<?php echo $this->url('posts/list', array('page' => $paginator->getCurrentPageNumber(), 'user' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
+                Category : <a href="<?php echo $this->url('posts/list', array('category' => $post->getCategory()->getSlug())) ?>"><?php echo $post->getCategory()->getName() ?></a>,
+                by <a href="<?php echo $this->url('posts/list', array('author' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
             </small>
         </p>
-        <p><?php echo $this->truncate($post->getContent(), 450); ?></p>
+        <p><?php echo $this->truncate($this->markdown($post->getContent()), 450); ?></p>
         <p class="text-right">
             <a href="<?php echo $this->url('posts/show', array('slug' => $post->getSlug())) ?>" class="btn btn-primary">Read more...</a>
         </p>

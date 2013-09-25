@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Entity;
+namespace Blog\Business\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Comment
  *
  * @ORM\Table(name="comments", indexes={@ORM\Index(name="fk_comments_posts1_idx", columns={"post_id"})})
- * @ORM\Entity(repositoryClass="Blog\Repository\CommentRepository")
+ * @ORM\Entity(repositoryClass="Blog\Business\Repository\CommentRepository")
  */
 class Comment
 {
@@ -50,9 +50,9 @@ class Comment
     private $created;
 
     /**
-     * @var \Blog\Entity\Post
+     * @var \Blog\Business\Entity\Post
      *
-     * @ORM\ManyToOne(targetEntity="Blog\Entity\Post")
+     * @ORM\ManyToOne(targetEntity="Blog\Business\Entity\Post")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      * })
@@ -124,7 +124,7 @@ class Comment
         return $this;
     }
 
-    function setPost(\Blog\Entity\Post $post)
+    function setPost(\Blog\Business\Entity\Post $post)
     {
         $this->post = $post;
 

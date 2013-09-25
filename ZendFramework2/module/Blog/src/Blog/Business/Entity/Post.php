@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Entity;
+namespace Blog\Business\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Post
  *
  * @ORM\Table(name="posts", indexes={@ORM\Index(name="fk_posts_categories_idx", columns={"category_id"}), @ORM\Index(name="fk_posts_users1_idx", columns={"user_id"})})
- * @ORM\Entity(repositoryClass="Blog\Repository\PostRepository")
+ * @ORM\Entity(repositoryClass="Blog\Business\Repository\PostRepository")
  */
 class Post
 {
@@ -50,9 +50,9 @@ class Post
     private $created;
 
     /**
-     * @var \Blog\Entity\Category
+     * @var \Blog\Business\Entity\Category
      *
-     * @ORM\ManyToOne(targetEntity="Blog\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="Blog\Business\Entity\Category")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
@@ -60,9 +60,9 @@ class Post
     private $category;
 
     /**
-     * @var \Blog\Entity\User
+     * @var \Blog\Business\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="Blog\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Blog\Business\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      * })
@@ -72,7 +72,8 @@ class Post
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Blog\Entity\Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="Blog\Business\Entity\Comment", mappedBy="post")
+     * @ORM\OrderBy({"created" = "DESC"})
      */
     private $comments;
 
@@ -156,21 +157,21 @@ class Post
         return $this;
     }
 
-    function setCategory(\Blog\Entity\Category $category)
+    function setCategory(\Blog\Business\Entity\Category $category)
     {
         $this->category = $category;
 
         return $this;
     }
 
-    function setUser(\Blog\Entity\User $user)
+    function setUser(\Blog\Business\Entity\User $user)
     {
         $this->user = $user;
 
         return $this;
     }
 
-    function addComments(\Blog\Entity\Comments $comments)
+    function addComments(\Blog\Business\Entity\Comments $comments)
     {
         if (! $this->commentss->contains($comments)) {
             $this->commentss->add($comments);
@@ -179,7 +180,7 @@ class Post
         return $this;
     }
 
-    function removeComments(\Blog\Entity\Comments $comments)
+    function removeComments(\Blog\Business\Entity\Comments $comments)
     {
         if ($this->commentss->contains($comments)) {
             $this->commentss->removeElement($comments);

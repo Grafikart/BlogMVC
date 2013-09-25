@@ -2,19 +2,21 @@
 /**
  * Blog
  */
-namespace Blog\Helper\View;
+namespace Blog\Core\Helper\View;
 
 use Zend\View\Helper\AbstractHelper;
-use Zend\Paginator;
-use Zend\View\Exception;
 
 /**
  * View Helper
  */
 class Truncate extends AbstractHelper
 {
-    public function __invoke($text, $limit = 100)
+    public function __invoke($text, $limit = 100, $stripTags = true)
     {
+        if ($stripTags) {
+            $text = strip_tags($text);
+        }
+
         $trunc_at_space = true;
         $limit     -= strlen('');
         $string_length  = strlen($text);
