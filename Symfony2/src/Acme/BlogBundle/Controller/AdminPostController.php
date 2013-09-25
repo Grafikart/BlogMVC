@@ -4,14 +4,14 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Acme\BlogBundle\Controller\AbstractPaginatorController,
+use Acme\BlogBundle\Controller\AbstractController,
     Acme\BlogBundle\Entity\Post,
     Acme\BlogBundle\Form\PostType;
 
 /**
  * Admin Post controller
  */
-class AdminPostController extends AbstractPaginatorController
+class AdminPostController extends AbstractController
 {
     /**
      * List all posts
@@ -107,5 +107,6 @@ class AdminPostController extends AbstractPaginatorController
      */
     protected function clearCache()
     {
+        $this->getCache()->delete('acme_blog_sidebar');
     }
 }

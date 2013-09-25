@@ -2,14 +2,14 @@
 
 namespace Acme\BlogBundle\Controller;
 
-use Acme\BlogBundle\Controller\AbstractPaginatorController,
+use Acme\BlogBundle\Controller\AbstractController,
     Acme\BlogBundle\Entity\Comment,
     Acme\BlogBundle\Form\CommentType;
 
 /**
  * Public controller
  */
-class PublicController extends AbstractPaginatorController
+class PublicController extends AbstractController
 {
 
     /**
@@ -101,13 +101,21 @@ class PublicController extends AbstractPaginatorController
     public function sidebarAction(){
         $em = $this->getDoctrine()->getManager();
 
-        $categories = $em->getRepository('AcmeBlogBundle:Category')->findAll();
-        $posts = $em->getRepository('AcmeBlogBundle:Post')->findLast(2);
+        $cache = $this->getCache();
 
-        $sidebar = $this->render('AcmeBlogBundle:Public:sidebar.html.twig', array(
-            'categories'    => $categories,
-            'posts'         => $posts,
-        ));
+        if($cache->contains('acme_blog_sidebar')){
+            $sidebar = $cache->fetch('acme_blog_sidebar');
+        } else {
+            $categories = $em->getRepository('AcmeBlogBundle:Category')->findAllWithCount();
+            $posts = $em->getRepository('AcmeBlogBundle:Post')->findLast(2);
+
+            $sidebar = $this->render('AcmeBlogBundle:Public:sidebar.html.twig', array(
+                'categories'    => $categories,
+                'posts'         => $posts,
+            ));
+
+            $cache->save('acme_blog_sidebar', $sidebar);
+        }
 
         return $sidebar;
     }

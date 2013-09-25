@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+	public function findAllWithCount(){
+		return $this->getEntityManager()->getRepository('AcmeBlogBundle:Post')->createQueryBuilder('p')
+			->select('p, c, COUNT(p) AS postCount')
+			->join('p.category', 'c')
+			->groupBy('c.id')
+			->getQuery()
+			->getResult()
+		;
+	}
 }

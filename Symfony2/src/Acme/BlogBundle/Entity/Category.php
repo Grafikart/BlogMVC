@@ -41,11 +41,8 @@ class Category
     private $slug;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="post_count", type="integer")
+     * No post_count field needed, because it was in sidebar cache
      */
-    private $postCount;
 
     /**
      * @ORM\OneToMany(
@@ -57,6 +54,16 @@ class Category
     private $posts;
 
 
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
@@ -67,15 +74,6 @@ class Category
         $slugifiedSlug = Urlizer::urlize($this->getSlug());
         if($this->getSlug() === null || empty($slugifiedSlug))
             $this->slug = Urlizer::urlize($this->getName());
-    }
-
-    /**
-     * @ORM\PreFlush()
-     *
-     * Update postCount
-     */
-    public function preFlush(){
-        $this->postCount = count($this->posts);
     }
     
     public function __toString(){
@@ -141,37 +139,6 @@ class Category
     public function getSlug()
     {
         return $this->slug;
-    }
-
-    /**
-     * Set postCount
-     *
-     * @param integer $postCount
-     *
-     * @return Category
-     */
-    public function setPostCount($postCount)
-    {
-        $this->postCount = $postCount;
-    
-        return $this;
-    }
-
-    /**
-     * Get postCount
-     *
-     * @return integer 
-     */
-    public function getPostCount()
-    {
-        return $this->postCount;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

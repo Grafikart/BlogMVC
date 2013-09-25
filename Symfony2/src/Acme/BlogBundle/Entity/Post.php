@@ -70,8 +70,7 @@ class Post
      * @ORM\ManyToOne(
      *      targetEntity="Category",
      *      inversedBy="posts",
-     *      fetch="EAGER",
-     *      cascade={"persist"}
+     *      fetch="EAGER"
      * )
      * @ORM\JoinColumn(
      *      name="category_id",
