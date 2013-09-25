@@ -1,0 +1,63 @@
+<div class="page-header">
+  <h1><%= @post.name %></h1>
+  <p><small>
+  Category : <%= link_to @post.category.name, category_path(@post.category) %>,
+  by <%= link_to @post.user.username, author_path(@post.user) %>, on <em><%= @post.created_at.strftime("%b %d %Y") %></em>
+  </small></p>
+</div>
+
+<article>
+  <%= Markdown.new( @post.content ).to_html.html_safe %>
+</article>
+
+<hr>
+
+<section class="comments">
+
+  <h3>Comment this post</h3>
+
+  <% if @comment.errors.any? %>
+    <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+  <% end %>
+
+  <%= simple_form_for @comment, url: new_comment_path do |f| %>
+    <%= f.input :post_id, label: false, input_html: {type: :hidden} %>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group <%= 'has-error' if @comment.errors.messages.keys.include? :mail %>">
+          <%= f.input :mail, label: false, input_html: {class: 'form-control', type: :email, placeholder: 'Your email'} %>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group <%= 'has-error' if @comment.errors.messages.keys.include? :username %>">
+          <%= f.input :username, error_html: { class: 'has-error'}, label: false, input_html: {class: 'form-control', placeholder: 'Your username'} %>
+        </div>
+      </div>
+    </div>
+    <div class="form-group <%= 'has-error' if @comment.errors.messages.keys.include? :content %>">
+      <%= f.input :content, as: :text, error_html: { class: 'has-error'}, label: false, input_html: {class: 'form-control', placeholder: 'Your comment', rows: 3} %>
+    </div>
+    <div class="form-group">
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+
+  <h3><%= @post.comments.count %> Commentaires</h3>
+
+  <% for comment in @post.comments %>
+
+    <div class="row">
+      <hr>
+
+      <div class="col-md-2">
+        <%= image_tag comment.gravatar_url size: 100 %>
+      </div>
+      <div class="col-md-10">
+        <p><strong><%= comment.username %></strong> <%= distance_of_time_in_words_to_now comment.created_at %></p>
+        <p><%= comment.content %></p>
+      </div>
+    </div>
+
+  <% end %>
+
+</section>

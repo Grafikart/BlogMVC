@@ -4,6 +4,8 @@ Rails4::Application.routes.draw do
   get "/logout" => 'user#logout', as: :logout
 
   get '/category/:id' => 'posts#category', as: :category
+  get '/author/:id' => 'posts#author', as: :author
+  post '/new_comment' => 'posts#add_comment', as: :new_comment
 
   scope '/admin' do
     get '/' => 'admin#index', as: :admin
