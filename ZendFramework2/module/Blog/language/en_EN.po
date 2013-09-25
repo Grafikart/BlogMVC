@@ -15,8 +15,14 @@ msgstr ""
 msgid "FORM_ERROR_COMMENT"
 msgstr "Oh snap ! you did some errors"
 
+msgid "FORM_ERROR_LOGIN"
+msgstr "Oh snap ! you did some errors"
+
 msgid "FORM_SUCCESS_COMMENT"
 msgstr "Comment posted !"
+
+msgid "FORM_SUCCESS_LOGIN"
+msgstr "You are now logged in !"
 
 msgid "SUBMIT_COMMENT"
 msgstr "Submit"
@@ -33,6 +39,9 @@ msgstr "Your username"
 msgid "PLACEHOLDER_USERNAME"
 msgstr "Your username"
 
+msgid "PLACEHOLDER_PASSWORD"
+msgstr "Your password"
+
 msgid "INPUT_MAIL"
 msgstr "Your email"
 
@@ -42,8 +51,14 @@ msgstr "Your email"
 msgid "BTN_SUBMIT"
 msgstr "Submit"
 
+msgid "SUBMIT_LOGIN"
+msgstr "Sign in"
+
 msgid "BTN_UPDATE"
 msgstr "Update"
 
 msgid "POST_NOT_FOUND"
 msgstr "Cannot find post with slug \"%s\""
+
+msgid "USER_NOT_FOUND"
+msgstr "Cannot find user with this credentials"

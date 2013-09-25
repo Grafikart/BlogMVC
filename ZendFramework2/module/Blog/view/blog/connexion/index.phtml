@@ -1,8 +1,12 @@
-<?php $this->headTitle('Blog') ?>
+<?php $this->headTitle('Admin') ?>
 
-<form class="form-signin" action="admin_index.html">
+<?php $form->prepare() ?>
+<?php echo $this->form()->openTag($form); ?>
+
     <h4 class="form-signin-heading">Please sign in</h4>
-    <input type="text" class="form-control" placeholder="Email address" autofocus>
-    <input type="password" class="form-control" placeholder="Password">
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-</form>
+    <?php echo $this->formInput($form->get('username')) ?>
+    <?php echo $this->formPassword($form->get('password')) ?>
+    <?php echo $this->formSubmit($form->get('submit')) ?>
+
+<?php echo $this->formHidden($form->get('csrf')) ?>
+<?php echo $this->form()->closeTag() ?>
