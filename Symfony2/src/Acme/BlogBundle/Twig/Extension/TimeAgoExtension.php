@@ -2,8 +2,7 @@
 
 namespace Acme\BlogBundle\Twig\Extension;
 
-use Symfony\Component\Translation\TranslatorInterface,
-    Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Made from this gist : https://gist.github.com/henrikbjorn/1432795
