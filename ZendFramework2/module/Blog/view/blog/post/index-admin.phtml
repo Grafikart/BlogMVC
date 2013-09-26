@@ -1,6 +1,6 @@
 <h1>Manage posts</h1>
 
-<p><a href="admin_edit.html" class="btn btn-primary">Add a new post</a></p>
+<p><a href="<?php echo $this->url('admin/posts/edit') ?>" class="btn btn-primary">Add a new post</a></p>
 
 <table class="table table-striped">
     <thead>
@@ -20,7 +20,7 @@
             <td><?php echo $post->getCategory()->getName() ?></td>
             <td><?php echo $post->getCreated()->format('d/m/Y H:i') ?></td>
             <td>
-                <a href="admin_edit.html" class="btn btn-primary">Edit</a>
+                <a href="<?php echo $this->url('admin/posts/edit', array('id' => $post->getId())) ?>" class="btn btn-primary">Edit</a>
                 <a href="<?php echo $this->url('admin/posts/delete', array('id' => $post->getId())) ?>" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
             </td>
         </tr>

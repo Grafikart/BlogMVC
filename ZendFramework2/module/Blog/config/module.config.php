@@ -34,6 +34,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'logout' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/logout',
+                            'defaults' => array(
+                                'action' => 'logout',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                    ),
                     'posts' => array(
                         'type'    => 'Literal',
                         'options' => array(
@@ -63,6 +73,18 @@ return array(
                                     'route'    => '/delete/:id',
                                     'defaults' => array(
                                         'action' => 'delete',
+                                    ),
+                                    'constraints' => array(
+                                        'id' => '[0-9]+',
+                                    ),
+                                ),
+                            ),
+                            'edit' => array(
+                                'type'    => 'segment',
+                                'options' => array(
+                                    'route'    => '/edit[/:id]',
+                                    'defaults' => array(
+                                        'action' => 'edit',
                                     ),
                                     'constraints' => array(
                                         'id' => '[0-9]+',

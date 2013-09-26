@@ -18,11 +18,17 @@ msgstr "Oh snap ! you did some errors"
 msgid "FORM_ERROR_LOGIN"
 msgstr "Oh snap ! you did some errors"
 
+msgid "FORM_ERROR_POST"
+msgstr "Oh snap ! you did some errors"
+
 msgid "FORM_SUCCESS_COMMENT"
 msgstr "Comment posted !"
 
 msgid "FORM_SUCCESS_LOGIN"
 msgstr "You are now logged in !"
+
+msgid "FORM_SUCCESS_POST"
+msgstr "Post saved !"
 
 msgid "SUBMIT_COMMENT"
 msgstr "Submit"
@@ -32,6 +38,12 @@ msgstr "Your comment"
 
 msgid "PLACEHOLDER_COMMENT"
 msgstr "Your comment"
+
+msgid "PLACEHOLDER_NAME"
+msgstr "Your name"
+
+msgid "INPUT_NAME"
+msgstr "Your name"
 
 msgid "INPUT_USERNAME"
 msgstr "Your username"
@@ -68,3 +80,21 @@ msgstr "Cannot find user with this credentials"
 
 msgid "POST_DELETED"
 msgstr "Post deleted !"
+
+msgid "SELECT_CATEGORY"
+msgstr "Category"
+
+msgid "SELECT_AUTHOR"
+msgstr "Author"
+
+msgid "PLACEHOLDER_SLUG"
+msgstr "Your slug"
+
+msgid "INPUT_SLUG"
+msgstr "Your slug"
+
+msgid "PLACEHOLDER_POST"
+msgstr "Your post"
+
+msgid "INPUT_POST"
+msgstr "Your post"

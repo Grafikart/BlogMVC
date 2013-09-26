@@ -56,4 +56,9 @@ class ConnexionController extends CoreController
             'form' => $form,
         );
     }
+
+    public function logoutAction()
+    {
+        return $this->redirect()->toRoute('home');
+    }
 }

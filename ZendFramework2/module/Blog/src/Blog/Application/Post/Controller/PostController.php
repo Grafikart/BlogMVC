@@ -15,6 +15,8 @@ use Zend\View\Model\ViewModel;
 use Blog\Core\Controller\CoreController;
 use Blog\Application\Post\Form\CommentForm;
 use Blog\Business\Entity\Comment;
+use Blog\Application\Admin\Form\PostForm;
+use Blog\Business\Entity\Post;
 
 class PostController extends CoreController
 {
@@ -122,5 +124,51 @@ class PostController extends CoreController
         $this->flashMessenger()->addSuccessMessage($this->getTranslation('POST_DELETED'));
 
         return $this->redirect()->toRoute('admin/posts');
+    }
+
+    public function editAction()
+    {
+        $id = $this->params()->fromRoute('id');
+
+        $post = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
+            'id' => $id,
+        ));
+
+        if (null == $post) {
+            $post = new Post();
+        }
+
+        $request = $this->getRequest();
+        $form    = new PostForm($this->getEntityManager());
+
+        $form->bind($post);
+
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $form->setData($data);
+
+            if ($form->isValid()) {
+                $hydrator = $this->getDoctrineEntityHydrator();
+                $post  = $hydrator->hydrate($data->toArray(), $post);
+
+                $post->setCreated(new \DateTime());
+
+                $this->getEntityManager()->persist($post);
+                $this->getEntityManager()->flush();
+
+                $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_POST'));
+
+                return $this->redirect()->toRoute('admin/posts/show', array(
+                    'id' => $post->getId(),
+                ));
+            } else {
+                $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_POST'));
+            }
+        }
+
+        return array(
+            'form' => $form,
+            'post' => $post,
+        );
     }
 }
