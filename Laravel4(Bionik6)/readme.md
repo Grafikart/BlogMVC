@@ -28,9 +28,7 @@ PHP >= 5.3.7
 MCrypt PHP Extension
 
 1. Create a new database (for me blog_mvc)
-2. Open /app/config/local/database.php and edit the file
--> regarding your database settings
-3. Import the sql file which is in the root of the app (blog_mvc.sql)
--> into your database
-4. Launch the app : ```php artisan serve```
+2. Open /app/config/local/database.php and edit the file regarding your database configuration
+3. Import the sql file which is in the root of the app (blog_mvc.sql) into your database
+4. Launch the app with the following command : ```php artisan serve```
 4. Have Fun ;)
