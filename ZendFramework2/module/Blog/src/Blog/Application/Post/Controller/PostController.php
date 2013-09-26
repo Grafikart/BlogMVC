@@ -49,7 +49,7 @@ class PostController extends CoreController
         ));
 
         if (null == $post) {
-            $this->flashMessenger()->addErrorMessage($this->getTranslation('POST_NOT_FOUND', array($slug)));
+            $this->flashMessenger()->addErrorMessage($this->getTranslation('POST_NOT_FOUND_SLUG', array($slug)));
 
             return $this->redirect()->toRoute('posts');
         }
@@ -88,5 +88,39 @@ class PostController extends CoreController
             'post' => $post,
             'form' => $form,
         );
+    }
+
+    /** Admin **/
+
+    public function indexAdminAction()
+    {
+        $data = $this->getPaginator('Blog\Business\Entity\Post', 'getActivePost');
+
+        return array(
+            'paginator' => $data['paginator'],
+            'posts'     => $data['items'],
+        );
+    }
+
+    public function deleteAction()
+    {
+        $id = $this->params()->fromRoute('id');
+
+        $post = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
+            'id' => $id,
+        ));
+
+        if (null == $post) {
+            $this->flashMessenger()->addErrorMessage($this->getTranslation('POST_NOT_FOUND_ID', array($id)));
+
+            return $this->redirect()->toRoute('admin/posts');
+        }
+
+        $this->getEntityManager()->remove($post);
+        $this->getEntityManager()->flush();
+
+        $this->flashMessenger()->addSuccessMessage($this->getTranslation('POST_DELETED'));
+
+        return $this->redirect()->toRoute('admin/posts');
     }
 }

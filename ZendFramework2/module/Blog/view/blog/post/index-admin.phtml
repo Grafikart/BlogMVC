@@ -1,0 +1,38 @@
+<h1>Manage posts</h1>
+
+<p><a href="admin_edit.html" class="btn btn-primary">Add a new post</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Publication date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($posts as $post) : ?>
+        <tr>
+            <td><?php echo $post->getId() ?></td>
+            <td><?php echo $post->getName() ?></td>
+            <td><?php echo $post->getCategory()->getName() ?></td>
+            <td><?php echo $post->getCreated()->format('d/m/Y H:i') ?></td>
+            <td>
+                <a href="admin_edit.html" class="btn btn-primary">Edit</a>
+                <a href="<?php echo $this->url('admin/posts/delete', array('id' => $post->getId())) ?>" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php
+    echo $this->paginationControl(
+        $paginator,
+        null,
+        'blog/common/_paginator',
+        array('route' => 'admin/posts/list')
+    );
+?>

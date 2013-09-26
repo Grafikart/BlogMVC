@@ -46,7 +46,7 @@ class ConnexionController extends CoreController
 
                 $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_LOGIN'));
 
-                return $this->redirect()->toRoute('admin');
+                return $this->redirect()->toRoute('admin/posts');
             } else {
                 $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_LOGIN'));
             }

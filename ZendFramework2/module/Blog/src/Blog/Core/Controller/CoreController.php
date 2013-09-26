@@ -48,7 +48,7 @@ abstract class CoreController extends AbstractActionController
         return $this->config;
     }
 
-    public function getPaginator($fullEntityClassName, $method, $params)
+    public function getPaginator($fullEntityClassName, $method, array $params = array())
     {
         $query     = call_user_func_array(array($this->getEntityManager()->getRepository($fullEntityClassName), $method), $params);
         $paginator = new Paginator(new DoctrinePaginator(new ORMPaginator($query)));

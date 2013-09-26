@@ -1,4 +1,9 @@
-<?php if ($this->pageCount) : ?>
+<?php
+    if ($this->pageCount) :
+        if (!isset($otherParams)) {
+            $otherParams = array();
+        }
+?>
 <ul class="pagination">
 
     <?php if (isset($this->previous)) : ?>

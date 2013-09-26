@@ -33,6 +33,45 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
+                'child_routes' => array(
+                    'posts' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/posts',
+                            'defaults' => array(
+                                'controller'    => 'Blog\Application\Post',
+                                'action'        => 'indexAdmin',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'list' => array(
+                                'type'    => 'segment',
+                                'options' => array(
+                                    'route'    => '[/page/:page]',
+                                    'defaults' => array(
+                                        'page' => 1,
+                                    ),
+                                    'constraints' => array(
+                                        'page' => '[0-9]+',
+                                    ),
+                                ),
+                            ),
+                            'delete' => array(
+                                'type'    => 'segment',
+                                'options' => array(
+                                    'route'    => '/delete/:id',
+                                    'defaults' => array(
+                                        'action' => 'delete',
+                                    ),
+                                    'constraints' => array(
+                                        'id' => '[0-9]+',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
             ),
             'posts' => array(
                 'type'    => 'Literal',

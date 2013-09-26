@@ -57,8 +57,14 @@ msgstr "Sign in"
 msgid "BTN_UPDATE"
 msgstr "Update"
 
-msgid "POST_NOT_FOUND"
+msgid "POST_NOT_FOUND_SLUG"
 msgstr "Cannot find post with slug \"%s\""
+
+msgid "POST_NOT_FOUND_ID"
+msgstr "Cannot find post with id \"%s\""
 
 msgid "USER_NOT_FOUND"
 msgstr "Cannot find user with this credentials"
+
+msgid "POST_DELETED"
+msgstr "Post deleted !"
