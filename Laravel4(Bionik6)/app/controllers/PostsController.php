@@ -13,7 +13,7 @@ class PostsController extends BaseController {
         $this->post      = $post;
         $this->categorie = $cat;
         $this->comment   = $comment;
-        $this->cache = $cache;
+        $this->cache     = $cache;
     }
 
     /**
@@ -44,10 +44,10 @@ class PostsController extends BaseController {
             $post->content     = Input::get('content');
             $post->created     = new DateTime;
             if ( $post->save() ) {
+                $this->cache->destroy();
                 return Redirect::route("admin.index");
             }
         }
-        $this->cache->destroy();
         return Redirect::back()->withInput($inputs)
                        ->withErrors($validation->errors())
                        ->with("alert_error" , "Something Wrong :(");
