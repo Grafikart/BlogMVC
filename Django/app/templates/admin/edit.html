@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        <div class="container">
+
+            <h1>Edit post</h1>
+
+            <p><a href="/admin/index">< Back to posts</a></p>
+
+            <form action="." id="PostAdminEditForm" method="post" accept-charset="utf-8">{% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="PostName">Name :</label>
+                            <input name="PostName" class="form-control" maxlength="255" type="text" value="{{post.name}}" id="PostName" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="PostSlug">Slug :</label>
+                            <input name="PostSlug" class="form-control" maxlength="255" type="text" value="{{post.slug}}" id="PostSlug" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="PostCategoryId">Category :</label>
+                            <select name="PostCategoryId" class="form-control" id="PostCategoryId">
+                                {% for categorie in categories %}
+                                    {% if categorie.id == post.categorie.id %}
+                                        <option selected=selected value="{{ categorie.id }}">{{ categorie.name }}</option>
+                                    {% else %}
+                                        <option value="{{ categorie.id }}">{{ categorie.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="PostUserId">Author :</label>
+                            <select name="PostUserId" class="form-control" id="PostUserId">
+                                {% for user in users %}
+                                    {% if user.id == post.user.id %}
+                                        <option selected=selected value="{{ user.id }}">{{ user.username }}</option>
+                                    {% else %}
+                                        <option value="{{ user.id }}">{{ user.username }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="PostContent">Content :</label>
+                    <textarea name="PostContent" class="form-control" cols="30" rows="6" id="PostContent" required="required">{{post.content}}</textarea>
+                </div>
+
+                <input type="hidden" name="postID" value="{{post.id}}">
+
+                <div class="submit">
+                    <input class="btn btn-primary" type="submit" value="Edit">
+                </div>
+            </form>
+
+
+        </div> <!-- /container -->
+
+
+{% endblock %}
