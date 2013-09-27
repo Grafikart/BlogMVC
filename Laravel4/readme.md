@@ -3,6 +3,7 @@
 ## Contributors
 
 * [thujohn](https://github.com/thujohn)
+* [Bionik6](https://github.com/Bionik6)
 
 ### Laravel PHP Framework
 
@@ -33,3 +34,7 @@ MCrypt PHP Extension
 6. Run ```php artisan migrate```
 7. Run ```php artisan db:seed```
 8. Enjoy !
+
+### Alternate
+
+There is an alternate version of this project in the **alternate** directory that shows another way of accomplishing the Blog using multiple controller.
