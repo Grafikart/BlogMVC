@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="posts", indexes={@ORM\Index(name="fk_posts_categories_idx", columns={"category_id"}), @ORM\Index(name="fk_posts_users1_idx", columns={"user_id"})})
  * @ORM\Entity(repositoryClass="Blog\Business\Repository\PostRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Post
 {
@@ -52,7 +53,7 @@ class Post
     /**
      * @var \Blog\Business\Entity\Category
      *
-     * @ORM\ManyToOne(targetEntity="Blog\Business\Entity\Category")
+     * @ORM\ManyToOne(targetEntity="Blog\Business\Entity\Category", inversedBy="posts")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      * })
@@ -187,5 +188,24 @@ class Post
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function preSave()
+    {
+        $this->setCreated(new \DateTime());
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        if ('' == trim($this->getSlug())) {
+            $this->setSlug(\Gedmo\Sluggable\Util\Urlizer::urlize($this->getName()));
+        }
     }
 }

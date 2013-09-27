@@ -1,29 +1,30 @@
 <h4>Categories</h4>
 <div class="list-group">
-    <a href="category.html" class="list-group-item">
-        <span class="badge">14</span>
-        Category #1
-    </a>
-    <a href="category.html" class="list-group-item">
-        <span class="badge">5</span>
-        Category #2
-    </a>
-    <a href="category.html" class="list-group-item">
-        <span class="badge">1</span>
-        Category #3
-    </a>
-    <a href="category.html" class="list-group-item">
-        <span class="badge">7</span>
-        Category #4
-    </a>
+    <?php if (count($categories)) : ?>
+        <?php foreach ($categories as $category) : ?>
+        <a href="<?php echo $this->url('posts/list', array('category' => $category->getSlug())) ?>" class="list-group-item">
+            <span class="badge"><?php echo count($category->getPosts()) ?></span>
+            <?php echo $category->getName() ?>
+        </a>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <span class="list-group-item">
+        <?php echo $this->translate('NO_CATEGORY_FOUND') ?>
+        </span>
+    <?php endif; ?>
 </div>
 
 <h4>Last posts</h4>
 <div class="list-group">
-    <a href="post.html" class="list-group-item">
-        The Route of All Evil
-    </a>
-    <a href="post.html" class="list-group-item">
-        Good news everyone !
-    </a>
+    <?php if (count($posts)) : ?>
+        <?php foreach ($posts as $post) : ?>
+        <a href="<?php echo $this->url('posts/show', array('slug' => $post->getSlug())) ?>" class="list-group-item">
+            <?php echo $post->getName() ?>
+        </a>
+        <?php endforeach; ?>
+    <?php else : ?>
+        <span class="list-group-item">
+        <?php echo $this->translate('NO_POST_FOUND') ?>
+        </span>
+    <?php endif; ?>
 </div>

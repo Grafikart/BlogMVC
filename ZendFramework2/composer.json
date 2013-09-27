@@ -16,7 +16,9 @@
         "doctrine/common" : "2.4.1",
         "doctrine/orm" : "2.4.0",
 
-        "zendframework/zendframework": "*"
+        "zendframework/zendframework": "*",
+
+        "gedmo/doctrine-extensions": "2.3.*"
     },
     "require-dev": {
         "webino/zf2nette-debug": "dev-master",

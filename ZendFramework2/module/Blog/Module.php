@@ -22,9 +22,21 @@ class Module
 
         $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH,
             function($e){
+                $sm   = $e->getApplication()->getServiceManager();
+                $auth = $sm->get('doctrine.authenticationservice.orm_default');
+
                 if (0 === strpos($e->getRouteMatch()->getMatchedRouteName(), 'admin')) {
                     $controller = $e->getTarget();
                     $controller->layout('admin/layout');
+                    $redirector = $sm->get('ControllerPluginManager')->get('Redirect');
+
+                    if ('admin' == $e->getRouteMatch()->getMatchedRouteName() && $auth->hasIdentity()) {
+                        $redirector->toRoute('admin/posts');
+                    }
+
+                    if ('admin' != $e->getRouteMatch()->getMatchedRouteName() && !$auth->hasIdentity()) {
+                        $redirector->toRoute('admin');
+                    }
                 }
             }
         );

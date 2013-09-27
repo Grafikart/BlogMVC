@@ -71,7 +71,6 @@ class PostForm extends BaseForm
             'attributes' => array(
                 'class'       => 'form-control',
                 'placeholder' => 'PLACEHOLDER_SLUG',
-                'required'    => true,
             ),
             'options' => array(
                 'label' => 'INPUT_SLUG',
@@ -94,5 +93,13 @@ class PostForm extends BaseForm
         ));
 
         $this->get('submit')->setAttribute('value', 'SUBMIT_POST');
+
+        $this->setValidationGroup(array(
+            'name',
+            'category',
+            'slug',
+            'user',
+            'content',
+        ));
     }
 }

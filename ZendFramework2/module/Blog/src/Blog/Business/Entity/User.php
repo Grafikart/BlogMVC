@@ -105,4 +105,9 @@ class User
 
         return $this;
     }
+
+    public static function hashPassword(\Blog\Business\Entity\User $user, $password)
+    {
+        return ($user->getPassword() === sha1($password));
+    }
 }

@@ -45,7 +45,11 @@
                 </div>
 
                 <div class="col-md-4 sidebar">
-                <?php echo $this->partial('layout/_sidebar'); ?>
+                <?php if (is_readable($cacheDirectory . '/sidebar.cache')) : ?>
+                    <?php include ($cacheDirectory . '/sidebar.cache') ?>
+                <?php else : ?>
+                    <?php echo $this->partial('layout/_sidebar', array('posts' => array(), 'categories' => array())) ?>
+                <?php endif; ?>
                 </div><!-- /.sidebar -->
             </div>
         </div><!-- /.container -->

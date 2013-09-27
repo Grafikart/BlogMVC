@@ -57,5 +57,11 @@ class CommentForm extends BaseForm
         ));
 
         $this->get('submit')->setAttribute('value', 'SUBMIT_COMMENT');
+
+        $this->setValidationGroup(array(
+            'mail',
+            'username',
+            'content',
+        ));
     }
 }

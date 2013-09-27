@@ -46,6 +46,7 @@ class Category
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Blog\Business\Entity\Post", mappedBy="category")
+     * @ORM\OrderBy({"created"="DESC"})
      */
     private $posts;
 

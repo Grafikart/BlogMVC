@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="comments", indexes={@ORM\Index(name="fk_comments_posts1_idx", columns={"post_id"})})
  * @ORM\Entity(repositoryClass="Blog\Business\Repository\CommentRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Comment
 {
@@ -131,4 +132,11 @@ class Comment
         return $this;
     }
 
+    /**
+     * @ORM\PrePersist()
+     */
+    public function preSave()
+    {
+        $this->setCreated(new \DateTime());
+    }
 }

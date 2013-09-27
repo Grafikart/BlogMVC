@@ -60,6 +60,7 @@ class PostController extends CoreController
         $form    = new CommentForm();
         $comment = new Comment();
 
+        $form->setHydrator($this->getDoctrineEntityHydrator());
         $form->bind($comment);
 
         if ($request->isPost()) {
@@ -67,9 +68,6 @@ class PostController extends CoreController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $hydrator = $this->getDoctrineEntityHydrator();
-                $comment  = $hydrator->hydrate($data->toArray(), $comment);
-
                 $comment->setPost($post);
                 $comment->setCreated(new \DateTime());
 
@@ -130,7 +128,9 @@ class PostController extends CoreController
     {
         $id = $this->params()->fromRoute('id');
 
-        $post = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
+        $request = $this->getRequest();
+        $form    = new PostForm($this->getEntityManager());
+        $post    = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
             'id' => $id,
         ));
 
@@ -138,9 +138,7 @@ class PostController extends CoreController
             $post = new Post();
         }
 
-        $request = $this->getRequest();
-        $form    = new PostForm($this->getEntityManager());
-
+        $form->setHydrator($this->getDoctrineEntityHydrator());
         $form->bind($post);
 
         if ($request->isPost()) {
@@ -148,17 +146,16 @@ class PostController extends CoreController
             $form->setData($data);
 
             if ($form->isValid()) {
-                $hydrator = $this->getDoctrineEntityHydrator();
-                $post  = $hydrator->hydrate($data->toArray(), $post);
-
-                $post->setCreated(new \DateTime());
+                if (null == $id) {
+                    $this->generateCache();
+                }
 
                 $this->getEntityManager()->persist($post);
                 $this->getEntityManager()->flush();
 
                 $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_POST'));
 
-                return $this->redirect()->toRoute('admin/posts/show', array(
+                return $this->redirect()->toRoute('admin/posts/edit', array(
                     'id' => $post->getId(),
                 ));
             } else {
@@ -170,5 +167,16 @@ class PostController extends CoreController
             'form' => $form,
             'post' => $post,
         );
+    }
+
+    private function generateCache()
+    {
+        $posts = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->getLastPost();
+        $categories = $this->getEntityManager()->getRepository('Blog\Business\Entity\Category')->findAll();
+
+        $renderer = $this->getServiceLocator()->get('ViewRenderer');
+        $view     = $renderer->render('layout/_sidebar', array('posts' => $posts, 'categories' => $categories));
+
+        file_put_contents($this->getCacheDirectory() . '/sidebar.cache', $view);
     }
 }

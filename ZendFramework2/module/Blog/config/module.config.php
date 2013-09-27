@@ -212,6 +212,20 @@ return array(
                 ),
             ),
         ),
+        'authentication' => array(
+            'orm_default' => array(
+                //should be the key you use to get doctrine's entity manager out of zf2's service locator
+                'objectManager' => 'Doctrine\ORM\EntityManager',
+                //fully qualified name of your user class
+                'identityClass' => 'Blog\Business\Entity\User',
+                //the identity property of your class
+                'identityProperty' => 'username',
+                //the password property of your class
+                'credentialProperty' => 'password',
+                //a callable function to hash the password with
+                'credentialCallable' => 'Blog\Business\Entity\User::hashPassword'
+            ),
+        ),
     ),
 
     // View Helper

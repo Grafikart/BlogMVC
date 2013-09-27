@@ -98,3 +98,9 @@ msgstr "Your post"
 
 msgid "INPUT_POST"
 msgstr "Your post"
+
+msgid "NO_POST_FOUND"
+msgstr "No posts"
+
+msgid "NO_CATEGORY_FOUND"
+msgstr "No categories"

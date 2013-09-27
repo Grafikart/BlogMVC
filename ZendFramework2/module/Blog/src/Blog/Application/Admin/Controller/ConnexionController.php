@@ -27,26 +27,22 @@ class ConnexionController extends CoreController
         $form->bind($user);
 
         if ($request->isPost()) {
-            $data = $request->getPost();
+            $data = $request->getPost()->toArray();
             $form->setData($data);
 
             if ($form->isValid()) {
-                $user = $this->getEntityManager()->getRepository('Blog\Business\Entity\User')->findOneBy(array(
-                    'username' => $user->getUsername(),
-                    'password' => sha1($user->getPassword()),
-                ));
+                $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+                $auth->getAdapter()->setIdentityValue($data['username']);
+                $auth->getAdapter()->setCredentialValue($data['password']);
+                $result = $auth->authenticate();
 
-                if (null == $user) {
-                    $this->flashMessenger()->addErrorMessage($this->getTranslation('USER_NOT_FOUND'));
+                if ($auth->hasIdentity()) {
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_LOGIN'));
 
-                    return $this->redirect()->toRoute('admin');
+                    return $this->redirect()->toRoute('admin/posts');
+                } else {
+                    $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_LOGIN'));
                 }
-
-                // Init Session
-
-                $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_LOGIN'));
-
-                return $this->redirect()->toRoute('admin/posts');
             } else {
                 $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_LOGIN'));
             }
@@ -59,6 +55,9 @@ class ConnexionController extends CoreController
 
     public function logoutAction()
     {
+        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
+        $auth->clearIdentity();
+
         return $this->redirect()->toRoute('home');
     }
 }
