@@ -1,5 +1,8 @@
-# BlogMVC | ZendFramework 2
-
 Checkout project and run composer install
 
-TODO > Doc
+# BlogMVC | ZendFramework 2
+
+## Install
+- Change db settings in ```config/autoload/doctrine.local.php```
+- Run composer : ```composer install```
+- Create database using ```dump.sql```
