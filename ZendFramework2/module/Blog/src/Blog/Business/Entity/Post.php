@@ -73,7 +73,7 @@ class Post
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="Blog\Business\Entity\Comment", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="Blog\Business\Entity\Comment", mappedBy="post", cascade={"remove"})
      * @ORM\OrderBy({"created" = "DESC"})
      */
     private $comments;
