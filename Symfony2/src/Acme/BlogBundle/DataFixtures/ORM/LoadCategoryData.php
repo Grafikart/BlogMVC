@@ -18,7 +18,6 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
             $category = new Category();
             $category
                 ->setName('Category #' . $i)
-                ->setPostCount(2)
             ;
 
             $manager->persist($category);
