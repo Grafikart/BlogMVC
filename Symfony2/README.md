@@ -7,9 +7,9 @@
 - AbstractController contains helpers for Public and Admin controllers for pagination and getting the best cache, like it was explain in previous point
 
 ## Install
-- Copy ```app/config/parameters.dist.yml``` to ```app/config/parameters.yml``` and change parameters for your database configuration
 - Import Symfony2 using composer : ```composer install```
 - Create database : ```doctrine:database:create```
 - Create schema of database : ```doctrine:schema:create```
 - Load DataFixtures : ```doctrine:fixtures:load``` and validate with **Y** to continue
+- Dump assets ```assetic:dump```
 - Enjoy !
