@@ -1,0 +1,60 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <?php echo $this->headTitle('MyDomain.com')->setSeparator(' | ')->setAutoEscape(false) ?>
+
+        <!-- Bootstrap core CSS -->
+        <?php echo $this->headLink()->prependStylesheet($this->basePath() . '/css/bootstrap.css') ?>
+        <style>
+            body {
+                padding-top: 50px;
+            }
+            .sidebar{
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- navbar -->
+        <?php echo $this->partial('layout/_navbar'); ?>
+
+        <div class="container">
+            <div class="row" style="margin-top: 20px; margin-bottom: -40px;">
+                <div class="col-md-12">
+               <?php foreach ($this->flashMessages(true) as $namespace => $messages) : ?>
+                    <?php if (count($messages) && 'error' != $namespace && 'default' != $namespace) : ?>
+                        <?php foreach ($messages as $message) : ?>
+                    <div class="alert alert-<?php echo $namespace ?>">
+                        <?php echo $message; ?>
+                    </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                <?php echo $this->content; ?>
+                </div>
+
+                <div class="col-md-4 sidebar">
+                <?php if (is_readable($cacheDirectory . '/sidebar.cache')) : ?>
+                    <?php include ($cacheDirectory . '/sidebar.cache') ?>
+                <?php else : ?>
+                    <?php echo $this->partial('layout/_sidebar', array('posts' => array(), 'categories' => array())) ?>
+                <?php endif; ?>
+                </div><!-- /.sidebar -->
+            </div>
+        </div><!-- /.container -->
+
+        <!-- Javascript -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>
