@@ -10,3 +10,4 @@ composer.lock
 vendor
 .sublime-project
 .sublime-workspace
+.log
