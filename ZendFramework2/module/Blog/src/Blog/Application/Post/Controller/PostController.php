@@ -119,6 +119,8 @@ class PostController extends CoreController
         $this->getEntityManager()->remove($post);
         $this->getEntityManager()->flush();
 
+        $this->generateCache();
+
         $this->flashMessenger()->addSuccessMessage($this->getTranslation('POST_DELETED'));
 
         return $this->redirect()->toRoute('admin/posts');
