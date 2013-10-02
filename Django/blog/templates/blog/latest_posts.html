@@ -1,5 +1,4 @@
 <h4>Last posts</h4>
-{% load cache %}
 {% if posts %}
     <div class="list-group">
         {% for post in posts %}
@@ -9,4 +8,7 @@
         {% endfor %}
         </div>
     </div>
+{% else %}
+<h5>There are not post</h5>
+
 {% endif %}
