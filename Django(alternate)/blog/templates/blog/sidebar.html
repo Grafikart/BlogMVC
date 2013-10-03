@@ -1,8 +1,0 @@
-{% block sidebar %}
-	{% load cache %}
-	{% cache 3600 sidebar %}
-    	{% load sidebar %}
-    	{% categories %}
-    	{% latest_posts %}
-    {% endcache %}
-{% endblock %}
