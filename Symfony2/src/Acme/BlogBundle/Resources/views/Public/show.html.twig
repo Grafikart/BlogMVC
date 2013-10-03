@@ -1,0 +1,79 @@
+{% extends 'AcmeBlogBundle:Public:layout.html.twig' %}
+
+{% block title %}
+    {{ post }} |
+    {{ parent() }}
+{% endblock %}
+
+{% block bodyblog -%}
+    <div class="col-md-8">
+        <div class="page-header">
+            <h1>{{ post }}</h1>
+            <p><small>
+                Category : 
+                <a href="{{ path('acme_blog_category', { slug: post.category.slug }) }}">
+                    {{ post.category -}}
+                </a>,
+
+                by 
+                <a href="{{ path('acme_blog_author', { id: post.user.id }) }}">
+                    {{ post.user -}}
+                </a>
+                on <em>{{ post.created|date("F jS, H:i") }}</em>
+            </small></p>
+        </div>
+
+        <article>
+            {{ post.content|markdown }}
+        </article>
+
+        <hr>
+
+
+        <section class="comments">
+            <h3>Comment this post</h3>
+
+            
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_row(form.mail) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_row(form.username) }}
+                    </div>
+                </div>
+                {{ form_row(form.content) }}
+
+                <div class="submit">
+                    <input class="btn btn-primary" type="submit" value="Submit my comment">
+                </div>
+            {{ form_end(form) }}
+
+
+            <h3 id="comments">
+                {% set count = post.comments|length %}
+                {% transchoice count %}
+                    {0} Aucun commentaire|{1} Un commentaire|]1,Inf] %count% commentaires
+                {% endtranschoice %}
+            </h3>
+
+            {% for com in post.comments %}
+                <div class="row">
+                    <div class="col-md-2">
+                        <img src="{{ com.mail|gravatar }}" width="100%">
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            <strong>{{ com.username }}</strong> {{ com.created|time_ago }}</p>
+                        <p>
+                            {{ com.content|nl2br }}
+                        </p>
+                    </div>
+                </div>
+
+                <hr>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

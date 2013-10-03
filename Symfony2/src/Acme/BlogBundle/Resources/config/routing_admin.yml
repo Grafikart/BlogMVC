@@ -1,0 +1,11 @@
+acme_blog_post_admin:
+    pattern:  /
+    defaults: { _controller: "AcmeBlogBundle:AdminPost:index" }
+
+acme_blog_post_manage:
+    pattern:  /manage/{id}
+    defaults: { _controller: "AcmeBlogBundle:AdminPost:manage", id: null }
+
+acme_blog_post_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "AcmeBlogBundle:AdminPost:delete" }

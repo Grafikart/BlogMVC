@@ -1,0 +1,43 @@
+<h1>Edit post</h1>
+
+<p><a href="<?php echo $this->url('admin/posts') ?>">< Back to posts</a></p>
+
+<?php $form->prepare() ?>
+<?php echo $this->form()->openTag($form); ?>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <?php echo $this->formLabel($form->get('name')) ?>
+                <?php echo $this->formInput($form->get('name')) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <?php echo $this->formLabel($form->get('slug')) ?>
+                <?php echo $this->formInput($form->get('slug')) ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <?php echo $this->formLabel($form->get('category')) ?>
+                <?php echo $this->formSelect($form->get('category')) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <?php echo $this->formLabel($form->get('user')) ?>
+                <?php echo $this->formSelect($form->get('user')) ?>
+            </div>
+        </div>
+    </div>
+    <div class="form-group required">
+        <?php echo $this->formLabel($form->get('content')) ?>
+        <?php echo $this->formTextarea($form->get('content')) ?>
+    </div>
+    <div class="submit">
+        <input class="btn btn-primary" type="submit" value="Edit">
+    </div>
+<?php echo $this->formHidden($form->get('csrf')) ?>
+<?php echo $this->form()->closeTag() ?>

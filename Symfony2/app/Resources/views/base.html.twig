@@ -1,0 +1,66 @@
+{% import "AcmeBlogBundle:Paginator:pagination.html.twig" as paginator %}
+{% if form is defined %}
+    {% form_theme form 'AcmeBlogBundle:Form:form_row.html.twig' %}
+{% endif %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{% block title %}{% endblock %} BlogMVC on Symfony2</title>
+
+        
+        {% block stylesheets %}
+            {% stylesheets output="css/compiled/main.css" filter="cssrewrite"
+                'css/bootstrap.css'
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}">
+            {% endstylesheets %}
+
+            <style>
+                    body {
+                            padding-top: 50px;
+                    }
+                    .sidebar{
+                            margin-top: 50px;
+                    }
+            </style>
+        {% endblock %}
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('acme_blog_homepage') }}">Blog</a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        {% block logbox %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('acme_blog_post_admin') }}">Admin</a></li>
+                            {% else %}
+                                <li><a href="{{ path('login') }}">Login</a></li>
+                            {% endif %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+            
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

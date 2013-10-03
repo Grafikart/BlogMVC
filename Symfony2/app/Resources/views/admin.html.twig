@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}
+	Admin | 
+    {{ parent() }}
+{% endblock %}
+
+{% block logbox %}
+    <li><a href="{{ path('acme_blog_homepage') }}">< Back to front</a></li>
+{% endblock %}

@@ -1,0 +1,106 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: \n"
+"Project-Id-Version: BlogMVC\n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: Devitek\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Language: en_EN\n"
+"X-Generator: Poedit 1.5.7\n"
+
+msgid "FORM_ERROR_COMMENT"
+msgstr "Oh snap ! you did some errors"
+
+msgid "FORM_ERROR_LOGIN"
+msgstr "Oh snap ! you did some errors"
+
+msgid "FORM_ERROR_POST"
+msgstr "Oh snap ! you did some errors"
+
+msgid "FORM_SUCCESS_COMMENT"
+msgstr "Comment posted !"
+
+msgid "FORM_SUCCESS_LOGIN"
+msgstr "You are now logged in !"
+
+msgid "FORM_SUCCESS_POST"
+msgstr "Post saved !"
+
+msgid "SUBMIT_COMMENT"
+msgstr "Submit"
+
+msgid "INPUT_COMMENT"
+msgstr "Your comment"
+
+msgid "PLACEHOLDER_COMMENT"
+msgstr "Your comment"
+
+msgid "PLACEHOLDER_NAME"
+msgstr "Your name"
+
+msgid "INPUT_NAME"
+msgstr "Your name"
+
+msgid "INPUT_USERNAME"
+msgstr "Your username"
+
+msgid "PLACEHOLDER_USERNAME"
+msgstr "Your username"
+
+msgid "PLACEHOLDER_PASSWORD"
+msgstr "Your password"
+
+msgid "INPUT_MAIL"
+msgstr "Your email"
+
+msgid "PLACEHOLDER_MAIL"
+msgstr "Your email"
+
+msgid "BTN_SUBMIT"
+msgstr "Submit"
+
+msgid "SUBMIT_LOGIN"
+msgstr "Sign in"
+
+msgid "BTN_UPDATE"
+msgstr "Update"
+
+msgid "POST_NOT_FOUND_SLUG"
+msgstr "Cannot find post with slug \"%s\""
+
+msgid "POST_NOT_FOUND_ID"
+msgstr "Cannot find post with id \"%s\""
+
+msgid "USER_NOT_FOUND"
+msgstr "Cannot find user with this credentials"
+
+msgid "POST_DELETED"
+msgstr "Post deleted !"
+
+msgid "SELECT_CATEGORY"
+msgstr "Category"
+
+msgid "SELECT_AUTHOR"
+msgstr "Author"
+
+msgid "PLACEHOLDER_SLUG"
+msgstr "Your slug"
+
+msgid "INPUT_SLUG"
+msgstr "Your slug"
+
+msgid "PLACEHOLDER_POST"
+msgstr "Your post"
+
+msgid "INPUT_POST"
+msgstr "Your post"
+
+msgid "NO_POST_FOUND"
+msgstr "No posts"
+
+msgid "NO_CATEGORY_FOUND"
+msgstr "No categories"

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load markup %}
+{% block content %}
+
+              
+                <div class="col-md-8">
+
+                    <div class="page-header">
+                        <h1>Blog</h1>
+                        <p class="lead">Welcome on my blog</p>
+                    </div>
+
+                    {% if articles.0 %}
+
+                        {% for article in articles %}
+                            <article>
+                                <h2><a href="/{{article.slug}}">{{article.name}}</a></h2>
+                                <p><small>
+                                    Category : <a href="/category/{{article.categorie.slug}}">{{article.categorie.name}}</a>,
+                                    by <a href="/author/{{article.user.id}}">{{article.user.username}}</a> on <em>{{article.created}}</em>
+                                </small></p>
+                                <p>{{article.content|markdown|truncatechars:450}}</p>
+                                <p class="text-right"><a href="/{{article.slug}}" class="btn btn-primary">Read more...</a></p>
+                            </article>
+                        {% endfor %}
+
+                    {% else %}
+
+                        <h3>Aucun article.</h3>
+
+                    {% endif %}
+
+                    <hr>
+
+                    <ul class="pager">
+                        {% if articles.has_previous %} 
+                        <li><a href="?page={{ articles.previous_page_number }}">&larr; Newer</a></li> 
+                        {% endif %}
+                        {% if articles.has_next %}
+                        <li><a href="?page={{ articles.next_page_number }}">Older &rarr;</a></li>
+                        {% endif %}
+                    </ul>
+
+                </div>
+
+
+{% endblock %}

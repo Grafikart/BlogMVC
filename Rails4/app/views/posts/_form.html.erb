@@ -1,0 +1,47 @@
+<p><%= link_to '< Back to posts', admin_path %></p>
+
+<%= simple_form_for(@post, html: { id: 'PostAdminEditForm', multipart: true }) do |f| %>
+  <% if @post.errors.any? %>
+    <div class="alert alert-danger">
+      <a class="close" data-dismiss="alert">×</a>
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group required">
+        <%= f.input :name, input_html: {class: 'form-control', maxlength: 255} %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group required">
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.association :category, input_html: {class: 'form-control'} %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.association :user, label: 'Author', label_method: :username, input_html: {class: 'form-control'} %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group required">
+    <%= f.input :content, as: :text, input_html: {class: 'form-control', cols: 30, rows: 6} %>
+  </div>
+  <div class="submit">
+    <%= f.submit :class => 'btn btn-primary' %>
+  </div>
+<% end %>
