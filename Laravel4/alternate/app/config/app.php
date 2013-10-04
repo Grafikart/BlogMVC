@@ -113,10 +113,9 @@ return array (
         'Illuminate\Validation\ValidationServiceProvider' ,
         'Illuminate\View\ViewServiceProvider' ,
         'Illuminate\Workbench\WorkbenchServiceProvider' ,
+
         'Way\Generators\GeneratorsServiceProvider' ,
-        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider' ,
         'Juy\Profiler\Providers\ProfilerServiceProvider' ,
-        'TwigBridge\TwigServiceProvider' ,
         'VTalbot\Markdown\MarkdownServiceProvider' ,
 
     ) ,
