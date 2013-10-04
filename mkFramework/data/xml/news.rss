@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><atom:link href="" rel="self" type="application/rss+xml" /><title>Article</title><link>http://localhost/</link><description><![CDATA[Feed Rss du site]]></description><item><title><![CDATA[Titre de l'article]]></title><pubDate>Thu, 08 Oct 2009 00:00:00 +0200</pubDate><description><![CDATA[Description de l'article]]></description><guid>http://localhost/#0</guid></item></channel></rss>
