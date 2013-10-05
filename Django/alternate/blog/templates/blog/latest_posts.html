@@ -1,0 +1,14 @@
+<h4>Last posts</h4>
+{% if posts %}
+    <div class="list-group">
+        {% for post in posts %}
+         <a href="{% url "post_details" post.slug %}" class="list-group-item">
+            {{post.title}}
+        </a>
+        {% endfor %}
+        </div>
+    </div>
+{% else %}
+<h5>There are not post</h5>
+
+{% endif %}
