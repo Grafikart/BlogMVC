@@ -22,4 +22,3 @@ if ($zip->open('mkframework.zip') === TRUE) {
     echo 'failed';
 }
 
-

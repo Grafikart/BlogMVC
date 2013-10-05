@@ -18,7 +18,9 @@ class model_comments extends abstract_model{
 	public function findAll(){
 		return $this->findMany('SELECT * FROM '.$this->sTable);
 	}
-	
+	public function findAllByPost($post_id){
+		return $this->findMany('SELECT * FROM '.$this->sTable.' WHERE post_id=? ORDER BY id DESC',$post_id);
+	}
 	
 }
 
@@ -61,6 +63,7 @@ class row_comments extends abstract_row{
 		if(!$this->isValid()){
 			return false;
 		}
+		$this->created=date('Y-m-d H:i:s');
 		parent::save();
 		return true;
 	}
