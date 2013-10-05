@@ -33,7 +33,8 @@ MCrypt PHP Extension
 5. Run ```php composer.phar install``` or ```composer install```
 6. Run ```php artisan migrate```
 7. Run ```php artisan db:seed```
-8. Enjoy !
+8. Run ```php artisan cache:clear```
+9. Enjoy !
 
 ### Alternate
 
