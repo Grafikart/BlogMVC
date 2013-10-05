@@ -1,6 +1,5 @@
 <?php
-
-$version='v4_64_0_r177';
+$version='v4_65_0_r179';
 $frameworkName='mkframework_'.$version;
 $zipName=$frameworkName.'.zip';
 
@@ -21,5 +20,4 @@ if ($zip->open('mkframework.zip') === TRUE) {
 } else {
     echo 'failed';
 }
-
 

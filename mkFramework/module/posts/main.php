@@ -80,6 +80,13 @@ class module_posts extends abstract_moduleembedded{
 	
 	public function _lastList(){
 		
+		//cache
+		if(_root::getCache()->isCached('sidebar_lastpost')){
+			$oView=_root::getCache()->getCached( 'sidebar_lastpost'); 
+			return $oView;
+		}
+		
+		
 		$tPosts=model_posts::getInstance()->findLast();
 		
 		$oView=new _view('posts::smalllist');
@@ -87,6 +94,8 @@ class module_posts extends abstract_moduleembedded{
 
 		$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		
 		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
+
+		_root::getCache()->setCache('sidebar_lastpost',$oView);
 
 		return $oView;
 	}
@@ -99,7 +108,21 @@ class module_posts extends abstract_moduleembedded{
 		$oView=new _view('posts::show');
 		$oView->oPosts=$oPosts;
 		
-				$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
+		$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		
+		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
+		
+		//we instance the module 
+		$oModuleComments=new module_comments;
+		$oModuleComments->setPostId(module_posts::getParam('id') );
+		//si vous souhaitez indiquer au module integrable des informations sur le module parent
+		$oModuleComments->setRootLink('default::index',array('postsAction'=>'show','postsid'=>_root::getParam('postsid')));
+		
+		//form add
+		$oView->oCommentsAdd=$oModuleComments->_new();
+		
+		//comments
+		$oView->oComments=$oModuleComments->_index();
+		
 		return $oView;
 	}
 
