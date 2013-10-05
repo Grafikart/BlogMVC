@@ -1,5 +1,5 @@
 <?php
-$version='mkframework_v4_65_0_r179';
+$version='v4_65_0_r179';
 $frameworkName='mkframework_'.$version;
 $zipName=$frameworkName.'.zip';
 
