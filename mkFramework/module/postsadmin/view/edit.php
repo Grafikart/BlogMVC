@@ -3,7 +3,8 @@
 <p><a href="<?php echo module_postsadmin::getLink('list')?>">< Back to posts</a></p>
             
 <?php $oPluginHtml=new plugin_html?>
-<form action="#" id="PostAdminEditForm" method="post" accept-charset="utf-8">
+<form action="" id="PostAdminEditForm" method="post" accept-charset="utf-8">
+<input type="hidden" name="formmodule" value="postsadmin"/>
 <div class="row">
 	<div class="col-md-6">
 		<div class="form-group required">
@@ -22,14 +23,14 @@
 	<div class="col-md-6">
 		<div class="form-group">
 			<label for="PostCategoryId">Category :</label>
-			<?php echo $oPluginHtml->getSelect('category_id',$this->tJoinmodel_categories,null,array('class'=>'form-control','id'=>'PostCategoryId'))?>
+			<?php echo $oPluginHtml->getSelect('category_id',$this->tJoinmodel_categories,$this->oPosts->category_id,array('class'=>'form-control','id'=>'PostCategoryId'))?>
 			
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="form-group">
 			<label for="PostUserId">Author :</label>
-			<?php echo $oPluginHtml->getSelect('user_id',$this->tJoinmodel_users,null,array('class'=>'form-control','id'=>'PostUserId'))?>
+			<?php echo $oPluginHtml->getSelect('user_id',$this->tJoinmodel_users,$this->oPosts->user_id,array('class'=>'form-control','id'=>'PostUserId'))?>
 		</div>
 	</div>
 </div>

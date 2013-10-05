@@ -45,13 +45,18 @@ class module_categories extends abstract_moduleembedded{
 	}
 	
 	public function _list(){
+		//cache
+		if(_root::getCache()->isCached('sidebar_categories')){
+			$oView=_root::getCache()->getCached( 'sidebar_categories'); 
+			return $oView;
+		}
 		
 		$tCategories=model_categories::getInstance()->findAll();
 		
 		$oView=new _view('categories::list');
 		$oView->tCategories=$tCategories;
 		
-		
+		_root::getCache()->setCache('sidebar_categories',$oView);
 
 		return $oView;
 	}

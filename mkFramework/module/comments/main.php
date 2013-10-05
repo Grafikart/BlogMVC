@@ -1,9 +1,11 @@
 <?php 
-class module_postsadmin extends abstract_moduleembedded{
+class module_comments extends abstract_moduleembedded{
 	
-	public static $sModuleName='postsadmin';
+	public static $sModuleName='comments';
 	public static $sRootModule;
 	public static $tRootParams;
+	
+	public $post_id;
 	
 	public function __construct(){
 		self::setRootLink(_root::getParamNav(),null);
@@ -22,11 +24,15 @@ class module_postsadmin extends abstract_moduleembedded{
 		return parent::_redirect(self::$sRootModule,self::$tRootParams,self::$sModuleName,$sModuleAction,$tModuleParam);
 	}
 	
+	public function setPostId($id){
+		$this->post_id=$id;
+	}
+	
 	/*
 	Pour integrer au sein d'un autre module:
 	
 	//instancier le module
-	$oModuleExamplemodule=new module_postsadmin();
+	$oModuleExamplemodule=new module_comments();
 	
 	//si vous souhaitez indiquer au module integrable des informations sur le module parent
 	//$oModuleExamplemodule->setRootLink('module::action',array('parametre'=>_root::getParam('parametre')));
@@ -46,22 +52,12 @@ class module_postsadmin extends abstract_moduleembedded{
 	
 	public function _list(){
 		
-		$tPosts=model_posts::getInstance()->findAll();
+		$tComments=model_comments::getInstance()->findAllByPost($this->post_id);
 		
-		$oModulePagination=new module_pagination;
-		$oModulePagination->setModuleAction('private::index');
-		$oModulePagination->setTab($tPosts);
-		$oModulePagination->setLimit(2);
-		$oModulePagination->setPage(_root::getParam('page'));
-		$tPosts=$oModulePagination->getPageElement();
+		$oView=new _view('comments::list');
+		$oView->tComments=$tComments;
 		
-		$oView=new _view('postsadmin::list');
-		$oView->tPosts=$tPosts;
 		
-		$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		
-		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
-		
-		$oView->oPagination=$oModulePagination;
 
 		return $oView;
 	}
@@ -70,34 +66,12 @@ class module_postsadmin extends abstract_moduleembedded{
 	public function _new(){
 		$tMessage=$this->processSave();
 	
-		$oPosts=new row_posts;
+		$oComments=new row_comments;
 		
-		$oView=new _view('postsadmin::new');
-		$oView->oPosts=$oPosts;
+		$oView=new _view('comments::new');
+		$oView->oComments=$oComments;
 		
-		$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		
-		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
 		
-		$oPluginXsrf=new plugin_xsrf();
-		$oView->token=$oPluginXsrf->getToken();
-		$oView->tMessage=$tMessage;
-		
-		return $oView;
-	}
-
-	
-	
-	public function _edit(){
-		$tMessage=$this->processSave();
-		
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
-		
-		$oView=new _view('postsadmin::edit');
-		$oView->oPosts=$oPosts;
-		$oView->tId=model_posts::getInstance()->getIdTab();
-		
-		$oView->tJoinmodel_categories=model_categories::getInstance()->getSelect();		
-		$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
 		
 		$oPluginXsrf=new plugin_xsrf();
 		$oView->token=$oPluginXsrf->getToken();
@@ -108,35 +82,10 @@ class module_postsadmin extends abstract_moduleembedded{
 
 	
 	
-	public function _show(){
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
-		
-		$oView=new _view('postsadmin::show');
-		$oView->oPosts=$oPosts;
-		
-		
-		return $oView;
-	}
-
 	
-		
-	public function _delete(){
-		$tMessage=$this->processDelete();
-
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
-		
-		$oView=new _view('postsadmin::delete');
-		$oView->oPosts=$oPosts;
-		
-		
-
-		$oPluginXsrf=new plugin_xsrf();
-		$oView->token=$oPluginXsrf->getToken();
-		$oView->tMessage=$tMessage;
-		
-		return $oView;
-	}
-
+	
+	
+	
 	
 
 	
@@ -151,22 +100,22 @@ class module_postsadmin extends abstract_moduleembedded{
 			return array('token'=>$oPluginXsrf->getMessage() );
 		}
 	
-		$iId=module_postsadmin::getParam('id',null);
+		$iId=module_comments::getParam('id',null);
 		if($iId==null){
-			$oPosts=new row_posts;	
+			$oComments=new row_comments;	
 		}else{
-			$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id',null) );
+			$oComments=model_comments::getInstance()->findById( module_comments::getParam('id',null) );
 		}
 		
-		$tId=model_posts::getInstance()->getIdTab();
-		$tColumn=model_posts::getInstance()->getListColumn();
+		$tId=model_comments::getInstance()->getIdTab();
+		$tColumn=model_comments::getInstance()->getListColumn();
 		foreach($tColumn as $sColumn){
 			 $oPluginUpload=new plugin_upload($sColumn);
 			if($oPluginUpload->isValid()){
 				$sNewFileName=_root::getConfigVar('path.upload').$sColumn.'_'.date('Ymdhis');
 
 				$oPluginUpload->saveAs($sNewFileName);
-				$oPosts->$sColumn=$oPluginUpload->getPath();
+				$oComments->$sColumn=$oPluginUpload->getPath();
 				continue;	
 			}else  if( _root::getParam($sColumn,null) === null ){ 
 				continue;
@@ -174,56 +123,35 @@ class module_postsadmin extends abstract_moduleembedded{
 				 continue;
 			}
 			
-			$oPosts->$sColumn=_root::getParam($sColumn,null) ;
+			$oComments->$sColumn=_root::getParam($sColumn,null) ;
 		}
 		
+		$oComments->post_id=$this->post_id;
 		
-		
-		if($oPosts->save()){
-			_root::getCache()->clearCache( 'sidebar_lastpost');
-			_root::getCache()->clearCache( 'sidebar_categories');
-			
+		if($oComments->save()){
 			//une fois enregistre on redirige (vers la page liste)
 			$this->redirect('list');
 		}else{
-			return $oPosts->getListError();
+			return $oComments->getListError();
 		}
 		
 	}
 
 	
 	
-	public function processDelete(){
-		if(!_root::getRequest()->isPost() or _root::getParam('formmodule')!=self::$sModuleName){ //si ce n'est pas une requete POST on ne soumet pas
-			return null;
-		}
-		
-		$oPluginXsrf=new plugin_xsrf();
-		if(!$oPluginXsrf->checkToken( _root::getParam('token') ) ){ //on verifie que le token est valide
-			return array('token'=>$oPluginXsrf->getMessage() );
-		}
-	
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id',null) );
-				
-		$oPosts->delete();
-		//une fois enregistre on redirige (vers la page liste)
-		$this->redirect('list');
-		
-	}
-
 	
 	
 	
 }
 
 /*variables
-#select		$oView->tJoinposts=posts::getInstance()->getSelect();#fin_select
+#select		$oView->tJoincomments=comments::getInstance()->getSelect();#fin_select
 #uploadsave $oPluginUpload=new plugin_upload($sColumn);
 			if($oPluginUpload->isValid()){
 				$sNewFileName=_root::getConfigVar('path.upload').$sColumn.'_'.date('Ymdhis');
 
 				$oPluginUpload->saveAs($sNewFileName);
-				$oPosts->$sColumn=$oPluginUpload->getPath();
+				$oComments->$sColumn=$oPluginUpload->getPath();
 				continue;	
 			}else #fin_uploadsave
 
@@ -232,10 +160,10 @@ class module_postsadmin extends abstract_moduleembedded{
 	public function _new(){
 		$tMessage=$this->processSave();
 	
-		$oPosts=new row_posts;
+		$oComments=new row_comments;
 		
-		$oView=new _view('postsadmin::new');
-		$oView->oPosts=$oPosts;
+		$oView=new _view('comments::new');
+		$oView->oComments=$oComments;
 		
 		
 		
@@ -251,11 +179,11 @@ methodNew#
 	public function _edit(){
 		$tMessage=$this->processSave();
 		
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
+		$oComments=model_comments::getInstance()->findById( module_comments::getParam('id') );
 		
-		$oView=new _view('postsadmin::edit');
-		$oView->oPosts=$oPosts;
-		$oView->tId=model_posts::getInstance()->getIdTab();
+		$oView=new _view('comments::edit');
+		$oView->oComments=$oComments;
+		$oView->tId=model_comments::getInstance()->getIdTab();
 		
 		
 		
@@ -269,10 +197,10 @@ methodEdit#
 
 #methodShow
 	public function _show(){
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
+		$oComments=model_comments::getInstance()->findById( module_comments::getParam('id') );
 		
-		$oView=new _view('postsadmin::show');
-		$oView->oPosts=$oPosts;
+		$oView=new _view('comments::show');
+		$oView->oComments=$oComments;
 		
 		
 		return $oView;
@@ -283,10 +211,10 @@ methodShow#
 	public function _delete(){
 		$tMessage=$this->processDelete();
 
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id') );
+		$oComments=model_comments::getInstance()->findById( module_comments::getParam('id') );
 		
-		$oView=new _view('postsadmin::delete');
-		$oView->oPosts=$oPosts;
+		$oView=new _view('comments::delete');
+		$oView->oComments=$oComments;
 		
 		
 
@@ -309,9 +237,9 @@ methodDelete#
 			return array('token'=>$oPluginXsrf->getMessage() );
 		}
 	
-		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id',null) );
+		$oComments=model_comments::getInstance()->findById( module_comments::getParam('id',null) );
 				
-		$oPosts->delete();
+		$oComments->delete();
 		//une fois enregistre on redirige (vers la page liste)
 		$this->redirect('list');
 		

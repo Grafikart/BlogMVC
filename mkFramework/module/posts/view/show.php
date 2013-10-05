@@ -9,41 +9,13 @@
 <article>
 	<?php echo plugin_markdown::tr($this->oPosts->content) ?>
 </article>
-						
-						
 
-<table class="tb_show">
+<hr>
+
+<section class="comments">
 	
-	<tr>
-		<th>category_id</th>
-		<td><?php echo $this->tJoinmodel_categories[$this->oPosts->category_id]?></td>
-	</tr>
+<?php echo $this->oCommentsAdd->show()?>
 
-	<tr>
-		<th>user_id</th>
-		<td><?php echo $this->tJoinmodel_users[$this->oPosts->user_id]?></td>
-	</tr>
+<?php echo $this->oComments->show()?>
 
-	<tr>
-		<th>name</th>
-		<td><?php echo $this->oPosts->name ?></td>
-	</tr>
-
-	<tr>
-		<th>slug</th>
-		<td><?php echo $this->oPosts->slug ?></td>
-	</tr>
-
-	<tr>
-		<th>content</th>
-		<td><?php echo $this->oPosts->content ?></td>
-	</tr>
-
-	<tr>
-		<th>created</th>
-		<td><?php echo $this->oPosts->created ?></td>
-	</tr>
-
-</table>
-<p><a href="<?php echo module_posts::getLink('list')?>">Retour</a></p>
-
+</section>
