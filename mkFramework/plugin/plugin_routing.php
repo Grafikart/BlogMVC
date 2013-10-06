@@ -44,7 +44,7 @@ class plugin_routing{
 		foreach($this->tRoute as $sUrl=>$tUrl){
 			if($tUrl['nav']==$sNav and !isset($tUrl['tParam']) and $tParam==null){				
 					return $this->convertUrl($sUrl,$tParam);//si pas de parametres des deux cotes, c est la bonne regle
-			}elseif($tUrl['nav']==$sNav and is_array($tUrl['tParam']) and is_array($tParam) ){
+			}elseif($tUrl['nav']==$sNav and isset($tUrl['tParam']) and is_array($tUrl['tParam']) and is_array($tParam) ){
 				
 				foreach($tUrl['tParam'] as $val){
 					if(!isset($tParam[$val])){	
@@ -86,12 +86,21 @@ class plugin_routing{
 							_root::setParam($tUrl['tParam'][$j],$found[0]);
 						}
 					}
+					if(isset($tUrl['tParamHidden'])){
+						foreach($tUrl['tParamHidden'] as $key => $val){
+							_root::setParam($key,$val);
+						}
+					}
 					return;
 				}
 			}
 			/*LOG*/_root::getLog()->info('plugin_routing regle non trouve, 
 				utilisation de 404 loadModuleAndAction('.$this->tRoute['404']['nav'].')');
-			_root::getRequest()->loadModuleAndAction($this->tRoute['404']['nav']);
+			
+			if(_root::getConfigVar('urlrewriting.use4O4')==1){
+				_root::getRequest()->loadModuleAndAction($this->tRoute['404']['nav']);
+			}
+			
 		}
 	}
 	

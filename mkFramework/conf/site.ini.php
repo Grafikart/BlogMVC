@@ -40,9 +40,10 @@ action.default=index
 layout.erreur=../layout/erreurprod.php
 
 [urlrewriting]
-enabled=0
+enabled=1
 class=plugin_routing
 conf=../conf/routing.php
+use4O4=0
 
 [security]
 ;XSRF ou CSRF,bSecuriteXSRF utilisation de jeton dans le CRUD, plus d'infos: http://fr.wikipedia.org/wiki/Cross-Site_Request_Forgeries
@@ -58,7 +59,7 @@ class=plugin_log
 error=0
 warning=0
 application=0
-information=0
+information=1
 
 [check]
 class=plugin_check
