@@ -12,8 +12,6 @@ Documentation for the entire framework can be found on the [Django website](http
 
 Django is available open-source under the ​BSD license.
 
-## Installation
-
 ### Requirements
 
-Being a Python Web framework, Django requires Python
+Being a Python Web framework, Django requires Python.
