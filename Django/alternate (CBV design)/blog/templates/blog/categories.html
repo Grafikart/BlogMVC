@@ -1,0 +1,14 @@
+<h4>Categories</h4>
+{% if categories %}
+    <div class="list-group">
+        {% for category in categories %}
+         <a href="{% url "post_category" category.slug %}" class="list-group-item">
+         <span class="badge">{{category.post_set.all|length}}</span>
+            {{category.name}}
+        </a>
+    </a>
+        {% endfor %}
+    </div>
+{% else %}
+<h5>There are not categories</h5>
+{% endif %}

@@ -1,14 +1,21 @@
-# Django
+## Django Framework
 
-## Contributors
+[![Latest Stable Version](https://poser.pugx.org/https://github.com/django/django/v/stable.png)](https://packagist.org/packages/https://github.com/django/django)
 
-* [Golgotha29](https://github.com/Golgotha29)
+Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
 
-## Notes
-- Category count_post property is not used, directly count on template side.
-- Minimalist code, simple code.
+Developed by a fast-moving online-news operation, Django was designed to handle two challenges: the intensive deadlines of a newsroom and the stringent requirements of the experienced Web developers who wrote it. It lets you build high-performing, elegant Web applications quickly.
 
-## Install
-- change database information on seetings.py file
-- Create database : python manage.py syncdb
-- Enjoy !
+## Official Documentation
+
+Documentation for the entire framework can be found on the [Django website](https://docs.djangoproject.com).
+
+### License
+
+Django is available open-source under the ​BSD license.
+
+## Installation
+
+### Requirements
+
+Being a Python Web framework, Django requires Python
