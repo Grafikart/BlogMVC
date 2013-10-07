@@ -1,7 +1,5 @@
 ## Django Framework
 
-[![Latest Stable Version](https://poser.pugx.org/https://github.com/django/django/v/stable.png)](https://packagist.org/packages/https://github.com/django/django)
-
 Django is a high-level Python Web framework that encourages rapid development and clean, pragmatic design.
 
 Developed by a fast-moving online-news operation, Django was designed to handle two challenges: the intensive deadlines of a newsroom and the stringent requirements of the experienced Web developers who wrote it. It lets you build high-performing, elegant Web applications quickly.
