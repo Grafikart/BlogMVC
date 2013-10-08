@@ -30,7 +30,7 @@ MCrypt PHP Extension
 1. Create a new database (for me blog_mvc)
 2. Open /app/config/local/database.php and edit the file regarding your database configuration
 3. Import the sql file which is in the root of the app (blog_mvc.sql) into your database
-4. Launch the app with the following command : ```composer install```
-5. Launch the app with the following command : ```php artisan cache:clear```
+4. Install all dependencies with the following command : ```composer install```
+5. Clear the cahe with the following command : ```php artisan cache:clear```
 6. Launch the app with the following command : ```php artisan serve``` (if you are on a unix systeme). Otherwhise launch wamp (or equivalent).
 7. Have Fun ;)
