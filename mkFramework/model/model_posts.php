@@ -15,8 +15,13 @@ class model_posts extends abstract_model{
 	public function findById($uId){
 		return $this->findOne('SELECT * FROM '.$this->sTable.' WHERE id=?',$uId );
 	}
+	public function findBySlug($uId){
+		return $this->findOne('SELECT * FROM '.$this->sTable.' WHERE slug=?',$uId );
+	}
+	
+	
 	public function findAll(){
-		return $this->findMany('SELECT * FROM '.$this->sTable);
+		return $this->findMany('SELECT * FROM '.$this->sTable.' ORDER BY id DESC');
 	}
 	public function findAllLimitBy($iStart,$iLimit){
 		return $this->findMany('SELECT * FROM '.$this->sTable.' ORDER BY id DESC LIMIT '.(int)$iStart.', '.(int)$iLimit);

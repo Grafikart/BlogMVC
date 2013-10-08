@@ -61,7 +61,7 @@ class module_posts extends abstract_moduleembedded{
 		$oModulePagination=new module_pagination;
 		$oModulePagination->setModuleAction('default::index');
 		$oModulePagination->setTab($tPosts);
-		$oModulePagination->setLimit(2);
+		$oModulePagination->setLimit(5);
 		$oModulePagination->setPage(_root::getParam('page'));
 		$tPosts=$oModulePagination->getPageElement();
 		
@@ -103,7 +103,7 @@ class module_posts extends abstract_moduleembedded{
 	
 	
 	public function _show(){
-		$oPosts=model_posts::getInstance()->findById( module_posts::getParam('id') );
+		$oPosts=model_posts::getInstance()->findBySlug( module_posts::getParam('slug') );
 		
 		$oView=new _view('posts::show');
 		$oView->oPosts=$oPosts;
