@@ -206,6 +206,10 @@ class module_postsadmin extends abstract_moduleembedded{
 		$oPosts=model_posts::getInstance()->findById( module_postsadmin::getParam('id',null) );
 				
 		$oPosts->delete();
+		
+		_root::getCache()->clearCache( 'sidebar_lastpost');
+		_root::getCache()->clearCache( 'sidebar_categories');
+		
 		//une fois enregistre on redirige (vers la page liste)
 		$this->redirect('list');
 		

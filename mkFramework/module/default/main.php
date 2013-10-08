@@ -46,6 +46,8 @@ class module_default extends abstract_module{
 		//assigner la vue retournee a votre layout
 		$this->oLayout->add('main',$oViewModule);
 		
+		
+		
 	}
 	public function _category(){
 	    $oView=new _view('default::index');
@@ -58,7 +60,7 @@ class module_default extends abstract_module{
 		$oModuleExamplemodule->setCategory(_root::getParam('id'));
 		
 		//si vous souhaitez indiquer au module integrable des informations sur le module parent
-		$oModuleExamplemodule->setRootLink('default::category',array('id'=>_root::getParam('id')));
+		$oModuleExamplemodule->setRootLink('default::categoryDetail',array('id'=>_root::getParam('id')));
 		
 		//recupere la vue du module
 		$oViewModule=$oModuleExamplemodule->_index();
@@ -66,6 +68,9 @@ class module_default extends abstract_module{
 		//assigner la vue retournee a votre layout
 		$this->oLayout->add('main',$oViewModule);
 		
+	}
+	public function _categoryDetail(){
+		$this->_category();
 	}
 	
 	
