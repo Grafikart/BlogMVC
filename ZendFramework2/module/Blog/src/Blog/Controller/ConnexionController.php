@@ -23,7 +23,7 @@ class ConnexionController extends CoreController
      */
     private $connexionForm;
 
-    /** @var  AuthenticationService */
+    /** @var AuthenticationService */
     private $authenticationService;
 
     public function __construct(ConnexionForm $connexionForm, AuthenticationService $authenticationService)

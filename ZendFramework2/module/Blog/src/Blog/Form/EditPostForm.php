@@ -6,15 +6,14 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class CommentForm extends Form
+class EditPostForm extends Form
 {
     public function init()
     {
-
         $this->add(
             array(
-                'name' => 'comment',
-                'type' => 'Blog\Form\Fieldset\CommentFieldset',
+                'name' => 'post',
+                'type' => 'Blog\Form\Fieldset\PostFieldset',
                 'options' => array(
                     'use_as_base_fieldset' => true,
                 ),
@@ -25,18 +24,20 @@ class CommentForm extends Form
         $this->add(
             array(
                 'type' => 'Zend\Form\Element\Csrf',
-                'name' => 'csrf_comment',
+                'name' => 'csrf_post',
             )
         );
 
         $this->setValidationGroup(
             array(
-                'comment' => array(
-                    'mail',
-                    'username',
+                'post' => array(
+                    'name',
+                    'category',
+                    'user',
+                    'slug',
                     'content',
                 ),
-                'csrf_comment',
+                'csrf_post',
             )
         );
 
@@ -45,7 +46,7 @@ class CommentForm extends Form
                 'name' => 'submit',
                 'attributes' => array(
                     'type' => 'submit',
-                    'value' => 'SUBMIT_COMMENT',
+                    'value' => 'Edit',
                     'class' => 'btn btn-primary'
                 )
             )

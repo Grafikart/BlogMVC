@@ -11,6 +11,7 @@ return array(
     /* Post */
     'blog/post/index'       => __DIR__ . '/../view/blog/post/index.phtml',
     'blog/post/edit'        => __DIR__ . '/../view/blog/post/edit.phtml',
+    'blog/post/add'         => __DIR__ . '/../view/blog/post/add.phtml',
     'blog/post/index-admin' => __DIR__ . '/../view/blog/post/index-admin.phtml',
     'blog/post/show'        => __DIR__ . '/../view/blog/post/show.phtml',
     /* Connexion */

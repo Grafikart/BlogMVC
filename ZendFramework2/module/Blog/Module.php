@@ -9,6 +9,7 @@
 
 namespace Blog;
 
+use Blog\Listener\DispatchListener;
 use DoctrineModule\Persistence\ObjectManagerAwareInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -18,6 +19,7 @@ use Zend\ModuleManager\Feature\FormElementProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceManager;
 
 class Module implements
     BootstrapListenerInterface,
@@ -26,32 +28,17 @@ class Module implements
     FormElementProviderInterface,
     ViewHelperProviderInterface
 {
-    public function onBootstrap(EventInterface $e)
+    public function onBootstrap(EventInterface $event)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
+        /* @var $application \Zend\Mvc\Application */
+        $application         = $event->getTarget();
+        /** @var $serviceManager ServiceManager */
+        $serviceManager      = $application->getServiceManager();
+        $eventManager        = $application->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $e->getApplication()->getEventManager()->attach(MvcEvent::EVENT_DISPATCH,
-            function($e){
-                $sm   = $e->getApplication()->getServiceManager();
-                $auth = $sm->get('doctrine.authenticationservice.orm_default');
-
-                if (0 === strpos($e->getRouteMatch()->getMatchedRouteName(), 'admin')) {
-                    $controller = $e->getTarget();
-                    $controller->layout('admin/layout');
-                    $redirector = $sm->get('ControllerPluginManager')->get('Redirect');
-
-                    if ('admin' == $e->getRouteMatch()->getMatchedRouteName() && $auth->hasIdentity()) {
-                        $redirector->toRoute('admin/posts');
-                    }
-
-                    if ('admin' != $e->getRouteMatch()->getMatchedRouteName() && !$auth->hasIdentity()) {
-                        $redirector->toRoute('admin');
-                    }
-                }
-            }
-        );
+        $eventManager->attachAggregate($serviceManager->get('Blog\Listener\Dispatch'));
     }
 
     public function getConfig()

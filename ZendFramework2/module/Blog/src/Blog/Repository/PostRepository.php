@@ -3,6 +3,10 @@
 namespace Blog\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as PaginatorAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Zend\Paginator\Paginator;
+use DateTime;
 
 /**
  * PostRepository
@@ -12,53 +16,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-    public function getActivePost(array $criteria = array())
+    /**
+     * @param array $criteria
+     * @return Paginator
+     */
+    public function findActivePost(array $criteria = array())
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb = $qb
-            ->select('p')
+        $qb->select('p', 'u', 'c')
             ->from($this->getClassName(), 'p')
+            ->innerJoin('p.user', 'u')
+            ->innerJoin('p.category', 'c')
             ->where('p.created < :now')
-            ->setParameter('now', new \DateTime())
-            ->orderBy('p.created', 'DESC')
-        ;
+            ->setParameter('now', new DateTime('now'))
+            ->orderBy('p.created', 'DESC');
 
         if (isset($criteria['category'])) {
-            $qb = $qb
-                ->leftJoin('p.category', 'c')
-                ->andWhere('c.slug = :category')
-                ->setParameter('category', $criteria['category'])
-            ;
+            $qb->andWhere('c.slug = :category')
+                ->setParameter('category', $criteria['category']);
         }
 
-        if (isset($criteria['user'])) {
-            $qb = $qb
-                ->leftJoin('p.user', 'u')
-                ->andWhere('u.id = :user')
-                ->setParameter('user', $criteria['user'])
-            ;
+        if (isset($criteria['author'])) {
+            $qb->andWhere('u.id = :author')
+                ->setParameter('author', $criteria['author']);
         }
 
-        return $qb->getQuery();
+        $doctrineAdapter = new PaginatorAdapter(new DoctrinePaginator($qb->getQuery(), false));
+
+        return new Paginator($doctrineAdapter);
     }
 
-    public function getLastPost($limit = 2)
+    public function findLastPost($limit = 2)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb = $qb
-            ->select('p')
+        $qb->select('p')
             ->from($this->getClassName(), 'p')
             ->where('p.created < :now')
-            ->setParameter('now', new \DateTime())
-            ->orderBy('p.created', 'DESC')
-        ;
+            ->setParameter('now', new DateTime('now'))
+            ->orderBy('p.created', 'DESC');
 
-        return $qb
-            ->getQuery()
-            ->setMaxResults($limit)
-            ->getResult()
-        ;
+        return $qb->getQuery()
+                ->setMaxResults($limit)
+                ->getResult();
     }
 }

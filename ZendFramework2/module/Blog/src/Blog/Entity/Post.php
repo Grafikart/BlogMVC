@@ -107,7 +107,10 @@ class Post
 
     function getCreated()
     {
-        return clone $this->created;
+        if ($this->created) {
+            return clone $this->created;
+        }
+        return $this->created;
     }
 
     function getCategory()
@@ -167,7 +170,7 @@ class Post
         return $this;
     }
 
-    function setUser(\Blog\Business\Entity\User $user)
+    function setUser(User $user)
     {
         $this->user = $user;
 

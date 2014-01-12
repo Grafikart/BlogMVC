@@ -9,82 +9,111 @@
 
 namespace Blog\Controller;
 
+use Blog\Form\AddPostForm;
+use Blog\Service\CommentService;
+use Blog\Service\PostService;
 use Zend\View\Model\ViewModel;
 
 use Blog\Form\CommentForm;
 use Blog\Entity\Comment;
-use Blog\Form\PostForm;
+use Blog\Form\EditPostForm;
 use Blog\Entity\Post;
 
 class PostController extends CoreController
 {
+    /** @var  PostService */
+    private $postService;
+
+    /** @var  CommentService */
+    private $commentService;
+
+    /** @var  CommentForm */
+    private $commentForm;
+
+    /** @var  EditPostForm */
+    private $editPostForm;
+
+    /** @var  AddPostForm */
+    private $addPostForm;
+
+    public function __construct(PostService $postService, CommentService $commentService, CommentForm $commentForm,
+        EditPostForm $editPostForm, AddPostForm $addPostForm)
+    {
+        $this->postService    = $postService;
+        $this->commentService = $commentService;
+        $this->commentForm    = $commentForm;
+        $this->editPostForm   = $editPostForm;
+        $this->addPostForm    = $addPostForm;
+    }
+
     public function indexAction()
     {
         $criteria = array();
 
-        if (null != $this->params()->fromRoute('category')) {
-            $criteria['category'] = $this->params()->fromRoute('category');
+        $page     = $this->params('page', 1);
+        $category = $this->params('category', null);
+        $author   = $this->params('author', null);
+
+        if ($category) {
+            $criteria['category'] = $category;
         }
 
-        if (null != $this->params()->fromRoute('author')) {
-            $criteria['user'] = $this->params()->fromRoute('user');
+        if ($author) {
+            $criteria['author'] = $author;
         }
 
-        $data = $this->getPaginator('Blog\Entity\Post', 'getActivePost', array('criteria' => $criteria));
+        $posts = $this->postService->getActivePost($criteria);
+        $posts->setItemCountPerPage(5)
+            ->setCurrentPageNumber($page);
 
         return new ViewModel(array(
-            'paginator' => $data['paginator'],
-            'posts'     => $data['items'],
-            'category'  => (isset($criteria['category']) ? $criteria['category'] : null),
-            'user'      => (isset($criteria['user']) ? $criteria['user'] : null),
+            'posts'    => $posts,
+            'category' => (isset($criteria['category']) ? $criteria['category'] : null),
+            'author'   => (isset($criteria['author']) ? $criteria['author'] : null),
         ));
     }
 
     public function showAction()
     {
-        $slug = $this->params()->fromRoute('slug');
+        $slug = $this->params('slug', null);
 
-        $post = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
-            'slug' => $slug,
-        ));
+        if (!$slug) {
+            return $this->redirect()->toRoute('home');
+        }
 
-        if (null == $post) {
+        $post = $this->postService->getPostBySlug($slug);
+
+        if (!$post) {
             $this->flashMessenger()->addErrorMessage($this->getTranslation('POST_NOT_FOUND_SLUG', array($slug)));
 
             return $this->redirect()->toRoute('posts');
         }
 
         $request = $this->getRequest();
-        $form    = new CommentForm();
         $comment = new Comment();
 
-        $form->setHydrator($this->getDoctrineEntityHydrator());
-        $form->bind($comment);
+        $this->commentForm->bind($comment);
 
         if ($request->isPost()) {
             $data = $request->getPost();
-            $form->setData($data);
+            $this->commentForm->setData($data);
 
-            if ($form->isValid()) {
-                $comment->setPost($post);
-                $comment->setCreated(new \DateTime());
-
-                $this->getEntityManager()->persist($comment);
-                $this->getEntityManager()->flush();
+            if ($this->commentForm->isValid()) {
+                /** @var Comment $comment */
+                $comment = $this->commentForm->getData();
+                $this->commentService->addComment($comment, $post);
 
                 $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_COMMENT'));
 
                 return $this->redirect()->toRoute('posts/show', array(
                     'slug' => $post->getSlug(),
                 ));
-            } else {
-                $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_COMMENT'));
             }
         }
 
         return new ViewModel(array(
             'post' => $post,
-            'form' => $form,
+            'form' => $this->commentForm,
         ));
     }
 
@@ -92,32 +121,32 @@ class PostController extends CoreController
 
     public function indexAdminAction()
     {
-        $data = $this->getPaginator('Blog\Entity\Post', 'getActivePost');
+        if (!$this->identity()) {
+            return $this->redirect()->toRoute('home');
+        }
+        $page = $this->params('page', 1);
+
+        $posts = $this->postService->getActivePost();
+        $posts->setItemCountPerPage(5)
+            ->setCurrentPageNumber($page);
 
         return new ViewModel(array(
-            'paginator' => $data['paginator'],
-            'posts'     => $data['items'],
+            'posts' => $posts,
         ));
     }
 
     public function deleteAction()
     {
-        $id = $this->params()->fromRoute('id');
+        $id = $this->params('id');
+        $post = $this->postService->getPostById($id);
 
-        $post = $this->getEntityManager()->getRepository('Blog\Business\Entity\Post')->findOneBy(array(
-            'id' => $id,
-        ));
-
-        if (null == $post) {
+        if (!$post) {
             $this->flashMessenger()->addErrorMessage($this->getTranslation('POST_NOT_FOUND_ID', array($id)));
 
             return $this->redirect()->toRoute('admin/posts');
         }
 
-        $this->getEntityManager()->remove($post);
-        $this->getEntityManager()->flush();
-
-        $this->generateCache();
+        $this->postService->deletePost($post);
 
         $this->flashMessenger()->addSuccessMessage($this->getTranslation('POST_DELETED'));
 
@@ -126,32 +155,24 @@ class PostController extends CoreController
 
     public function editAction()
     {
-        $id = $this->params()->fromRoute('id');
+        $id = $this->params('id');
 
         $request = $this->getRequest();
-        $form    = new PostForm($this->getEntityManager());
-        $post    = $this->getEntityManager()->getRepository('Blog\Entity\Post')->findOneBy(array(
-            'id' => $id,
-        ));
+        $post    = $this->postService->getPostById($id);
 
-        if (null == $post) {
-            $post = new Post();
+        if (!$post) {
+            return $this->redirect()->toRoute('admin/posts');
         }
 
-        $form->setHydrator($this->getDoctrineEntityHydrator());
-        $form->bind($post);
+        $this->editPostForm->bind($post);
 
         if ($request->isPost()) {
             $data = $request->getPost();
-            $form->setData($data);
+            $this->editPostForm->setData($data);
 
-            if ($form->isValid()) {
-                if (null == $id) {
-                    $this->generateCache();
-                }
-
-                $this->getEntityManager()->persist($post);
-                $this->getEntityManager()->flush();
+            if ($this->editPostForm->isValid()) {
+                $post = $this->editPostForm->getData();
+                $this->postService->updatePost($post);
 
                 $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_POST'));
 
@@ -164,19 +185,37 @@ class PostController extends CoreController
         }
 
         return new ViewModel(array(
-            'form' => $form,
-            'post' => $post,
+            'form' => $this->editPostForm,
         ));
     }
 
-    private function generateCache()
+    public function addAction()
     {
-        $posts = $this->getEntityManager()->getRepository('Blog\Entity\Post')->getLastPost();
-        $categories = $this->getEntityManager()->getRepository('Blog\Entity\Category')->findAll();
+        $request = $this->getRequest();
 
-        $renderer = $this->getServiceLocator()->get('ViewRenderer');
-        $view     = $renderer->render('layout/sidebar', array('posts' => $posts, 'categories' => $categories));
+        $post = new Post();
+        $this->addPostForm->bind($post);
 
-        file_put_contents($this->getCacheDirectory() . '/sidebar.cache', $view);
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $this->addPostForm->setData($data);
+
+            if ($this->addPostForm->isValid()) {
+                $post = $this->addPostForm->getData();
+                $this->postService->addPost($post);
+
+                $this->flashMessenger()->addSuccessMessage($this->getTranslation('FORM_SUCCESS_POST'));
+
+                return $this->redirect()->toRoute('admin/posts/edit', array(
+                        'id' => $post->getId(),
+                    ));
+            } else {
+                $this->flashMessenger()->addErrorMessage($this->getTranslation('FORM_ERROR_POST'));
+            }
+        }
+
+        return new ViewModel(array(
+            'form' => $this->addPostForm,
+        ));
     }
 }

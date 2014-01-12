@@ -69,12 +69,21 @@ return array(
                         'edit' => array(
                             'type'    => 'Zend\Mvc\Router\Http\Segment',
                             'options' => array(
-                                'route'    => '/edit[/:id]',
+                                'route'    => '/edit/:id',
                                 'defaults' => array(
                                     'action' => 'edit',
                                 ),
                                 'constraints' => array(
                                     'id' => '[0-9]+',
+                                ),
+                            ),
+                        ),
+                        'add' => array(
+                            'type'    => 'Zend\Mvc\Router\Http\Literal',
+                            'options' => array(
+                                'route'    => '/add',
+                                'defaults' => array(
+                                    'action' => 'add',
                                 ),
                             ),
                         ),

@@ -1,6 +1,6 @@
 <h1>Manage posts</h1>
 
-<p><a href="<?php echo $this->url('admin/posts/edit') ?>" class="btn btn-primary">Add a new post</a></p>
+<p><a href="<?php echo $this->url('admin/posts/add') ?>" class="btn btn-primary">Add a new post</a></p>
 
 <table class="table table-striped">
     <thead>
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($posts as $post) : ?>
+        <?php foreach ($this->posts as $post) : ?>
         <tr>
             <td><?php echo $post->getId() ?></td>
             <td><?php echo $post->getName() ?></td>
@@ -30,7 +30,7 @@
 
 <?php
     echo $this->paginationControl(
-        $paginator,
+        $this->posts,
         null,
         'paginator/paginator',
         array('route' => 'admin/posts/list')

@@ -5,8 +5,8 @@
     <p class="lead">Welcome on my blog</p>
 </div>
 
-<?php if (count($posts)) : ?>
-    <?php foreach ($posts as $post) : ?>
+<?php if (count($this->posts)) : ?>
+    <?php foreach ($this->posts as $post) : ?>
     <article>
         <h2><a href="<?php echo $this->url('posts/show', array('slug' => $post->getSlug())) ?>" title="<?php echo $post->getName() ?>"><?php echo $post->getName() ?></a></h2>
         <p>
@@ -25,10 +25,10 @@
 
     <?php
         echo $this->paginationControl(
-            $paginator,
+            $this->posts,
             null,
             'paginator/paginator',
-            array('route' => 'posts/list', 'otherParams' => array('category' => $category, 'user' => $user))
+            array('route' => 'posts/list', 'otherParams' => array('category' => $this->category, 'author' => $this->author))
         );
     ?>
 <?php else : ?>
