@@ -9,12 +9,24 @@
 
 namespace Blog;
 
+use DoctrineModule\Persistence\ObjectManagerAwareInterface;
+use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\BootstrapListenerInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
-class Module
+class Module implements
+    BootstrapListenerInterface,
+    ConfigProviderInterface,
+    AutoloaderProviderInterface,
+    FormElementProviderInterface,
+    ViewHelperProviderInterface
 {
-    public function onBootstrap(MvcEvent $e)
+    public function onBootstrap(EventInterface $e)
     {
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
@@ -68,11 +80,36 @@ class Module
                         ->get('ControllerPluginManager')
                         ->get('flashmessenger');
 
-                    $messages = new \Blog\Core\Helper\View\FlashMessages();
+                    $messages = new \Blog\View\Helper\FlashMessages();
                     $messages->setFlashMessenger($flashmessenger);
 
                     return $messages;
                 },
+            ),
+        );
+    }
+
+    /**
+     * @return array|\Zend\ServiceManager\Config
+     *
+     * Add formElementConfig
+     */
+    public function getFormElementConfig()
+    {
+        return array(
+            /**
+             * Add initializers to inject ObjectManager in all form that implement ObjectManagerAwareInterface to use
+             * doctrine feature in form
+             */
+            'initializers' => array(
+                'ObjectManagerInitializer' => function ($element, $formElements) {
+                        if ($element instanceof ObjectManagerAwareInterface) {
+                            $services = $formElements->getServiceLocator();
+                            $entityManager = $services->get('orm_em');
+
+                            $element->setObjectManager($entityManager);
+                        }
+                    },
             ),
         );
     }
