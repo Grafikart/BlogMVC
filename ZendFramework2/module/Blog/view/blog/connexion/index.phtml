@@ -1,12 +1,13 @@
 <?php $this->headTitle('Admin') ?>
 
-<?php $form->prepare() ?>
-<?php echo $this->form()->openTag($form); ?>
+<?php $this->form->prepare() ?>
+<?php echo $this->form()->openTag($this->form); ?>
 
     <h4 class="form-signin-heading">Please sign in</h4>
-    <?php echo $this->formInput($form->get('username')) ?>
-    <?php echo $this->formPassword($form->get('password')) ?>
-    <?php echo $this->formSubmit($form->get('submit')) ?>
+    <?php $userForm = $this->form->get('user'); ?>
+    <?php echo $this->formInput($userForm->get('username')) ?>
+    <?php echo $this->formPassword($userForm->get('password')) ?>
+    <?php echo $this->formSubmit($this->form->get('submit')) ?>
 
-<?php echo $this->formHidden($form->get('csrf')) ?>
+<?php echo $this->formHidden($this->form->get('csrf_connexion')) ?>
 <?php echo $this->form()->closeTag() ?>

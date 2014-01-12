@@ -10,7 +10,7 @@
         <?php echo $this->headTitle('MyDomain.com')->setSeparator(' | ')->setAutoEscape(false) ?>
 
         <!-- Bootstrap core CSS -->
-        <?php echo $this->headLink()->prependStylesheet($this->basePath() . '/css/bootstrap.css') ?>
+        <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/bootstrap.css')); ?>
         <style>
             body {
                 padding-top: 50px;
@@ -19,25 +19,17 @@
                 margin-top: 50px;
             }
         </style>
+        <?php echo $this->headScript()->prependFile($this->basePath('/js/bootstrap.min.js'))
+                                      ->prependFile($this->basePath('/js/jquery.min.js')); ?>
     </head>
 
     <body>
         <!-- navbar -->
-        <?php echo $this->partial('layout/_navbar_admin'); ?>
+        <?php echo $this->partial('layout/navbar-admin'); ?>
 
         <div class="container">
             <div class="row" style="margin-top: 20px; margin-bottom: -20px;">
-                <div class="col-md-12">
-               <?php foreach ($this->flashMessages(true) as $namespace => $messages) : ?>
-                    <?php if (count($messages) && 'error' != $namespace && 'default' != $namespace) : ?>
-                        <?php foreach ($messages as $message) : ?>
-                    <div class="alert alert-<?php echo $namespace ?>">
-                        <?php echo $message; ?>
-                    </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-                </div>
+                <?php echo $this->messenger(); ?>
             </div>
             <div class="row">
                 <?php echo $this->content; ?>

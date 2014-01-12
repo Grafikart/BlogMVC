@@ -1,17 +1,17 @@
-<?php $this->headTitle($post->getName()) ?>
+<?php $this->headTitle($this->post->getName()) ?>
 
 <div class="page-header">
-    <h1><?php echo $post->getName() ?></h1>
+    <h1><?php echo $this->post->getName() ?></h1>
     <p>
         <small>
-            Category : <a href="<?php echo $this->url('posts/list', array('category' => $post->getCategory()->getSlug())) ?>"><?php echo $post->getCategory()->getName() ?></a>,
-            by <a href="<?php echo $this->url('posts/list', array('author' => $post->getUser()->getId())) ?>"><?php echo $post->getUser()->getUsername() ?></a> on <em><?php echo $post->getCreated()->format('F jS, H:i') ?></em>
+            Category : <a href="<?php echo $this->url('posts/list', array('category' => $this->post->getCategory()->getSlug())) ?>"><?php echo $this->post->getCategory()->getName() ?></a>,
+            by <a href="<?php echo $this->url('posts/list', array('author' => $this->post->getUser()->getId())) ?>"><?php echo $this->post->getUser()->getUsername() ?></a> on <em><?php echo $this->post->getCreated()->format('F jS, H:i') ?></em>
         </small>
     </p>
 </div>
 
 <article>
-    <?php echo $this->markdown($post->getContent()); ?>
+    <?php echo $this->markdown($this->post->getContent()); ?>
 </article>
 
 <hr>
@@ -20,40 +20,40 @@
 
     <h3>Comment this post</h3>
 
-    <?php $form->prepare() ?>
-    <?php echo $this->form()->openTag($form); ?>
-
+    <?php $this->form->prepare() ?>
+    <?php echo $this->form()->openTag($this->form); ?>
+    <?php $commentForm = $this->form->get('comment'); ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <?php echo $this->formInput($form->get('mail')) ?>
-                    <?php echo $this->formElementErrors($form->get('mail')) ?>
+                    <?php echo $this->formInput($commentForm->get('mail')) ?>
+                    <?php echo $this->formElementErrors($commentForm->get('mail')) ?>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <?php echo $this->formInput($form->get('username')) ?>
-                    <?php echo $this->formElementErrors($form->get('username')) ?>
+                    <?php echo $this->formInput($commentForm->get('username')) ?>
+                    <?php echo $this->formElementErrors($commentForm->get('username')) ?>
                 </div>
             </div>
         </div>
         <div class="form-group">
-            <?php echo $this->formTextarea($form->get('content')) ?>
-            <?php echo $this->formElementErrors($form->get('content')) ?>
+            <?php echo $this->formTextarea($commentForm->get('content')) ?>
+            <?php echo $this->formElementErrors($commentForm->get('content')) ?>
         </div>
         <div class="form-group">
-            <?php echo $this->formSubmit($form->get('submit')) ?>
+            <?php echo $this->formSubmit($this->form->get('submit')) ?>
         </div>
 
-    <?php echo $this->formHidden($form->get('csrf')) ?>
+    <?php echo $this->formHidden($this->form->get('csrf_comment')) ?>
     <?php echo $this->form()->closeTag() ?>
 
-    <h3><?php echo count($post->getComments()) . ' ' . $this->translatePlural('Comment', 'Comments', count($post->getComments())) ?></h3>
+    <h3><?php echo count($this->post->getComments()) . ' ' . $this->translatePlural('Comment', 'Comments', count($this->post->getComments())) ?></h3>
 
-    <?php foreach ($post->getComments() as $comment) : ?>
+    <?php foreach ($this->post->getComments() as $comment) : ?>
     <div class="row">
         <div class="col-md-2">
-            <img src="<?php echo $this->gravatar($comment->getMail()) ?>" width="100%">
+            <?php echo $this->gravatar($comment->getMail()); ?>
         </div>
         <div class="col-md-10">
             <p><strong><?php echo $comment->getUsername() ?></strong> <?php echo $this->timeAgo($comment->getCreated()) ?></p>
