@@ -14,7 +14,7 @@ You have to create a blog app using the HTML samples inside the HTML directory :
 
 You have to use the same structure as [dump.sql](https://raw.github.com/Grafikart/blogmvc/master/dump.sql). You can rename table and fields depending of your Framework conventions and you can even use migrations if your framework support it.
 
-* categories (belongsTo **Post**)
+* categories (HasMany **Post**)
 	* id
 	* name
 	* slug (used for url rewrite)
