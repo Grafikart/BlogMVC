@@ -1,0 +1,4 @@
+<% content_for :title, @post.name %>
+<%= render :partial => 'home/posts/article', :locals => {
+	:post => @post
+} %>

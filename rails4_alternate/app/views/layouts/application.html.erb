@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Rails4Alternate</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+	<head>
+		<title><%= yield(:title) %></title>
+		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tags %>
+	</head>
+	<body>
+		<%= render :partial => 'partials/sidebar' %>
+		<div class="content">
+			<% if @categories && @latest_post %>
+				<div class="col-md-4 sidebar">
+					<%= render :partial => 'home/partials/categories_list', :locals => {
+						:categories => @categories
+					} %>
 
-<%= yield %>
-
-</body>
+					<%= render :partial => 'home/partials/latest_post', :locals => {
+						:posts => @latest_post
+					} %>
+				</div>
+			<% end %>
+			<% if controller_name == "sessions" %>
+				<%= yield %>
+			<% else %>
+				<div class="col-md-8">
+					<%= yield %>
+				</div>
+			<% end %>
+		</div>
+	</body>
 </html>

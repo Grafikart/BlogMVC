@@ -1,0 +1,5 @@
+<% content_for :title, "Post by #{@author.username}" %>
+<h1><%= @author.username %></h1>
+<%= render :partial => 'list', :locals => {
+	:posts => @posts
+} %>

@@ -1,0 +1,21 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<%= link_to "Blog", posts_path, :class => "navbar-brand" %>
+		</div>
+
+		<div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+			<ul class="nav navbar-nav">
+				<% if admin? %>
+					<li><%= link_to "< back to blog", posts_path %></li>
+				<% else %>
+					<li><%= link_to "Admin", admin_posts_path %></li>
+				<% end %>
+
+				<% if user_signed_in? %>
+					<li><%= link_to "Logout", destroy_user_session_path %></li>
+				<% end %>
+	        </ul>
+		</div>
+	</div>
+</div>

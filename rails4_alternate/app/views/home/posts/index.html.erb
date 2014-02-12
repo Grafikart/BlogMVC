@@ -1,0 +1,6 @@
+<% content_for :title, "blog - home" %>
+<h1>Blog</h1>
+<p class="lead">Welcome on my blog</p>
+<%= render :partial => 'list', :locals => {
+	:posts => @posts
+} %>

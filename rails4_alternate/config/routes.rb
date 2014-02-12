@@ -1,6 +1,15 @@
 Rails4Alternate::Application.routes.draw do
   devise_for :users
-  
+  root 'home/posts#index'
+
+  #home resources
+  scope module: 'home' do
+    get 'category/:id' => 'posts#category', as: :category
+    get 'author/:id' => 'posts#author', as: :author
+    resources :posts, :only => [:index, :show]
+    resources :comments, :only => [:create]
+
+  end
   #admin resources
   namespace :admin do
     resources :posts
