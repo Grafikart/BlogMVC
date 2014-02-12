@@ -11,10 +11,10 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: rails4_alternate_development
+  database: blog_mvc
   pool: 5
   username: root
-  password:
+  password: rdev
   socket: /tmp/mysql.sock
 
 # Warning: The database defined as "test" will be erased and
