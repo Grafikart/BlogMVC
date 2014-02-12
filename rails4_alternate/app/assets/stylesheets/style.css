@@ -1,0 +1,32 @@
+body{
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background: rgb(238, 238, 238);
+	margin-bottom: 55px;
+}
+
+.col-md-4.sidebar{
+	float: right;
+}
+
+.content{
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 80px;
+	overflow: hidden;
+}
+
+.error{
+	color: red;
+	font-size: 14px;
+}
+
+.comments .row{
+	margin-top: 30px;
+}
+
+.form-signin{
+	width: 400px;
+	margin: 0 auto;
+}
