@@ -6,6 +6,17 @@ gem 'rails', '4.0.0'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 
+# authentification gem
+gem 'devise'
+
+#paginator
+gem 'kaminari'
+gem 'friendly_id', '~> 5.0.0'
+gem 'redcarpet'
+gem 'truncate_html'
+gem 'simple_form'
+gem 'validates_email_format_of'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
