@@ -1,0 +1,21 @@
+<% cache post do %>
+	<h1><%= post.name %></h1>
+	<%= render :partial => 'home/posts/header', :locals => {
+		:post => post
+	} %>
+	<artcile><%= markdown(post.content).html_safe %></article>
+
+	<hr>
+
+	<section class="comments">
+		<h3>Comment this post</h3>
+		<%= render :partial => 'home/commentaires/form', :locals => {
+			:comment => @comment ? @comment : Comment.new,
+			:post => post
+		} %>
+		<h3><%= post.comments.count %> Commentaires</h3>
+		<%= render :partial => 'home/commentaires/list', :locals => {
+			:comments => post.comments
+		} %>
+    </section>
+<% end %>

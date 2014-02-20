@@ -1,0 +1,30 @@
+<% if flash[:message] %>
+	<div class="alert alert-success">
+		<%= flash[:message] %>
+	</div>
+<% end %>
+<%= simple_form_for [:home, comment], url: comments_path  do |f| %>
+	<% if comment.errors.any? %>
+		<div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+	<% end %>
+	<%= f.hidden_field :post_id, :value => post.id %>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group <%= 'has-error' if comment.errors[:mail].any? %>">
+				<%= f.input :mail, :required => false, input_html: { class: 'form-control' } %>
+			</div>
+		</div>
+       <div class="col-md-6">
+			<div class="form-group <%= 'has-error' if comment.errors[:username].any? %>">
+				<%= f.input :username, :required => false, input_html: { class: 'form-control' } %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group <%= 'has-error' if comment.errors[:content].any? %>">
+		<%= f.input :content, as: :text, :required => false, 
+		input_html: {class: 'form-control', cols: 30, rows: 6} %>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+<% end %>

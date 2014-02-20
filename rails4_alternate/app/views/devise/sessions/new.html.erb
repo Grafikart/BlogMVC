@@ -1,0 +1,17 @@
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), 
+:html => {:class => "form-signin"}) do |f| %>
+	<h4 class="form-signin-heading">Please sign in</h4>
+	<% if flash[:alert] %>
+		<div class="alert alert-danger">
+			<%= flash[:alert] %> `
+		</div>
+	<% end %>
+
+	<%= f.text_field :username, :autofocus => true, 
+	class: "form-control", 
+	placeholder: "username" %>
+	<%= f.password_field :password, class: "form-control", 
+	placeholder: "Password" %>
+	<div><%= f.submit "Sign in", class: "btn btn-lg btn-primary btn-block" %></div>
+<% end %>
+

@@ -1,0 +1,5 @@
+<% content_for :title, @category.name %>
+<h1><%= @category.name %></h1>
+<%= render :partial => 'list', :locals => {
+	:posts => @posts
+} %>

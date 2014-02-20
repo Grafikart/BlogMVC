@@ -1,0 +1,17 @@
+<% cache posts do %>
+	<% posts.each do |post| %>
+		<article>
+			<h2><%= link_to post.name, post_path(post) %></h2>
+			<%= render :partial => 'home/posts/header', :locals => {
+				:post => post
+			} %>
+			<p><%= truncate_html(post.content, length: 150 ) %></p>
+
+			<p class="text-right">
+				<%= link_to 'Read more...', post_path(post), class: "btn btn-primary" %>
+			</p>
+		</article>
+	<% end %>
+<% end %>
+
+<%= paginate posts %>

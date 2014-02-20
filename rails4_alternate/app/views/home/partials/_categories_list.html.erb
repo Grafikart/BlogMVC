@@ -1,0 +1,11 @@
+<h4>Categories</h4>
+<div class="list-group">
+	<% cache categories do %>
+		<% categories.each do |category| %>
+			<%= link_to(category_path(category), class: "list-group-item") do %>
+				<span class="badge"><%= category.posts_count %></span>
+				<%= category.name %>
+			<% end %>
+		<% end %>
+	<% end %>
+</div>

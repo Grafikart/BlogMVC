@@ -1,0 +1,7 @@
+<p>
+	<small>
+		Category : <%= link_to post.category.name, category_path(post.category) %>,
+		by <%= link_to post.user.username , author_path(post.user) %> on 
+		<em><%= post.created_at.strftime("%b %dth %Y") %></em>
+	</small>
+</p>

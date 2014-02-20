@@ -1,0 +1,46 @@
+<%= simple_form_for [:admin, @post] do |f| %>
+	<% if @post.errors.any? %>
+		<div class="alert alert-danger">
+			<ul>
+				<% @post.errors.each do |field, message| %>
+					<li><%= "#{field}: #{message}" %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<%= f.input :name, :required => false, :error => false, 
+				input_html: { class: 'form-control' } %>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group required">
+				<%= f.input :slug, input_html: { class: 'form-control' } %>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group required">
+				<%= f.association :category, include_blank: false,  
+				input_html: {class: 'form-control'} %>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group required">
+				<%= f.association :user, label_method: :username, include_blank: false, 
+				input_html: {class: 'form-control'} %>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<%= f.input :content, as: :text, :required => false, :error => false, 
+		input_html: {class: 'form-control', cols: 30, rows: 6} %>
+	</div>
+
+	<div class="submit">
+		<%= f.submit :class => 'btn btn-primary' %>
+	</div>
+<% end %>

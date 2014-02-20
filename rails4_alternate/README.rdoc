@@ -1,0 +1,7 @@
+1- bundle install in the folder
+2- create a new database with dump -> dump/blog.sql
+3 configure your database in config/database.yml
+4- run rake db:migrate
+
+then run the server -> rails s
+
