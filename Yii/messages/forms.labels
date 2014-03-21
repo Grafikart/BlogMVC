@@ -1,0 +1,7 @@
+<?php
+return array(
+    'user.username' => 'Username',
+    'user.password' => 'Password',
+    'user.newPassword' => 'New password',
+    'user.newPasswordRepeat' => 'Repeate new password',
+);

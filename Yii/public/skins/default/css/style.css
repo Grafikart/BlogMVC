@@ -1,0 +1,100 @@
+body {
+    font-family: 'PT Sans', sans-serif;
+}
+a {
+    color: #01bB2C;
+    text-decoration: none;
+    border-bottom: 1px solid;
+}
+a:hover {
+    color: #21DB4C;
+    text-decoration: none;
+    border-bottom-style: dotted;
+}
+
+blockquote {
+    padding: 5px 10px;
+    border-left: 3px solid black;
+}
+.notice-wrap {
+    padding: 4px 10px;
+    text-align: center;
+}
+.notice {
+    background-color: #fff;
+    padding: 5px;
+}
+.notice:before {
+    content: "*";
+    color: #f00;
+}
+
+/* Header */
+
+.header {
+    background-color: #000;
+}
+.menu {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 10px 0px;
+    font-size: 150%;
+    overflow: hidden;
+}
+.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu ul li {
+    padding: 0px 10px;
+    float: left;
+}
+.menu ul.right-menu {
+    float: right;
+}
+.menu ul.left-menu {
+    float: left;
+}
+.menu li a {
+    display: block;
+    border-bottom-width: 0;
+}
+
+/* Content */
+.page-content {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 10px;
+    margin-bottom: 100px;
+    background-color: #D9FFE6;
+}
+.page-content h1 {
+    margin: 25px 0 10px;
+}
+.page-content h2 {
+    margin: 20px 0 5px;
+}
+.page-content h3 {
+    margin: 20px 0 5px;
+}
+/* Preventing h1-h6 top margin */
+.page-content :first-child, .post-content :first-child {
+    margin-top: 0;
+}
+
+
+
+.service-status {
+    width: 100%;
+    margin-top: 20px;
+}
+.service-status td {
+    padding: 3px;
+}
+.service-status .even {
+    background-color: #fff;
+}
+.service-status .odd {
+    background-color: rgba(255, 255, 255, 0.5);
+}

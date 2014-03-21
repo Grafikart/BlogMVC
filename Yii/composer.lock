@@ -1,0 +1,257 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "50916c50610b64876e2381b41f64f012",
+    "packages": [
+        {
+            "name": "twig/extensions",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fabpot/Twig-extensions.git",
+                "reference": "502303198afc1ec0bcc061c6f3a0926f7eb685e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fabpot/Twig-extensions/zipball/502303198afc1ec0bcc061c6f3a0926f7eb685e3",
+                "reference": "502303198afc1ec0bcc061c6f3a0926f7eb685e3",
+                "shasum": ""
+            },
+            "require": {
+                "twig/twig": "~1.12"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_Extensions_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "Common additional features for Twig that do not directly belong in core",
+            "homepage": "https://github.com/fabpot/Twig-extensions",
+            "keywords": [
+                "debug",
+                "i18n",
+                "text"
+            ],
+            "time": "2014-03-01 02:53:07"
+        },
+        {
+            "name": "twig/twig",
+            "version": "v1.15.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fabpot/Twig.git",
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "reference": "1fb5784662f438d7d96a541e305e28b812e2eeed",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.15-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2014-02-13 10:19:29"
+        },
+        {
+            "name": "yiiext/twig-renderer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiiext/twig-renderer.git",
+                "reference": "8cc580595aa441a205f13bb6a9f28d8c4c844804"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiiext/twig-renderer/zipball/8cc580595aa441a205f13bb6a9f28d8c4c844804",
+                "reference": "8cc580595aa441a205f13bb6a9f28d8c4c844804",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0",
+                "twig/twig": "1.*"
+            },
+            "type": "yii-extension",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru",
+                    "homepage": "http://rmcreative.ru/",
+                    "role": "Core framework development"
+                }
+            ],
+            "description": "Twig renderer for the Yii Framework.",
+            "homepage": "https://github.com/yiiext/twig-renderer",
+            "keywords": [
+                "extension",
+                "renderer",
+                "twig",
+                "yii"
+            ],
+            "time": "2013-12-17 13:43:23"
+        },
+        {
+            "name": "yiisoft/yii",
+            "version": "1.1.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yiisoft/yii.git",
+                "reference": "f0fee98ee84f70f1f3652f65562c9670e919cb4e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yiisoft/yii/zipball/f0fee98ee84f70f1f3652f65562c9670e919cb4e",
+                "reference": "f0fee98ee84f70f1f3652f65562c9670e919cb4e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.1.0"
+            },
+            "bin": [
+                "framework/yiic"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Qiang Xue",
+                    "email": "qiang.xue@gmail.com",
+                    "homepage": "http://www.yiiframework.com/",
+                    "role": "Founder and project lead"
+                },
+                {
+                    "name": "Alexander Makarov",
+                    "email": "sam@rmcreative.ru",
+                    "homepage": "http://rmcreative.ru/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Maurizio Domba",
+                    "homepage": "http://mdomba.info/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Carsten Brandt",
+                    "email": "mail@cebe.cc",
+                    "homepage": "http://cebe.cc/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Wei Zhuo",
+                    "email": "weizhuo@gmail.com",
+                    "role": "Project site maintenance and development"
+                },
+                {
+                    "name": "Sebastián Thierer",
+                    "email": "sebas@artfos.com",
+                    "role": "Component development"
+                },
+                {
+                    "name": "Jeffrey Winesett",
+                    "email": "jefftulsa@gmail.com",
+                    "role": "Documentation and marketing"
+                },
+                {
+                    "name": "Timur Ruziev",
+                    "email": "resurtm@gmail.com",
+                    "homepage": "http://resurtm.com/",
+                    "role": "Core framework development"
+                },
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com",
+                    "role": "Core framework development"
+                }
+            ],
+            "description": "Yii Web Programming Framework",
+            "homepage": "http://www.yiiframework.com/",
+            "keywords": [
+                "framework",
+                "yii"
+            ],
+            "time": "2013-08-12 00:12:08"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "yiiext/twig-renderer": 20,
+        "twig/extensions": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

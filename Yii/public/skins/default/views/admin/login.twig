@@ -1,0 +1,13 @@
+{% set form = this.beginWidget('CActiveForm') %}
+<div class="form-row">
+    {{ form.labelEx(userModel, 'username') }}
+    {{ form.textField(userModel, 'username') }}
+</div>
+<div class="form-row">
+    {{ form.labelEx(userModel, 'password') }}
+    {{ form.passwordField(userModel, 'password') }}
+</div>
+<div class="form-row">
+    {{ C.Html.submitButton() }}
+</div>
+{{ void(this.endWidget()) }}

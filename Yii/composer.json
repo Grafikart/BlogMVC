@@ -1,0 +1,7 @@
+{
+    "require": {
+        "yiisoft/yii": "1.1.14",
+        "yiiext/twig-renderer": "dev-master",
+        "twig/extensions": "dev-master"
+    }
+}

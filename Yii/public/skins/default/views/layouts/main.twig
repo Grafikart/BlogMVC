@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if this.pageTitle %}
+        <title>{{this.pageTitle }} - {{ App.name }}</title>
+        {% else %}
+        <title>{{ this.id|capitalize }}/{{ this.action.id|capitalize }} - {{ App.name }}</title>
+        {% endif %}
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.0/normalize.min.css" />
+        <link rel="stylesheet" href="{{ App.theme.baseUrl }}/css/style.css" />
+    </head>
+    <body>
+        {% block header %}
+        <div class="header">
+            <div class="menu">
+                <ul class="left-menu">
+                    <li><a href="{{ this.createUrl('post/index') }}">{{ App.name }}</a></li>
+                    <li>
+                        {% if categories|length > 0 %}
+                        <a href="{{ this.createUrl('post/categories') }}">Categories</a>
+                        <ul>
+                            {% for category in categories[:5] %}
+                            <li><a href="{{ this.createUrl('post/category', {'slug': category.slug}) }}"></a></li>
+                            {% endfor %}
+                            {% if categories|length > 5 %}
+                            <li><a href="{{ this.createUrl('post/categories') }}">More...</a></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </li>
+                    {% if authors|length > 0 %}
+                    <li>
+                        <a href="{{ this.createUrl('post/authors') }}">Authors</a>
+                        <ul>
+                            {% for author in authors[:5] %}
+                            <li><a href="{{ this.createUrl('post/author', {'id': author.id}) }}">{{ author.username }}</a></li>
+                            {% endfor %}
+                            {% if authors|length > 5 %}
+                            <li><a href="{{ this.createUrl('post/authors') }}">More...</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="right-menu">
+                {% if not App.user.isGuest %}
+                    <li><a href="{{ this.createUrl('admin/index') }}">Admin dashboard</li>
+                    <li><a href="{{ this.createUrl('admin/logout') }}">Logout</a></li>
+                {% elseif App.request.requestUri != this.createUrl('admin/login') %}
+                    <li><a href="{{ this.createUrl('admin/login') }}">Login</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
+        {% block content %}
+        <div class="page-content">
+            <div class="breadcrumbs">
+                <a href="/">{{ App.name }}</a>
+                {% for link, name in this.breadcrumbs %}
+                &rarr; <a href="{{ link }}">{{ name }}</a>
+                {% endfor %}
+            </div>
+            {% for message in App.user.getMessages() %}
+                {{ message }}
+            {% endfor %}
+            {{content}}
+        </div>
+        {% endblock %}
+    </body>
+</html>
