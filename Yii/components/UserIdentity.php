@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Simple authrntication class. Validates user login and password.
+ * Simple authentication class. Validates user login and password.
  *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0

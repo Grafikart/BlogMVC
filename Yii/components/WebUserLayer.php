@@ -3,6 +3,8 @@
 /**
  * Just a thin interlayer with message-sending interface.
  *
+ * @todo looks like only last message is stored.
+ * 
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
  * @since 0.1.0
@@ -23,11 +25,11 @@ class WebUserLayer extends CWebUser
      */
     public function sendMessage($message, $data=array())
     {
-        $messages = $this->getFlash('user.messages', array());
+        $messages = $this->getFlash('user-messages', array());
         while(sizeof($message) >= 10) {
             array_shift($messages);
         }
-        $messages[] = Yii::t('user.messages', $message, $data);
+        $messages[] = Yii::t('user-messages', $message, $data);
         $this->setFlash('user.messages', $messages);
     }
     /**

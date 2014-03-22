@@ -83,6 +83,9 @@ class BaseController extends CController
         $segments = explode('/', trim(Yii::app()->request->requestUri, '/'));
         $url = '';
         foreach ($segments as $segment) {
+            if (empty($segment)) {
+                continue;
+            }
             $url .= '/'.$segment;
             $this->breadcrumbs[$url] = ucfirst($segment);
         }

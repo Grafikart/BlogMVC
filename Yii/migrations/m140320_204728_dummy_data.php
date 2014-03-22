@@ -200,6 +200,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'Space Pilot 3000',
             'slug' => 'space-pilot-3000',
             'content' => $posts[1],
+            'created' => '2013-09-22 18:00:00',
         ));
         $this->insert('posts', array(
             'category_id' => 2,
@@ -207,6 +208,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'Rebirth',
             'slug' => 'rebirth',
             'content' => $posts[2],
+            'created' => '2013-09-22 16:49:55',
         ));
         $this->insert('posts', array(
             'category_id' => 3,
@@ -214,6 +216,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'Future shock',
             'slug' => 'future-shock',
             'content' => $posts[3],
+            'created' => '2013-09-22 16:52:52',
         ));
         $this->insert('posts', array(
             'category_id' => 1,
@@ -221,6 +224,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'Parasites lost',
             'slug' => 'parasites-lost',
             'content' => $posts[4],
+            'created' => '2013-09-22 16:53:16',
         ));
         $this->insert('posts', array(
             'category_id' => 2,
@@ -228,6 +232,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'The sting',
             'slug' => 'the-sting',
             'content' => $posts[5],
+            'created' => '2013-09-22 16:53:30',
         ));
         $this->insert('posts', array(
             'category_id' => 3,
@@ -235,6 +240,28 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             'name' => 'The Route Of All Evil',
             'slug' => 'the-route-of-all-evil',
             'content' => $posts[6],
+            'created' => '2013-09-23 16:54:57',
+        ));
+        $this->insert('comments', array(
+            'post_id' => 6,
+            'username' => 'User #1',
+            'mail' => 'contact@test.fr',
+            'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!',
+            'created' => '2013-09-22 19:45:53',
+        ));
+        $this->insert('comments', array(
+            'post_id' => 6,
+            'username' => 'User #2',
+            'mail' => 'contact@wordpress.com',
+            'content' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!',
+            'created' => '2013-09-22 19:46:11',
+        ));
+        $this->insert('comments', array(
+            'post_id' => 6,
+            'username' => 'User #3',
+            'mail' => 'contact@lol.fr',
+            'content' => "Hi!\r\nThis is my first comment!",
+            'created' => '2013-09-22 20:07:42',
         ));
     }
 

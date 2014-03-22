@@ -1,9 +1,0 @@
-<?php
-return array(
-    'after-logout' => 'You have been successfully logged out.',
-    'after-login' => 'You have been successfully logged in.',
-    'guest-logout' => 'You haven\'t been logged in. Why are you trying to logout?',
-    'cache-warning' => 'This data may be cached. Cache lifespan is set to {{lifespan}}.',
-    'incorrect-password' => 'Entered password didn\'t match the stored one.',
-    'after-deletion' => 'I was a pleasure serving you, pal.',
-);

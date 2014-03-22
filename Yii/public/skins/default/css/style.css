@@ -11,14 +11,36 @@ a:hover {
     text-decoration: none;
     border-bottom-style: dotted;
 }
+.hidden, .js-hidden, .no-js-hidden {
+    display: none;
+}
+
+.content-block {
+    padding: 10px;
+    background-color: #D9FFE6;
+}
 
 blockquote {
     padding: 5px 10px;
     border-left: 3px solid black;
 }
+
+table {
+    width: 100%;
+}
+td {
+    padding: 3px;
+}
+table.colored .even {
+    background-color: #fff;
+}
+table.colored .odd {
+    background-color: rgba(255, 255, 255, 0.5);
+}
 .notice-wrap {
     padding: 4px 10px;
     text-align: center;
+    margin: 40px 0 20px;
 }
 .notice {
     background-color: #fff;
@@ -29,6 +51,19 @@ blockquote {
     color: #f00;
 }
 
+.flash-messages {
+    margin: 0 20px 10px;
+}
+.flash-message {
+    background: #fff;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+.flash-message .close-button {
+    float: right;
+    cursor: pointer;
+}
+
 /* Header */
 
 .header {
@@ -37,7 +72,6 @@ blockquote {
 .menu {
     max-width: 800px;
     margin: 0 auto;
-    padding: 10px 0px;
     font-size: 150%;
     overflow: hidden;
 }
@@ -47,7 +81,7 @@ blockquote {
     padding: 0;
 }
 .menu ul li {
-    padding: 0px 10px;
+    padding: 10px;
     float: left;
 }
 .menu ul.right-menu {
@@ -60,14 +94,32 @@ blockquote {
     display: block;
     border-bottom-width: 0;
 }
+.menu li ul {
+    display: none;
+}
+.menu li:hover ul {
+    display: block;
+    position: absolute;
+    margin-left: -10px;
+}
+.menu ul ul li {
+    display: block;
+    float: none;
+    background-color: #000;
+}
+
+.breadcrumbs {
+    padding: 10px;
+}
 
 /* Content */
-.page-content {
-    max-width: 780px;
+.page-wrap {
+    max-width: 800px;
     margin: 0 auto;
-    padding: 10px;
+}
+.page-content {
+    margin-top: 0px;
     margin-bottom: 100px;
-    background-color: #D9FFE6;
 }
 .page-content h1 {
     margin: 25px 0 10px;
@@ -79,22 +131,43 @@ blockquote {
     margin: 20px 0 5px;
 }
 /* Preventing h1-h6 top margin */
-.page-content :first-child, .post-content :first-child {
+.page-content > :first-child, .post-content > :first-child {
     margin-top: 0;
 }
 
+.page-content.form {
+    max-width: 280px;
+    margin: 100px auto 0;
+    border: 5px solid #b9dFF6;
+}
+.page-content.form label {
+    display: block;
+    display: inline-block;
+    width: 75px;
+}
+div.form-row {
+    clear: both;
+    overflow: hidden;
+    margin-top: 5px;
+}
 
+/* Login page */
 
-.service-status {
-    width: 100%;
+.page-content.form.login .submit-row {
+    text-align: center;
+}
+.page-content.form.login .submit-row input {
+    text-align: center;
+    padding: 0 25px
+}
+
+/* Status page */
+.application-statistics, .service-status {
+    
+}
+
+/* Post page */
+.post-content {
     margin-top: 20px;
-}
-.service-status td {
-    padding: 3px;
-}
-.service-status .even {
-    background-color: #fff;
-}
-.service-status .odd {
-    background-color: rgba(255, 255, 255, 0.5);
+    margin-bottom: -15px;
 }

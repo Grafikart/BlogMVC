@@ -1,0 +1,22 @@
+<h2>Invite new user</h2>
+{% set form = this.beginWidget('CActiveForm') %}
+<div class="form-row">
+    {{ form.labelEx(userModel, 'username') }}
+    {{ form.textField(userModel, 'username') }}
+</div>
+<div class="form-row">
+    {{ form.labelEx(userModel, 'newPassword') }}
+    {{ form.passwordField(userModel, 'newPassword') }}
+</div>
+<div class="form-row">
+    {{ form.labelEx(userModel, 'newPasswordRepeat') }}
+    {{ form.passwordField(userModel, 'newPasswordRepeat') }}
+</div>
+<div class="form-row">
+    {{ form.labelEx(userModel, 'email') }}
+    {{ form.textField(userModel, 'email') }}
+</div>
+<div class="form-row submit-row">
+    {{ C.Html.submitButton() }}
+</div>
+{{ void(this.endWidget()) }}

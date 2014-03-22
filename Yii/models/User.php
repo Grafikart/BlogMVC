@@ -16,16 +16,28 @@ class User extends ActiveRecordLayer
     public $password;
     public $newPassword;
     public $newPasswordRepeat;
+    public $postCount;
+    public $email;
     
-    
-    public static function model($className=__CLASS__)
+    public function tableName()
     {
-        return parent::model($className);
-    }
-    public function tableName() {
         return 'users';
     }
-    public function passwordUpdateValidator($attribute, $params)
+    public function beforeSave()
+    {
+        $this->newPassword = sha1($this->newPassword);
+    }
+    public function mostPopular($limit=5)
+    {
+        $this->getDbCriteria()->mergeWith(array(
+            'alias' => 'users',
+            'join' => 'INNER JOIN posts ON posts.user_id = users.id',
+            'group' => 'users.id',
+            'order' => 'COUNT(posts.id)',
+        ));
+        return $this;
+    }
+    public function validateNewPassword($attribute, array $params)
     {
         if (!isset($params['compareAttribute'])) {
             $message = 'Password verification requires `compareAttribute` parameter';
@@ -36,17 +48,15 @@ class User extends ActiveRecordLayer
             $this->addError($attribute, $error);
         }
     }
-    public function attributeLabels() {
-        if (!isset($this->_cachedAttributeLabels)) {
-            $this->_cachedAttributeLabels = array(
-                'id' => 'ID',
-                'username' => Yii::t('forms.labels', 'user.username'),
-                'password' => Yii::t('forms.labels', 'user.password'),
-                'newPassword' => Yii::t('forms.labels', 'user.newPassword'),
-                'newPasswordRepeat' => Yii::t('forms.labels', 'user.newPasswordRepeat'),
-            );
-        }
-        return $this->_cachedAttributeLabels;
+    public function getAttributeLabels() {
+        return array(
+            'id' => 'ID',
+            'username' => Yii::t('forms-labels', 'user.username'),
+            'password' => Yii::t('forms-labels', 'user.password'),
+            'newPassword' => Yii::t('forms-labels', 'user.newPassword'),
+            'newPasswordRepeat' => Yii::t('forms-labels', 'user.newPasswordRepeat'),
+            'postCount' => Yii::t('forms-labels', 'user.postCount'),
+        );
     }
     public function rules()
     {
