@@ -1,32 +1,104 @@
 <?php
 
 /**
- * Description of MenuWidget
+ * This widget creates top site menu, populating it woth popular categories
+ * and authors. Menu is recreated during every request, but data is cached, so
+ * menu may take up to one hour to renew.
  *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
  * @since 0.1.0
- * @package etki-tools
- * @subpackage <subpackage>
+ * @package blogmvc
+ * @subpackage yii
  */
 class HeaderMenuWidget extends CWidget
 {
+    /**
+     * List of popular categories.
+     * 
+     * @var string[]
+     * @since 0.1.0
+     */
     public $categories;
+    /**
+     * List of popular authors.
+     * 
+     * @var string[]
+     * @since 0.1.0
+     */
     public $authors;
+    /**
+     * URL route for page with list of all categories.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $categoryListingRoute = 'category/index';
+    /**
+     * URL route for page with category posts.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $categoryDisplayRoute = 'category/show';
+    /**
+     * URL route for page with list of all authors.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $authorListingRoute = 'user/list';
+    /**
+     * URL route for page with author posts.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $authorDisplayRoute = 'user/posts';
+    /**
+     * Text for 'More...' links. If won't set, will be autopopulated with
+     * `links.more` translation.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $moreText;
+    /**
+     * Menu CSS class.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
     public $class = '';
+    /**
+     * Initializing method. Retrieves and caches data.
+     * 
+     * @return void
+     * @since 0.1.0
+     */
     public function init()
     {
         $data = Yii::app()->cache->get('widgets.headerMenu.data');
         if ($data === false) {
             $data = array(
-                'categories' => Category::model()->mostPopular()->findAll(),
-                'authors' => User::model()->mostPopular()->findAll(),
+                'categories' => Category::model()->popular()->findAll(),
+                'authors' => User::model()->popular()->findAll(),
             );
             Yii::app()->cache->set('widgets.headerMenu.data', $data, 3600);
         }
         $this->categories = $data['categories'];
         $this->authors = $data['authors'];
+        if (!isset($this->moreText)) {
+            $this->moreText = Yii::t('templates', 'links.more');
+        }
     }
+    /**
+     * This is the method that calculates widget tree and produces widget
+     * output.
+     * 
+     * @return void
+     * @since 0.1.0
+     */
     public function run()
     {
         $tree = array(
@@ -51,38 +123,52 @@ class HeaderMenuWidget extends CWidget
         $branch = array();
         foreach ($this->categories as $category) {
             $branch[$category->name] = array(
-                'route' => 'post/category',
+                'route' => $this->categoryDisplayRoute,
                 'routeOptions' => array('slug' => $category->slug)
             );
         }
         if (sizeof($this->categories) === 5) {
             array_pop($branch);
-            $branch['More'] = array(
-                'route' => 'post/categories',
+            $branch[$this->moreText] = array(
+                'route' => $this->categoryListingRoute,
                 'more-link' => true,
             );
         }
         return $branch;
     }
+    /**
+     * 
+     * @return string
+     * @since 0.1.0
+     */
     protected function generateAuthorsBranch()
     {
         $branch = array();
         foreach ($this->authors as $author) {
             $branch[$author->name] = array(
-                'route' => 'post/author',
+                'route' => $this->authorDisplayRoute,
                 'routeOptions' => array('id' => $author->id)
             );
             if (sizeof($this->authors === 5)) {
                 array_pop($branch);
-                $branch['More...'] = array(
-                    'route' => 'post/authors',
+                $branch[$this->moreText] = array(
+                    'route' => $this->authorListingRoute,
                     'more-link' => true,
                 );
             }
         }
         return $branch;
     }
-    protected function walkTree($tree, $topLevel=false)
+    /**
+     * Recursively walks provided tree and build nested HTML unordered list.
+     * 
+     * @param array $tree Menu tree taht has to be converted to HTML list.
+     * @param boolean $topLevel Defines whether currently passed tree is a
+     * tree itself (top level node) or one of subnodes.
+     * @return string Formatted HTML.
+     * @since 0.1.0
+     */
+    protected function walkTree(array $tree, $topLevel=false)
     {
         $n = "\n";
         $items = array();
