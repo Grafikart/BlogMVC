@@ -11,7 +11,9 @@ class m140320_204654_comments extends CDbMigration
             'mail' => 'string NOT NULL',
             'content' => 'mediumtext NOT NULL',
             'created' => 'datetime NOT NULL',
+            'CONSTRAINT fk_comments_posts FOREIGN KEY (post_id) REFERENCES posts(id) ON UPDATE CASCADE ON DELETE CASCADE'
         ));
+        /* Commented because of SQLite impossibility ot create foreign keys on-the-fly
         $this->addForeignKey(
             'fk_comments_posts',
             'comments',
@@ -21,11 +23,14 @@ class m140320_204654_comments extends CDbMigration
             'CASCADE',
             'CASCADE'
         );
+         */
     }
 
     public function down()
     {
+        /* Commented because of SQLite impossibility ot create foreign keys on-the-fly
         $this->dropForeignKey('fk_comments_posts', 'comments');
+         */
         $this->dropTable('comments');
     }
 }
