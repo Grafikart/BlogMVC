@@ -12,6 +12,13 @@
 class WebUserLayer extends CWebUser
 {
     /**
+     * URL or array(route) which points to login form.
+     * 
+     * @var string|array
+     * @since 0.1.0
+     */
+    public $loginUrl = array('admin/login');
+    /**
      * Key for storing user flash messages.
      * 
      * @var string
