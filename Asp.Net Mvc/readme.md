@@ -22,8 +22,8 @@ ASP.NET MVC includes many features that enable fast, TDD-friendly development fo
 * Open the projetc file : BlogMvc.Web.sln
 
 If there are some missing dll files :
-	* enable "nuget restore package" option on the solution 
-	* or reinstall all  packages  (nuget restore {path}\YourSolution.sln) see [http://docs.nuget.org/docs/reference/command-line-reference#Restore_command](http://docs.nuget.org/docs/reference/command-line-reference#Restore_command)
+* enable "nuget restore package" option on the solution 
+* or reinstall all  packages  (nuget restore {path}\YourSolution.sln) see [http://docs.nuget.org/docs/reference/command-line-reference#Restore_command](http://docs.nuget.org/docs/reference/command-line-reference#Restore_command)
 
 
 * Edit the connexion string in the  Web.Config file to setup your database (see BlogMvcContext)
