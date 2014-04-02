@@ -173,7 +173,7 @@ Why would I want to know that? It's toe-tappingly tragic! You won't have time fo
 Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind Fry of his humanity the way only a woman can. Kif, I have mated with a woman. Inform the men. Look, everyone wants to be like Germany, but do we really have the pure strength of 'will'?",
         );
         
-        $this->_clean();
+        $this->cleanUp();
         $this->insert('users', array(
             'username' => 'admin',
             'password' => 'd033e22ae348aeb5660fc2140aec35850c4da997',
@@ -267,21 +267,35 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
 
     public function safeDown()
     {
-        $this->_clean();
+        $this->cleanUp();
     }
-    protected function _clean()
+    protected function cleanUp()
     {
-        $this->_truncateTable('comments');
-        $this->_truncateTable('posts');
-        $this->_truncateTable('categories');
-        $this->_truncateTable('users');
+        $this->truncateTable('comments');
+        $this->truncateTable('posts');
+        $this->truncateTable('categories');
+        $this->truncateTable('users');
     }
-    protected function _truncateTable($name)
+
+    /**
+     * Truncates table with provided name. Postgresql uses different approach
+     * for sequences and there are hardcoded bits which may not work.
+     *
+     * @param $name string Table name.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function truncateTable($name)
     {
-        if (!preg_match('#^\w+$#', $name)) {
+        if (!preg_match('#^[\w_]+$#', $name)) {
             return;
         }
         $this->delete($name);
-        $this->execute('ALTER TABLE '.$name.' AUTO_INCREMENT = 1');
+        if ($this->getDbConnection()->getDriverName() === 'pgsql') {
+            $this->execute('ALTER SEQUENCE '.$name.'_id_seq RESTART WITH 1');
+        } else {
+            $this->execute('ALTER TABLE ' . $name . ' AUTO_INCREMENT = 1');
+        }
     }
 }
