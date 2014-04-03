@@ -9,4 +9,9 @@ return array(
     'statistics.posts.today' => 'Posts, today',
     'statistics.comments.total' => 'Comments, total',
     'statistics.comments.today' => 'Comments, today',
+    'category.add' => 'Add category',
+    'post.delete' => 'Delete post',
+    'post.save' => 'Save post',
+    'category.listTitle' => 'Category list',
+    'links.more' => 'More...',
 );
