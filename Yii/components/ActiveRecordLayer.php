@@ -53,6 +53,40 @@ abstract class ActiveRecordLayer extends CActiveRecord
         }
         return parent::model($className);
     }
+
+    /**
+     * Returns array of default values for attributes in :attribute_name =>
+     * :default_value form.
+     *
+     * @return array List of default attribute values.
+     * @since 0.1.0
+     */
+    public function attributeDefaults()
+    {
+        return array();
+    }
+
+    /**
+     * Resets all attributes with default values from
+     * {@link attributeDefaults()} method. Those attributes which were not
+     * listed in {@link attributeDefaults()} will be set to null.
+     *
+     * @param array $attributes Optional array of attributes for instant
+     * setting.
+     *
+     * @since 0.1.0
+     */
+    public function resetAttributes(array $attributes=null)
+    {
+        $defaults = array_fill_keys($this->attributeNames(), null);
+        $defaults = array_merge($defaults, $this->attributeDefaults());
+        if ($attributes !== null) {
+            $attributes = array_merge($defaults, $attributes);
+        } else {
+            $attributes = $defaults;
+        }
+        $this->setAttributes($attributes);
+    }
     /**
      * Sets provided attributes and instatly tries to save.
      * 
@@ -62,7 +96,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      */
     public function setAndSave(array $attributes)
     {
-        $this->setAttributes($attributes);
+        $this->resetAttributes($attributes);
         return $this->save();
     }
     /**
@@ -75,7 +109,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      */
     public function setAndValidate(array $attributes)
     {
-        $this->setAttributes($attributes);
+        $this->resetAttributes($attributes);
         return $this->validate();
     }
 }
