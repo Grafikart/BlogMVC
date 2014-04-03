@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This widget creates top site menu, populating it woth popular categories
+ * This widget creates top site menu, populating it with popular categories
  * and authors. Menu is recreated during every request, but data is cached, so
  * menu may take up to one hour to renew.
  *
@@ -16,14 +16,14 @@ class HeaderMenuWidget extends CWidget
     /**
      * List of popular categories.
      * 
-     * @var string[]
+     * @var Category[]
      * @since 0.1.0
      */
     public $categories;
     /**
-     * List of popular authors.
+     * List of most active authors.
      * 
-     * @var string[]
+     * @var User[]
      * @since 0.1.0
      */
     public $authors;
@@ -82,7 +82,7 @@ class HeaderMenuWidget extends CWidget
         if ($data === false) {
             $data = array(
                 'categories' => Category::model()->popular()->findAll(),
-                'authors' => User::model()->popular()->findAll(),
+                'authors' => User::model()->mostActive()->findAll(),
             );
             Yii::app()->cache->set('widgets.headerMenu.data', $data, 3600);
         }
