@@ -10,7 +10,7 @@
  * @package blogmvc
  * @subpackage yii
  */
-class PaginationWidget extends CWidget
+class PaginationWidget extends WidgetLayer
 {
     /**
      * Current page number
@@ -111,17 +111,19 @@ class PaginationWidget extends CWidget
         if ($this->totalPages === 0) {
             return;
         }
-        if ($this->title !== false) {
-            echo CHtml::tag('div', array(), $this->title);
+        if (is_string($this->title)) {
+            $this->tag('div', array(), $this->title);
         }
+        $this->openTag('ul', array('class' => 'pagination'));
         $start = max(1, $this->currentPage - floor($this->size/2));
         $end = min($this->totalPages, $this->currentPage + ceil($this->size/2));
 
-        echo $this->getSideLink(true, $start === 1);
+        $this->sideLink(true, $start === 1);
         for ($i = $start; $i <= $end; $i++) {
-            echo $this->getLink($i, null, $i === $this->currentPage);
+            $this->link($i, null, $i === $this->currentPage);
         }
-        echo $this->getSideLink(false, $end === $this->totalPages);
+        $this->sideLink(false, $end === $this->totalPages);
+        $this->closeTag('ul');
     }
     /**
      * Returns HTML link tag pointing to page with provided number.
@@ -133,7 +135,7 @@ class PaginationWidget extends CWidget
      * @return string HTML tag.
      * @since 0.1.0
      */
-    protected function getLink($page, $text=null, $current=false, $disabled=false)
+    protected function link($page, $text=null, $current=false, $disabled=false)
     {
         if ($text === null) {
             $text = (string)$page;
@@ -141,16 +143,18 @@ class PaginationWidget extends CWidget
         $htmlOpts = array();
         if ($disabled) {
             $htmlOpts = array('class' => 'disabled');
-            $content = CHtml::tag('span', array(), $text);
+            $content = array('span', array(), $text);
         } else {
             if ($current) {
                 $htmlOpts = array('class' => 'active');
             }
             $opts = array_merge($this->routeOptions, array('page' => $page));
             $link = $this->controller->createUrl($this->route, $opts);
-            $content = CHtml::link($text, $link);
+            $content = array('a', array('href' => $link,), $text);
         }
-        return CHtml::tag('li', $htmlOpts, $content);
+        $this->openTag('li', $htmlOpts);
+        $this->tag($content[0], $content[1], $content[2]);
+        $this->closeTag('li');
     }
 
     /**
@@ -161,11 +165,13 @@ class PaginationWidget extends CWidget
      * @return string Link text.
      * @since 0.1.0
      */
-    protected function getSideLink($first=true, $disabled=false)
+    protected function sideLink($first=true, $disabled=false)
     {
-        if ($first)
-            return $this->getLink(1, $this->firstPageText, false, $disabled);
-        return $this->getLink($this->totalPages, $this->lastPageText, false, $disabled);
+        if ($first) {
+            $this->link(1, $this->firstPageText, false, $disabled);
+        } else {
+            $this->link($this->totalPages, $this->lastPageText, false, $disabled);
+        }
     }
     /**
      * Returns HTML tag that serves
@@ -173,10 +179,22 @@ class PaginationWidget extends CWidget
      * @return string Delimiter tag.
      * @since 0.1.0
      */
-    protected function getDelimiter()
+    protected function delimiter()
     {
-        return CHtml::tag('span', array(
+        $this->tag('span', array(
             'class' => 'pagination-delimiter'
         ), $this->delimiterText);
+    }
+
+    /**
+     * Sets pagination title.
+     *
+     * @param string|null $title New pagination title. Use `null` to disable
+     * pagination title.
+     * @since 0.1.0
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 }
