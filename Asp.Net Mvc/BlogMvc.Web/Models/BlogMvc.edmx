@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="BlogMvc.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="BlogMvcTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="BlogMvc" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="BlogMvcContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CategoriesSet" EntityType="BlogMvc.Categories" />
+          <EntitySet Name="CommentsSet" EntityType="BlogMvc.Comments" />
+          <EntitySet Name="PostsSet" EntityType="BlogMvc.Posts" />
+          <EntitySet Name="UsersSet" EntityType="BlogMvc.Users" />
+          <AssociationSet Name="PostComment" Association="BlogMvc.PostComment">
+            <End Role="Post" EntitySet="PostsSet" />
+            <End Role="Comment" EntitySet="CommentsSet" />
+          </AssociationSet>
+          <AssociationSet Name="PostCategorie" Association="BlogMvc.PostCategorie">
+            <End Role="Post" EntitySet="PostsSet" />
+            <End Role="Categorie" EntitySet="CategoriesSet" />
+          </AssociationSet>
+          <AssociationSet Name="UserPost" Association="BlogMvc.UserPost">
+            <End Role="User" EntitySet="UsersSet" />
+            <End Role="Post" EntitySet="PostsSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="slug" Type="String" Nullable="false" />
+          <Property Name="post_count" Type="String" Nullable="false" />
+          <NavigationProperty Name="Posts" Relationship="BlogMvc.PostCategorie" FromRole="Categorie" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Post_Id" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="BlogMvc.PostComment" FromRole="Comment" ToRole="Post" />
+        </EntityType>
+        <EntityType Name="Posts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Categorie_Id" Type="Int32" Nullable="false" />
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Slug" Type="String" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="BlogMvc.PostComment" FromRole="Post" ToRole="Comment" />
+          <NavigationProperty Name="Categorie" Relationship="BlogMvc.PostCategorie" FromRole="Post" ToRole="Categorie" />
+          <NavigationProperty Name="User" Relationship="BlogMvc.UserPost" FromRole="Post" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="Posts" Relationship="BlogMvc.UserPost" FromRole="User" ToRole="Post" />
+        </EntityType>
+        <Association Name="PostComment">
+          <End Type="BlogMvc.Posts" Role="Post" Multiplicity="1" />
+          <End Type="BlogMvc.Comments" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="Post_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PostCategorie">
+          <End Type="BlogMvc.Posts" Role="Post" Multiplicity="*" />
+          <End Type="BlogMvc.Categories" Role="Categorie" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Categorie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="Categorie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserPost">
+          <End Type="BlogMvc.Users" Role="User" Multiplicity="1" />
+          <End Type="BlogMvc.Posts" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="BlogMvc" />
+        <Alias Key="Target" Value="BlogMvc.Store" />
+        <EntityContainerMapping CdmEntityContainer="BlogMvcContainer" StorageEntityContainer="BlogMvcTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

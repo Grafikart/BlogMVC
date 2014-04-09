@@ -1,0 +1,68 @@
+﻿@model BlogMvc.Web.Models.Post
+
+@using BlogMvc.Web.Models;
+
+@{
+    ViewBag.Title = "Post";
+}
+
+@Html.DisplayFor(modelItem => @Model, "Post")
+
+<section class="comments">
+
+
+    <h3>Comment this post</h3>
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+    }
+
+@using (Html.BeginForm("Comment", "Post",  FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+ 
+    Comment newComment = new Comment() { Post = Model, Post_Id = Model.Id};
+    @Html.HiddenFor(model => newComment.Post_Id)
+    @Html.HiddenFor(model => newComment.Id)
+    
+    string csshasErrorMail = (ViewData.ModelState.Keys.Contains("newComment.Mail") && ViewData.ModelState["newComment.Mail"].Errors.Count() > 0  ? " has-error" : "");
+    string csshasErrorUserName = (ViewData.ModelState.Keys.Contains("newComment.Username") && ViewData.ModelState["newComment.Username"].Errors.Count() > 0 ? " has-error" : "");
+    string csshasErrorComment = (ViewData.ModelState.Keys.Contains("newComment.Content") && ViewData.ModelState["newComment.Content"].Errors.Count() > 0 ? " has-error" : "");
+       
+    
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group @csshasErrorMail">
+                    @Html.EditorFor(model => newComment.Mail, new { htmlAttributes = new { @class = "form-control", @placeholder="Your email" } })
+                    @Html.ValidationMessageFor(model => newComment.Mail)
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group @csshasErrorUserName">
+                    @Html.EditorFor(model => newComment.Username, new { htmlAttributes = new { @class = "form-control", @placeholder = "Your username" } })
+                    @Html.ValidationMessageFor(model => newComment.Username)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group @csshasErrorComment">
+            @Html.TextAreaFor(model => newComment.Content,new { @class = "form-control", @placeholder = "Your comment", @rows="3" } )
+            @Html.ValidationMessageFor(model => newComment.Content)
+        </div>
+    
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>    
+    }
+
+
+<h3>@Model.Comments.Count() Commentaires</h3>
+@foreach (var comment in Model.Comments)
+{
+    @Html.DisplayFor(modelItem => comment)
+}
+
+</section>
+
+

@@ -1,0 +1,30 @@
+﻿@model BlogMvc.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post,  new { @class = "form-signin" } ))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <h4 class="form-signin-heading">Please sign in</h4>
+
+    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "User name" })
+    @Html.ValidationMessageFor(m => m.UserName)
+          
+
+    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+    @Html.ValidationMessageFor(m => m.Password)
+          
+    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign In" />
+
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,25 @@
+﻿@model  BlogMvc.Web.ViewModels.SideBarModel
+
+    <h4>Categories</h4>
+    <div class="list-group">
+
+        @foreach (var item in Model.Categories)
+        {
+            <a href="@Url.Action("Index","Category")/@item.slug" class="list-group-item">
+                <span class="badge">@item.Posts.Count()</span>
+                @item.name
+            </a>
+        }
+
+    </div>
+
+
+    <h4>Last posts</h4>
+    <div class="list-group">
+        @foreach (var item in Model.Posts)
+        {
+            <a href="@Url.Content("~")@item.Slug" class="list-group-item">
+                @item.Name
+            </a>
+        }
+    </div>
