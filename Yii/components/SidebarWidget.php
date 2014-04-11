@@ -9,7 +9,7 @@
  * @package blogmvc
  * @subpackage yii
  */
-class SidebarWidget extends CWidget
+class SidebarWidget extends WidgetLayer
 {
     /**
      * URL route for single category.
@@ -87,7 +87,7 @@ class SidebarWidget extends CWidget
      * @var string
      * @since 0.1.0
      */
-    protected $cacheKey;
+    protected $cacheKey = 'widget.sidebar.render';
     /**
      * Initializer method. Checks for cached data and sets up necessary
      * properties.
@@ -97,6 +97,8 @@ class SidebarWidget extends CWidget
         if (!($this->cached = Yii::app()->cache->get($this->cacheKey))) {
             $this->categoriesHeaderText = Yii::t('templates', 'sidebar.categories');
             $this->postsHeaderText = Yii::t('templates', 'sidebar.posts');
+            $this->categories = Category::model()->popular()->findAll();
+            $this->posts = Post::model()->paged()->findAll();
         }
     }
     /**
@@ -113,36 +115,39 @@ class SidebarWidget extends CWidget
             return;
         }
         ob_start();
-        
-        echo CHtml::tag('h4', array(), $this->categoriesHeaderText);
-        echo CHtml::openTag('div', array('class' => 'list-group'));
-        foreach ($this->categories as $category) {
-            $url = $this->getController()->createUrl($this->categoryRoute, array(
-                'slug' => $category->slug
-            ));
-            echo CHtml::openTag('a', array(
-                'class' => 'list-group-item',
-                'href' => $url
-            ));
-            echo CHtml::tag('span', array('class' => 'badge'), $category->post_count);
-            echo $category->name;
-            echo CHtml::closeTag('a');
+        if (!empty($this->categories)) {
+            $this->tag('h4', array(), $this->categoriesHeaderText);
+            $this->openTag('div', array('class' => 'list-group'));
+            foreach ($this->categories as $category) {
+                $url = $this->getController()->createUrl($this->categoryRoute, array(
+                    'slug' => $category->slug
+                ));
+                $this->openTag('a', array(
+                    'class' => 'list-group-item',
+                    'href' => $url
+                ));
+                $this->tag('span', array('class' => 'badge'), $category->post_count);
+                $this->e($category->name);
+                $this->closeTag('a');
+            }
+            $this->closeTag('div');
         }
-        echo CHtml::closeTag('div');
-        echo CHtml::tag('h4', array(), $this->postsHeaderText);
-        echo CHtml::openTag('div', array('class' => 'list-group'));
-        foreach ($this->posts as $post) {
-            $url = $this->getController()->createUrl($this->postRoute, array(
-                'slug' => $post->slug
-            ));
-            echo CHtml::tag('a', array(
-                'class' => 'list-group-item',
-                'href' => $url
-            ), $post->name);
+        if (!empty($this->posts)) {
+            $this->tag('h4', array(), $this->postsHeaderText);
+            $this->openTag('div', array('class' => 'list-group'));
+            foreach ($this->posts as $post) {
+                $url = $this->getController()->createUrl($this->postRoute, array(
+                    'slug' => $post->slug
+                ));
+                $this->tag('a', array(
+                    'class' => 'list-group-item',
+                    'href' => $url
+                ), $post->name);
+            }
+            $this->closeTag('div');
         }
-        echo CHtml::closeTag('div');
         
-        $dep = new CGlobalStateCacheDependency('lastPost');
-        Yii::app()->cache->set($this->cacheKey, ob_get_flush(), 3600, $dep);
+        $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
+        \Yii::app()->cache->set($this->cacheKey, ob_get_flush(), 3600, $dep);
     }
 }
