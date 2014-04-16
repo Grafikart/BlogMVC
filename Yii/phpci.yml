@@ -1,0 +1,46 @@
+build_settings:
+  ignore:
+    - vendor
+    - tests
+
+setup:
+  composer:
+    action: install
+test:
+  php_parallel_lint:
+    directories:
+      - commands
+      - components
+      - config
+      - controllers
+      - messages
+      - migrations
+      - models
+  codeception:
+    config: codeception.yml
+  php_loc:
+    #directory: Yii
+  php_mess_detector:
+    rules:
+      - codesize
+      - unusedcode
+      - phpci/phpmd/naming.xml
+      - controversial
+      - design
+    ignore:
+      - runtime
+      - tests
+      - views
+      - public
+      - phpci
+    #path: Yii
+    allow_failures: true
+  php_code_sniffer:
+    #path: Yii
+    encoding: utf-8
+    tab_width: 4
+    ignore:
+      - runtime
+      - tests
+    standard: "PSR1,PSR2"
+    allow_failures: true

@@ -1,0 +1,8 @@
+/vendor/
+/public/assets
+/config/*.php
+!/config/*.example.php
+/nbproject/
+/.project/
+/.settings/
+/tests/_log/*
