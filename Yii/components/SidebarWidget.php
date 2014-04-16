@@ -95,6 +95,7 @@ class SidebarWidget extends WidgetLayer
     public function init()
     {
         if (!($this->cached = Yii::app()->cache->get($this->cacheKey))) {
+            Yii::trace('Regenerating cache for sidebar widget');
             $this->categoriesHeaderText = Yii::t('templates', 'sidebar.categories');
             $this->postsHeaderText = Yii::t('templates', 'sidebar.posts');
             $this->categories = Category::model()->popular()->findAll();
