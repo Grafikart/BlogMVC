@@ -32,7 +32,7 @@ class DateFormatterTest extends \Codeception\TestCase\Test
      *
      * @since 0.1.0
      */
-    public static function setUpAfterClass()
+    public static function tearDownAfterClass()
     {
         \Yii::app()->language = static::$defaultLanguage;
     }
