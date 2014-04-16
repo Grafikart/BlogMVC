@@ -56,15 +56,15 @@ class DateFormatter extends \CComponent
      */
     public function format($date, $unitsLimit=2)
     {
-        if ($unitsLimit < 1) {
-            $message = 'Maximum units limit should be not less than one';
+        if (!is_int($unitsLimit) || $unitsLimit < 1) {
+            $message = 'Maximum units limit has to be integer not less than one.';
             throw new \BadMethodCallException($message);
         }
         if (!$date instanceof \DateTime) {
             try {
                 $date = new \DateTime($date);
             } catch (\Exception $e) {
-                $message = 'Invalid date provided';
+                $message = 'Invalid date provided.';
                 throw new \BadMethodCallException($message, 0, $e);
             }
         }
@@ -75,12 +75,15 @@ class DateFormatter extends \CComponent
         foreach ($this->intervals as $key => $interval) {
             if ($counter >= $unitsLimit) {
                 break;
-            } elseif ($counter > 0) {
+            }
+            if ($counter > 0) {
                 $counter++;
             }
             if ($diff->$key > 0) {
                 $dateInterval[] = $this->formatInterval($diff->$key, $interval);
-                break;
+                if ($counter === 0) {
+                    $counter = 1;
+                }
             }
         }
         if (sizeof($dateInterval) > 0) {
