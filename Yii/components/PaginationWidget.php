@@ -4,6 +4,8 @@
  * This is a simple widget for creating pagination on post/category/admin
  * pages.
  *
+ * I seriously didn't know about CPager and ended up with that.
+ *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.1
  * @since 0.1.0
@@ -108,7 +110,7 @@ class PaginationWidget extends WidgetLayer
      */
     public function run()
     {
-        if ($this->totalPages === 0) {
+        if ($this->totalPages < 2) {
             return;
         }
         if (is_string($this->title)) {
