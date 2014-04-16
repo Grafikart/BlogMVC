@@ -14,4 +14,16 @@ return array(
     'post.save' => 'Save post',
     'category.listTitle' => 'Category list',
     'links.more' => 'More...',
+    'sidebar.categories' => 'Categories',
+    'sidebar.posts' => 'Last posts',
+    // http://www.yiiframework.com/doc/guide/1.1/en/topics.i18n#number-formatting
+    'timeInterval.ago' => '{interval} ago',
+    'timeInterval.justNow' => 'just now',
+    'timeInterval.seconds' => '{n} second|{n} seconds',
+    'timeInterval.minutes' => '{n} minute|{n} minutes',
+    'timeInterval.hours' => '{n} hour|{n} hours',
+    'timeInterval.days' => '{n} day|{n} days',
+    'timeInterval.months' => '{n} month|{n} months',
+    'timeInterval.years' => '{n} year|{n} years',
+    'blog.pageTitle' => 'Blog',
 );

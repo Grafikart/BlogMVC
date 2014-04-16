@@ -6,6 +6,7 @@ return array(
     'category.restrictedSlug' => 'I\'m terribly sorry, but slug "{slug}" is restricted for usage',
     'user.invalidPassword' => 'Entered password is invalid',
     'user.passwordMismatch' => 'Entered passwords don\'t match',
+    'user.usernameExists' => 'Sorry, user with specified username already exists',
     'app.unsupportedLanguage' => 'Sorry, language \'{lang}\' isn\'t supported',
     'app.missingConfig' => 'Failed to find config in file {path}',
     'app.missingConfigData' => 'Config found at {path} didn\'t return any data',
