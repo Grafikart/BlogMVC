@@ -69,9 +69,14 @@ do same thing in more elegant or native manner.
 
 ### Q: What the heck with root namespace prefix everywhere? I thought Yii doesn't use namespaces.
 
-That's true. It was completely unnecessary to use it, especially because
+**A**: That's true. It was completely unnecessary to use it, especially because
 namespaces are used in tests only, but i just was doing everything as if someone
 would come one day and rewrite half of application keeping other half intact.
+
+### Q: Why do you call proxies layers?
+
+**A**: They are not technically proxies. However, i remembered word 'proxy' only
+when i was close to finish my development, so i left everything as is.
 
 ### Q: I have more questions / i have a suggestion / i want to hug you
 
