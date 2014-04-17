@@ -1,0 +1,18 @@
+{% extends 'views/layouts/main.twig' %}
+{% block content_wrap %}
+    <div class="col-md-8">
+        <div class="row">
+            {% block content %}{% endblock %}
+        </div><!-- /.content -->
+        {% block pagination %}
+            {% if pagination %}
+                {% set pagination_widget = this.beginWidget('PaginationWidget', pagination) %}
+                {{ void(pagination_widget.setTitle(null)) }}
+                {{ void(this.endWidget()) }}
+            {% endif %}
+        {% endblock %}
+    </div>
+    <div class="col-md-4 sidebar">
+        {{ void(this.widget('SidebarWidget')) }}
+    </div><!-- /.sidebar -->
+{% endblock %}

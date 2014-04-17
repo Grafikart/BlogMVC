@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        {% if this.pageTitle %}
+        <title>{{ this.pageTitle }} | {{ App.name }}</title>
+        {% else %}
+        <title>{{ App.name }}</title>
+        {% endif %}
+
+        <!-- Bootstrap core CSS -->
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 140px;
+            }
+            /* float images broke the flow */
+            article p {
+                overflow: hidden;
+            }
+            @media (min-width: 768px) {
+                body {
+                    padding-top: 50px;
+                }
+                .sidebar {
+                    margin-top: 50px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button> -->
+                    <!-- this was in original template, but seems it's just a leftover -->
+                    <a class="navbar-brand" href="{{ this.createUrl('post/index') }}">Blog</a>
+                </div>
+
+                <div class="{#collapse navbar-collapse navbar-ex1-collapse #}navbar-right">
+                    <ul class="nav navbar-nav">
+                        {% set parentPage = this.getPenultimateBreadcrumb() %}
+                        {% if parentPage %}
+                            <li><a href="{{ parentPage['url'] }}">&lt; Back to {{ parentPage['title'] }}</a></li>
+                        {% elseif this.getLastBreadcrumb() %}
+                            <li><a href="/">&lt; Back to Blog</a></li>
+                        {% endif %}
+                        {% block header_admin_link %}
+                            {% if not App.user.getIsGuest() %}
+                                <li><a href="{{ this.createUrl('admin/index') }}">Admin panel</a>
+                            {% endif %}
+                        {% endblock %}
+                        {% block header_auth_link %}
+                            {% if App.user.getIsGuest() %}
+                                <li><a href="{{ this.createUrl('user/login') }}">Login</a></li>
+                            {% else %}
+                                <li><a href="{{ this.createUrl('user/logout') }}">Logout</a></li>
+                            {% endif %}
+                        {% endblock %}
+                    </ul>
+                </div>
+            </div><!-- /.container -->
+        </div>
+        <div class="container">
+            {% block flash_messages %}
+                {% if App.user.hasMessages() %}
+                    {% for message in App.user.getMessages() %}
+                        {# ffu-code #}
+                        {% set level_class = message['level']=='notice'?'info':message['level']=='success'?'success':'danger' %}
+                            <div class="alert alert-{{ level_class }}">
+                            {{ message['message'] }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endblock %}
+            {% block content_wrap %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% block content %}
+                        {{ content }}
+                    {% endblock %}
+                    {% block pagination %}
+                        {% if pagination %}
+                            {{ void(this.widget('PaginationWidget', pagination)) }}
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+            {% endblock %}
+        </div><!-- /.container -->
+    </body>
+</html>
