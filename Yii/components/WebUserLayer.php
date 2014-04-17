@@ -4,7 +4,7 @@
  * Just a thin interlayer with message-sending interface.
  * 
  * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
+ * @version 0.1.1
  * @since 0.1.0
  * @package blogmvc
  * @subpackage yii
@@ -17,7 +17,7 @@ class WebUserLayer extends CWebUser
      * @var string|array
      * @since 0.1.0
      */
-    public $loginUrl = array('admin/login');
+    public $loginUrl = array('user/login');
     /**
      * Key for storing user flash messages.
      * 
@@ -33,27 +33,59 @@ class WebUserLayer extends CWebUser
      */
     public $dataKeyPrefix = 'data.';
     /**
+     * Constant for 'notice' flash messages.
+     * Stolen from {@link https://coderwall.com/p/jzofog}.
+     *
+     * @var string
+     * @since 0.1.1
+     */
+    const FLASH_NOTICE = 'notice';
+    /**
+     * Constant for 'success' flash messages.
+     *
+     * @var string
+     * @since 0.1.1
+     */
+    const FLASH_SUCCESS = 'success';
+    /**
+     * Constant for 'error' flash messages.
+     *
+     * @var string
+     * @since 0.1.1
+     */
+    const FLASH_ERROR = 'error';
+    /**
      * Puts new message into user's flash-based mailbox. <var>$message</var>
      * stands for internationalization message alias, while optional
      * <var>$data</var> array may hold arbitrary bits to format it.
      * 
      * @param string $message Message alias in i18n system.
+     * @param string $level Message level. Should be set to one of self::LEVEL_*
+     * constants.
      * @param array $data Arbitrary data to format message.
      * @return void
      * @since 0.1.0
      */
-    public function sendMessage($message, $data=array())
-    {
+    public function sendMessage(
+        $message,
+        $level=self::FLASH_NOTICE,
+        $data=array()
+    ) {
         $messages = $this->getFlash($this->messageKey, array());
         while(sizeof($messages) >= 10) {
             array_shift($messages);
         }
-        $messages[] = Yii::t('user-messages', $message, $data);
+        $messages[] = array(
+            'message' => Yii::t('user-messages', $message, $data),
+            'level' => $level,
+        );
         $this->setFlash($this->messageKey, $messages);
     }
     /**
      * Fetches all previously stored user messages.
-     * 
+     *
+     * @param boolean $delete Whether to delete messages or not.
+     *
      * @return string[] List of messages.
      * @since 0.1.0
      */
@@ -108,15 +140,5 @@ class WebUserLayer extends CWebUser
     public function hasData($alias)
     {
         return $this->hasFlash($this->dataKeyPrefix.$alias);
-    }
-    /**
-     * Getter for saved username.
-     * 
-     * @return string
-     * @since 0.1.0
-     */
-    public function getUsername()
-    {
-        return $this->getState('username');
     }
 }
