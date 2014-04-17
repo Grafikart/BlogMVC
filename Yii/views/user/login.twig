@@ -1,0 +1,22 @@
+{% extends 'views/layouts/main.twig' %}
+{% block header_auth_link %}{% endblock %}
+{% block content %}
+    {% set form = this.beginWidget('CActiveForm', {
+        'htmlOptions':{'class':'form-signin'}
+    }) %}
+    <h4 class="">Please sign in</h4>
+    <div class="form-group{{ user.hasErrors()?' has-error' }}">
+        {{ form.textField(user, 'username', {
+            'class':'form-control',
+            'placeholder':user.getAttributeLabel('username'),
+        }) }}
+        {{ form.passwordField(user, 'password', {
+            'class':'form-control',
+            'placeholder':user.getAttributeLabel('password'),
+        }) }}
+        {{ C.Html.submitButton('Sign in', {
+            'class':'btn btn-lg btn-primary btn-block',
+        }) }}
+    </div>
+    {{ void(this.endWidget()) }}
+{% endblock %}

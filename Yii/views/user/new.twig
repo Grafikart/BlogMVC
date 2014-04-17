@@ -1,0 +1,38 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h2>Create new user</h2>
+{% set form = this.beginWidget('CActiveForm', {
+    'htmlOptions':{'class':'col-md-6'}
+}) %}
+<div class="row form-group{{ user.getError('username')?' has-error' }}">
+    {{ form.textField(user, 'username', {
+        'placeholder':user.getAttributeLabel('username'),
+        'class':'form-control'
+    }) }}
+    {% if user.getError('username') %}
+        <span class="help-block">{{ user.getError('username') }}</span>
+    {% endif %}
+</div>
+<div class="row form-group{{ user.getError('newPassword')?' has-error' }}">
+    {{ form.passwordField(user, 'newPassword', {
+        'placeholder':user.getAttributeLabel('newPassword'),
+        'class':'form-control'
+    }) }}
+    {% if user.getError('newPassword') %}
+        <span class="help-block">{{ user.getError('newPassword') }}</span>
+    {% endif %}
+</div>
+<div class="row form-group{{ user.getError('newPasswordRepeat')?' has-error' }}">
+    {{ form.passwordField(user, 'newPasswordRepeat', {
+        'placeholder':user.getAttributeLabel('newPasswordRepeat'),
+        'class':'form-control'
+    }) }}
+    {% if user.getError('newPasswordRepeat') %}
+        <span class="help-block">{{ user.getError('newPasswordRepeat') }}</span>
+    {% endif %}
+</div>
+<div class="row form-group">
+    {{ C.Html.tag('button', {'type':'submit', 'class':'btn btn-primary'}, 'Submit') }}
+</div>
+{{ void(this.endWidget()) }}
+{% endblock %}

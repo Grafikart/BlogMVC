@@ -1,0 +1,32 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h2>
+    Users
+    <a href="{{ this.createUrl('user/new') }}" class="btn btn-primary pull-right">Create new</a>
+</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Username</th>
+            <th>Number of posts</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr{{ user.id == App.request.getQuery('created', 0)?' class="success"' }}>
+                <td>{{ user.id }}</td>
+                <td>
+                    {{ user.username }}
+                    {% if App.user.id == user.id %}
+                        <a href="{{ this.createUrl('user/profile') }}" class="btn btn-primary btn-xs">Edit</a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ this.createUrl('post/author', {'id':user.id}) }}">{{ user.postCount }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

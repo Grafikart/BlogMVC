@@ -1,0 +1,20 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+    <h2>Suicide booth</h2>
+    <div class="container">
+        <div class="row">
+            <div class="alert alert-info col-md-8">
+                Clicking button below will delete your profile with all of your posts.
+                If you are completely, undoubtly, 100% sure, just press the button below.
+                If you are not, just <a href="{{ this.createUrl('user/profile') }}" class="alert-link">go back</a>.
+            </div>
+        </div>
+        <div class="row">
+            {% set form = this.beginWidget('CActiveForm') %}
+                <button class="btn btn-warning" type="submit" name="confirm" value="true">
+                    Delete my profile
+                </button>
+            {{ void(this.endWidget()) }}
+        </div>
+    </div>
+{% endblock %}
