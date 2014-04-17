@@ -8,4 +8,5 @@ return array(
     'badRequest.invalidFormat' => 'Invalid format specified',
     'notAuthorized.postOwnership' => 'You are trying to modify or delete post that doesn\'t belong to you. You should be ashamed!',
     'internalServerError.dataIntegrityFailure' => 'Couldn\'t continue because of data integrity failure. If you\'re site admin, check application log for precise error description.',
+    'internalServerError.missingFile' => 'Requested file could not be read.'
 );
