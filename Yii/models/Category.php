@@ -4,12 +4,15 @@
  * Description of Category
  *
  * @todo Restricted slugs should be fetched from global config.
- * 
+ * @todo Add profiling
+ *
+ * @method static Category model() Gets category model.
+ *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
  * @since 0.1.0
- * @package etki-tools
- * @subpackage <subpackage>
+ * @package blogmvc
+ * @subpackage yii
  */
 class Category extends ActiveRecordLayer
 {
@@ -48,71 +51,69 @@ class Category extends ActiveRecordLayer
         return 'categories';
     }
     /**
-     * Slug validation method. Uses direct db connection since AR would
-     * probably generate a huge overhead.
-     * Copied directly from {@link Post} :(
+     * Scope method for retrieving pacategories in paged manner.
      * 
-     * @param string $attribute Attribute name (i guess it will be `slug`,
-     * right?). Added for compatibility.
-     * @param array $params Additional validation params. Added for
-     * compatibility.
-     * @return void
+     * @param int $page Current page.
+     * @param int $perPage Number of categories per page.
+     * @return \Category current instance.
      * @since 0.1.0
      */
-    public function validateSlug($attribute, array $params=null)
+    public function paged($page=1, $perPage=25)
     {
-        $db = Yii::app()->db;
-        $slug = $this->$attribute;
-        if (in_array($slug, $this->restrictedSlugs(), true)) {
-            $error = Yii::t('validation-errors', 'post.restrictedSlug', array(
-                '{slug}' => $slug,
-            ));
-            $this->addError($attribute, $error);
-        }
-        $slugExists = $db->createCommand()
-                         ->select('1')
-                         ->from($this->tableName())
-                         ->where('slug = :slug', array(':slug' => $slug))
-                         ->queryScalar();
-        if ($slugExists) {
-            $error = Yii::t('validation-errors', 'post.slugExists', array(
-                '{slug}' => $slug,
-            ));
-            $this->addError($attribute, $error);
-        }
+        $this->getDbCriteria()->mergeWith(array(
+            'order' => 'id ASC',
+            'limit' => $perPage,
+            'offset' => ($page - 1) * $perPage,
+        ));
+        return $this;
     }
     /**
-     * Automatic slug generator. Looks up database for selected slug, and
-     * returns updated version if slug has already been used; returns original
-     * slug if it hasn't been used yet.
-     * Copied directly from {@link Post} :(
+     * Returns plain list of existing categories in :category_id =>
+     * :category_name form.
      * 
-     * @param string $slug Slug to be checked.
-     * @return string New slug
+     * @return string[] List of existing categories.
      * @since 0.1.0
      */
-    public function uniqifySlug($slug)
+    public function getList()
     {
+        /** @var CDbConnection $db */
         $db = Yii::app()->db;
-        $uniqueSlug = $slug;
-        $where = 'slug = :slug OR slug LIKE :slug_mask';
-        $count = (int) $db->createCommand()
-                          ->select('COUNT(slug) AS slug_count')
-                          ->from($this->tableName())
-                          ->where($where, array(
-                              ':slug' => $slug,
-                              ':slug_mask' => $slug.'-%',
-                          ))->queryScalar();
-        if (in_array($slug, $this->restrictedSlugs(), true)) {
-            $count++;
+        $categories = $db->createCommand()
+                ->select(array('id', 'name'))
+                ->from($this->tableName())
+                ->queryAll();
+        $list = array();
+        foreach($categories as $category) {
+            $list[(int)$category['id']] = $category['name'];
         }
-        if ($count !== 0) {
-            $uniqueSlug = $slug.'-'.($count + 1);
-        }
-        Yii::trace('Uniqifying slug: '.$slug.' -> '.$uniqueSlug, 'models.post');
-        return $uniqueSlug;
+        return $list;
     }
-    public function mostPopular($limit=5)
+
+    /**
+     * Recalculates post count for all categories.
+     *
+     * Just coz i'm lazy enough to not to try it with builder.
+     *
+     * @since 0.1.0
+     */
+    public function recalculateCounters()
+    {
+        \Yii::app()->db->createCommand(
+            'UPDATE categories AS c '.
+            'SET post_count = '.
+            '(SELECT COUNT(category_id) FROM posts WHERE category_id = c.id)'
+        )->execute();
+    }
+    /**
+     * Scope method for filtering most popular categories.
+     * 
+     * @throws \BadMethodCallException Thrown if limit is set less than 1.
+     * 
+     * @param int $limit how much top categories should be fetched.
+     * @return \Category Current instance.
+     * @since 0.1.0
+     */
+    public function popular($limit=5)
     {
         if (($limit = (int)$limit) < 1) {
             throw new \BadMethodCallException('Limit can\'t be less than one');
@@ -123,12 +124,48 @@ class Category extends ActiveRecordLayer
         ));
         return $this;
     }
+
+    /**
+     * Before-validation callback to automate slug generation even if it wasn't
+     * handled on frontend.
+     *
+     * @return bool Operation success.
+     * @since 0.1.0
+     */
+    public function beforeValidate()
+    {
+        if (!parent::beforeValidate()) {
+            return false;
+        }
+        if (!empty($this->slug)) {
+            $this->slug = \Yii::app()->formatter->slugify($this->slug);
+            return true;
+        }
+        if (empty($this->name)) {
+            return false;
+        }
+        $this->slug = \Yii::app()->formatter->slugify($this->name);
+        return true;
+    }
+    /**
+     * Standard Yii method which returns array of relation definitions.
+     * 
+     * @return array Set of relation definitions
+     * @since 0.1.0
+     */
     public function relations()
     {
         return array(
-            'posts' => array(self::HAS_MANY, 'Post', 'post_id'),
+            'posts' => array(self::HAS_MANY, 'Post', 'category_id'),
+            'postCount' => array(self::STAT, 'Post', 'category_id'),
         );
     }
+    /**
+     * Returns set of internationalized attribute labels.
+     * 
+     * @return string[] Attribute labels.
+     * @since 0.1.0
+     */
     public function getAttributeLabels()
     {
         return array(
@@ -136,5 +173,33 @@ class Category extends ActiveRecordLayer
             'slug' => Yii::t('forms-labels', 'category.slug'),
             'post_count' => Yii::t('forms-labels', 'category.postCount'),
         );
+    }
+
+    /**
+     * Standard method defining validation rules.
+     *
+     * @return array Set of validation rules.
+     * @since 0.1.0
+     */
+    public function rules()
+    {
+        return array(
+            array(
+                array('name', 'slug',),
+                'length',
+                'min' => 3,
+                'max' => 50,
+            ),
+        );
+    }
+    /**
+     * This method defines applied behaviors.
+     *
+     * @return string[] List of behavior names.
+     * @since 0.1.0
+     */
+    public function behaviors()
+    {
+        return array('SlugBehavior');
     }
 }

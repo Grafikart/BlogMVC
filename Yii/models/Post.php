@@ -1,7 +1,14 @@
 <?php
-
 /**
- * Description of Post
+ * Post ActiveRecord implementation.
+ *
+ * @method boolean slugExists() Behavior-inherited method which checks slug
+ * existence.
+ * @method static Post model() Gets post model.
+ * @method string generateSlug() Generates post slug.
+ * @property Category $category Related category.
+ *
+ * @todo Add profiling
  *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
@@ -33,19 +40,26 @@ class Post extends ActiveRecordLayer
      */
     public $name;
     /**
-     * Post slug
+     * Post slug.
      * 
      * @var string 
      * @since 0.1.0
      */
     public $slug;
     /**
-     * Post text.
+     * Post text in markdown.
      * 
      * @var string
      * @since 0.1.0
      */
     public $content;
+    /**
+     * Post text converted from markdown to HTML.
+     * 
+     * @var string
+     * @since 0.1.0
+     */
+    public $formattedContent;
     /**
      * Date of creation.
      * 
@@ -53,21 +67,15 @@ class Post extends ActiveRecordLayer
      * @since 0.1.0
      */
     public $created;
-    
     /**
-     * Hard-coded DAO-access query for getting of total slug usages. Uses
-     * <b>:slug</b> and <b>:slug_mask</b> placeholders.
-     * Hard-coding is bad, but bindValues doesn't work with table/column name,
-     * mmkay?
-     * 
-     * @var string
+     * Category cache. Since {@link afterSave()} can't tell if category is
+     * changed, it has to be cached.
+     *
+     * @var int
      * @since 0.1.0
      */
-    const SQL_GET_SLUG_COUNT = 
-        'SELECT COUNT(slug) AS slug_count
-         FROM posts
-         WHERE slug = :slug OR
-            slug LIKE :slug_mask';
+    public $oldCategory;
+
     /**
      * Standard Yii method for defining current model table name.
      * 
@@ -96,8 +104,8 @@ class Post extends ActiveRecordLayer
      * @throws \InvalidArgumentException Thrown if <var>$postsPerPage</var>
      * equals to zero or less.
      * 
-     * @param int $postsPerPage
-     * @return type
+     * @param int $postsPerPage Number of posts per page.
+     * @return int Number of total pages.
      * @since 0.1.0
      */
     public function totalPages($postsPerPage=5)
@@ -107,40 +115,34 @@ class Post extends ActiveRecordLayer
                        'than 0';
             throw new \InvalidArgumentException($message);
         }
-        return ceil($this->total()/$postsPerPage);
-    }
-    /** @todo CDbExpression **/
-    public function today()
-    {
-        /*return -100;
-        $cacheKey = 'posts.amount.total';
-        $data = Yii::app()->cache->get($cacheKey);
-        if ($data === false) {*/
-            $data = (int)Yii::app()->db->createCommand()
-                            ->select('COUNT(id)')
-                            ->from($this->tableName())
-                            ->where('created > :today', array(
-                                ':today' => date('Y-m-d')
-                            ))
-                            ->queryScalar();
-            /*Yii::app()->cache->set($cacheKey, $data, 3600);
-        }*/
-        return $data;
+        return ceil($this->count()/$postsPerPage);
     }
     /**
-     * Slug validation method. Uses direct db connection since AR would
-     * probably generate a huge overhead.
+     * Returns number of posts submitted today.
+     * 
+     * @todo Most probably the same effect may be achieved using
+     * CDbExpression. Though that may be a bit slower, it would be more
+     * correct.
+     * 
+     * @return int Number of today's posts.
+     * @since 0.1.0
+     */
+    public function today()
+    {
+        return $this->count('created >= :today', array(
+            ':today' => date('Y-m-d'),
+        ));
+    }
+    /**
+     * Slug validation method. Uses {@link slugExists()} ethod for checking.
      * 
      * @param string $attribute Attribute name (i guess it will be `slug`,
      * right?). Added for compatibility.
-     * @param array $params Additional validation params. Added for
-     * compatibility.
      * @return void
      * @since 0.1.0
      */
-    public function validateSlug($attribute, array $params=null)
+    public function validateSlug($attribute/*, array $params=null*/)
     {
-        $db = Yii::app()->db;
         $slug = $this->$attribute;
         if (in_array($slug, $this->restrictedSlugs(), true)) {
             $error = Yii::t('validation-errors', 'post.restrictedSlug', array(
@@ -148,12 +150,7 @@ class Post extends ActiveRecordLayer
             ));
             $this->addError($attribute, $error);
         }
-        $slugExists = $db->createCommand()
-                         ->select('1')
-                         ->from($this->tableName())
-                         ->where('slug = :slug', array(':slug' => $slug))
-                         ->queryScalar();
-        if ($slugExists) {
+        if ($this->slugExists($slug)) {
             $error = Yii::t('validation-errors', 'post.slugExists', array(
                 '{slug}' => $slug,
             ));
@@ -161,34 +158,23 @@ class Post extends ActiveRecordLayer
         }
     }
     /**
-     * Automatic slug generator. Looks up database for selected slug, and
-     * returns updated version if slug has already been used; returns original
-     * slug if it hasn't been used yet.
+     * Retrieves current category ID.
      * 
-     * @param string $slug Slug to be checked.
-     * @return string New slug
+     * @return int ID of current post category.
      * @since 0.1.0
      */
-    public function uniqifySlug($slug)
+    public function getCurrentCategory()
     {
+        Yii::beginProfile('post.getCurrentCategory');
+        /** @var CDbConnection $db */
         $db = Yii::app()->db;
-        $uniqueSlug = $slug;
-        $where = 'slug = :slug OR slug LIKE :slug_mask';
-        $count = (int) $db->createCommand()
-                          ->select('COUNT(slug) AS slug_count')
-                          ->from($this->tableName())
-                          ->where($where, array(
-                              ':slug' => $slug,
-                              ':slug_mask' => $slug.'-%',
-                          ))->queryScalar();
-        if (in_array($slug, $this->restrictedSlugs(), true)) {
-            $count++;
-        }
-        if ($count !== 0) {
-            $uniqueSlug = $slug.'-'.($count + 1);
-        }
-        Yii::trace('Uniqifying slug: '.$slug.' -> '.$uniqueSlug, 'models.post');
-        return $uniqueSlug;
+        $id = (int) $db->createCommand()
+                       ->select('category_id')
+                       ->from($this->tableName())
+                       ->where('id = :id', array(':id' => $this->id))
+                       ->queryScalar();
+        Yii::endProfile('post.getCurrentCategory');
+        return $id;
     }
     /**
      * Scope implementation. This method allows setting additional conditions
@@ -201,7 +187,7 @@ class Post extends ActiveRecordLayer
      * @return \Post Current model instance.
      * @since 0.1.0
      */
-    public function recently($page=1, $perPage=5)
+    public function paged($page=1, $perPage=5)
     {
         $this->getDbCriteria()->mergeWith(array(
             'order' => 'created DESC',
@@ -213,37 +199,80 @@ class Post extends ActiveRecordLayer
     /**
      * Post Markdown-formatting callback.
      * 
-     * @return void
+     * @return boolean Always returns true.
      * @since 0.1.0
      */
     public function afterFind() {
-        // @todo wouldn't it be great to create CMarkdown just once?
+        parent::afterFind();
+        /** @var DataFormatter $formatter */
         $formatter = Yii::app()->formatter;
-        $this->content = $formatter->formatText($this->content, 'markdown');
+        $this->formattedContent = $formatter->formatText($this->content, 'markdown');
+        return true;
     }
     /**
-     * Callback for automating timestamp creating process
+     * A callback for automating category counter updates, timestamps and
+     * ownership assignment.
+     * Tricky part about ownership is that model shouldn't know anything about
+     * current user, but easiest way to automate things is by adding it here
+     * and not in controller (actually, controller itself should not alter
+     * data in any way too). Adding author ID in beforeSave also breaks
+     * validation a little (user_id should be required on post creation).
      * 
-     * @return void
+     * @return boolean False if parent beforeSave() failed, true otherwise.
      * @since 0.1.0
      */
     public function beforeSave() {
-        if ($this->isNewRecord) {
-            $this->created = new CDbExpression('NOW()');
-            $category = Category::model()->findByPk($this->category_id);
-            $category->post_count++;
-            $category->save();
-        } else {
-            $currentCategory = $this->getCurrentCategory();
-            if ($currentCategory !== $this->category_id) {
-                $oldCategory = Category::model()->findByPk($currentCategory);
-                $oldCategory->post_count--;
-                $oldCategory->save();
-                $newCategory = Category::model()->findByPk($this->category_id);
-                $newCategory->post_count++;
-                $newCategory->save();
-            }
+        if (!parent::beforeSave()) {
+            return false;
         }
+        if (empty($this->slug)) {
+            $this->slug = $this->generateSlug($this->name);
+        }
+        if ($this->getIsNewRecord()) {
+            $this->user_id = Yii::app()->user->id; // This is quite `tricky & ouch`. See PHPDoc.
+        } else {
+            $this->oldCategory = $this->getCurrentCategory();
+        }
+        return true;
+    }
+    /**
+     * After save callback. Updates `lastPost` global state, which is required
+     * for invalidating cache dependencies (e.g. sidebar).
+     *
+     * Not using `saveCounters()` because of Postgresql typecasting error.
+     * 
+     * @return boolean False if parent afterSave() failed, true otherwise.
+     * @since 0.1.0
+     */
+    public function afterSave() {
+        Yii::app()->setGlobalState('lastPostUpdate', time());
+        if ($this->getIsNewRecord()) {
+            $this->category->saveCounters(array('post_count' => '1'));
+        } else if ($this->oldCategory !== (int) $this->category_id) {
+            $oldCategory = \Category::model()->findByPk($this->oldCategory);
+            $oldCategory->post_count--;
+            $oldCategory->save(false, array('post_count'));
+            $this->category->post_count++;
+            $this->category->save(false, array('post_count'));
+        }
+        return true;
+    }
+
+    /**
+     * After-delete callback, sets global state to invalidate cache.
+     *
+     * @return boolean
+     * @since 0.1.0
+     */
+    public function afterDelete()
+    {
+        if (!parent::afterDelete()) {
+            return false;
+        }
+        $this->category->post_count--;
+        $this->category->save(false, array('post_count'));
+        Yii::app()->setGlobalState('lastPostUpdate', time());
+        return true;
     }
     /**
      * Method for getting internationalized labels. Since it is certanly not
@@ -260,12 +289,12 @@ class Post extends ActiveRecordLayer
     {
         return array(
             'id' => 'ID',
-            'category_id' => Yii::t('post.category'),
-            'user_id' => Yii::t('post.author'),
-            'name' => Yii::t('post.name'),
-            'slug' => Yii::t('post.slug'),
-            'content' => Yii::t('post.content'),
-            'created' => Yii::t('post.created'),
+            'category_id' => Yii::t('forms-labels', 'post.category'),
+            'user_id' => Yii::t('forms-labels', 'post.author'),
+            'name' => Yii::t('forms-labels', 'post.name'),
+            'slug' => Yii::t('forms-labels', 'post.slug'),
+            'content' => Yii::t('forms-labels', 'post.content'),
+            'created' => Yii::t('forms-labels', 'post.created'),
         );
     }
     /**
@@ -299,7 +328,13 @@ class Post extends ActiveRecordLayer
         return array(
             'author' => array(self::BELONGS_TO, 'User', 'user_id'),
             'category' => array(self::BELONGS_TO, 'Category', 'category_id'),
-            'comments' => array(self::HAS_MANY, 'Comment', 'post_id'),
+            'comments' => array(
+                self::HAS_MANY,
+                'Comment',
+                'post_id',
+                'order' => 'comments.created DESC'
+            ),
+            'commentCount' => array(self::STAT, 'Comment', 'post_id'),
         );
     }
     /**
@@ -315,6 +350,43 @@ class Post extends ActiveRecordLayer
     public function rules()
     {
         return array(
+            array(
+                array('name',),
+                'length',
+                'allowEmpty' => false,
+                'min' => 3,
+                'max' => 255,
+                //'on' => array('insert', 'update'),
+            ),
+            array(
+                array('slug',),
+                'length',
+                'allowEmpty' => true,
+                'min' => 3,
+                'max' => 255,
+                //'on' => array('insert', 'update'),
+            ),
+            array(
+                array('category_id',),
+                'required',
+                //'on' => array('insert', 'update'),
+            ),
+            array(
+                array('content',),
+                'length',
+                'min' => 10,
+                //'on' => array('insert', 'update'),
+            ),
         );
+    }
+    /**
+     * This method defines applied behaviors.
+     * 
+     * @return string[] List of behavior names.
+     * @since 0.1.0
+     */
+    public function behaviors()
+    {
+        return array('DatetimeCreatedBehavior', 'SlugBehavior',);
     }
 }

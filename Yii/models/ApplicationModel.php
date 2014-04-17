@@ -4,6 +4,8 @@
  * This model works with application-scope data (config) or data from all
  * application components (statistics).
  *
+ * @todo Add profiling
+ *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
  * @since 0.1.0
@@ -95,8 +97,8 @@ class ApplicationModel extends CModel
      */
     public function init()
     {
-        $this->name = Yii::app()->name;
-        $this->language = Yii::app()->language;
+        $this->name = \Yii::app()->name;
+        $this->language = \Yii::app()->language;
     }
     /**
      * Returns current or cached statistics.
@@ -106,7 +108,7 @@ class ApplicationModel extends CModel
      */
     public static function getStatistics()
     {
-        if (($stats = Yii::app()->cache->get('app.statistics')) === false) {
+        if (($stats = \Yii::app()->cache->get('app.statistics')) === false) {
             $stats = array(
                 'users.total' => User::model()->count(),
                 'categories.total' => Category::model()->count(),
@@ -130,7 +132,7 @@ class ApplicationModel extends CModel
      *
      * @param string[] $attributes Attributes to be saved.
      *
-     * @return bool
+     * @return bool True on success, false otherwise.
      * @since 0.1.0
      */
     public function save(array $attributes=null)
@@ -148,23 +150,21 @@ class ApplicationModel extends CModel
             case self::CONFIG_FILE_MISSING:
                 $error = Yii::t('validation-errors', 'app.missingConfig', $l10nData);
                 $this->configErrors[$result] = $error;
-                break;
+                return false;
             case self::CONFIG_FILE_MISSING_DATA:
                 $error = Yii::t('validation-errors', 'app.missingConfigData', $l10nData);
                 $this->configErrors[$result] = $error;
-                break;
+                return false;
             case self::CONFIG_FILE_NOT_WRITABLE:
                 $error = Yii::t('validation-errors', 'app.configNotWritable', $l10nData);
                 $this->configErrors[$result] = $error;
-                break;
+                return false;
             case self::CONFIG_FILE_UNREADABLE:
                 $error = Yii::t('validation-errors', 'app.unreadableConfig', $l10nData);
                 $this->configErrors[$result] = $error;
-                break;
-            default:
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
     /**
      * Updates current config.
@@ -227,7 +227,7 @@ class ApplicationModel extends CModel
         $template = "<?php\nreturn :config;\n";
         $config = str_replace(
             ':config',
-            Yii::app()->formatter->formatArray($config, 'php'),
+            Yii::app()->formatter->renderArray($config),
             $template
         );
         return file_put_contents($path, $config);
