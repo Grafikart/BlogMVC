@@ -40,7 +40,7 @@ class ApplicationService
      * Returns basic service info, such as uptime, Yii version, etc. Uses
      * cache to store that information for a minute.
      * 
-     * @return list[] Server and software information in :title => :value
+     * @return string[] Server and software information in :title => :value
      * format.
      * @since 0.1.0
      */
@@ -98,11 +98,11 @@ class ApplicationService
             return $fallback;
         }
         $data = CJSON::decode($json, true);
-        foreach (array('extra', 'branch-alias', 'dev-master') as $key) {
+        foreach (array('extra', 'branch-alias') as $key) {
             if (!isset($data[$key])) {
                 return $fallback;
             }
-            $data = $data[$key];
+            $data = reset($data[$key]);
         }
         return $data;
     }
