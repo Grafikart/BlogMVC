@@ -67,6 +67,12 @@ did not use Yii tools or even didn't know about them. Actually, i've rewritten
 and thrown pieces of code during development just because i discovered ways to
 do same thing in more elegant or native manner.
 
+### Q: What the heck with root namespace prefix everywhere? I thought Yii doesn't use namespaces.
+
+That's true. It was completely unnecessary to use it, especially because
+namespaces are used in tests only, but i just was doing everything as if someone
+would come one day and rewrite half of application keeping other half intact.
+
 ### Q: I have more questions / i have a suggestion / i want to hug you
 
 **A**: Most possibly i won't develop this application any further (and, i hope,
