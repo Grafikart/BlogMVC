@@ -6,6 +6,7 @@ build_settings:
 setup:
   composer:
     action: install
+
 test:
   php_parallel_lint:
     directories:

@@ -6,3 +6,5 @@
 /.project/
 /.settings/
 /tests/_log/*
+!/tests/_log/.gitkeep
+*.log
