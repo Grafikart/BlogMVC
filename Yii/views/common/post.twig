@@ -1,0 +1,25 @@
+{% set post_url = this.createUrl('post/show', {'slug': post.slug}) %}
+<article id="post-{{ post.id }}">
+    {% block post_content_before %}
+        <h2><a href="{{ post_url }}">{{ post.name }}</a></h2>
+        <p>
+            <small>
+                Category : <a href="{{ this.createUrl('category/index', {'slug':post.category.slug}) }}">
+                    {{ post.category.name }}
+                </a>, by <a href="{{ this.createUrl('user/posts', {'id': post.author.id}) }}">
+                    {{ post.author.username }}
+                </a> on <em>{{ post.created }}</em>
+            </small>
+        </p>
+    {% endblock %}
+
+    <p>
+        {% block post_content %}
+            {{ post.formattedContent }}
+        {% endblock %}
+    </p>
+    {% block post_content_after %}
+    {% endblock %}
+</article>
+
+<hr>

@@ -1,0 +1,15 @@
+{% extends 'views/common/post.twig' %}
+{% block post_content %}
+    {{ post.formattedContent[:400] }}
+    {% if post.formattedContent|length > 400 %}
+        {{ post.formattedContent[400:]|striptags|truncate(100, true) }}
+    {% endif %}
+{% endblock %}
+
+{% block post_content_after %}
+{% if post.formattedContent|length > 500 %}
+    <p class="text-right">
+        <a href="{{ post_url }}" class="btn btn-primary">Read more...</a>
+    </p>
+{% endif %}
+{% endblock %}
