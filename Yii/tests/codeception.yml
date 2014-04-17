@@ -12,7 +12,7 @@ settings:
 modules:
     config:
         Db:
-            dsn: ''
-            user: ''
-            password: ''
+            dsn: 'pgsql:dbname=testing'
+            user: 'testing'
+            password: 'testing'
             dump: tests/_data/dump.sql

@@ -19,5 +19,18 @@ modules:
         #PhpBrowser:
         #    url: 'http://blogmvc.yii'
         Selenium2:
-          url: 'http://blogmvc.yii'
-          browser: firefox
+            url: 'http://blogmvc.yii'
+            browser: firefox
+env:
+    phantom:
+        modules:
+            config:
+                Selenium2:
+                    browser: phantomjs
+    chrome:
+        modules:
+            config:
+                Selemium2:
+                    browser: chrome
+    firefox:
+
