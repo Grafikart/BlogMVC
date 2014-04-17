@@ -1,0 +1,36 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h2>Statistics</h2>
+<table class="table table-striped">
+    <tbody>
+    {% for option, value in statistics %}
+        <tr>
+            <td>{{ option }}</td>
+            <td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Service status</h2>
+<table class="table table-striped">
+    <tbody>
+    {% for option, value in status %}
+        <tr>
+            <td>{{ option }}</td>
+            <td>{{ value }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="alert alert-info">
+    <p>
+    Data you are looking at may be cached. Cache timeout is set to one minute
+    for status data and to one hour for statistics data. You can flush the cache
+    manually, though:
+    </p>
+    <p class="text-center container">
+        <a class="btn btn-primary" href="{{ this.createUrl('admin/flushCache', {'returnUrl':App.request.requestUri}) }}">Flush cache</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+    <h2>Application</h2>
+    <div class="row">
+        {% set form = this.beginWidget('CActiveForm') %}
+            <div class="col-md-4">
+                {% if appModel.configErrors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for error in appModel.configErrors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                <div class="form-group{{ appModel.getError('name')?' has-error' }}">
+                    {{ form.label(appModel, 'name') }}
+                    {{ form.textField(appModel, 'name', {
+                        'class':'form-control',
+                    }) }}
+                </div>
+                <div class="form-group{{ appModel.getError('language')?' has-error' }}">
+                    {{ form.label(appModel, 'language') }}
+                    {{ form.dropdownList(appModel, 'language', appModel.availableLanguages, {
+                        'class':'form-control',
+                    }) }}
+                    {% if appModel.getError('language') %}
+                        <span class="help-block">{{ appModel.getError('language') }}</span>
+                    {% endif %}
+                </div>
+                <div class="form-group submit-row">
+                    {{ C.Html.submitButton('Save', {'class':'btn btn-primary'}) }}
+                </div>
+            </div>
+        {{ void(this.endWidget()) }}
+    </div>
+    <h2>Cached values</h2>
+        <a href="{{ this.createUrl('admin/flushCache') }}" class="btn btn-primary">Flush cache</a>
+        <a href="{{ this.createUrl('admin/recalculate') }}" class="btn btn-primary">Recalculate counters</a>
+{% endblock %}
