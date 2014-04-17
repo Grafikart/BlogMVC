@@ -11,193 +11,276 @@
  */
 class BaseController extends CController
 {
+    public $layout = 'none';
     /**
      * Current page number.
-     * 
+     *
      * @var int
      * @since 0.1.0
      */
-    protected $pageNumber;
-    /**
-     * Current page title.
-     * 
-     * @var string
-     * @since 0.1.0
-     */
-    protected $pageTitle;
+    public $pageNumber;
     /**
      * Breadcrumbs in form of :url => :title array.
-     * 
+     *
      * @var string[]
      * @since 0.1.0
      */
-    protected $breadcrumbs = array();
+    public $breadcrumbs = array();
     /**
-     * One item length array containing information about previous page in
-     * :url => :title format.
-     * 
-     * @var string[]
+     * Array of replacement rules [[:needle], [:replacement]].
+     *
+     * @var array
      * @since 0.1.0
      */
-    protected $previousPage;
+    public $breadcrumbsReplacements = array(array(), array());
+
     /**
      * Validates and saves current page number.
-     * 
+     *
      * @throws \HttpException HTTP error 400 is generated if invalid page
      * number is provided.
      * @param int $page Page number
      * @return int Current page number.
      * @since 0.1.0
      */
-    protected function setPageNumber($page)
+    public function setPageNumber($page)
     {
-        if (($this->page = (int) $page) < 1) {
-            throw new \HttpException(400, 'badRequest.invalidPageNumber');
+        if (($this->pageNumber = (int)$page) < 1) {
+            throw new \HttpException(400, 'badRequest.invalidPage');
         }
         $this->generateBreadcrumbs();
-        return $this->page;
+        return $this->pageNumber;
     }
+
     /**
-     * Page title getter.
-     * 
-     * @return string Current page title.
+     * Sets page title.
+     *
+     * @param string $pageTitle Page title to be set
      * @since 0.1.0
      */
-    public function getPageTitle()
+    public function setPageTitle($pageTitle)
     {
-        return $this->pageTitle;
-    }
-    /**
-     * Returns breadcrumbs.
-     * 
-     * @return string[] Breadcrumbs.
-     * @since 0.1.0
-     */
-    public function getBreadcrumbs()
-    {
-        return $this->breadcrumbs;
-    }
-    /**
-     * Redefined standard method for `.md` files support.
-     * 
-     * @param string $_viewFile_ File to be rendered.
-     * @param mixed $_data_ Data to be injected into view file.
-     * @param boolean $_return_ Whether to output or return rendered view.
-     * @return string|void If <var>$_return_</var> is set to true, buffered
-     * output is returned, otherwise nothing is returned.
-     * @since 0.1.0
-     */
-    public function renderInternal($_viewFile_, $_data_=null, $_return_=false)
-    {
-        $md = strrpos($_viewFile_, '.md') === strlen($_viewFile_) - 3;
-        if(is_array($_data_)) {
-            extract($_data_, EXTR_PREFIX_SAME, 'data');
-        } else {
-            $data = $_data_;
+        $l = sizeof($this->breadcrumbs);
+        if ($l > 0) {
+            $this->breadcrumbs[$l - 1]['title'] = $pageTitle;
         }
-        if ($_return_) {
-            ob_start();
-            ob_implicit_flush(false);
-            if ($md) {
-                $this->beginWidget('CMarkdown');
-            }
-            require($_viewFile_);
-            if ($md) {
-                $this->endWidget();
-            }
-            return ob_get_clean();
+        parent::setPageTitle($pageTitle);
+    }
+
+    /**
+     * Sets page title and number.
+     *
+     * @param int $pageNumber Current page number.
+     * @param string $pageTitle Current page name.
+     * @since 0.1.0
+     */
+    public function setPage($pageNumber = null, $pageTitle = null)
+    {
+        if ($pageNumber !== null) {
+            $this->setPageNumber($pageNumber);
         }
-        else {
-            if ($md) {
-                $this->beginWidget('CMarkdown');
-            }
-            require($_viewFile_);
-            if ($md) {
-                $this->endWidget();
-            }
+        $this->generateBreadcrumbs();
+        if ($pageTitle !== null) {
+            $this->setPageTitle($pageTitle);
         }
     }
+
     /**
-     * Native Yii method modification for `.md` files support.
-     * 
-     * @param string $viewName View file name.
-     * @param string $viewPath
-     * @param string $basePath
-     * @param string $moduleViewPath
-     * @return string|boolean View file path or false if it couldn't be found.
+     * Adds new breadcrumbs replacement token.
+     *
+     * @param string $needle
+     * @param string $replacement
      * @since 0.1.0
      */
-    public function resolveViewFile(
-        $viewName,
-        $viewPath,
-        $basePath,
-        $moduleViewPath=null
+    public function addBreadcrumbsReplacement($needle, $replacement)
+    {
+        $this->breadcrumbsReplacements[0] = $needle;
+        $this->breadcrumbsReplacements[1] = $replacement;
+    }
+
+    /**
+     * Returns information about parent page: false if there's no parent page,
+     * [:url => :title] otherwise.
+     *
+     * @return array|bool False if there's no parent page, [:url => :title]
+     * otherwise.
+     * @since 0.1.0
+     */
+    public function getParentPage()
+    {
+        $l = sizeof($this->breadcrumbs);
+        if ($l < 2) {
+            return false;
+        }
+        return array($this->breadcrumbs[$l - 2]);
+    }
+
+    /**
+     * Renders markdown file.
+     *
+     * @throws HttpException Thrown if requested file could not be read.
+     *
+     * @param string $view View file name.
+     * @param string $file Markdown file alias.
+     * @param array $data Additional data for rendering.
+     * @param string $contentKey Key under which rendered markdown content will
+     * be passed to template rendering engine.
+     * @since 0.1.0
+     */
+    public function renderMd(
+        $view,
+        $file,
+        array $data=array(),
+        $contentKey='content'
     ) {
-        if (empty($viewName)) {
-            return false;
+        $filePath = $this->resolveMarkdownFile($file);
+        if (!$filePath || ($text = file_get_contents($filePath)) === false) {
+            throw new \HttpException(500, 'internalServerError.missingFile');
         }
-
-        if ($moduleViewPath===null) {
-            $moduleViewPath=$basePath;
-        }
-
-        if (strrpos($viewName, '.md') === strlen($viewName) - 3) {
-            $extension = '.md';
-            $viewName = substr($viewName, 0, strlen($viewName) - 3);
-        }
-        else if (($renderer = Yii::app()->getViewRenderer()) !== null) {
-            $extension = $renderer->fileExtension;
-        } else {
-            $extension = '.php';
-        }
-        if ($viewName[0] === '/') {
-            if (strncmp($viewName, '//', 2) === 0) {
-                $viewFile = $basePath.$viewName;
-            } else {
-                $viewFile = $moduleViewPath.$viewName;
-            }
-        }
-        else if (strpos($viewName,'.')) {
-            $viewFile = Yii::getPathOfAlias($viewName);
-        } else {
-            $viewFile = $viewPath.DIRECTORY_SEPARATOR.$viewName;
-        }
-        if (is_file($viewFile.$extension)) {
-            return Yii::app()->findLocalizedFile($viewFile.$extension);
-        }
-        else if ($extension !== '.php' && is_file($viewFile.'.php')) {
-            return Yii::app()->findLocalizedFile($viewFile.'.php');
-        } else {
-            return false;
-        }
+        $text = \Yii::app()->formatter->formatText($text, 'markdown');
+        $data[$contentKey] = $text;
+        $this->render($view, $data);
     }
+
     /**
-     * Breadcrumbs generation method.
-     * 
+     * Finds localized or general markdown file.
+     *
+     * @param string $alias Markdown file alias.
+     * @return string|boolean File path or false if path does not exist.
+     * @since 0.1.0
+     */
+    public function resolveMarkdownFile($alias)
+    {
+        $lang = \Yii::app()->language;
+        $lastDot = (int) strrpos($alias, '.');
+        $localizedFile = substr($alias, 0, $lastDot).'.'.$lang.substr($alias, $lastDot);
+        $filePath = \Yii::getPathOfAlias($localizedFile).'.md';
+        if (file_exists($filePath)) {
+            return $filePath;
+        }
+        $filePath = \Yii::getPathOfAlias($alias).'.md';
+        if (file_exists($filePath)) {
+            return $filePath;
+        }
+        return false;
+    }
+
+    /**
+     * Breadcrumbs generation method. Does virtually nothing if breadcrumbs are
+     * already set and <var>$force</var> is set to false.
+     *
+     * @param boolean $setPageTitle Whether to autogenerate page title or not.
+     * @param boolean $force Whether to force regeneration if breadcrumbs are
+     * generated or not.
      * @return void
      * @since 0.1.0
      */
-    protected function generateBreadcrumbs()
+    protected function generateBreadcrumbs($setPageTitle=true, $force=false)
     {
-        $segments = explode('/', trim(Yii::app()->request->requestUri, '/'));
+        if (sizeof($this->breadcrumbs) > 0 && !$force) {
+            return;
+        }
+        $uri = trim(Yii::app()->request->requestUri, '/');
+        $this->breadcrumbs = array();
+        if (($pos = strpos($uri, '?')) !== false) {
+            $lastPage = substr($uri, $pos + 1);
+            $uri = substr($uri, 0, $pos);
+        }
+        $segments = explode('/', $uri);
         $url = '';
         foreach ($segments as $segment) {
-            if (empty($segment)) {
-                continue;
+            if (in_array($segment, array_keys($this->breadcrumbsReplacements), true)) {
+                $this->breadcrumbs[] = array(
+                    'url' => $url .= '/' . $segment,
+                    'title' => $this->breadcrumbsReplacements[$segment],
+                );
+            } else {
+                $this->breadcrumbs[] = array(
+                    'url' => $url .= '/' . $segment,
+                    'title' => ucfirst(Yii::app()->formatter->deslugify($segment)),
+                );
             }
-            $url .= '/'.$segment;
-            $this->breadcrumbs[$url] = ucfirst($segment);
+        }
+        if (isset($lastPage) && strlen($lastPage) > 0) {
+            $this->addParamsBreadcrumb($lastPage);
+        }
+        if ($setPageTitle) {
+            $lastBreadcrumb = $this->getLastBreadcrumb();
+            $this->setPageTitle($lastBreadcrumb['title']);
         }
     }
+
     /**
-     * Before-action callback, used to automate breadcrumbs generation.
-     * 
-     * @param CAction $action Action to run.
-     * @return boolean Parent beforeAction() return status.
+     * Generates additional breadcrumb element based on query string.
+     *
+     * @param string $paramString Query string.
      * @since 0.1.0
      */
-    public function beforeAction($action) {
+    protected function addParamsBreadcrumb($paramString)
+    {
+        $params = explode('&', $paramString);
+        $parts = array();
+        foreach ($params as $param) {
+            $pos = strpos($param, '=');
+            if ($pos === false || $pos === strlen($param) - 1) {
+                $parts[] = ucfirst($param);
+            } else {
+                $parts[] = ucfirst(urldecode(substr($param, 0, $pos))) . ' ' .
+                           ucfirst(urldecode(substr($param, $pos + 1)));
+            }
+        }
+        $last = $this->getLastBreadcrumb();
+        $url = $last['url'];
+        $this->breadcrumbs[] = array(
+            'url' => $url.'?'.$paramString,
+            'title' => implode(', ', $parts),
+        );
+    }
+
+    /**
+     * Returns last breadcrumb.
+     *
+     * @return string[]|boolean Last breadcrumb or false if it doesn't exist.
+     * @since 0.1.0
+     */
+    public function getLastBreadcrumb()
+    {
+        $l = sizeof($this->breadcrumbs);
+        if ($l < 1) {
+            return false;
+        }
+        return $this->breadcrumbs[$l - 1];
+    }
+
+    /**
+     * Returns penultimate breadcrumb.
+     *
+     * @return string[]|boolean Penultimate breadcrumb or false if it doesn't
+     * exist.
+     * @since 0.1.0
+     */
+    public function getPenultimateBreadcrumb()
+    {
+        $l = sizeof($this->breadcrumbs);
+        if ($l < 2) {
+            return false;
+        }
+        return $this->breadcrumbs[$l - 2];
+    }
+
+    /**
+     * Callback for initialization work such as setting breadcrumbs.
+     *
+     * @param CAction $action Requested action.
+     * @return bool Whether the action should be ran or not.
+     * @since 0.1.0
+     */
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
         $this->generateBreadcrumbs();
-        return parent::beforeAction($action);
+        return true;
     }
 }
