@@ -14,7 +14,8 @@ Everything - posts, comments and help pages - are formatted with the help of
 Markdown is much less clumsy than plain HTML, and if you haven't worked with
 it before, you will adapt easily. Original Markdown syntax description can be
 accessed by [this link](http://daringfireball.net/projects/markdown/syntax).  
-You can also check this page source in `views/admin/help.md`.
+You can also check this page source in `docs/help.md` (path is mentioned
+relatively to application root).
 
 ### Users
 
@@ -37,5 +38,9 @@ will put an asterisk before name of unregistered user.
 ### Under the hood
 
 This platform is built on top of [Yii Framework](http://yiiframework.com) with
-[Twig](http://twig.sensiolabs.org/) and [jQuery](http://jquery.com). You can get
-more information at [info](/admin/status) page.
+[Twig](http://twig.sensiolabs.org/). There is a special
+[status page](/admin/options/status) which will tell you more about installed
+software and also reveal some statistics.
+If you want to know more about under-the-hood processes and extending, you
+should check with [extended help guide](/admin/help/dev), which will shed the
+light on some details.
