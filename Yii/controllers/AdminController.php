@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Description of AdminController
+ * This controller handles all actions related to admin sections except for
+ * posts and user managing,
  *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
@@ -11,111 +12,123 @@
  */
 class AdminController extends BaseController
 {
+    /**
+     * Renders main admin menu.
+     *
+     * @since 0.1.0
+     */
     public function actionIndex()
     {
-        $this->render('index');
+        $user = User::model()->with('postCount', 'commentCount')
+                             ->findByPk(Yii::app()->user->id);
+        $this->render('index', array('user' => $user));
     }
-    public function actionLogin()
-    {
-        $this->layout = 'form';
-        $this->pageTitle = 'Login';
-        if (($data = Yii::app()->request->getPost('User', false)) !== false) {
-            $identity = new UserIdentity($data['username'], $data['password']);
-            if ($identity->authenticate()) {
-                Yii::app()->user->login($identity);
-                Yii::app()->user->sendMessage('auth.login.greeting');
-                $this->redirect(array('admin/index'));
-            } else {
-                Yii::app()->user->sendMessage('auth.login.fail');
-            }
-        }
-        $model = User::model();
-        $model->scenario = 'login';
-        if (isset($data)) {
-            $model->addErrors(array('username' => '', 'password' => ''));
-        }
-        $this->render('login', array('userModel' => $model));
-    }
-    public function actionLogout()
-    {
-        if (Yii::app()->user->isGuest) {
-            Yii::app()->user->sendMessage('auth.logout.guestAttempt');
-        } else {
-            Yii::app()->user->logout();
-            Yii::app()->user->sendMessage('auth.logout.goodbye');
-        }
-        $this->redirect(array('post/index'));
-    }
-    public function actionProfile()
-    {
-        $model = User::model();
-        $model->scenario = 'update';
-        if (Yii::app()->request->getPost('User', false) !== false) {}
-        $this->render('profile', array('userModel' => $model));
-    }
-    public function actionDeleteProfile()
-    {
-        if (Yii::app()->request->isPostRequest) {
-            Yii::app()->user->sendMessage('after-delete');
-            $this->redirect(array('post/index'));
-        }
-        $this->render('delete-profile');
-    }
-    public function actionInvite()
-    {
-        $model = User::model();
-        if ($data = Yii::app()->request->getPost('User')) {
-            if ($model->save(true, $data)) {
-                Yii::app()->user->sendMessage('invite.success');
-                $this->redirect('admin/index');
-            } else {
-                Yii::app()->user->sendMessage('invite.fail');
-            }
-        }
-        $this->render('invite', array('userModel' => $model));
-    }
+
+    /**
+     * Renders standard help file.
+     *
+     * @since 0.1.0
+     */
     public function actionHelp()
     {
-        $this->render('help.md');
+        $this->renderMd('help', 'application.docs.help');
     }
+
+    /**
+     * Renders developers help file.
+     *
+     * @since 0.1.0
+     */
     public function actionDevHelp()
     {
-        $this->render('help-dev.md');
+        $this->renderMd('help', 'application.docs.help-dev');
     }
+
+    /**
+     * Renders application status.
+     *
+     * @since 0.1.0
+     */
     public function actionStatus()
     {
-        $service = Yii::app()->applicationService;
+        /** @var ApplicationService $service */
+        $service = \Yii::app()->applicationService;
         $this->render('status', array(
-            'statistics' => ApplicationModel::getStatistics(),
+            'statistics' => \ApplicationModel::getStatistics(),
             'status' => $service->getServiceInfo()
         ));
     }
+
+    /**
+     * Renders options page and saves passed options.
+     *
+     * @since 0.1.0
+     */
     public function actionOptions()
     {
-        $model = new ApplicationModel;
-        if ($data = Yii::app()->request->getPost('ApplicationModel', false)) {
-            $model->setAttributes($data);
-            if ($model->validate()) {
-                $model->updateConfig();
-            }
+        $model = new \ApplicationModel;
+        if ($data = \Yii::app()->request->getPost('ApplicationModel', false)) {
+            $model->save($data); // setAndSave analog, errors fetched in view
         }
-        $this->render('options', array('applicationModel' => $model));
+        $this->render('options', array('appModel' => $model));
     }
-    public function actionFlushCache()
+
+    /**
+     * Flushes all cache and redirects user to options page.
+     *
+     * @since 0.1.0
+     */
+    public function actionFlushCache($returnUrl=null)
     {
         Yii::app()->cache->flush();
-        Yii::app()->user->sendMessage('cache.afterFlush');
+        Yii::app()->user->sendMessage(
+            'cache.afterFlush',
+            WebUserLayer::FLASH_SUCCESS
+        );
+        if ($returnUrl !== null) {
+            $this->redirect($returnUrl);
+        }
         $this->redirect(array('admin/options'));
     }
+
+    /**
+     * Recalculates category counters.
+     *
+     * @since 0.1.0
+     */
+    public function actionRecalculate()
+    {
+        \Category::model()->recalculateCounters();
+        \Yii::app()->user->sendMessage(
+            'category.recalculated',
+            WebUserLayer::FLASH_SUCCESS
+        );
+        \Yii::app()->setGlobalState('lastPostUpdate', time());
+        $this->redirect(array('admin/options'));
+    }
+
+    /**
+     * Defines controller filters.
+     *
+     * @return array Lsit of filters.
+     * @since 0.1.0
+     */
     public function filters() {
         return array(
             'accessControl',
         );
     }
+
+    /**
+     * Returns access control rules.
+     *
+     * @return array Set of access control rules.
+     * @since 0.1.0
+     */
     public function accessRules() {
         return array(
-            array('allow', 'actions' => array('login')),
-            array('deny', 'actions' => array('*'), 'users' => array('?')),
+            array('allow', 'users' => array('@'),),
+            array('deny',),
         );
     }
 }
