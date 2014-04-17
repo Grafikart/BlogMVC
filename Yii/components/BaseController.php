@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Description of BaseController
+ * This class is an ancestor to all other controllers. It adds custom
+ * breadcrumbs support, proxies some calls and adds support for rendering
+ * markdown files.
  *
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
@@ -137,7 +139,7 @@ class BaseController extends CController
         if (!$filePath || ($text = file_get_contents($filePath)) === false) {
             throw new \HttpException(500, 'internalServerError.missingFile');
         }
-        $text = \Yii::app()->formatter->formatText($text, 'markdown');
+        $text = \Yii::app()->formatter->renderMarkdown($text);
         $data[$contentKey] = $text;
         $this->render($view, $data);
     }
