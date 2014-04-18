@@ -3,11 +3,11 @@
 /**
  * Simple authentication class. Validates user login and password.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class UserIdentity extends CUserIdentity
 {
@@ -26,9 +26,10 @@ class UserIdentity extends CUserIdentity
      */
     public function authenticate()
     {
-        $record = User::model()->find('LOWER(username) = :username', array(
-            ':username' => mb_strtolower($this->username, 'UTF-8'),
-        ));
+        $record = \User::model()->find(
+            'LOWER(username) = :username',
+            array(':username' => mb_strtolower($this->username, 'UTF-8'),)
+        );
         if ($record === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
         } else if ($record->password !== sha1($this->password)) {
@@ -46,7 +47,8 @@ class UserIdentity extends CUserIdentity
      * @return int Database ID for current user.
      * @since 0.1.0
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 }
