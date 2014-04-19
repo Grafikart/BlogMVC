@@ -2,6 +2,8 @@
 /**
  * This class serves as a single-interface factory for different DB engines
  * expressions.
+ * All interactions are made statically so there's no need to call this class
+ * as Yii component.
  *
  * @version    Release: 0.1.0
  * @since      0.1.0
@@ -59,21 +61,48 @@ class DatabaseService extends CComponent
         if ($driver === null) {
             return self::getDefaultDriver();
         }
+        if (is_string($driver)) {
+            $driver = self::getDriverByName($driver);
+        }
+        if (!is_string($driver)) {
+            throw new \BadMethodCallException('Invalid driver provided');
+        }
+        return $driver;
+    }
+
+    /**
+     * Returns Yii/PDO-compatible driver name based on passed one.
+     *
+     * @param string $driver Driver name.
+     *
+     * @return string|null Name if found, null otherwise.
+     * @since 0.1.0
+     */
+    public static function getDriverByName($driver)
+    {
         $driver = strtolower($driver);
         $drivers = array(
             'mysql' => 'mysql',
             'pgsql' => 'pgsql',
-            'postgresql' => 'pgsql',
+            'postgres' => 'pgsql',
+            //'postgresql' => 'pgsql', // satisified by `postgres`
             'sqlite' => 'sqlite',
+            //'sqlite3' => 'sqlite', // satisfied by `sqlite`
             'oci' => 'oci',
             'oracle' => 'oci',
             'mssql' => 'mssql',
-            'sqlserver' => 'mssql'
+            'sqlserver' => 'mssql',
+            'sql server' => 'mssql',
         );
         if (in_array($driver, array_keys($drivers), true)) {
             return $drivers[$driver];
         }
-        throw new \BadMethodCallException('Invalid driver provided');
+        foreach ($drivers as $commonName => $driverName) {
+            if (strpos($driver, $commonName) !== false) {
+                return $driverName;
+            }
+        }
+        return null;
     }
 
     /**
@@ -83,7 +112,7 @@ class DatabaseService extends CComponent
      * default one will be used.
      *
      * @return CDbExpression
-     * @since
+     * @since 0.1.0
      */
     public static function getCurDateExpression($driver=null)
     {
@@ -98,7 +127,7 @@ class DatabaseService extends CComponent
                 $expr = 'DATE(\'now\')';
                 break;
             case 'mssql':
-                $expr = 'CAST(GET_DATE() AS DATE)';
+                $expr = 'CAST(GETDATE() AS DATE)';
                 break;
         }
         return new \CDbExpression($expr);
@@ -143,7 +172,7 @@ class DatabaseService extends CComponent
                 $expr = 'CURRENT_TIME';
                 break;
             case 'mssql':
-                $expr = 'CAST(GET_DATE() AS TIME)';
+                $expr = 'CAST(GETDATE() AS TIME)';
                 break;
             case 'sqlite':
                 $expr = 'TIME(\'now\')';
