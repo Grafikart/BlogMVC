@@ -1,6 +1,7 @@
 <?php
 /**
- * 
+ * This class serves as a single-interface factory for different DB engines
+ * expressions.
  *
  * @version    Release: 0.1.0
  * @since      0.1.0
@@ -21,6 +22,7 @@ class DatabaseService extends CComponent
     /**
      * Yii standard initializer.
      *
+     * @return void
      * @since 0.1.0
      */
     public function init()
@@ -118,6 +120,36 @@ class DatabaseService extends CComponent
             return new \CDbExpression('DATETIME(\'now\')');
         }
         return new \CDbExpression('CURRENT_TIMESTAMP');
+    }
+
+    /**
+     * Returns CDbExpression equivalent of MySQL `CURTIME()` function.
+     *
+     * @param null|string $driver Driver name. If set to null (or omitted),
+     * default one will be used.
+     *
+     * @throws BadMethodCallException
+     *
+     * @return CDbExpression
+     * @since 0.1.0
+     */
+    public static function getCurTimeExpression($driver=null)
+    {
+        $driver = self::getDriver($driver);
+        switch ($driver) {
+            case 'mysql':
+            case 'pgsql':
+            case 'oci':
+                $expr = 'CURRENT_TIME';
+                break;
+            case 'mssql':
+                $expr = 'CAST(GET_DATE() AS TIME)';
+                break;
+            case 'sqlite':
+                $expr = 'TIME(\'now\')';
+                break;
+        }
+        return new \CDbExpression($expr);
     }
 }
  
