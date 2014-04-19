@@ -9,13 +9,11 @@
  * @property Post[] $posts User posts (find* method has to be called with
  * 'posts' relation),
  *
- * @todo Add profiling
- *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package etki-tools
- * @subpackage blogmvc
+ * @version    0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class User extends ActiveRecordLayer
 {
@@ -63,19 +61,22 @@ class User extends ActiveRecordLayer
     /**
      * Scope method which allows paged access to records.
      * 
-     * @param int $page Page number. Note that it isn't validated inside the
+     * @param int $page    Page number. Note that it isn't validated inside the
      * method.
      * @param int $perPage Number of records per page.
+     *
      * @return \User Current instance.
      * @since 0.1.0
      */
     public function paged($page, $perPage=25)
     {
-        $this->getDbCriteria()->mergeWith(array(
-            'limit' => $perPage,
-            'offset' => ($page - 1) * $perPage,
-            'order' => 'id ASC',
-        ));
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'limit' => $perPage,
+                'offset' => ($page - 1) * $perPage,
+                'order' => 'id ASC',
+            )
+        );
         return $this;
     }
     /**
@@ -94,13 +95,15 @@ class User extends ActiveRecordLayer
             $message = 'Limit argument has to be an integer not less than 1';
             throw new \BadMethodCallException($message);
         }
-        $this->getDbCriteria()->mergeWith(array(
-            'alias' => 'users',
-            'join' => 'INNER JOIN posts ON posts.user_id = users.id',
-            'group' => 'users.id',
-            'order' => 'COUNT(posts.id)',
-            'limit' => $limit,
-        ));
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'alias' => 'users',
+                'join' => 'INNER JOIN posts ON posts.user_id = users.id',
+                'group' => 'users.id',
+                'order' => 'COUNT(posts.id)',
+                'limit' => $limit,
+            )
+        );
         return $this;
     }
     /**
@@ -123,12 +126,13 @@ class User extends ActiveRecordLayer
     /**
      * Validator method for entered password. Note that validation comes with
      * internal hashing, so this is different from native CCompareValidator.
-     * 
+     *
+     * @param string $attribute Attribute name.
+     * @param array  $params    Additional validation params.
+     *
      * @throws \CException Thrown if additional params don't contain required
      * `compareAttribute` entry.
-     * 
-     * @param string $attribute Attribute name.
-     * @param array $params Additional validation params.
+     *
      * @return void
      * @since 0.1.0
      */
@@ -139,26 +143,32 @@ class User extends ActiveRecordLayer
             throw new \CException($message);
         }
         if ($this->$attribute !== $this->$params['compareAttribute']) {
-            $error = Yii::t('validation-errors', 'user.passwordMismatch');
+            $error = \Yii::t('validation-errors', 'user.passwordMismatch');
             $this->addError($attribute, $error);
         }
     }
     /**
      * Validator method for validating current password.
      * 
-     * @todo AR-driven solution probably adds unwanted overhead.
-     * 
      * @param string $attribute Attribute name.
+     *
      * @return void
      * @since 0.1.0
      */
     public function validatePassword($attribute/*, array $params*/)
     {
-        $refModel = $this->findByPk($this->primaryKey);
-        if ($refModel->password !== sha1($this->$attribute)) {
-            $error = Yii::t('validation-errors', 'user.incorrectPassword');
+        \Yii::beginProfile('user.validatePassword');
+        // Non-AR approach to avoid unnecessary overhead.
+        $currentPassword = \Yii::app()->db->createCommand()
+            ->select('password')
+            ->from($this->tableName())
+            ->where('id = :id', array(':id' => $this->getPrimaryKey()))
+            ->queryScalar();
+        if ($currentPassword !== sha1($this->$attribute)) {
+            $error = \Yii::t('validation-errors', 'user.incorrectPassword');
             $this->addError($attribute, $error);
         }
+        \Yii::endProfile('user.validatePassword');
     }
 
     /**
@@ -166,23 +176,29 @@ class User extends ActiveRecordLayer
      *
      * @param string $attribute Username attribute name.
      *
+     * @return void
      * @since 0.1.0
      */
     public function validateUsernameUniqueness($attribute)
     {
+        \Yii::beginProfile('user.validateUsernameUniqueness');
         $username = $this->$attribute;
-        $exists = (bool) Yii::app()->db->createCommand()
-                                   ->select('username')
-                                   ->from($this->tableName())
-                                   ->where('username = :username', array(
-                                     ':username' => $username
-                                 ))->queryScalar();
+        $exists = (bool) \Yii::app()->db->createCommand()
+            ->select('username')
+            ->from($this->tableName())
+            ->where(
+                'username = :username',
+                array(':username' => $username)
+            )->queryScalar();
         if ($exists) {
-            $e = Yii::t('validation-errors', 'user.usernameExists', array(
-                '{username}' => $username,
-            ));
+            $e = \Yii::t(
+                'validation-errors',
+                'user.usernameExists',
+                array('{username}' => $username,)
+            );
             $this->addError($attribute, $e);
         }
+        \Yii::endProfile('user.validateUsernameUniqueness');
     }
     /**
      * Return set of localized attribute labels.
@@ -190,14 +206,15 @@ class User extends ActiveRecordLayer
      * @return string[] Attribute labels.
      * @since 0.1.0
      */
-    public function getAttributeLabels() {
+    public function getAttributeLabels()
+    {
         return array(
             'id' => 'ID',
-            'username' => Yii::t('forms-labels', 'user.username'),
-            'password' => Yii::t('forms-labels', 'user.password'),
-            'newPassword' => Yii::t('forms-labels', 'user.newPassword'),
-            'newPasswordRepeat' => Yii::t('forms-labels', 'user.newPasswordRepeat'),
-            'postCount' => Yii::t('forms-labels', 'user.postCount'),
+            'username' => \Yii::t('forms-labels', 'user.username'),
+            'password' => \Yii::t('forms-labels', 'user.password'),
+            'newPassword' => \Yii::t('forms-labels', 'user.newPassword'),
+            'newPasswordRepeat' => \Yii::t('forms-labels', 'user.newPasswordRepeat'),
+            'postCount' => \Yii::t('forms-labels', 'user.postCount'),
         );
     }
 
