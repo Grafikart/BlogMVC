@@ -12,7 +12,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class TranslatorLayer
+class TranslatorLayer extends \CComponent
 {
     /**
      * Dummy initializer.

@@ -11,7 +11,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class DatetimeCreatedBehavior extends CActiveRecordBehavior
+class DatetimeCreatedBehavior extends \CActiveRecordBehavior
 {
     /**
      * Automatically sets `created` field to `NOW()` SQL function result if

@@ -10,7 +10,7 @@
  * @package    BlogMVC
  * @subpackage Yii
  */
-abstract class ActiveRecordLayer extends CActiveRecord
+abstract class ActiveRecordLayer extends \CActiveRecord
 {
     /**
      * Cache for attribute labels to prevent running l10n processing every

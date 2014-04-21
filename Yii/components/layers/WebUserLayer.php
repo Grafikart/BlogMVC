@@ -9,7 +9,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class WebUserLayer extends CWebUser
+class WebUserLayer extends \CWebUser
 {
     /**
      * URL or array(route) which points to login form.
