@@ -1,12 +1,13 @@
 <?php
 /**
- * This class is responsible for data formatting
+ * This class implements time formatting to localized 'N units, M units ago`
+ * format.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class DateFormatter extends \CComponent
 {
@@ -35,6 +36,7 @@ class DateFormatter extends \CComponent
     /**
      * Typical initializer.
      *
+     * @return void
      * @since 0.1.0
      */
     public function init()
@@ -45,12 +47,13 @@ class DateFormatter extends \CComponent
     /**
      * Formats date to 'xxx {unit}, zzz {unit} ago'.
      *
+     * @param string|\DateTime $date       Date to be formatted.
+     * @param int              $unitsLimit How many date units (years, months,
+     * days, etc.) should be processed.
+     *
      * @throws \BadMethodCallException Thrown if incorrect $unitsLimit is
      * provided.
      *
-     * @param string|\DateTime $date Date to be formatted.
-     * @param int $unitsLimit How many date units (years, months, days, etc.)
-     * should be processed.
      * @return string Formatted date.
      * @since 0.1.0
      */
@@ -87,9 +90,10 @@ class DateFormatter extends \CComponent
             }
         }
         if (sizeof($dateInterval) > 0) {
-            return \Yii::t('templates', 'timeInterval.ago', array(
-                '{interval}' => implode(', ', $dateInterval),
-            ));
+            return \Yii::t(
+                'templates', 'timeInterval.ago',
+                array('{interval}' => implode(', ', $dateInterval),)
+            );
         }
         // No seconds ago? Return 'just now'.
         return \Yii::t('templates', 'timeInterval.justNow');
@@ -98,8 +102,9 @@ class DateFormatter extends \CComponent
     /**
      * Internal function to clarify the code.
      *
-     * @param int $interval Interval in specified time units,
-     * @param string $tKey Translation key.
+     * @param int    $interval Interval in specified time units,
+     * @param string $tKey     Translation key.
+     *
      * @return string Formatted interval.
      * @since 0.1.0
      */
@@ -111,6 +116,7 @@ class DateFormatter extends \CComponent
     /**
      * Resets current time.
      *
+     * @return void
      * @since 0.1.0
      */
     public function reset()
