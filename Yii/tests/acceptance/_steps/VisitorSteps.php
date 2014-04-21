@@ -25,9 +25,13 @@ class VisitorSteps extends \WebGuy
     {
         $I = $this;
         $I->amOnPage(\LoginPage::$url);
-        $I->fillField(\LoginPage::$loginField, $login);
-        $I->fillField(\LoginPage::$passwordField, $password);
-        $I->click(\LoginPage::$submit);
+        if ($login !== null) {
+            $I->fillField(\LoginPage::$loginField, $login);
+        }
+        if ($password !== null) {
+            $I->fillField(\LoginPage::$passwordField, $password);
+        }
+        $I->click(\LoginPage::$submitButton);
     }
 
     /**
@@ -40,7 +44,7 @@ class VisitorSteps extends \WebGuy
      * @return void
      * @since 0.1.0
      */
-    public function comment($comment, $username, $email=null)
+    public function commentUnauthenticated($comment, $username, $email=null)
     {
         $I = $this;
         $I->fillField(\PostPage::$commentUsernameField, $username);
