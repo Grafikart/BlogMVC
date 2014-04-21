@@ -5,11 +5,11 @@
  *
  * @method CActiveRecord|ActiveRecordLayer getOwner() Returns owner model.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class DatetimeCreatedBehavior extends CActiveRecordBehavior
 {
@@ -19,12 +19,15 @@ class DatetimeCreatedBehavior extends CActiveRecordBehavior
      *
      * @param CModelEvent $event Event to keep strict standards happy about
      * method signature.
+     *
+     * @return void
      * @since 0.1.0
      */
     public function beforeSave($event)
     {
         if ($this->getOwner()->getIsNewRecord()) {
-            $this->getOwner()->created = new CDbExpression('NOW()');
+            $dt = new \DateTime();
+            $this->getOwner()->created = $dt->format(\DateTime::ISO8601);
         }
     }
 } 
