@@ -4,13 +4,14 @@
  * Additional interlayer for all widgets that helps to keep indentation in
  * consistency and keep HTML output readable.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
-class WidgetLayer extends CWidget {
+class WidgetLayer extends \CWidget
+{
     /**
      * Constant for tabs indentation.
      *
@@ -43,15 +44,17 @@ class WidgetLayer extends CWidget {
     /**
      * Opens HTML tag.
      *
-     * @param string $tag Tag to be echoed.
-     * @param array $opts Tag HTML options.
+     * @param string   $tag    Tag to be echoed.
+     * @param array    $opts   Tag HTML options.
      * @param null|int $indent Indentation char amount. Will be set
      * automatically if specified as null (default value).
+     *
+     * @return void
      * @since 0.1.0
      */
     public function openTag($tag, $opts=array(), $indent=null)
     {
-        $this->e(CHtml::openTag($tag, $opts), $indent);
+        $this->e(\CHtml::openTag($tag, $opts), $indent);
         if ($indent === null) {
             if ($this->indentStyle === self::INDENT_TABS) {
                 $this->currentIndent++;
@@ -64,9 +67,11 @@ class WidgetLayer extends CWidget {
     /**
      * Closes HTML tag.
      *
-     * @param string $tag Tag to be echoed.
+     * @param string   $tag    Tag to be echoed.
      * @param null|int $indent Indentation char amount. Will be set
      * automatically if specified as null (default value).
+     *
+     * @return void
      * @since 0.1.0
      */
     public function closeTag($tag, $indent=null)
@@ -78,19 +83,21 @@ class WidgetLayer extends CWidget {
                 $this->currentIndent -= 4;
             }
         }
-        $this->e(Chtml::closeTag($tag), $indent);
+        $this->e(\CHtml::closeTag($tag), $indent);
     }
 
     /**
      * Outputs HTML tag.
      *
-     * @param string $tag HTML tag to be echoed.
-     * @param array $opts List of HTML options.
-     * @param bool $content HTML tag content.
-     * @param bool $closeTag  Whether tag should be closed (true) or if it is
+     * @param string   $tag      HTML tag to be echoed.
+     * @param array    $opts     List of HTML options.
+     * @param bool     $content  HTML tag content.
+     * @param bool     $closeTag Whether tag should be closed (true) or if it is
      * self-closing.
-     * @param null|int $indent Indentation char amount. Will be set
+     * @param null|int $indent   Indentation char amount. Will be set
      * automatically if specified as null (default value).
+     *
+     * @return void
      * @since 0.1.0
      */
     public function tag(
@@ -109,9 +116,11 @@ class WidgetLayer extends CWidget {
     /**
      * Echoes indented output.
      *
-     * @param string $text Text to be echoed.
+     * @param string   $text   Text to be echoed.
      * @param null|int $indent Indentation char amount. Will be set
      * automatically if specified as null (default value).
+     *
+     * @return void
      * @since 0.1.0
      */
     public function e($text, $indent=null)
