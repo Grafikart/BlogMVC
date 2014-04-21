@@ -1,12 +1,14 @@
 <?php
 /**
- * An additional layer for injecting dev-friendly interface.
+ * An ActiveRecord interlayer which provides some nice-and-easy interface to
+ * cache localized attribute labels and perform complex operations in single
+ * method call.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @author     Fike Etki <etki@etki.name>
+ * @package    BlogMVC
+ * @subpackage Yii
  */
 abstract class ActiveRecordLayer extends CActiveRecord
 {
@@ -22,10 +24,12 @@ abstract class ActiveRecordLayer extends CActiveRecord
      * A wrapper around {@link getAttributeLabels()} (original
      * {@link CModel::attributeLabels()} substitute). Allows caching attribute
      * labels to prevent running l10n processing every call.
-     * 
+     *
+     * @return string[] List of attribute labels.
      * @since 0.1.0
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         if (!isset($this->cachedAttributeLabels)) {
             $this->cachedAttributeLabels = $this->getAttributeLabels();
         }
@@ -43,6 +47,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      * support drops right here.
      * 
      * @param string $className Name of the class.
+     *
      * @return self Instance of current model.
      * @since 0.1.0
      */
@@ -74,6 +79,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      * @param array $attributes Optional array of attributes for instant
      * setting.
      *
+     * @return void
      * @since 0.1.0
      */
     public function resetAttributes(array $attributes=null)
@@ -91,6 +97,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      * Sets provided attributes and instatly tries to save.
      * 
      * @param array $attributes List of attributes to be saved.
+     *
      * @return boolean Return value of {@link save()}
      * @since 0.1.0
      */
@@ -104,6 +111,7 @@ abstract class ActiveRecordLayer extends CActiveRecord
      * result.
      * 
      * @param array $attributes List of attributes to be set.
+     *
      * @return boolean True on successful validation, false otherwise.
      * @since 0.1.0
      */
