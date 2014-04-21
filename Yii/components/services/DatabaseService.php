@@ -119,8 +119,8 @@ class DatabaseService extends CComponent
         $driver = self::getDriver($driver);
         switch ($driver) {
             case 'mysql':
-            case 'pgsql':
             case 'oci':
+            case 'pgsql':
                 $expr = 'CURRENT_DATE';
                 break;
             case 'sqlite':
