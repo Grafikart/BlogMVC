@@ -59,6 +59,14 @@ website, so i am double-interested to make everything as good as possible.
 So, i was not building an application that just *can run*, i was building
 something that would be *usable*.
 
+### Q: Why are you using PHP dates to fetch records for some time interval from database? It's better to use native DB functions.
+
+**A**: I would love to do that, but i've stuck with PostgreSQL. I tried to start
+with simple current date/time expressions, but PostgreSQL banned my every move;
+i guess i just lack some experience to work this out correctly. You can inspect
+my attempts to create a unified expression provider in
+`components/services/DatabaseService.php`.
+
 ### Q: You did something wrong, Yii has a native tool for that!
 
 **A**: I'm afraid i'm a conservative type guy. It's hard for me to learn new
