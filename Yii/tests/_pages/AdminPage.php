@@ -1,25 +1,21 @@
 <?php
 
-class AdminPage
+/**
+ * Represents admin index page.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
+class AdminPage extends GeneralPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Page URL.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
-    /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
-     */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $url = '/admin';
 }

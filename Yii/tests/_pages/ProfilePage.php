@@ -1,25 +1,77 @@
 <?php
 
+/**
+ * Profile page.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
 class ProfilePage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Profile page url.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
+    public static $url = '/admin/profile';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii controller route for profile page.
+     *
+     * @var string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $route = 'user/profile';
+    /**
+     * `Username` field name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $usernameField = 'User[username]';
+    /**
+     * `Update username` button selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $usernameUpdateButton = '[role="update-username"]';
+    /**
+     * `Current password` field name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $currentPasswordField = 'User[password]';
+    /**
+     * `New password` field name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $newPasswordField = 'User[newPassword]';
+    /**
+     * `Repeat new password` field name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $repeatNewPasswordField = 'User[newPasswordRepeat]';
+    /**
+     * `Update password` button selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $passwordUpdateButton = '[role="update-password"]';
+    /**
+     * Selector for link to first Futurama episode.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $suicideBoothLink = 'a[role="suicide-booth-link"]';
 }

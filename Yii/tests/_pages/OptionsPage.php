@@ -1,25 +1,65 @@
 <?php
 
+/**
+ * This class represents options page in admin dashboard.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
 class OptionsPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Page URL.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
+    public static $URL = '/admin/options';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii page route.
+     *
+     * @var string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $route = 'admin/options';
+    /**
+     * Application title field name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $appTitleField = 'ApplicationModel[title]';
+                                // '#ApplicationModel_title';
+    /**
+     * Application language list name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $siteLanguageList = 'ApplicationModel[language]';
+                                   // '#ApplicationModel_language';
+    /**
+     * Submit button text.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $formSubmit = '[role="update-options"]';
+    /**
+     * 'Flush cache' link text.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $flushCacheLink = 'a[role="flush-cache-link"]';
+    /**
+     * 'Recalculate counters' link text.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $recalculateLink = 'a[role="recalculate-counters-link"]';
 }

@@ -1,25 +1,42 @@
 <?php
 
-class UsersDashboardPage
+/**
+ * Users dashboard page, allows to review current users and create new.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
+class UsersDashboardPage extends GeneralPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Page URL.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
+    static $url = '/admin/users';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii page route.
+     *
+     * @var string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    static $route = 'user/index';
+    /**
+     * Create new user button text.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    static $createNewButton = 'Create new';
+    /**
+     * Edit button text.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    static $editLink = 'Edit';
 }

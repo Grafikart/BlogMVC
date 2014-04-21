@@ -1,25 +1,35 @@
 <?php
 
+/**
+ * This class represents page on which user may delete his profile.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
 class SuicideBoothPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Page URL.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
+    public static $url = '/admin/profile/suicide';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii controller route for suicide booth page,
+     *
+     * @var string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $route = 'user/suicide';
+    /**
+     * Delete button selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $benderButton = 'button[role="suicide"]';
 }

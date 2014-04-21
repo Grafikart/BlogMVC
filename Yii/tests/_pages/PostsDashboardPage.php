@@ -1,25 +1,52 @@
 <?php
 
+/**
+ * This class represents posts dashboard page, all of it's button, pixels and
+ * boredom.
+ *
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
 class PostsDashboardPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Post dashboard page url.
+     *
+     * @var string
+     * @since 0.1.0
      */
-
+    public static $url = '/admin/posts';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii controller route for posts dashboard page
+     *
+     * @var string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $route = 'admin/posts';
+    /**'
+     * `Create new post` button selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $newPostButton = '[role="create-post-link"]';
+    /**
+     * `Edit post` button selector. Note that it matches all `Edit post`
+     * buttons on page.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $editPostButton = '[role="edit-post-link"]';
+    /**
+     * `Delete post` button selector. Note that it matches all `Delete post`
+     * buttons on page.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $deletePostButton = '[role="delete-post-link"]';
 }
