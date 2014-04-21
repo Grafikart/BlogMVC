@@ -10,7 +10,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class FeedPage
+class FeedPage extends \GeneralPage
 {
     /**
      * Page url for main blog feed.
@@ -56,6 +56,23 @@ class FeedPage
     public static $authorPageRoute = 'author/index';
 
     /**
+     * Creates url for specified blog page.
+     *
+     * @param int|string $page  Page number.
+     * @param boolean    $force Whether to force `?page=1` appendix on first
+     * page or not.
+     *
+     * @return string
+     * @since 0.1.0
+     */
+    public static function blogRoute($page, $force=false)
+    {
+        if ((int)$page === 1 && !$force) {
+            return '/';
+        }
+        return '/?page='.$page;
+    }
+    /**
      * Creates url for particular category feed.
      *
      * @param string $slug Category slug.
@@ -67,7 +84,7 @@ class FeedPage
     public static function categoryRoute($slug, $page=1)
     {
         $url = str_replace('<slug>', $slug, static::$categoryPageUrl);
-        if ($page !== 1) {
+        if ((int)$page !== 1) {
             $url .= '?page='.$page;
         }
         return $url;
@@ -85,7 +102,7 @@ class FeedPage
     public static function authorRoute($id, $page=1)
     {
         $url = str_replace('<id>', $id, static::$authorPageUrl);
-        if ($page !== 1) {
+        if ((int)$page !== 1) {
             $url .= '?page='.$page;
         }
         return $url;

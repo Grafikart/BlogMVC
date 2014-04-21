@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /**
  * This class represents both 'New post' and 'Edit post' pages.
@@ -9,7 +9,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class PostFormPage
+class PostFormPage extends \GeneralPage
 {
     /**
      * 'New post' page URL.

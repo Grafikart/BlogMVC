@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class LoginPage
+class LoginPage extends \GeneralPage
 {
     /**
      * Login page url.
@@ -38,5 +38,5 @@ class LoginPage
      * @var string
      * @since 0.1.0
      */
-    public static $submit = '[role="sign-in-button"]'; // 'Sign in';
+    public static $submitButton = '[role="sign-in-button"]'; // 'Sign in';
 }

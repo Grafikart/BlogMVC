@@ -10,7 +10,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class ServiceStatusPage
+class ServiceStatusPage extends \GeneralPage
 {
     /**
      * Status page url.

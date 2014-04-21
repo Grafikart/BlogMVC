@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class SuicideBoothPage
+class SuicideBoothPage extends \GeneralPage
 {
     /**
      * Page URL.

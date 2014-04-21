@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class OptionsPage
+class OptionsPage extends \GeneralPage
 {
     /**
      * Page URL.

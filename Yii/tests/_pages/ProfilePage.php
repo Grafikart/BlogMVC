@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class ProfilePage
+class ProfilePage extends \GeneralPage
 {
     /**
      * Profile page url.

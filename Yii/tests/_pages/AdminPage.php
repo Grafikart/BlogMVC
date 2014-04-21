@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class AdminPage extends GeneralPage
+class AdminPage extends \GeneralPage
 {
     /**
      * Page URL.

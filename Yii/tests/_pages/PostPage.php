@@ -9,7 +9,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class PostPage
+class PostPage extends \GeneralPage
 {
     /**
      * Post page url pattern.
@@ -31,35 +31,35 @@ class PostPage
      * @var string
      * @since 0.1.0
      */
-    public static $commentForm = '';
+    public static $commentForm = '#comment-form';
     /**
      * Comment username field name.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $commentUsernameField = '';
+    public static $commentUsernameField = 'Comment[username]';
     /**
      * Comment email field name.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $commentEmailField = '';
+    public static $commentEmailField = 'Comment[mail]';
     /**
      * Comment text field name.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $commentTextArea = '';
+    public static $commentTextArea = 'Comment[content]';
     /**
      * Comment publication button selector.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $commentSubmitButton = '';
+    public static $commentSubmitButton = '[role="post-comment"]';
 
     /**
      * Returns url for particular post by it's slug.

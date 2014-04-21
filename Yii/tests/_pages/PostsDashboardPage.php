@@ -10,7 +10,7 @@
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class PostsDashboardPage
+class PostsDashboardPage extends \GeneralPage
 {
     /**
      * Post dashboard page url.
