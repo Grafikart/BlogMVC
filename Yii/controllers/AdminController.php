@@ -4,29 +4,31 @@
  * This controller handles all actions related to admin sections except for
  * posts and user managing,
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class AdminController extends BaseController
 {
     /**
      * Renders main admin menu.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionIndex()
     {
-        $user = User::model()->with('postCount', 'commentCount')
-                             ->findByPk(Yii::app()->user->id);
+        $user = \User::model()->with('postCount', 'commentCount')
+                              ->findByPk(Yii::app()->user->id);
         $this->render('index', array('user' => $user));
     }
 
     /**
      * Renders standard help file.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionHelp()
@@ -37,6 +39,7 @@ class AdminController extends BaseController
     /**
      * Renders developers help file.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionDevHelp()
@@ -47,21 +50,26 @@ class AdminController extends BaseController
     /**
      * Renders application status.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionStatus()
     {
         /** @var ApplicationService $service */
         $service = \Yii::app()->applicationService;
-        $this->render('status', array(
-            'statistics' => \ApplicationModel::getStatistics(),
-            'status' => $service->getServiceInfo()
-        ));
+        $this->render(
+            'status',
+            array(
+                'statistics' => \ApplicationModel::getStatistics(),
+                'status' => $service->getServiceInfo()
+            )
+        );
     }
 
     /**
      * Renders options page and saves passed options.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionOptions()
@@ -76,12 +84,16 @@ class AdminController extends BaseController
     /**
      * Flushes all cache and redirects user to options page.
      *
+     * @param string $returnUrl Optional URL where user should be redirected
+     * after cache flushing.
+     *
+     * @return void
      * @since 0.1.0
      */
     public function actionFlushCache($returnUrl=null)
     {
-        Yii::app()->cache->flush();
-        Yii::app()->user->sendMessage(
+        \Yii::app()->cache->flush();
+        \Yii::app()->user->sendMessage(
             'cache.afterFlush',
             WebUserLayer::FLASH_SUCCESS
         );
@@ -94,6 +106,7 @@ class AdminController extends BaseController
     /**
      * Recalculates category counters.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionRecalculate()
@@ -110,10 +123,11 @@ class AdminController extends BaseController
     /**
      * Defines controller filters.
      *
-     * @return array Lsit of filters.
+     * @return array List of filters.
      * @since 0.1.0
      */
-    public function filters() {
+    public function filters()
+    {
         return array(
             'accessControl',
         );
@@ -125,7 +139,8 @@ class AdminController extends BaseController
      * @return array Set of access control rules.
      * @since 0.1.0
      */
-    public function accessRules() {
+    public function accessRules()
+    {
         return array(
             array('allow', 'users' => array('@'),),
             array('deny',),
