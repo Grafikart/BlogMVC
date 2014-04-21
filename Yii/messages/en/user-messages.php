@@ -17,6 +17,7 @@ return array(
     'deletion.goodbye' => 'I was a pleasure serving you, pal.',
     'comment.submit.success' => 'Your comment has been successfully added',
     'comment.submit.fail' => 'Your comment wasn\'t added',
+    'comment.delete' => 'Comment was successfully deleted',
     'post.submit.success' => 'Your post has been successfully created',
     'post.submit.fail' => 'Your post hasn\'t been created - check for errors below',
     'post.delete.success' => 'Your post "{title}" has been successfully deleted',

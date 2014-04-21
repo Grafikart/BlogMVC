@@ -14,7 +14,7 @@ return array(
     'category.name' => 'Title',
     'comment.post_id' => 'Related post',
     'comment.username' => 'Your username',
-    'comment.mail' => 'Your email',
+    'comment.mail' => 'Your email (optional, used for gravatar)',
     'comment.content' => 'Your comment',
     'comment.created' => 'Creation date',
     'category.postCount' => 'Number of posts in category',
