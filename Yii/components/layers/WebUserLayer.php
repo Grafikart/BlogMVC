@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Just a thin interlayer with message-sending interface.
- * 
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.1
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * Just a thin user-object interlayer with message-sending interface.
+ *
+ * @version    Release: 0.1.1
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class WebUserLayer extends CWebUser
 {
@@ -60,9 +60,10 @@ class WebUserLayer extends CWebUser
      * <var>$data</var> array may hold arbitrary bits to format it.
      * 
      * @param string $message Message alias in i18n system.
-     * @param string $level Message level. Should be set to one of self::LEVEL_*
-     * constants.
-     * @param array $data Arbitrary data to format message.
+     * @param string $level   Message level. Should be set to one of
+     * self::LEVEL_* constants.
+     * @param array  $data    Arbitrary data to format message.
+     *
      * @return void
      * @since 0.1.0
      */
@@ -72,11 +73,11 @@ class WebUserLayer extends CWebUser
         $data=array()
     ) {
         $messages = $this->getFlash($this->messageKey, array());
-        while(sizeof($messages) >= 10) {
+        while (sizeof($messages) >= 10) {
             array_shift($messages);
         }
         $messages[] = array(
-            'message' => Yii::t('user-messages', $message, $data),
+            'message' => \Yii::t('user-messages', $message, $data),
             'level' => $level,
         );
         $this->setFlash($this->messageKey, $messages);
@@ -108,7 +109,8 @@ class WebUserLayer extends CWebUser
      * requests.
      * 
      * @param string $alias Name for the saved data.
-     * @param mixed $data Data to be saved.
+     * @param mixed  $data  Data to be saved.
+     *
      * @return void
      * @since 0.1.0
      */
@@ -119,9 +121,10 @@ class WebUserLayer extends CWebUser
     /**
      * Getter for saved data, simple wrapper around {@link getFlash()}.
      * 
-     * @param string $alias Alias under which data should be stored.
+     * @param string  $alias  Alias under which data should be stored.
      * @param boolean $delete Whether to delete or not data from flash storage
      * after retrieval.
+     *
      * @return mixed Stored data or null on failure.
      * @since 0.1.0
      */
@@ -133,6 +136,7 @@ class WebUserLayer extends CWebUser
      * Tells if there is stored data under provided key.
      * 
      * @param string $alias Key for data to be saved under.
+     *
      * @return boolean True if such key exists in data flash storage, false
      * otherwise.
      * @since 0.1.0
