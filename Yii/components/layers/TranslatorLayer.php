@@ -6,11 +6,11 @@
  * templates because i've used it once or twice. Since Yii uses lazyload, it
  * shouldn't generate any useless overhead.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class TranslatorLayer
 {
@@ -20,15 +20,18 @@ class TranslatorLayer
      * @return void
      * @since 0.1.0
      */
-    public function init() {}
+    public function init()
+    {
+    }
     /**
      * Translates provided <var>$message</var> using <b>templates</b>
      * category.
      * 
-     * @param string $message Message itself. BlogMVC\Yii translates
+     * @param string   $message Message itself. BlogMVC\Yii translates
      * everything and uses tokens instead of real messages.
-     * @param string[] $params Additional params to replace {item}-formatted
+     * @param string[] $params  Additional params to replace {item}-formatted
      * placeholders.
+     *
      * @return string Translated text.
      * @since 0.1.0
      */
@@ -36,6 +39,6 @@ class TranslatorLayer
         $message,
         $params=array()
     ) {
-        return Yii::t('templates', $message, $params);
+        return \Yii::t('templates', $message, $params);
     }
 }
