@@ -2,7 +2,9 @@
 {% block content %}
 <h2>
     Users
-    <a href="{{ this.createUrl('user/new') }}" class="btn btn-primary pull-right">Create new</a>
+    <a href="{{ this.createUrl('user/new') }}" class="btn btn-primary pull-right" role="create-user-link">
+        Create new
+    </a>
 </h2>
 <table class="table table-striped">
     <thead>
@@ -19,11 +21,15 @@
                 <td>
                     {{ user.username }}
                     {% if App.user.id == user.id %}
-                        <a href="{{ this.createUrl('user/profile') }}" class="btn btn-primary btn-xs">Edit</a>
+                        <a href="{{ this.createUrl('user/profile') }}" class="btn btn-primary btn-xs" role="edit-profile-link">
+                            Edit
+                        </a>
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ this.createUrl('post/author', {'id':user.id}) }}">{{ user.postCount }}</a>
+                    <a href="{{ this.createUrl('post/author', {'id':user.id}) }}" role="user-page-link">
+                        {{ user.postCount }}
+                    </a>
                 </td>
             </tr>
         {% endfor %}

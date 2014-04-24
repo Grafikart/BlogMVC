@@ -21,7 +21,8 @@
             </div>
             <div class="form-row">
                 {{ C.Html.submitButton('Submit', {
-                'class':'btn btn-primary'
+                    'class':'btn btn-primary',
+                    'role':'update-username'
                 }) }}
             </div>
         </div>
@@ -67,7 +68,8 @@
             </div>
             <div class="form-row">
                 {{ C.Html.submitButton('Submit', {
-                    'class':'btn btn-primary'
+                    'class':'btn btn-primary',
+                    'role':'update-password'
                 }) }}
             </div>
         </div>
@@ -75,5 +77,5 @@
     </div>
 
     <h3>The nullmighty plzdeleteme link</h3>
-    <a href="{{ this.createUrl('user/suicide') }}" class="btn btn-primary">Plz delete me</a>
+    <a href="{{ this.createUrl('user/suicide') }}" class="btn btn-primary" role="suicide-booth-link">Plz delete me</a>
 {% endblock %}

@@ -2,7 +2,10 @@
 {% block content %}
 <h2>Create new user</h2>
 {% set form = this.beginWidget('CActiveForm', {
-    'htmlOptions':{'class':'col-md-6'}
+    'htmlOptions':{
+        'class':'col-md-6',
+        'role':'new-user-form'
+    }
 }) %}
 <div class="row form-group{{ user.getError('username')?' has-error' }}">
     {{ form.textField(user, 'username', {
@@ -32,7 +35,7 @@
     {% endif %}
 </div>
 <div class="row form-group">
-    {{ C.Html.tag('button', {'type':'submit', 'class':'btn btn-primary'}, 'Submit') }}
+    {{ C.Html.tag('button', {'type':'submit', 'class':'btn btn-primary', 'role':'create-user'}, 'Submit') }}
 </div>
 {{ void(this.endWidget()) }}
 {% endblock %}

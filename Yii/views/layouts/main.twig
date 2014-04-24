@@ -36,12 +36,12 @@
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    {# <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button> -->
-                    <!-- this was in original template, but seems it's just a leftover -->
+                    </button> #}
+                    {# this was in original template, but seems it's just a leftover #}
                     <a class="navbar-brand" href="{{ this.createUrl('post/index') }}">Blog</a>
                 </div>
 
@@ -49,20 +49,40 @@
                     <ul class="nav navbar-nav">
                         {% set parentPage = this.getPenultimateBreadcrumb() %}
                         {% if parentPage %}
-                            <li><a href="{{ parentPage['url'] }}">&lt; Back to {{ parentPage['title'] }}</a></li>
+                            <li>
+                                <a href="{{ parentPage['url'] }}" role="parent-page-link">
+                                    &lt; Back to {{ parentPage['title'] }}
+                                </a>
+                            </li>
                         {% elseif this.getLastBreadcrumb() %}
-                            <li><a href="/">&lt; Back to Blog</a></li>
+                            <li>
+                                <a href="{{ this.createUrl('post/index') }}" role="parent-page-link">
+                                    &lt; Back to Blog
+                                </a>
+                            </li>
                         {% endif %}
                         {% block header_admin_link %}
                             {% if not App.user.getIsGuest() %}
-                                <li><a href="{{ this.createUrl('admin/index') }}">Admin panel</a>
+                                <li>
+                                    <a href="{{ this.createUrl('admin/index') }}" role="admin-dashboard-link">
+                                        Admin panel
+                                    </a>
+                                </li>
                             {% endif %}
                         {% endblock %}
                         {% block header_auth_link %}
                             {% if App.user.getIsGuest() %}
-                                <li><a href="{{ this.createUrl('user/login') }}">Login</a></li>
+                                <li>
+                                    <a href="{{ this.createUrl('user/login') }}" role="login-link">
+                                        Login
+                                    </a>
+                                </li>
                             {% else %}
-                                <li><a href="{{ this.createUrl('user/logout') }}">Logout</a></li>
+                                <li>
+                                    <a href="{{ this.createUrl('user/logout') }}" role="logout-link">
+                                        Logout
+                                    </a>
+                                </li>
                             {% endif %}
                         {% endblock %}
                     </ul>
