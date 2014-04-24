@@ -21,7 +21,7 @@ class AdminController extends BaseController
     public function actionIndex()
     {
         $user = \User::model()->with('postCount', 'commentCount')
-                              ->findByPk(Yii::app()->user->id);
+                              ->findByPk(\Yii::app()->user->id);
         $this->render('index', array('user' => $user));
     }
 

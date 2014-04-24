@@ -3,11 +3,11 @@
 /**
  * This controller holds single action for displaying category posts.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class CategoryController extends BaseController
 {
@@ -15,15 +15,19 @@ class CategoryController extends BaseController
      * Alters breadcrumb array by adding proper name to the last element
      * 
      * @param \Category $category current category.
+     *
      * @return void
      * @since 0.1.0
      */
-    public function alterBreadcrumbs($lastPageName) {
+    public function alterBreadcrumbs($lastPageName)
+    {
         $this->breadcrumbs[sizeof($this->breadcrumbs) - 1]['title'] = $lastPageName;
     }
     /**
      * Main action that displays category page.
-     * 
+     *
+     * @todo get rid of irrelevant scope approach
+     *
      * @throws \HttpException HTTP error 400 is generated if incorrect page
      * is requested.
      * @throws \HttpException HTTP error 404 is generated if requested page
@@ -40,6 +44,7 @@ class CategoryController extends BaseController
         $category = Category::model()->paged($page, 5)->with(array( // note that paged scope is applied on Category :/
             'posts' => array(
                 //'scopes' => array('paged' => $page,),
+                'order' => 'created DESC',
             ),
             'postCount',
         ))->find('t.slug = :slug', array(':slug' => $slug));

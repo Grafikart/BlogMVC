@@ -10,11 +10,11 @@
  * @todo Breadcrumbs generation should be done in base controller only
  * @todo Finish post creation (slug checking)
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class PostController extends BaseController
 {
@@ -41,11 +41,12 @@ class PostController extends BaseController
     public function generateIndexBreadcrumbs()
     {
         if ($this->pageNumber > 1) {
-            $text = Yii::t('templates', 'breadcrumbs.pageTitle', array(
-                '{pageNumber}' => $this->pageNumber,
-            ));
+            $text = \Yii::t(
+                'templates', 'breadcrumbs.pageTitle',
+                array('{pageNumber}' => $this->pageNumber,)
+            );
             $this->breadcrumbs = array(
-                Yii::app()->request->requestUri => $text,
+                \Yii::app()->request->requestUri => $text,
             );
         }
     }
@@ -53,35 +54,37 @@ class PostController extends BaseController
      * Method for alteration breadcrumbs for edit page.
      * 
      * @param Post $post Current post instance.
+     *
      * @return void
      * @since 0.1.0
      */
     public function alterEditBreadcrumbs(Post $post)
     {
         array_pop($this->breadcrumbs);
-        $this->breadcrumbs[Yii::app()->request->requestUri] = $post->name;
+        $this->breadcrumbs[\Yii::app()->request->requestUri] = $post->name;
     }
     /**
      * Main action, renders last 5 posts from the feed.
+     *
+     * @param int|string $page   Page number in string form.
+     * @param string     $format Format to supply page in.
      * 
      * @throws CHttpException Raises HTTP error 402 if unknown format is
      * requested.
      * @throws CHttpException Raises HTTP error 404 if requested feed page
      * doesn't exist (except for the first page).
-     * 
-     * @param int|string $page Page number in string form.
-     * @param string $format Format to supply page in.
+     *
      * @return void
      * @since 0.1.0
      */
     public function actionIndex($page=1, $format='html')
     {
-        $this->setPage($page, Yii::t('templates', 'blog.pageTitle'));
+        $this->setPage($page, \Yii::t('templates', 'blog.pageTitle'));
          $format = strtolower($format);
         if ($format !== 'html' && !\DataFormatter::knownFormat($format)) {
             throw new \HttpException(400, 'badRequest.invalidFormat');
         }
-        $posts = Post::model()->paged($this->pageNumber)->with('author')->findAll();
+        $posts = \Post::model()->paged($this->pageNumber)->with('author')->findAll();
         if ($this->pageNumber > 1 && sizeof($posts) === 0) {
             throw new \HttpException(404);
         }
@@ -95,121 +98,244 @@ class PostController extends BaseController
                 ),
             );
             $this->render('index', $data);
-        }
-        else {
-            echo Yii::app()->formatter->formatModels($posts, $format);
+        } else {
+            echo \Yii::app()->formatter->formatModels($posts, $format);
         }
     }
     /**
      * Shows selected post in chosen format.
      *
+     * @param string $slug   Post slug.
+     * @param string $format Format to render post in.
+     *
      * @throws \HttpException Thrown if requested post doesn't exist or can't be
      * formatted using provided format.
      *
-     * @param string $slug Post slug.
-     * @param string $format Format to render post in.
+     * @return void
      * @since 0.1.0
      */
     public function actionShow($slug, $format='html')
     {
-        $post = \Post::model()->with('comments')->find('slug = :slug', array(
-            ':slug' => $slug,
-        ));
-        $comment = new \Comment;
-        if (\Yii::app()->user->hasData('comment')) {
-            $comment->setAndValidate(\Yii::app()->user->getData('comment'));
-        }
+        $post = \Post::model()->with('comments')->find(
+            'slug = :slug',
+            array(':slug' => $slug,)
+        );
         if ($post === null) {
             throw new \HttpException(404);
         }
         if ($format === 'html') {
-            $this->render('show', array(
-                'post' => $post,
-                'comment' => $comment,
-            ));
+            $comment = new \Comment;
+            if (\Yii::app()->user->hasData('comment')) {
+                $comment->setAndValidate(\Yii::app()->user->getData('comment'));
+            }
+            $this->render(
+                'show',
+                array(
+                    'post' => $post,
+                    'comment' => $comment,
+                )
+            );
         } else if (!\DataFormatter::knownFormat($format)) {
             throw new \HttpException(400, 'badRequest.invalidFormat');
         } else {
-            echo \Yii::app()->formatter->formatModel('post', $format);
+            echo \Yii::app()->formatter->formatModel($post, $format);
         }
     }
+
+    /**
+     * Renders form for new post.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionNew()
     {
         $post = new Post;
-        if (($data = Yii::app()->request->getPost('Post', false)) &&
-                $post->setAndSave($data)) {
-            Yii::app()->user->sendMessage('post.submit.success');
+        $data = \Yii::app()->request->getPost('Post', false);
+        if ($data && $post->setAndSave($data)) {
+            \Yii::app()->user->sendMessage('post.submit.success');
             $this->redirect(array('post/show', 'slug' => $post->slug));
         }
-        $this->render('form', array(
-            'post' => $post,
-            'categories' => Category::model()->getList()
-        ));
+        $this->render(
+            'form',
+            array(
+                'post' => $post,
+                'categories' => \Category::model()->getList()
+            )
+        );
     }
+
+    /**
+     * Returns post slug existence.
+     *
+     * @param string $slug Slug to be checked.
+     *
+     * @throws \HttpException Thrown if requested non-ajaxly in profuction
+     * mode.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionCheckSlug($slug)
     {
-        if (!Yii::app()->request->isAjaxRequest && YII_DEBUG == false) {
-            $message = Yii::t('http-errors', 'badRequest.ajaxOnly');
-            throw new CHttpException(402, $message);
+        if (!\Yii::app()->request->isAjaxRequest && YII_DEBUG == false) {
+            throw new \HttpException(400, 'badRequest.ajaxOnly');
         }
         echo CJSON::encode(Post::model()->slugExists($slug));
     }
+
+    /**
+     * Renders form for post editing.
+     *
+     * @param int $id Post ID.
+     *
+     * @throws \HttpException Thrown if post doesn't exist (404).
+     * @throws \HttpException Thrown if post wasn't written by current user
+     * (403).
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionEdit($id)
     {
         $model = \Post::model()->findByPk($id);
         if ($model === null) {
             throw new \HttpException(404);
-        } else if ((int) $model->user_id !== Yii::app()->user->id) {
+        } else if ((int) $model->user_id !== \Yii::app()->user->id) {
             throw new \HttpException(403, 'notAuthorized.postOwnership');
         }
-        if ($data = Yii::app()->request->getPost('Post')) {
+        if ($data = \Yii::app()->request->getPost('Post')) {
             $model->setAndSave($data);
         }
         $this->pageTitle = $model->name;
         $this->alterEditBreadcrumbs($model);
-        $this->render('form', array(
-            'post' => $model,
-            'categories' => \Category::model()->getList(),
-        ));
+        $this->render(
+            'form',
+            array(
+                'post' => $model,
+                'categories' => \Category::model()->getList(),
+            )
+        );
     }
+    /**
+     * Deletes post with selected ID.
+     *
+     * @param int|string $id Post ID.
+     *
+     * @throws \HttpException Thrown if post doesn't exist (404).
+     * @throws \HttpException Thrown if post wasn't written by current user
+     * (403).
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionDelete($id)
     {
         if (($model = \Post::model()->findByPk($id)) === null) {
             throw new \HttpException(404);
         }
-        if ((int)$model->user_id !== Yii::app()->user->id) {
-            $message = \Yii::t('http-errors', 'notAuthorized.postOwnership');
-            throw new \HttpException(403, $message);
+        if ((int)$model->user_id !== \Yii::app()->user->id) {
+            throw new \HttpException(403, 'notAuthorized.postOwnership');
         }
         $model->delete();
-        \Yii::app()->user->sendMessage('post.delete.success', array(
-            '{title}' => $model->name,
-        ));
+        \Yii::app()->user->sendMessage(
+            'post.delete.success',
+            WebUserLayer::FLASH_SUCCESS,
+            array('{title}' => $model->name,)
+        );
         $this->redirect(array('post/dashboard'));
     }
+
+    /**
+     * Renders posts dashboard.
+     *
+     * @param int|string $page Page number.
+     *
+     * @throws HttpException Thrown if such page doesn't exist (404).
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionDashboard($page=1)
     {
-        $page = (int) $page;
-        if ($page < 1) {
-            throw new \CHttpException(404);
-        }
+        $page = $this->setPageNumber($page);
         $posts = Post::model()->paged($page, 10)->findAll();
         if (empty($posts) && $page !== 1) {
-            throw new \CHttpException(404);
+            throw new \HttpException(404);
         }
-        $this->render('dashboard', array(
-            'posts' => $posts,
-            'pagination' => array(
-                'currentPage' => $page,
-                'totalPages' => Post::model()->totalPages(10),
-                'route' => 'post/dashboard',
-            ),
-        ));
+        $this->render(
+            'dashboard',
+            array(
+                'posts' => $posts,
+                'pagination' => array(
+                    'currentPage' => $page,
+                    'totalPages' => \Post::model()->totalPages(10),
+                    'route' => 'post/dashboard',
+                ),
+            )
+        );
     }
+
+    /**
+     * Displays all user's posts.
+     *
+     * @param string|int $id   User ID.
+     * @param string|int $page Page number
+     *
+     * @throws \HttpException Thrown if such user or page isn't found (404).
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionAuthor($id, $page=1)
+    {
+        $user = \User::model()->findByPk($id);
+        if ($user === null) {
+            throw new \HttpException(404);
+        }
+        $this->setPage($page);
+        $posts = \Post::model()->paged($this->pageNumber)->findAll(
+            'user_id = :user_id',
+            array(':user_id' => $user->getPrimaryKey())
+        );
+        if (sizeof($posts) === 0 && $this->pageNumber > 1) {
+            throw new \HttpException(404);
+        }
+        $this->render(
+            'index',
+            array(
+                'user' => $user,
+                'posts' => $posts,
+                'pagination' => array(
+                    'currentPage' => $this->pageNumber,
+                    'totalPages' => \Post::model()->count(
+                        'user_id = :user_id',
+                        array(':user_id' => $user->getPrimaryKey())
+                    ) / 5,
+                    'route' => 'post/author',
+                    'routeOptions' => array('id' => $id,),
+                ),
+            )
+        );
+    }
+
+    /**
+     * Defines controller filters.
+     *
+     * @return array Set of controller filters.
+     * @since 0.1.0
+     */
     public function filters()
     {
         return array('accessControl');
     }
+
+    /**
+     * Defines access rules for actions.
+     *
+     * @return array Set of access rules.
+     * @since 0.1.0
+     */
     public function accessRules()
     {
         return array(

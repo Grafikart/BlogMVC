@@ -3,11 +3,11 @@
 /**
  * This controller is responsible for adding, listing and deleting users.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class UserController extends BaseController
 {
@@ -15,24 +15,25 @@ class UserController extends BaseController
      * This action renders new user form on GET request and creates new user
      * on POST request, redirecting to `user/index` page after.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionNew()
     {
-        $user = new User;
+        $user = new \User;
         if (($data = \Yii::app()->request->getPost('User'))) {
             if ($user->setAndSave($data)) {
                 $id = $user->getPrimaryKey();
                 \Yii::app()->user->sendMessage(
                     'user.creation.success',
-                    WebUserLayer::FLASH_SUCCESS,
+                    \WebUserLayer::FLASH_SUCCESS,
                     array('{user}' => $user->username,)
                 );
                 $this->redirect(array('user/index', 'created' => $id));
             } else {
                 \Yii::app()->user->sendMessage(
                     'user.creation.fail',
-                    WebUserLayer::FLASH_ERROR
+                    \WebUserLayer::FLASH_ERROR
                 );
             }
         }
@@ -42,6 +43,7 @@ class UserController extends BaseController
      * This action renders profile and optionally updates user profile on POST
      * request.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionProfile()
@@ -57,6 +59,13 @@ class UserController extends BaseController
         }
         $this->render('profile', array('user' => $user,));
     }
+
+    /**
+     * Updates user password.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function actionUpdatePassword()
     {
         $data = \Yii::app()->request->getPost('User');
@@ -65,18 +74,18 @@ class UserController extends BaseController
         if (!$data) {
             \Yii::app()->user->sendMessage(
                 'profile.passwordUpdate.noData',
-                WebUserLayer::FLASH_ERROR
+                \WebUserLayer::FLASH_ERROR
             );
         } elseif (!$user->setAndSave($data)) {
             \Yii::app()->user->sendMessage(
                 'profile.passwordUpdate.fail',
-                WebUserLayer::FLASH_ERROR
+                \WebUserLayer::FLASH_ERROR
             );
             \Yii::app()->user->saveData('user.passwordUpdate', $data);
         } else {
             \Yii::app()->user->sendMessage(
                 'profile.passwordUpdate.success',
-                WebUserLayer::FLASH_SUCCESS
+                \WebUserLayer::FLASH_SUCCESS
             );
         }
         $this->redirect(array('user/profile'));
@@ -89,24 +98,24 @@ class UserController extends BaseController
         if (!$data) {
             \Yii::app()->user->sendMessage(
                 'profile.usernameUpdate.noData',
-                WebUserLayer::FLASH_ERROR
+                \WebUserLayer::FLASH_ERROR
             );
         } elseif ($data['username'] === \Yii::app()->user->username) {
             \Yii::app()->user->sendMessage(
                 'profile.usernameUpdate.alreadyOwned',
-                WebUserLayer::FLASH_NOTICE
+                \WebUserLayer::FLASH_NOTICE
             );
         } elseif (!$user->setAndSave($data)) {
             \Yii::app()->user->sendMessage(
                 'profile.usernameUpdate.fail',
-                WebUserLayer::FLASH_ERROR
+                \WebUserLayer::FLASH_ERROR
             );
             \Yii::app()->user->saveData('user.usernameUpdate', $data);
         } else {
             \Yii::app()->user->username = $user->username;
             \Yii::app()->user->sendMessage(
                 'profile.usernameUpdate.success',
-                WebUserLayer::FLASH_SUCCESS
+                \WebUserLayer::FLASH_SUCCESS
             );
         }
         $this->redirect(array('user/profile'));
@@ -115,7 +124,10 @@ class UserController extends BaseController
      * This action renders suicide booth on GET request and deletes current
      * user on POST request (which is achieved by pressing button in suicide
      * booth).
+     * 
+     * @todo Final message is not displayed yet
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionSuicide()
@@ -124,7 +136,7 @@ class UserController extends BaseController
             $user = \User::model()->findByPk(\Yii::app()->user->id);
             $user->delete();
             \Yii::app()->user->logout();
-            \Yii::app()->user->sendMessage('deletion.goodbye'); //** @todo doesn't work */
+            \Yii::app()->user->sendMessage('deletion.goodbye');
             $this->redirect(array('post/index'));
         }
         $this->render('suicide');
@@ -140,20 +152,27 @@ class UserController extends BaseController
         $this->pageTitle = 'Login';
         $model = \User::model();
         if (!\Yii::app()->user->getIsGuest()) {
-            \Yii::app()->user->sendMessage('auth.login.alreadyAuthorized', WebUserLayer::FLASH_NOTICE);
+            \Yii::app()->user->sendMessage('auth.login.alreadyAuthorized');
             $this->redirect(array('admin/index'));
         }
         if (($data = \Yii::app()->request->getPost('User', false)) !== false) {
-            $identity = new UserIdentity($data['username'], $data['password']);
+            $identity = new \UserIdentity($data['username'], $data['password']);
             if ($identity->authenticate()) {
                 \Yii::app()->user->login($identity);
-                \Yii::app()->user->sendMessage('auth.login.greeting', WebUserLayer::FLASH_SUCCESS);
-                if (!empty(\Yii::app()->user->returnUrl) && \Yii::app()->user->returnUrl !== '/') {
-                    $this->redirect(\Yii::app()->user->returnUrl);
+                \Yii::app()->user->sendMessage(
+                    'auth.login.greeting',
+                    \WebUserLayer::FLASH_SUCCESS
+                );
+                $returnUrl = \Yii::app()->user->returnUrl;
+                if (!empty($returnUrl) && $returnUrl !== '/') {
+                    $this->redirect($returnUrl);
                 }
                 $this->redirect(array('admin/index'));
             } else {
-                \Yii::app()->user->sendMessage('auth.login.fail', WebUserLayer::FLASH_ERROR);
+                \Yii::app()->user->sendMessage(
+                    'auth.login.fail',
+                    \WebUserLayer::FLASH_ERROR
+                );
             }
         }
         if ($data) {
@@ -167,6 +186,7 @@ class UserController extends BaseController
      *
      * @todo Finally do something with not-saving messages after logout
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionLogout()
@@ -174,12 +194,12 @@ class UserController extends BaseController
         if (\Yii::app()->user->getIsGuest()) {
             \Yii::app()->user->sendMessage(
                 'auth.logout.guestAttempt',
-                WebUserLayer::FLASH_NOTICE
+                \WebUserLayer::FLASH_NOTICE
             );
         } else {
             \Yii::app()->user->sendMessage(
                 'auth.logout.goodbye',
-                WebUserLayer::FLASH_NOTICE
+                \WebUserLayer::FLASH_NOTICE
             );
             \Yii::app()->user->logout();
         }
@@ -191,54 +211,24 @@ class UserController extends BaseController
      *
      * @param int|string $page Current page number.
      *
+     * @return void
      * @since 0.1.0
      */
     public function actionIndex($page=1)
     {
         $page = $this->setPageNumber($page);
         $users = \User::model()->paged($page, 25)->with('postCount')->findAll();
-        $this->render('index', array(
-            'users' => $users,
-            'pagination' => array(
-                'currentPage' => $page,
-                'totalPages' => \User::model()->count() / 25,
-                'route' => 'post/user',
-            ),
-        ));
-    }
-
-    /**
-     * Displays all user's posts.
-     *
-     * @param string|int $page Page number
-     *
-     * @since 0.1.0
-     */
-    public function actionPosts($id, $page=1)
-    {
-        $user = \User::model()->findByPk($id);
-        if ($user === null) {
-            throw new \HttpException(404);
-        }
-        $this->setPage($page);
-        $posts = \Post::model()->paged($this->pageNumber)->findAll(
-            'user_id = :user_id',
-            array(':user_id' => $user->getPrimaryKey())
-        );
-        if (sizeof($posts) === 0 && $this->pageNumber > 1) {
-            throw new \HttpException(404);
-        }
-        $this->render('posts.twig', array(
-            'user' => $user,
-            'posts' => $posts,
-            'pagination' => array(
-                'currentPage' => $this->pageNumber,
-                'totalPages' => \Post::model()->count(
-                    'user_id = :user_id',
-                    array(':user_id' => $user->getPrimaryKey())
+        $this->render(
+            'index',
+            array(
+                'users' => $users,
+                'pagination' => array(
+                    'currentPage' => $page,
+                    'totalPages' => \User::model()->count() / 25,
+                    'route' => 'post/user',
                 ),
-            ),
-        ));
+            )
+        );
     }
 
     /**
