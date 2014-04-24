@@ -28,13 +28,29 @@
                         <span class="help-block">{{ appModel.getError('language') }}</span>
                     {% endif %}
                 </div>
+                <div class="form-group{{ appModel.getError('theme')?' has-error' }}">
+                    {{ form.label(appModel, 'theme') }}
+                    {{ form.dropdownList(appModel, 'theme', appModel.getAvailableThemes, {
+                        'class':'form-control',
+                    }) }}
+                    {% if appModel.getError('theme') %}
+                        <span class="help-block">{{ appModel.getError('theme') }}</span>
+                    {% endif %}
+                </div>
                 <div class="form-group submit-row">
-                    {{ C.Html.submitButton('Save', {'class':'btn btn-primary'}) }}
+                    {{ C.Html.submitButton('Save', {
+                        'class':'btn btn-primary',
+                        'role':'update-options'
+                    }) }}
                 </div>
             </div>
         {{ void(this.endWidget()) }}
     </div>
     <h2>Cached values</h2>
-        <a href="{{ this.createUrl('admin/flushCache') }}" class="btn btn-primary">Flush cache</a>
-        <a href="{{ this.createUrl('admin/recalculate') }}" class="btn btn-primary">Recalculate counters</a>
+        <a href="{{ this.createUrl('admin/flushCache') }}" class="btn btn-primary" role="flush-cache-link">
+            Flush cache
+        </a>
+        <a href="{{ this.createUrl('admin/recalculate') }}" class="btn btn-primary" role="recalculate-counters-link">
+            Recalculate counters
+        </a>
 {% endblock %}

@@ -1,24 +1,24 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
 <h2>Statistics</h2>
-<table class="table table-striped">
+<table class="table table-striped" role="service-statistics">
     <tbody>
     {% for option, value in statistics %}
-        <tr>
-            <td>{{ option }}</td>
-            <td>{{ value }}</td>
+        <tr class="row-{{ loop.index }}">
+            <td role="stats-entry">{{ option }}</td>
+            <td role="stats-value">{{ value }}</td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
 
 <h2>Service status</h2>
-<table class="table table-striped">
+<table class="table table-striped" role="server-status">
     <tbody>
     {% for option, value in status %}
-        <tr>
-            <td>{{ option }}</td>
-            <td>{{ value }}</td>
+        <tr class="row-{{ loop.index }}">
+            <td role="status-entry">{{ option }}</td>
+            <td role="status-value">{{ value }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -30,7 +30,9 @@
     manually, though:
     </p>
     <p class="text-center container">
-        <a class="btn btn-primary" href="{{ this.createUrl('admin/flushCache', {'returnUrl':App.request.requestUri}) }}">Flush cache</a>
+        <a class="btn btn-primary" href="{{ this.createUrl('admin/flushCache', {'returnUrl':App.request.requestUri}) }}" role="flush-cache-link">
+            Flush cache
+        </a>
     </p>
 </div>
 {% endblock %}
