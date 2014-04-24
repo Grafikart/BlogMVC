@@ -4,13 +4,11 @@
  * This model works with application-scope data (config) or data from all
  * application components (statistics).
  *
- * @todo Add profiling
- *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package mvcblog
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class ApplicationModel extends CModel
 {
@@ -30,6 +28,13 @@ class ApplicationModel extends CModel
      */
     public $language;
     /**
+     * Current application theme.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public $theme;
+    /**
      * List of errors related to config editing.
      *
      * @var string[]
@@ -44,12 +49,26 @@ class ApplicationModel extends CModel
      */
     public $configFile = 'application.config.front';
     /**
+     * Public skins path.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public $themesPath = 'application.public.skins';
+    /**
      * Attribute labels cache.
      * 
      * @var string[]
      * @since 0.1.0
      */
     protected $attributeLabels;
+    /**
+     * Available themes cache.
+     *
+     * @var string[] List of available themes.
+     * @since 0.1.0
+     */
+    protected $availableThemes;
     
     /**
      * Error code for missing config file.
@@ -93,12 +112,14 @@ class ApplicationModel extends CModel
     /**
      * Main initializer method.
      *
+     * @return void
      * @since 0.1.0
      */
     public function init()
     {
         $this->name = \Yii::app()->name;
         $this->language = \Yii::app()->language;
+        $this->theme = \Yii::app()->theme->name;
     }
     /**
      * Returns current or cached statistics.
@@ -108,22 +129,26 @@ class ApplicationModel extends CModel
      */
     public static function getStatistics()
     {
+        \Yii::beginProfile('applicationModel.getStatistics');
         if (($stats = \Yii::app()->cache->get('app.statistics')) === false) {
+            \Yii::beginProfile('applicationModel.retrieveStatistics');
             $stats = array(
-                'users.total' => User::model()->count(),
-                'categories.total' => Category::model()->count(),
-                'posts.total' => Post::model()->count(),
-                'posts.today' => Post::model()->today(),
-                'comments.total' => Comment::model()->count(),
-                'comments.today' => Comment::model()->today(),
+                'users.total' => \User::model()->count(),
+                'categories.total' => \Category::model()->count(),
+                'posts.total' => \Post::model()->count(),
+                'posts.today' => \Post::model()->today(),
+                'comments.total' => \Comment::model()->count(),
+                'comments.today' => \Comment::model()->today(),
             );
             foreach ($stats as $key => $value) {
                 unset($stats[$key]);
-                $stats[Yii::t('templates', 'statistics.'.$key)] = $value;
+                $stats[\Yii::t('templates', 'statistics.'.$key)] = $value;
             }
-            $dep = new CGlobalStateCacheDependency('lastPost');
-            Yii::app()->cache->set('app.statistics', $stats, 3600, $dep);
+            $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
+            \Yii::app()->cache->set('app.statistics', $stats, 3600, $dep);
+            \Yii::endProfile('applicationModel.retrieveStatistics');
         }
+        \Yii::endProfile('applicationModel.getStatistics');
         return $stats;
     }
 
@@ -137,6 +162,7 @@ class ApplicationModel extends CModel
      */
     public function save(array $attributes=null)
     {
+        \Yii::beginProfile('applicationModel.save');
         if ($attributes !== null) {
             $this->setAttributes($attributes);
         }
@@ -145,25 +171,26 @@ class ApplicationModel extends CModel
         }
         $this->configErrors = array();
         $result = $this->updateConfig();
-        $l10nData = array('{path}' => Yii::getPathOfAlias($this->configFile));
+        $l10nData = array('{path}' => \Yii::getPathOfAlias($this->configFile));
         switch ($result) {
             case self::CONFIG_FILE_MISSING:
-                $error = Yii::t('validation-errors', 'app.missingConfig', $l10nData);
+                $error = \Yii::t('validation-errors', 'app.missingConfig', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_MISSING_DATA:
-                $error = Yii::t('validation-errors', 'app.missingConfigData', $l10nData);
+                $error = \Yii::t('validation-errors', 'app.missingConfigData', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_NOT_WRITABLE:
-                $error = Yii::t('validation-errors', 'app.configNotWritable', $l10nData);
+                $error = \Yii::t('validation-errors', 'app.configNotWritable', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_UNREADABLE:
-                $error = Yii::t('validation-errors', 'app.unreadableConfig', $l10nData);
+                $error = \Yii::t('validation-errors', 'app.unreadableConfig', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
         }
+        \Yii::endProfile('applicationModel.save');
         return true;
     }
     /**
@@ -174,43 +201,51 @@ class ApplicationModel extends CModel
      */
     public function updateConfig()
     {
+        \Yii::beginProfile('applicationModel.updateConfig');
         $config = $this->readConfig($this->configFile);
         if (!is_array($config)) {
             return $config;
         }
-        $config['name'] = Yii::app()->formatter->escape($this->name);
-        Yii::app()->language = $config['language'] = $this->language;
-        Yii::app()->name = $this->name;
-        return $this->writeConfig($this->configFile, $config);
+        $config['name'] = \Yii::app()->formatter->escape($this->name);
+        \Yii::app()->language = $config['language'] = $this->language;
+        \Yii::app()->name = $this->name;
+        \Yii::app()->theme = $config['theme'] = $this->theme;
+        $result = $this->writeConfig($this->configFile, $config);
+        \Yii::endProfile('applicationModel.updateConfig');
+        return $result;
     }
     /**
      * Reads config file using it's Yii path alias.
      * 
      * @param string $alias Yii path alias.
+     *
      * @return array|int Array of data or one of self::CONFIG_FILE_* error
      * constants.
      * @since 0.1.0
      */
     protected function readConfig($alias)
     {
-        $path = Yii::getPathOfAlias($alias).'.php';
+        \Yii::beginProfile('applicationModel.readConfig');
+        $path = \Yii::getPathOfAlias($alias).'.php';
         if (!file_exists($path)) {
             return self::CONFIG_FILE_MISSING;
         }
         if (!is_readable($path)) {
             return self::CONFIG_FILE_UNREADABLE;
         }
-        $data = include($path);
+        $data = include $path;
         if (!is_array($data) || sizeof($data) === 0) {
             return self::CONFIG_FILE_MISSING_DATA;
         }
+        \Yii::endProfile('applicationModel.readConfig');
         return $data;
     }
     /**
      * Writes provided config into config file.
      * 
-     * @param string $alias Yii path alias for config file.
-     * @param array $config New config.
+     * @param string $alias  Yii path alias for config file.
+     * @param array  $config New config.
+     *
      * @return int Number of written bytes or one of self::CONFIG_FILE_* error
      * constants. Since number of written bytes should be big (20+), error
      * codes should no intersect with it.
@@ -218,7 +253,8 @@ class ApplicationModel extends CModel
      */
     protected function writeConfig($alias, array $config)
     {
-        $path = Yii::getPathOfAlias($alias).'.php';
+        \Yii::beginProfile('applicationModel.writeConfig');
+        $path = \Yii::getPathOfAlias($alias).'.php';
         if (!file_exists($path)) {
             return self::CONFIG_FILE_MISSING;
         } else if (!is_writable($path)) {
@@ -227,10 +263,12 @@ class ApplicationModel extends CModel
         $template = "<?php\nreturn :config;\n";
         $config = str_replace(
             ':config',
-            Yii::app()->formatter->renderArray($config),
+            \Yii::app()->formatter->renderArray($config),
             $template
         );
-        return file_put_contents($path, $config);
+        $result = file_put_contents($path, $config);
+        \Yii::endProfile('applicationModel.writeConfig');
+        return $result;
     }
     /**
      * Returns list of available languages.
@@ -244,9 +282,33 @@ class ApplicationModel extends CModel
     }
 
     /**
+     * Returns list of available themes.
+     * 
+     * @return string[]
+     * @since 0.1.0
+     */
+    public function getAvailableThemes()
+    {
+        if (!isset($this->availableThemes)) {
+            $path = \Yii::getPathOfAlias($this->themesPath);
+            // making default theme first in list.
+            $this->availableThemes = array('default' => 'default');
+            foreach (new DirectoryIterator($path) as $entry) {
+                if (!$entry->isDot() && $entry->isDir()) {
+                    $theme = $entry->getFilename();
+                    $this->availableThemes[$theme] = $theme;
+                }
+            }
+        }
+        return $this->availableThemes;
+    }
+
+    /**
      * Validates that provided language is allowed.
      *
-     * @param $attribute string Language attribute name.
+     * @param string $attribute Language attribute name.
+     *
+     * @return void
      * @since 0.1.0
      */
     public function validateLanguage($attribute)
@@ -254,12 +316,36 @@ class ApplicationModel extends CModel
         $lang = $this->$attribute;
         $supported = $this->getAvailableLanguages();
         if (!in_array($lang, array_keys($supported), true)) {
-            $error = Yii::t(
+            $error = \Yii::t(
                 'validation-errors',
                 'app.unsupportedLanguage',
                 array('{lang}' => $lang)
             );
             $this->addError($attribute, $error);
+        }
+    }
+
+    /**
+     * Validates theme correctness.
+     *
+     * @param string $attribute Attribute name (probably 'theme').
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function validateTheme($attribute)
+    {
+        $theme = $this->$attribute;
+        $supported = $this->getAvailableThemes();
+        if (!in_array($theme, $supported, true)) {
+            $this->addError(
+                $attribute,
+                \Yii::t(
+                    'validation-errors',
+                    'app.missingTheme',
+                    array('{theme}' => $theme)
+                )
+            );
         }
     }
     /**
@@ -284,8 +370,9 @@ class ApplicationModel extends CModel
     protected function getAttributeLabels()
     {
         return array(
-            'name' => Yii::t('forms-labels', 'application.name'),
-            'language' => Yii::t('forms-labels', 'application.language'),
+            'name' => 'application.name',
+            'language' => 'application.language',
+            'theme' => 'application.theme',
         );
     }
     /**
@@ -294,7 +381,8 @@ class ApplicationModel extends CModel
      * @return string[] Localized attribute labels.
      * @since 0.1.0
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         if (!isset($this->attributeLabels)) {
             $this->attributeLabels = $this->getAttributeLabels();
         }
@@ -315,7 +403,11 @@ class ApplicationModel extends CModel
             ),
             array(
                 array('language',),
-                'validateLanguage'
+                'validateLanguage',
+            ),
+            array(
+                array('theme',),
+                'validateTheme',
             )
         );
     }

@@ -8,61 +8,59 @@
  * @method string generateSlug() Generates post slug.
  * @property Category $category Related category.
  *
- * @todo Add profiling
- *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class Post extends ActiveRecordLayer
 {
     /**
      * ID of the related category.
-     * 
+     *
      * @var int
      * @since 0.1.0
      */
     public $category_id;
     /**
      * Post's author ID.
-     * 
+     *
      * @var int
      * @since 0.1.0
      */
     public $user_id;
     /**
      * Post title.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $name;
     /**
      * Post slug.
-     * 
-     * @var string 
+     *
+     * @var string
      * @since 0.1.0
      */
     public $slug;
     /**
      * Post text in markdown.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $content;
     /**
      * Post text converted from markdown to HTML.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $formattedContent;
     /**
      * Date of creation.
-     * 
+     *
      * @var string|CDbExpression
      * @since 0.1.0
      */
@@ -78,7 +76,7 @@ class Post extends ActiveRecordLayer
 
     /**
      * Standard Yii method for defining current model table name.
-     * 
+     *
      * @return string Table name.
      * @since 0.1.0
      */
@@ -87,23 +85,11 @@ class Post extends ActiveRecordLayer
         return 'posts';
     }
     /**
-     * Returns list of inusable slugs.
-     * 
-     * @return string[] List of restricted slugs.
-     * @since 0.1.0
-     */
-    public function restrictedSlugs()
-    {
-        return array(
-            'html', 'rss', 'xml', 'json', 'category', 'author', 'admin',
-        );
-    }
-    /**
      * Returns amount of posts pages.
-     * 
+     *
      * @throws \InvalidArgumentException Thrown if <var>$postsPerPage</var>
      * equals to zero or less.
-     * 
+     *
      * @param int $postsPerPage Number of posts per page.
      * @return int Number of total pages.
      * @since 0.1.0
@@ -119,61 +105,39 @@ class Post extends ActiveRecordLayer
     }
     /**
      * Returns number of posts submitted today.
-     * 
-     * @todo Most probably the same effect may be achieved using
-     * CDbExpression. Though that may be a bit slower, it would be more
-     * correct.
-     * 
+     *
      * @return int Number of today's posts.
      * @since 0.1.0
      */
     public function today()
     {
-        return $this->count('created >= :today', array(
-            ':today' => date('Y-m-d'),
-        ));
-    }
-    /**
-     * Slug validation method. Uses {@link slugExists()} ethod for checking.
-     * 
-     * @param string $attribute Attribute name (i guess it will be `slug`,
-     * right?). Added for compatibility.
-     * @return void
-     * @since 0.1.0
-     */
-    public function validateSlug($attribute/*, array $params=null*/)
-    {
-        $slug = $this->$attribute;
-        if (in_array($slug, $this->restrictedSlugs(), true)) {
-            $error = Yii::t('validation-errors', 'post.restrictedSlug', array(
-                '{slug}' => $slug,
-            ));
-            $this->addError($attribute, $error);
-        }
-        if ($this->slugExists($slug)) {
-            $error = Yii::t('validation-errors', 'post.slugExists', array(
-                '{slug}' => $slug,
-            ));
-            $this->addError($attribute, $error);
-        }
+        $token = 'post.today';
+        \Yii::beginProfile($token);
+        $amount = (int) $this->count(
+            'created >= :today',
+            //array(':today' => \DatabaseService::getCurDateExpression(),)
+            array(':today' => date('Y-m-d'))
+        );
+        \Yii::endProfile($token);
+        return $amount;
     }
     /**
      * Retrieves current category ID.
-     * 
+     *
      * @return int ID of current post category.
      * @since 0.1.0
      */
     public function getCurrentCategory()
     {
-        Yii::beginProfile('post.getCurrentCategory');
+        \Yii::beginProfile('post.getCurrentCategory');
         /** @var CDbConnection $db */
-        $db = Yii::app()->db;
+        $db = \Yii::app()->db;
         $id = (int) $db->createCommand()
-                       ->select('category_id')
-                       ->from($this->tableName())
-                       ->where('id = :id', array(':id' => $this->id))
-                       ->queryScalar();
-        Yii::endProfile('post.getCurrentCategory');
+            ->select('category_id')
+            ->from($this->tableName())
+            ->where('id = :id', array(':id' => $this->id))
+            ->queryScalar();
+        \Yii::endProfile('post.getCurrentCategory');
         return $id;
     }
     /**
@@ -181,32 +145,36 @@ class Post extends ActiveRecordLayer
      * before performing search.
      * Note that parameters aren't checked, so erroneous parameters may
      * trigger error with trace pointing to Yii inner methods.
-     * 
-     * @param int $page Page that should be fetched.
+     *
+     * @param int $page    Page that should be fetched.
      * @param int $perPage Amount of posts on page.
+     *
      * @return \Post Current model instance.
      * @since 0.1.0
      */
     public function paged($page=1, $perPage=5)
     {
-        $this->getDbCriteria()->mergeWith(array(
-            'order' => 'created DESC',
-            'limit' => $perPage,
-            'offset' => ($page - 1) * $perPage,
-        ));
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'order' => 'created DESC',
+                'limit' => $perPage,
+                'offset' => ($page - 1) * $perPage,
+            )
+        );
         return $this;
     }
     /**
      * Post Markdown-formatting callback.
-     * 
+     *
      * @return boolean Always returns true.
      * @since 0.1.0
      */
-    public function afterFind() {
+    public function afterFind()
+    {
         parent::afterFind();
         /** @var DataFormatter $formatter */
-        $formatter = Yii::app()->formatter;
-        $this->formattedContent = $formatter->formatText($this->content, 'markdown');
+        $formatter = \Yii::app()->formatter;
+        $this->formattedContent = $formatter->renderMarkdown($this->content);
         return true;
     }
     /**
@@ -217,24 +185,46 @@ class Post extends ActiveRecordLayer
      * and not in controller (actually, controller itself should not alter
      * data in any way too). Adding author ID in beforeSave also breaks
      * validation a little (user_id should be required on post creation).
-     * 
+     *
      * @return boolean False if parent beforeSave() failed, true otherwise.
      * @since 0.1.0
      */
-    public function beforeSave() {
+    public function beforeSave()
+    {
         if (!parent::beforeSave()) {
             return false;
         }
-        if (empty($this->slug)) {
-            $this->slug = $this->generateSlug($this->name);
-        }
         if ($this->getIsNewRecord()) {
-            $this->user_id = Yii::app()->user->id; // This is quite `tricky & ouch`. See PHPDoc.
+            // This is quite tricky. See PHPDoc.
+            if (!isset($this->user_id)) {
+                if (empty(\Yii::app()->user->id)) {
+                    throw new \RuntimeException('Couldn\'t determine user ID');
+                }
+                $this->user_id = \Yii::app()->user->id;
+            }
         } else {
             $this->oldCategory = $this->getCurrentCategory();
         }
         return true;
     }
+
+    /**
+     * Before validation callback.
+     *
+     * @return bool
+     * @since 0.1.0
+     */
+    public function beforeValidate()
+    {
+        if (empty($this->slug)) {
+            $this->slug = $this->name;
+        }
+        $this->slug = \Yii::app()->formatter->slugify($this->slug);
+        $this->name = trim($this->name);
+        $this->content = trim($this->content);
+        return true;
+    }
+
     /**
      * After save callback. Updates `lastPost` global state, which is required
      * for invalidating cache dependencies (e.g. sidebar).
@@ -244,17 +234,17 @@ class Post extends ActiveRecordLayer
      * @return boolean False if parent afterSave() failed, true otherwise.
      * @since 0.1.0
      */
-    public function afterSave() {
-        Yii::app()->setGlobalState('lastPostUpdate', time());
+    public function afterSave()
+    {
+        \Yii::beginProfile('post.afterSave');
+        \Yii::app()->setGlobalState('lastPostUpdate', time());
         if ($this->getIsNewRecord()) {
-            $this->category->saveCounters(array('post_count' => '1'));
+            $this->category->updateCounter();
         } else if ($this->oldCategory !== (int) $this->category_id) {
-            $oldCategory = \Category::model()->findByPk($this->oldCategory);
-            $oldCategory->post_count--;
-            $oldCategory->save(false, array('post_count'));
-            $this->category->post_count++;
-            $this->category->save(false, array('post_count'));
+            \Category::model()->findByPk($this->oldCategory)->updateCounter(-1);
+            $this->category->updateCounter();
         }
+        \Yii::endProfile('post.afterSave');
         return true;
     }
 
@@ -271,7 +261,7 @@ class Post extends ActiveRecordLayer
         }
         $this->category->post_count--;
         $this->category->save(false, array('post_count'));
-        Yii::app()->setGlobalState('lastPostUpdate', time());
+        \Yii::app()->setGlobalState('lastPostUpdate', time());
         return true;
     }
     /**
@@ -289,30 +279,12 @@ class Post extends ActiveRecordLayer
     {
         return array(
             'id' => 'ID',
-            'category_id' => Yii::t('forms-labels', 'post.category'),
-            'user_id' => Yii::t('forms-labels', 'post.author'),
-            'name' => Yii::t('forms-labels', 'post.name'),
-            'slug' => Yii::t('forms-labels', 'post.slug'),
-            'content' => Yii::t('forms-labels', 'post.content'),
-            'created' => Yii::t('forms-labels', 'post.created'),
-        );
-    }
-    /**
-     * Standard yii method for declaring model attributes.
-     * 
-     * @return string[] List of attribute names.
-     * @since 0.1.0
-     */
-    public function attributeNames()
-    {
-        return array(
-            'id',
-            'category_id',
-            'user_id',
-            'name',
-            'slug',
-            'content',
-            'created',
+            'category_id' => 'post.category',
+            'user_id' => 'post.author',
+            'name' => 'post.name',
+            'slug' => 'post.slug',
+            'content' => 'post.content',
+            'created' => 'post.created',
         );
     }
     /**
@@ -361,7 +333,7 @@ class Post extends ActiveRecordLayer
             array(
                 array('slug',),
                 'length',
-                'allowEmpty' => true,
+                'allowEmpty' => false,
                 'min' => 3,
                 'max' => 255,
                 //'on' => array('insert', 'update'),

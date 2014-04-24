@@ -5,13 +5,11 @@
  *
  * @method static Comment model() Gets comment model.
  *
- * @todo Add profiling
- *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class Comment extends ActiveRecordLayer
 {
@@ -65,18 +63,33 @@ class Comment extends ActiveRecordLayer
      */
     public $timeAgo;
     /**
+     * Current comment author (if he or she is a registered user). Accessed
+     * through getter.
+     *
+     * @var \User
+     * @since 0.1.0
+     */
+    protected $author;
+
+    /**
      * Returns amount of today comments.
-     * 
-     * @todo Try to use CDbExpression.
      * 
      * @return int Number of today comments.
      * @since 0.1.0
      */
     public function today()
     {
-        return $this->count('created >= :today', array(
-            ':today' => date('Y-m-d'),
-        ));
+        $token = 'comment.today';
+        \Yii::beginProfile($token);
+        $dateTime = new \DateTime;
+        $dateTime->sub(new \DateInterval('P1D'));
+        $amount = (int) $this->count(
+            'created >= :today',
+            //array(':today' => \DatabaseService::getCurDateExpression(),)
+            array(':today' => $dateTime->format(\DateTime::ISO8601),)
+        );
+        \Yii::endProfile($token);
+        return $amount;
     }
     /**
      * Returns associated table name.
@@ -89,22 +102,6 @@ class Comment extends ActiveRecordLayer
         return 'comments';
     }
     /**
-     * Returns localized attribute labels.
-     * 
-     * @return string[]
-     * @since 0.1.0
-     */
-    public function getAttributeLabels()
-    {
-        return array(
-            'post_id' => \Yii::t('forms-labels', 'comment.[postId'),
-            'username' => \Yii::t('forms-labels', 'comment.username'),
-            'mail' => \Yii::t('forms-labels', 'comment.mail'),
-            'content' => \Yii::t('forms-labels', 'comment.content'),
-            'created' => \Yii::t('forms-labels', 'comment.created'),
-        );
-    }
-    /**
      * After-search callback.
      * 
      * @return void
@@ -115,13 +112,18 @@ class Comment extends ActiveRecordLayer
         parent::afterFind();
         /** @var DataFormatter $formatter */
         $formatter = \Yii::app()->formatter;
-        $this->content = $formatter->formatText($this->content, 'markdown');
+        $this->content = $formatter->renderMarkdown($this->content);
         $this->created = date('Y-m-d H:i:s', strtotime($this->created));
         $this->timeAgo = $formatter->formatDateTime(
             $this->created,
             'interval'
         );
-        $this->gravatar = 'http://www.gravatar.com/avatar/'.md5($this->mail);
+        if (!empty($this->mail)) {
+            $this->gravatar = 'http://www.gravatar.com/avatar/'.md5($this->mail);
+        } else {
+            $this->gravatar = 'http://www.gravatar.com/avatar/'.
+                              str_repeat('0', 32);
+        }
     }
 
     /**
@@ -152,7 +154,63 @@ class Comment extends ActiveRecordLayer
             return false;
         }
         $this->content = strip_tags($this->content);
+        if (!\Yii::app()->user->getIsGuest()) {
+            $this->username = '@'.$this->username;
+        }
         return true;
+    }
+
+    /**
+     * Returns comment author.
+     *
+     * @missingOptimization Searching through lots of users by unindexed text
+     * field is a bad idea.
+     *
+     * @return \User Current comment author (if he or she is registered).
+     * @since 0.1.0
+     */
+    public function getAuthor()
+    {
+        if (!$this->username || $this->username[0] !== '@') {
+            return false;
+        } else {
+            if ($this->author === null) {
+                $registry = \Yii::app()->params;
+                if (!isset($registry['users'])) {
+                    $registry['users'] = array();
+                }
+                if (!isset($registry['users'][$this->username])) {
+                    \Yii::beginProfile('comment.getAuthor');
+                    $user = \User::model()->find(
+                        'username = :username',
+                        array(':username' => substr($this->username, 1))
+                    );
+                    // preventing multiple database queries for consecutive calls
+                    $this->author = $user === null ? false : $user;
+                    $registry['users'][$this->username] = $this->author;
+                    \Yii::endProfile('comment.getAuthor');
+                } else {
+                    $this->author = $registry['users'][$this->username];
+                }
+            }
+            return $this->author;
+        }
+    }
+    /**
+     * Returns localized attribute labels.
+     *
+     * @return string[]
+     * @since 0.1.0
+     */
+    public function getAttributeLabels()
+    {
+        return array(
+            'post_id' => 'comment.postId',
+            'username' => 'comment.username',
+            'mail' => 'comment.mail',
+            'content' => 'comment.content',
+            'created' => 'comment.created',
+        );
     }
     /**
      * Returns relation definitions.
@@ -176,7 +234,7 @@ class Comment extends ActiveRecordLayer
     public function behaviors()
     {
         return array(
-            'DatetimeCreatedBehavior',
+            'DateTimeCreatedBehavior',
         );
     }
     /**

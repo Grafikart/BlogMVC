@@ -1,24 +1,18 @@
 <?php
 
 /**
- * Description of Category
- *
- * @todo Restricted slugs should be fetched from global config.
- * @todo Add profiling
+ * Category representation.
  *
  * @method static Category model() Gets category model.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class Category extends ActiveRecordLayer
 {
-    protected $_restrictedSlugs = array(
-        'rss', 'html', 'xml', 'json', 'page',
-    );
     /**
      * Category title. 
      * 
@@ -51,20 +45,23 @@ class Category extends ActiveRecordLayer
         return 'categories';
     }
     /**
-     * Scope method for retrieving pacategories in paged manner.
+     * Scope method for retrieving categories in paged manner.
      * 
-     * @param int $page Current page.
+     * @param int $page    Current page.
      * @param int $perPage Number of categories per page.
+     *
      * @return \Category current instance.
      * @since 0.1.0
      */
     public function paged($page=1, $perPage=25)
     {
-        $this->getDbCriteria()->mergeWith(array(
-            'order' => 'id ASC',
-            'limit' => $perPage,
-            'offset' => ($page - 1) * $perPage,
-        ));
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'order' => 'id ASC',
+                'limit' => $perPage,
+                'offset' => ($page - 1) * $perPage,
+            )
+        );
         return $this;
     }
     /**
@@ -77,13 +74,13 @@ class Category extends ActiveRecordLayer
     public function getList()
     {
         /** @var CDbConnection $db */
-        $db = Yii::app()->db;
+        $db = \Yii::app()->db;
         $categories = $db->createCommand()
-                ->select(array('id', 'name'))
-                ->from($this->tableName())
-                ->queryAll();
+            ->select(array('id', 'name'))
+            ->from($this->tableName())
+            ->queryAll();
         $list = array();
-        foreach($categories as $category) {
+        foreach ($categories as $category) {
             $list[(int)$category['id']] = $category['name'];
         }
         return $list;
@@ -94,6 +91,7 @@ class Category extends ActiveRecordLayer
      *
      * Just coz i'm lazy enough to not to try it with builder.
      *
+     * @return void
      * @since 0.1.0
      */
     public function recalculateCounters()
@@ -107,9 +105,10 @@ class Category extends ActiveRecordLayer
     /**
      * Scope method for filtering most popular categories.
      * 
+     * @param int $limit How many top categories should be fetched.
+     *
      * @throws \BadMethodCallException Thrown if limit is set less than 1.
-     * 
-     * @param int $limit how much top categories should be fetched.
+     *
      * @return \Category Current instance.
      * @since 0.1.0
      */
@@ -118,10 +117,12 @@ class Category extends ActiveRecordLayer
         if (($limit = (int)$limit) < 1) {
             throw new \BadMethodCallException('Limit can\'t be less than one');
         }
-        $this->getDbCriteria()->mergeWith(array(
-            'order' => 'post_count DESC',
-            'limit' => $limit,
-        ));
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'order' => 'post_count DESC',
+                'limit' => $limit,
+            )
+        );
         return $this;
     }
 
@@ -139,13 +140,25 @@ class Category extends ActiveRecordLayer
         }
         if (!empty($this->slug)) {
             $this->slug = \Yii::app()->formatter->slugify($this->slug);
-            return true;
+        } else if (!empty($this->name)) {
+            $this->slug = \Yii::app()->formatter->slugify($this->name);
         }
-        if (empty($this->name)) {
-            return false;
-        }
-        $this->slug = \Yii::app()->formatter->slugify($this->name);
         return true;
+    }
+
+    /**
+     * Default counters in sqldump were saved as strings, and that made
+     * impossible using standard updateCounters() because of type inconsistency.
+     *
+     * @param int $increment Counter increment.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function updateCounter($increment=1)
+    {
+        $this->post_count += $increment;
+        $this->save(false, array('post_count'));
     }
     /**
      * Standard Yii method which returns array of relation definitions.
@@ -169,9 +182,9 @@ class Category extends ActiveRecordLayer
     public function getAttributeLabels()
     {
         return array(
-            'name' => Yii::t('forms-labels', 'category.name'),
-            'slug' => Yii::t('forms-labels', 'category.slug'),
-            'post_count' => Yii::t('forms-labels', 'category.postCount'),
+            'name' => 'category.name',
+            'slug' => 'category.slug',
+            'post_count' => 'category.postCount',
         );
     }
 

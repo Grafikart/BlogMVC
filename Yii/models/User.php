@@ -9,7 +9,7 @@
  * @property Post[] $posts User posts (find* method has to be called with
  * 'posts' relation),
  *
- * @version    0.1.0
+ * @version    Release: 0.1.0
  * @since      0.1.0
  * @package    BlogMVC
  * @subpackage Yii
@@ -82,10 +82,11 @@ class User extends ActiveRecordLayer
     /**
      * Scope method which allows to fetch most active users.
      *
+     * @param int $limit Maximum number of records to return.
+     *
      * @throws \BadMethodCallException Thrown if invalid limit argument is
      * provided.
      *
-     * @param int $limit Maximum number of records to return.
      * @return \User current instance
      * @since 0.1.0
      */
@@ -210,11 +211,11 @@ class User extends ActiveRecordLayer
     {
         return array(
             'id' => 'ID',
-            'username' => \Yii::t('forms-labels', 'user.username'),
-            'password' => \Yii::t('forms-labels', 'user.password'),
-            'newPassword' => \Yii::t('forms-labels', 'user.newPassword'),
-            'newPasswordRepeat' => \Yii::t('forms-labels', 'user.newPasswordRepeat'),
-            'postCount' => \Yii::t('forms-labels', 'user.postCount'),
+            'username' => 'user.username',
+            'password' => 'user.password',
+            'newPassword' => 'user.newPassword',
+            'newPasswordRepeat' => 'user.newPasswordRepeat',
+            'postCount' => 'user.postCount',
         );
     }
 
