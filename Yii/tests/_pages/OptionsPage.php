@@ -17,7 +17,7 @@ class OptionsPage extends \GeneralPage
      * @var string
      * @since 0.1.0
      */
-    public static $URL = '/admin/options';
+    public static $url = '/admin/options';
     /**
      * Yii page route.
      *
@@ -42,6 +42,13 @@ class OptionsPage extends \GeneralPage
     public static $siteLanguageList = 'ApplicationModel[language]';
                                    // '#ApplicationModel_language';
     /**
+     * Application theme list name.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $themeList = 'ApplicationModel[theme]';
+    /**
      * Submit button text.
      *
      * @var string
@@ -62,4 +69,81 @@ class OptionsPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $recalculateLink = 'a[role="recalculate-counters-link"]';
+
+    /**
+     * Selects language
+     *
+     * @param string $lang Language to be selected, presumably 'en' or 'ru'.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function selectLanguage($lang)
+    {
+        $this->guy->selectOption(static::$siteLanguageList, $lang);
+    }
+
+    /**
+     * Fills application title field.
+     *
+     * @param string $title Application title.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function setApplicationTitle($title)
+    {
+        $this->guy->fillField(static::$appTitleField, $title);
+    }
+
+    /**
+     * Selects new application theme.
+     *
+     * @param string $theme Theme name.
+     *
+     * @return void
+     * @since
+     */
+    public function selectTheme($theme)
+    {
+        $this->guy->selectOption(static::$themeList, $theme);
+    }
+
+    /**
+     * Clicks on 'save options' button.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function saveOptions()
+    {
+        $this->guy->click(static::$formSubmit);
+    }
+
+    /**
+     * Updates options in single function call.
+     *
+     * @param null|string $title New application title. Will be ignored if set
+     * to null.
+     * @param null|string $lang  New application language. Will be ignored if
+     * set to null.
+     * @param null|string $theme New application theme. Will be ignored if set
+     * to null.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function updateOptions($title=null, $lang=null, $theme=null)
+    {
+        if ($title) {
+            $this->setApplicationTitle($title);
+        }
+        if ($lang) {
+            $this->selectLanguage($lang);
+        }
+        if ($theme) {
+            $this->selectTheme($theme);
+        }
+        $this->saveOptions();
+    }
 }

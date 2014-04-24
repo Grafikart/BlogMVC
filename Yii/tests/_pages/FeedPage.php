@@ -107,4 +107,23 @@ class FeedPage extends \GeneralPage
         }
         return $url;
     }
+
+    /**
+     * Grabs category data.
+     *
+     * @return array
+     * @since 0.1.0
+     */
+    public function grabCategories()
+    {
+        $categories = array();
+        for ($i = 1; $i <= 3; $i++) {
+            $base = '.categories .item-'.$i;
+            $categories[] = array(
+                'name' => $this->grab($base.' a'),
+                'amount' => $this->grab($base.' .badge'),
+            );
+        }
+        return $categories;
+    }
 }

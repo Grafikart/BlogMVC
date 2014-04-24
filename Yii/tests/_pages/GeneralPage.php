@@ -39,4 +39,64 @@ abstract class GeneralPage
      * @since 0.1.0
      */
     public static $homeLink = '.navbar .navbar-header a[href="/"]';
+    /**
+     * Protagonist.
+     *
+     * @var \WebGuy
+     * @since 0.1.0
+     */
+    protected $guy;
+
+    /**
+     * Typical constructor.
+     *
+     * @param \WebGuy $I Main protagonist.
+     *
+     * @since 0.1.0
+     */
+    protected function __construct(\WebGuy $I)
+    {
+        $this->guy = $I;
+    }
+
+    /**
+     * Creates page instance driven by protagonist.
+     *
+     * @param \WebGuy $I Protagonist.
+     *
+     * @return static
+     * @since 0.1.0
+     */
+    public static function of(\WebGuy $I)
+    {
+        return new static($I);
+    }
+
+    /**
+     * Grabs text from provided selector with the help of webguy.
+     *
+     * @param string $selector Element selector (css, regexp, xpath).
+     *
+     * @return string Grabbed text.
+     * @since 0.1.0
+     */
+    public function grab($selector)
+    {
+        return $this->guy->grabTextFrom($selector);
+    }
+
+    /**
+     * Proceeds to page specified as static::$url.
+     *
+     * @return static Current instance for chaining methods.
+     * @since 0.1.0
+     */
+    public function visit()
+    {
+        if (!isset(static::$url)) {
+            throw new \BadMethodCallException('This page can\'t be visited');
+        }
+        $this->guy->amOnPage(static::$url);
+        return $this;
+    }
 }
