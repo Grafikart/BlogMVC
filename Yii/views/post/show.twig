@@ -1,0 +1,92 @@
+{% extends 'views/layouts/feed.twig' %}
+{% block content %}
+{% include 'views/common/post.twig' %}
+
+<section class="comments">
+    {% set form = this.beginWidget('CActiveForm', {
+        'action':this.createUrl('comment/add', {'postSlug':post.slug}),
+        'id':'comment-form'
+    }) %}
+        <h3>Comment this post</h3>
+        {% if comment.hasErrors() %}
+            <div class="alert alert-danger">
+                <ul>
+                {% for attribute, errors in comment.getErrors() %}
+                    {% for error in errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group{{ comment.getError('mail')?' has-error' }}">
+                    {{ form.textField(comment, 'mail', {
+                    'placeholder':comment.getAttributeLabel('mail'),
+                    'class':'form-control'
+                    }) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group{{ comment.getError('username')?' has-error' }}">
+                    {% if App.user.getIsGuest() %}
+                    {{ form.textField(comment, 'username', {
+                        'placeholder':comment.getAttributeLabel('username'),
+                        'class':'form-control'
+                    }) }}
+                    {% else %}
+                    {{ form.textField(comment, 'username', {
+                        'class':'form-control',
+                        'value':'@' ~ App.user.username,
+                        'disabled':'disabled'
+                    }) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-group{{ comment.getError('content')?' has-error' }}">
+            {{ form.textArea(comment, 'content', {
+                'placeholder':comment.getAttributeLabel('content'),
+                'class':'form-control'
+            }) }}
+        </div>
+        <div class="form-group">
+            {{ C.Html.tag('button', {'class':'btn btn-primary', 'role':'post-comment'}, 'Submit') }}
+        </div>
+    {{ void(this.endWidget()) }}
+</section>
+<h3>{{ post.comments|length }} comments</h3>
+{% for comment in post.comments %}
+    <div class="row" id="comment-{{ comment.id }}">
+        <div class="col-md-2">
+            <img src="{{ comment.gravatar }}{{ comment.mail?'?s=100&d=identicon' }}" width="100%" />
+        </div>
+        <div class="col-md-10">
+            <p>
+                {% if post.user_id == App.user.id %}
+                    <div class="pull-right">
+                        <a href="{{ this.createUrl('comment/delete', {'id':comment.id, 'postSlug':post.slug}) }}">
+                            Delete
+                        </a>
+                    </div>
+                {% endif %}
+                {% if comment.getAuthor() %}
+                <strong>
+                    <a href="{{ this.createUrl('post/author', {
+                        'id':comment.getAuthor().getPrimaryKey()
+                    }) }}">{{ comment.username }}</a>
+                </strong>
+                {% else %}
+                <strong>{{ comment.username }}</strong>
+                {% endif %}
+                {{ comment.timeAgo }}
+            </p>
+            <p>
+                {{ comment.content }}
+            </p>
+        </div>
+    </div>
+    <hr>
+{% endfor %}
+{% endblock %}

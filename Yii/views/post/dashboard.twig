@@ -1,0 +1,43 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h1>Manage posts</h1>
+<p>
+    <a href="{{ this.createUrl('post/new') }}" class="btn btn-primary" role="create-post-link">
+        Add a new post
+    </a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Publication date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.id }}</td>
+            <td>{{ post.name }}</td>
+            <td>{{ post.category.name }}</td>
+            <td>{{ post.created }}</td>
+            <td>
+                <a href="{{ this.createUrl('post/edit', {'id':post.id}) }}" class="btn btn-primary" role="edit-post-link">
+                    Edit
+                </a>
+                <a href="{{ this.createUrl('post/delete', {'id':post.id}) }}" class="btn btn-danger" role="delete-post-link">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if posts|length == 0 %}
+    <div class="alert alert-info">
+        No posts yet
+    </div>
+{% endif %}
+{% endblock %}

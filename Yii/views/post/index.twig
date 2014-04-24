@@ -1,0 +1,14 @@
+{% extends 'views/layouts/feed.twig' %}
+{% block content %}
+    {% block feed_page_header %}
+        <div class="page-header">
+            <h1>Blog</h1>
+            <p class="lead">Welcome on my blog</p>
+        </div>
+    {% endblock %}
+{% for post in posts %}
+    {% include 'views/common/post_excerpt.twig' %}
+{% else %}
+    Sorry, no posts yet.
+{% endfor %}
+{% endblock %}
