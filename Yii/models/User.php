@@ -283,4 +283,39 @@ class User extends ActiveRecordLayer
             ),
         );
     }
+
+    /**
+     * Runtime cache for found users.
+     *
+     * @var array List in [:username => \User|false] form.
+     * @since 0.1.0
+     */
+    protected static $userCache = array();
+
+    /**
+     * Fetches user by it's username.
+     *
+     * @param string $username Username.
+     *
+     * @return \User|null
+     * @since 0.1.0
+     */
+    public static function findByUsername($username)
+    {
+        if (isset(static::$userCache[$username])) {
+            \Yii::trace('Runtime cache hit for user ['.$username.']');
+            return static::$userCache[$username];
+        }
+        \Yii::trace('Runtime cache miss for user ['.$username.']');
+        $token = 'user.findByUsername';
+        \Yii::beginProfile($token);
+        $user = \User::model()->find(
+            'username = :username',
+            array(':username' => $username)
+        );
+        $user = $user !== null ? $user : false;
+        static::$userCache[$username] = $user;
+        \Yii::endProfile($token);
+        return $user;
+    }
 }

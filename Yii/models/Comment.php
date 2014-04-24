@@ -139,6 +139,9 @@ class Comment extends ActiveRecordLayer
         }
         $this->mail = trim(strtolower($this->mail));
         $this->content = strip_tags($this->content);
+        if (!\Yii::app()->user->getIsGuest()) {
+            $this->username = '@'.\Yii::app()->user->username;
+        }
         return true;
     }
 
@@ -152,10 +155,6 @@ class Comment extends ActiveRecordLayer
     {
         if (!parent::beforeSave()) {
             return false;
-        }
-        $this->content = strip_tags($this->content);
-        if (!\Yii::app()->user->getIsGuest()) {
-            $this->username = '@'.$this->username;
         }
         return true;
     }
@@ -175,29 +174,14 @@ class Comment extends ActiveRecordLayer
             return false;
         } else {
             if ($this->author === null) {
-                $registry = \Yii::app()->params;
-                if (!isset($registry['users'])) {
-                    $registry['users'] = array();
-                }
-                if (!isset($registry['users'][$this->username])) {
-                    \Yii::beginProfile('comment.getAuthor');
-                    $user = \User::model()->find(
-                        'username = :username',
-                        array(':username' => substr($this->username, 1))
-                    );
-                    // preventing multiple database queries for consecutive calls
-                    $this->author = $user === null ? false : $user;
-                    $registry['users'][$this->username] = $this->author;
-                    \Yii::endProfile('comment.getAuthor');
-                } else {
-                    $this->author = $registry['users'][$this->username];
-                }
+                $username = substr($this->username, 1);
+                $this->author = \User::findByUsername($username);
             }
             return $this->author;
         }
     }
     /**
-     * Returns localized attribute labels.
+     * Returns keys for attribute labels localization.
      *
      * @return string[]
      * @since 0.1.0
@@ -234,7 +218,7 @@ class Comment extends ActiveRecordLayer
     public function behaviors()
     {
         return array(
-            'DateTimeCreatedBehavior',
+            'DatetimeCreatedBehavior',
         );
     }
     /**
