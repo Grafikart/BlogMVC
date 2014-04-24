@@ -77,7 +77,7 @@ class MigrationHelper extends \Codeception\Module
      * @param null|int $amount Number of applied migrations, set to null to
      * apply all.
      *
-     * @return void
+     * @return static
      * @since 0.1.0
      */
     public function applyMigrations($amount=null)
@@ -85,6 +85,7 @@ class MigrationHelper extends \Codeception\Module
         $this->_mute();
         $this->_command->actionUp(array($amount));
         $this->_unmute();
+        return $this;
     }
 
     /**
@@ -92,7 +93,7 @@ class MigrationHelper extends \Codeception\Module
      *
      * @param int $amount Number of reverted migrations.
      *
-     * @return void
+     * @return static
      * @since 0.1.0
      */
     public function revertMigrations($amount=1)
@@ -100,15 +101,16 @@ class MigrationHelper extends \Codeception\Module
         $this->_mute();
         $this->_command->actionDown(array($amount));
         $this->_unmute();
+        return $this;
     }
 
     /**
+     * Mutes output.
      *
-     *
-     * @param bool $force
+     * @param bool $force Force output muting.
      *
      * @return void
-     * @since
+     * @since 0.1.0
      */
     protected function _mute($force=false)
     {
@@ -118,9 +120,9 @@ class MigrationHelper extends \Codeception\Module
     }
 
     /**
+     * Unmutes output.
      *
-     *
-     * @param bool $force
+     * @param bool $force Forces output unmuting.
      *
      * @return void
      * @since
