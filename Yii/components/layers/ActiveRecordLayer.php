@@ -6,9 +6,9 @@
  *
  * @version    Release: 0.1.0
  * @since      0.1.0
- * @author     Fike Etki <etki@etki.name>
  * @package    BlogMVC
  * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 abstract class ActiveRecordLayer extends \CActiveRecord
 {
@@ -31,7 +31,13 @@ abstract class ActiveRecordLayer extends \CActiveRecord
     public function attributeLabels()
     {
         if (!isset($this->cachedAttributeLabels)) {
-            $this->cachedAttributeLabels = $this->getAttributeLabels();
+            $this->cachedAttributeLabels = array();
+            foreach ($this->getAttributeLabels() as $attribute => $l18nKey) {
+                $this->cachedAttributeLabels[$attribute] = \Yii::t(
+                    'forms-labels',
+                    $l18nKey
+                );
+            }
         }
         return $this->cachedAttributeLabels;
     }
@@ -84,12 +90,20 @@ abstract class ActiveRecordLayer extends \CActiveRecord
      */
     public function resetAttributes(array $attributes=null)
     {
-        $defaults = array_fill_keys($this->attributeNames(), null);
-        $defaults = array_merge($defaults, $this->attributeDefaults());
+        $defaults = $this->attributeDefaults();
+        $safeAttributes = $this->getSafeAttributeNames();
         if ($attributes !== null) {
-            $attributes = array_merge($defaults, $attributes);
-        } else {
-            $attributes = $defaults;
+            $defaults = array_merge($defaults, $attributes);
+        }
+        foreach (array_keys($defaults) as $attribute) {
+            if (!in_array($attribute, $safeAttributes, true)) {
+                unset($defaults[$attribute]);
+            }
+        }
+        foreach ($safeAttributes as $attribute) {
+            if (!isset($defaults[$attribute])) {
+                $defaults[$attribute] = null;
+            }
         }
         $this->setAttributes($attributes);
     }
