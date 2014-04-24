@@ -13,6 +13,13 @@ namespace WebGuy;
 class VisitorSteps extends \WebGuy
 {
     /**
+     * Page currently visited,
+     *
+     * @var \GeneralPage
+     * @since 0.1.0
+     */
+    public $currentPage;
+    /**
      * Performs login.
      *
      * @param string $login    User login.
@@ -53,5 +60,18 @@ class VisitorSteps extends \WebGuy
             $I->fillField(\PostPage::$commentEmailField, $email);
         }
         $I->click(\PostPage::$commentSubmitButton);
+    }
+
+    /**
+     * Sets current page guy is visiting.
+     *
+     * @param string $pageClass Page class.
+     *
+     * @return \GeneralPage
+     * @since 0.1.0
+     */
+    public function setCurrentPage($pageClass)
+    {
+        return $this->currentPage = $pageClass::of($this);
     }
 }
