@@ -1,13 +1,13 @@
 <?php
-
 /**
- * Description of WebUserLayerTest
+ * This test is designed to check correct functionality of {@link WebUserLayer}
+ * class.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
  */
 class WebUserLayerTest extends CTestCase
 {
@@ -24,7 +24,12 @@ class WebUserLayerTest extends CTestCase
     public function testMessages()
     {
         $nonsense = md5('nonsense');
-        $user = Yii::app()->user;
+        $nsMessage = array(
+            'message' => $nonsense,
+            'level' => \WebUserLayer::FLASH_NOTICE
+        );
+        /** @var WebUserLayer $user */
+        $user = \Yii::app()->user;
         $user->setFlash('user.messages', null);
         $user->sendMessage($nonsense);
         $this->assertTrue($user->hasMessages());
@@ -33,9 +38,9 @@ class WebUserLayerTest extends CTestCase
             $expectation = array();
             for ($i = 0; $i < $rounds; $i++) {
                 $user->sendMessage($nonsense);
-                $expectation[] = $nonsense;
+                $expectation[] = $nsMessage;
             }
-            $this->assertSame($user->getMessages(), $expectation);
+            $this->assertSame($expectation, $user->getMessages());
         }
         $expectation = array();
         // pushing first message decade
@@ -45,16 +50,16 @@ class WebUserLayerTest extends CTestCase
         // pushing second message decade - the first one should be completely
         // erased after this
         for ($i = 0; $i < 10; $i++) {
-            $expectation[] = $nonsense;
+            $expectation[] = $nsMessage;
             $user->sendMessage($nonsense);
         }
-        $this->assertSame($user->getMessages(), $expectation);
+        $this->assertSame($expectation, $user->getMessages());
         // testing automatic deletion & message presence checking
         $user->sendMessage($nonsense);
         $this->assertTrue($user->hasMessages());
-        $this->assertSame(array($nonsense), $user->getMessages(false));
+        $this->assertSame(array($nsMessage), $user->getMessages(false));
         $this->assertTrue($user->hasMessages());
-        $this->assertSame(array($nonsense), $user->getMessages());
+        $this->assertSame(array($nsMessage), $user->getMessages());
         $this->assertFalse($user->hasMessages());
         $this->assertSame(array(), $user->getMessages());
     }
@@ -73,7 +78,8 @@ class WebUserLayerTest extends CTestCase
         $key = 'superdata';
         $fullKey = 'data.'.$key;
         $data = array('key' => $key);
-        $user = Yii::app()->user;
+        /** @var WebUserLayer $user */
+        $user = \Yii::app()->user;
         $this->assertFalse($user->hasFlash($fullKey));
         $user->saveData($key, $data);
         $this->assertTrue($user->hasData($key));
