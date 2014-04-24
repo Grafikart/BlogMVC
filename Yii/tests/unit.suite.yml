@@ -5,8 +5,4 @@
 
 class_name: CodeGuy
 modules:
-  enabled: [Yii1, CodeHelper]
-  config:
-    Yii1:
-      appPath: '/srv/http/src/blogmvc/Yii/boot/tests.php'
-      url: 'http://blogmvc.yii'
+    enabled: [CodeHelper]
