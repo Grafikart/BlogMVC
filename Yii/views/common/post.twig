@@ -6,7 +6,7 @@
             <small>
                 Category: <a href="{{ this.createUrl('category/index', {'slug':post.category.slug}) }}" role="category-link">
                     {{ post.category.name }}
-                </a>, by <a href="{{ this.createUrl('user/posts', {'id': post.author.id}) }}" role="user-link">
+                </a>, by <a href="{{ this.createUrl('post/author', {'id': post.author.id}) }}" role="user-link">
                     {{ post.author.username }}
                 </a> on <em>{{ post.created }}</em>
             </small>
