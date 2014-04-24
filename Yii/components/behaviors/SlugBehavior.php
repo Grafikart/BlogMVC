@@ -84,9 +84,10 @@ class SlugBehavior extends CActiveRecordBehavior
         \Yii::beginProfile($token);
         /** @var CDbConnection $db */
         $db = \Yii::app()->db;
-        if (!$this->slugExists($slug)) {
+        if (!$this->slugExists($slug, $this->owner->getPrimaryKey())) {
             return $slug;
         }
+        \Yii::trace('Searching for all slugs matching ['.$slug.']');
         $slugs = $db->createCommand()
             ->select('slug')
             ->from($this->owner->tableName())
@@ -94,6 +95,7 @@ class SlugBehavior extends CActiveRecordBehavior
                 'slug LIKE :pattern',
                 array(':pattern' => $slug.'-%',)
             )->queryAll();
+        \Yii::trace('Found '.sizeof($slugs).' matching slugs');
         $max = 0;
         $slugLength = strlen($slug);
         foreach ($slugs as $foundSlug) {
@@ -129,6 +131,11 @@ class SlugBehavior extends CActiveRecordBehavior
                 'slug = :slug AND id != :id',
                 array(':slug' => $slug, ':id' => $id,)
             )->queryScalar();
+        if ($exists) {
+            \Yii::trace('Found slug ['.$slug.']');
+        } else {
+            \Yii::trace('Slug ['.$slug.'] hasn\'t been found.');
+        }
         \Yii::endProfile($token);
         return $exists;
     }

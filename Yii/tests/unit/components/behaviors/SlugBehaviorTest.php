@@ -67,7 +67,7 @@ class SlugBehaviorTest extends \Codeception\TestCase\Test
      * @dataProvider postAttributesProvider
      *
      * @return void
-     * @since
+     * @since 0.1.0
      */
     public function testSlugBehavior($attributes, $expectedSlug)
     {
@@ -82,6 +82,9 @@ class SlugBehaviorTest extends \Codeception\TestCase\Test
         if (!$post->save()) {
             $this->markTestSkipped('Couldn\'t save post');
         }
+        $this->assertSame($expectedSlug, $post->slug);
+        // checking that updating doesn't alter existing slug
+        $post->save();
         $this->assertSame($expectedSlug, $post->slug);
     }
 
