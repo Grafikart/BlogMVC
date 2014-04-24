@@ -2,22 +2,7 @@
 namespace components\services;
 
 class DatabaseServiceTest extends \Codeception\TestCase\Test
-{
-   /**
-    * @var \CodeGuy
-    */
-    protected $codeGuy;
-
-    protected function _before()
-    {
-    }
-
-    protected function _after()
-    {
-    }
-
-
-    /**
+{   /**
      * Data provider for {@link testGetDriverByName()}
      *
      * @return array Testing data.
