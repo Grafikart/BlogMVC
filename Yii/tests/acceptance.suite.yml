@@ -11,10 +11,8 @@
 class_name: WebGuy
 modules:
     enabled:
-        #- PhpBrowser
         - Selenium2
         - WebHelper
-        - Db
     config:
         #PhpBrowser:
         #    url: 'http://blogmvc.yii'

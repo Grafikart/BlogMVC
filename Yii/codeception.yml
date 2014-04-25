@@ -9,10 +9,3 @@ settings:
     colors: true
     memory_limit: 1024M
     log: true
-modules:
-    config:
-        Db:
-            dsn: 'pgsql:dbname=testing'
-            user: 'testing'
-            password: 'testing'
-            dump: tests/_data/dump.sql
