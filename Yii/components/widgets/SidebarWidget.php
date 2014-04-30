@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Description of SidebarWidget
+ * This widget represents sidebar that resides on every feed page.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class SidebarWidget extends WidgetLayer
 {
@@ -94,12 +94,15 @@ class SidebarWidget extends WidgetLayer
      */
     public function init()
     {
-        if (!($this->cached = Yii::app()->cache->get($this->cacheKey))) {
-            Yii::trace('Regenerating cache for sidebar widget');
-            $this->categoriesHeaderText = Yii::t('templates', 'sidebar.categories');
-            $this->postsHeaderText = Yii::t('templates', 'sidebar.posts');
-            $this->categories = Category::model()->popular()->findAll();
-            $this->posts = Post::model()->paged()->findAll();
+        if (!($this->cached = \Yii::app()->cache->get($this->cacheKey))) {
+            \Yii::trace('Regenerating cache for sidebar widget');
+            $this->categoriesHeaderText = \Yii::t(
+                'templates',
+                'sidebar.categories'
+            );
+            $this->postsHeaderText = \Yii::t('templates', 'sidebar.posts');
+            $this->categories = \Category::model()->popular()->findAll();
+            $this->posts = \Post::model()->paged()->findAll();
         }
     }
     /**
@@ -118,15 +121,19 @@ class SidebarWidget extends WidgetLayer
         ob_start();
         if (!empty($this->categories)) {
             $this->tag('h4', array(), $this->categoriesHeaderText);
-            $this->openTag('div', array('class' => 'list-group'));
-            foreach ($this->categories as $category) {
-                $url = $this->getController()->createUrl($this->categoryRoute, array(
-                    'slug' => $category->slug
-                ));
-                $this->openTag('a', array(
-                    'class' => 'list-group-item',
-                    'href' => $url
-                ));
+            $this->openTag('div', array('class' => 'list-group categories'));
+            foreach ($this->categories as $key => $category) {
+                $url = $this->getController()->createUrl(
+                    $this->categoryRoute,
+                    array('slug' => $category->slug)
+                );
+                $this->openTag(
+                    'a',
+                    array(
+                        'class' => 'list-group-item item-'.($key + 1),
+                        'href' => $url
+                    )
+                );
                 $this->tag('span', array('class' => 'badge'), $category->post_count);
                 $this->e($category->name);
                 $this->closeTag('a');
@@ -135,15 +142,20 @@ class SidebarWidget extends WidgetLayer
         }
         if (!empty($this->posts)) {
             $this->tag('h4', array(), $this->postsHeaderText);
-            $this->openTag('div', array('class' => 'list-group'));
-            foreach ($this->posts as $post) {
-                $url = $this->getController()->createUrl($this->postRoute, array(
-                    'slug' => $post->slug
-                ));
-                $this->tag('a', array(
-                    'class' => 'list-group-item',
-                    'href' => $url
-                ), $post->name);
+            $this->openTag('div', array('class' => 'list-group posts'));
+            foreach ($this->posts as $key => $post) {
+                $url = $this->getController()->createUrl(
+                    $this->postRoute,
+                    array('slug' => $post->slug)
+                );
+                $this->tag(
+                    'a',
+                    array(
+                        'class' => 'list-group-item item-'.($key + 1),
+                        'href' => $url
+                    ),
+                    $post->name
+                );
             }
             $this->closeTag('div');
         }
