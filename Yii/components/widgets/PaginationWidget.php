@@ -6,11 +6,11 @@
  *
  * I seriously didn't know about CPager and ended up with that.
  *
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.1
- * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @version    Release: 0.1.1
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class PaginationWidget extends WidgetLayer
 {
@@ -82,6 +82,7 @@ class PaginationWidget extends WidgetLayer
     /**
      * Preparational method. Gets and stores variables for latter output.
      *
+     * @return void
      * @since 0.1.0
      */
     public function init()
@@ -95,10 +96,10 @@ class PaginationWidget extends WidgetLayer
             throw new \BadMethodCallException($message);
         }
         if (!isset($this->delimiterText)) {
-            $this->delimiterText = Yii::t('templates', 'pagination.delimiter');
+            $this->delimiterText = \Yii::t('templates', 'pagination.delimiter');
         }
         if (!isset($this->title)) {
-            $this->title = Yii::t('templates', 'pagination.title');
+            $this->title = \Yii::t('templates', 'pagination.title');
         }
     }
     /**
@@ -117,8 +118,11 @@ class PaginationWidget extends WidgetLayer
             $this->tag('div', array(), $this->title);
         }
         $this->openTag('ul', array('class' => 'pagination'));
-        $start = max(1, $this->currentPage - floor($this->size/2));
-        $end = min($this->totalPages, $this->currentPage + ceil($this->size/2));
+        $start = (int) max(1, $this->currentPage - floor($this->size/2));
+        $end = (int) min(
+            $this->totalPages,
+            $this->currentPage + ceil($this->size/2)
+        );
 
         $this->sideLink(true, $start === 1);
         for ($i = $start; $i <= $end; $i++) {
@@ -130,10 +134,11 @@ class PaginationWidget extends WidgetLayer
     /**
      * Returns HTML link tag pointing to page with provided number.
      * 
-     * @param int $page Page number.
-     * @param string $text Link text.
-     * @param boolean $current True if processed page is requested page.
+     * @param int     $page     Page number.
+     * @param string  $text     Link text.
+     * @param boolean $current  True if processed page is requested page.
      * @param boolean $disabled True if link should be disabled.
+     *
      * @return string HTML tag.
      * @since 0.1.0
      */
@@ -151,7 +156,7 @@ class PaginationWidget extends WidgetLayer
                 $htmlOpts = array('class' => 'active');
             }
             $opts = array_merge($this->routeOptions, array('page' => $page));
-            $link = $this->controller->createUrl($this->route, $opts);
+            $link = $this->getController()->createUrl($this->route, $opts);
             $content = array('a', array('href' => $link,), $text);
         }
         $this->openTag('li', $htmlOpts);
@@ -162,8 +167,9 @@ class PaginationWidget extends WidgetLayer
     /**
      * Returns side link (« or ») to first or last page.
      *
-     * @param bool $first Tells if link for first page should be returned.
+     * @param bool $first    Tells if link for first page should be returned.
      * @param bool $disabled Tells if link should be disabled.
+     *
      * @return string Link text.
      * @since 0.1.0
      */
@@ -176,16 +182,18 @@ class PaginationWidget extends WidgetLayer
         }
     }
     /**
-     * Returns HTML tag that serves
+     * Returns HTML tag that serves as a delimiter between links.
      * 
      * @return string Delimiter tag.
      * @since 0.1.0
      */
     protected function delimiter()
     {
-        $this->tag('span', array(
-            'class' => 'pagination-delimiter'
-        ), $this->delimiterText);
+        $this->tag(
+            'span',
+            array('class' => 'pagination-delimiter'),
+            $this->delimiterText
+        );
     }
 
     /**
@@ -193,6 +201,8 @@ class PaginationWidget extends WidgetLayer
      *
      * @param string|null $title New pagination title. Use `null` to disable
      * pagination title.
+     *
+     * @return void
      * @since 0.1.0
      */
     public function setTitle($title)

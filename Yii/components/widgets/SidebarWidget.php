@@ -91,9 +91,14 @@ class SidebarWidget extends WidgetLayer
     /**
      * Initializer method. Checks for cached data and sets up necessary
      * properties.
+     *
+     * @return void
+     * @since 0.1.0
      */
     public function init()
     {
+        // Forces global states to be updated
+        \Yii::app()->loadGlobalState();
         if (!($this->cached = \Yii::app()->cache->get($this->cacheKey))) {
             \Yii::trace('Regenerating cache for sidebar widget');
             $this->categoriesHeaderText = \Yii::t(
