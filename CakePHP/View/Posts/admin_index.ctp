@@ -18,7 +18,7 @@
             <td><?= $post['Post']['id']; ?></td>
             <td><?= $post['Post']['name']; ?></td>
             <td><?= $post['Category']['name']; ?></td>
-            <td><?= $this->time->i18nFormat($post['Post']['created'], '%m/%d/%Y %H:%M'); ?></td>
+            <td><?= $this->Time->i18nFormat($post['Post']['created'], '%m/%d/%Y %H:%M'); ?></td>
             <td>
                 <a href="<?= $this->Html->url(array('action' => 'edit', $post['Post']['id'])); ?>" class="btn btn-primary">Edit</a>
                 <a href="<?= $this->Html->url(array('action' => 'delete', $post['Post']['id'])); ?>" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
