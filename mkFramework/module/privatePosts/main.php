@@ -78,36 +78,11 @@ class module_privatePosts extends abstract_module{
 		
 		$this->oLayout->add('main',$oView);
 	}
-
-	
-	
-	public function _show(){
-		$oPosts=model_posts::getInstance()->findById( _root::getParam('id') );
-		
-		$oView=new _view('privatePosts::show');
-		$oView->oPosts=$oPosts;
-		
-				$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
-		$this->oLayout->add('main',$oView);
-	}
-
-	
 	
 	public function _delete(){
 		$tMessage=$this->processDelete();
 
-		$oPosts=model_posts::getInstance()->findById( _root::getParam('id') );
 		
-		$oView=new _view('privatePosts::delete');
-		$oView->oPosts=$oPosts;
-		
-				$oView->tJoinmodel_users=model_users::getInstance()->getSelect();
-
-		$oPluginXsrf=new plugin_xsrf();
-		$oView->token=$oPluginXsrf->getToken();
-		$oView->tMessage=$tMessage;
-		
-		$this->oLayout->add('main',$oView);
 	}
 
 	
@@ -148,16 +123,19 @@ class module_privatePosts extends abstract_module{
 			$oPosts=model_posts::getInstance()->findById( _root::getParam('id',null) );
 		}
 		
-		$tColumn=array('user_id','name','slug','content');
+		$tColumn=array('category_id','user_id','name','slug','content');
 		foreach($tColumn as $sColumn){
 			$oPosts->$sColumn=_root::getParam($sColumn,null) ;
 		}
 		
 		
 		if($oPosts->save()){
-			_root::getCache()->clearCache( 'sidebar_lastpost');
-			_root::getCache()->clearCache( 'sidebar_categories');
-			
+			if(_root::getCache()->isCached('sidebar_lastpost')){
+				_root::getCache()->clearCache( 'sidebar_lastpost');
+			}
+			if(_root::getCache()->isCached('sidebar_categories')){
+				_root::getCache()->clearCache( 'sidebar_categories');
+			}
 			//une fois enregistre on redirige (vers la page liste)
 			_root::redirect('privatePosts::list');
 		}else{

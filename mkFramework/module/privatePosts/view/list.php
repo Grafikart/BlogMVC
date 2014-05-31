@@ -18,7 +18,7 @@
 			<tr>
 				<td><?php echo $oPosts->id ?></td>
 				<td><?php echo $oPosts->name ?></td>
-				<td><?php echo $this->tJoinmodel_categories[$oPosts->category_id];?></td>
+				<td><?php if(isset($this->tJoinmodel_categories[$oPosts->category_id]))echo $this->tJoinmodel_categories[$oPosts->category_id];?></td>
 				<td><?php echo $oPosts->created ?></td>
 				<td>
 					<a href="<?php echo _root::getLink('privatePosts::edit',array(
