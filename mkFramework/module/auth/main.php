@@ -44,7 +44,7 @@ class module_auth extends abstract_module{
 			return 'Mauvais login/mot de passe';
 		}
 		
-		_root::redirect('private::index');
+		_root::redirect('privatePosts::list');
 	}
 
 	public function _logout(){
