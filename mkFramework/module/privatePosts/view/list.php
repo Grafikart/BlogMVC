@@ -1,6 +1,6 @@
 <h1>Manage posts</h1>
 
-<p><a href="<?php echo module_postsadmin::getLink('new') ?>" class="btn btn-primary">Add a new post</a></p>
+<p><a href="<?php echo _root::getLink('privatePosts::new') ?>" class="btn btn-primary">Add a new post</a></p>
 
 <table class="table table-striped">
 	<thead>
@@ -18,14 +18,14 @@
 			<tr>
 				<td><?php echo $oPosts->id ?></td>
 				<td><?php echo $oPosts->name ?></td>
-				<td><?php echo $this->tJoinmodel_categories[$oPosts->category_id];?></td>
+				<td><?php if(isset($this->tJoinmodel_categories[$oPosts->category_id]))echo $this->tJoinmodel_categories[$oPosts->category_id];?></td>
 				<td><?php echo $oPosts->created ?></td>
 				<td>
-					<a href="<?php echo module_postsadmin::getLink('edit',array(
+					<a href="<?php echo _root::getLink('privatePosts::edit',array(
 										'id'=>$oPosts->getId()
 									) 
 							)?>" class="btn btn-primary">Edit</a>
-					<a href="<?php echo module_postsadmin::getLink('delete',array(
+					<a href="<?php echo _root::getLink('privatePosts::delete',array(
 										'id'=>$oPosts->getId()
 									) 
 							)?>" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>

@@ -1,6 +1,6 @@
 <h1>Edit post</h1>
 
-<p><a href="<?php echo module_postsadmin::getLink('list')?>">< Back to posts</a></p>
+<p><a href="<?php echo _root::getLink('privatePosts::list')?>">< Back to posts</a></p>
             
 <?php $oPluginHtml=new plugin_html?>
 <form action="#" id="PostAdminEditForm" method="post" accept-charset="utf-8">
