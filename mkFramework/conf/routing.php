@@ -40,12 +40,25 @@ $tab=array(
 							),
 			
 													
-			'postadmin_:postsadminid:'=>array(
-							'nav'=>'private::index',
-							'tParam'=>array('postsadminid'),
-								'tParamHidden'=>array(
-									'postsadminAction'=>'edit'
-								),
+			'postadmin_:id:'=>array(
+							'nav'=>'privatePosts::edit',
+							'tParam'=>array('id'),
+							),
+			
+			'postadminDelete:id:'=>array(
+							'nav'=>'privatePosts::delete',
+							'tParam'=>array('id'),
+							),
+			
+			'postadminPage:page:'=>array(
+							'nav'=>'privatePosts::list',
+							'tParam'=>array('page'),
+							),	
+						
+							
+			'postadmin'=>array(
+							'nav'=>'privatePosts::list',
+							
 							),
 							
 			 

@@ -1,0 +1,5 @@
+{
+"require":{
+	"mkframework/mkframework":"4.95.0"
+}
+}

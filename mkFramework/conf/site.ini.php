@@ -72,7 +72,7 @@ redirection.default=header
 timezone=Europe/Paris
 
 [path]
-lib=../vendor/mkframework/lib/framework/
+lib=../vendor/mkframework/mkframework/lib/framework/
 
 data=../data/
 upload=../data/upload/
