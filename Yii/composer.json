@@ -5,6 +5,6 @@
         "twig/extensions": "dev-master"
     },
     "require-dev": {
-        "codeception/codeception": "*"
+        "codeception/codeception": "dev-master"
     }
 }
