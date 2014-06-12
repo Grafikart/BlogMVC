@@ -7,4 +7,5 @@
 /.settings/
 /tests/_log/*
 !/tests/_log/.gitkeep
+/composer.lock
 *.log
