@@ -25,13 +25,17 @@ class SlugBehavior extends CActiveRecordBehavior
         return array(
             'admin',
             'category',
+            'categories',
             'author',
+            'authors',
             'login',
             'logout',
             'xml',
             'rss',
             'json',
             'html',
+            'new',
+            'save',
         );
     }
     /**
