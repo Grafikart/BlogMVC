@@ -7,8 +7,8 @@
  * @author Fike Etki <etki@etki.name>
  * @version 0.1.0
  * @since 0.1.0
- * @package blogmvc
- * @subpackage yii
+ * @package    BlogMVC
+ * @subpackage Yii
  */
 abstract class BaseMigrationTest extends CTestCase
 {
@@ -47,7 +47,15 @@ abstract class BaseMigrationTest extends CTestCase
      * @return string DB provider name.
      * @since 0.1.0
      */
-    abstract public static function getDbProviderName();
+    public static function getDbProviderName()
+    {
+        if (!property_exists(get_called_class(), 'provider')) {
+            $message = 'Derived migration test class doesn\'t specify it\'s '.
+                'provider';
+            throw new \RuntimeException($message);
+        }
+        return static::$provider;
+    }
     /**
      * Typical one-run setup method. Truncates test database, 
      * 
@@ -58,8 +66,10 @@ abstract class BaseMigrationTest extends CTestCase
     {
         Yii::import('application.migrations');
         $provider = static::getDbProviderName().'TestConnection';
-        if (Yii::app()->hasComponent($provider)) {
-            static::$db = Yii::app()->$provider;
+        /** @type CWebApplication $app */
+        $app = \Yii::app();
+        if ($app->hasComponent($provider)) {
+            static::$db = $app->$provider;
             static::truncateDatabase();
             static::setMigrations();
         } else {
@@ -91,7 +101,7 @@ abstract class BaseMigrationTest extends CTestCase
         $path = Yii::getPathOfAlias('application.migrations');
         Yii::import('application.migrations.*');
         $files = scandir($path);
-        foreach($files as $file) {
+        foreach ($files as $file) {
             if (preg_match('#^m\d{6}_\d{6}[\w_]*\.php$#', $file)) {
                 $migrationName = substr($file, 0, strlen($file) - 4);
                 /**
@@ -189,14 +199,32 @@ abstract class BaseMigrationTest extends CTestCase
         $db = static::$db;
         $tables = $db->schema->getTables();
         $count = 0;
-        while($count != sizeof($tables)) {
+        while ($count != sizeof($tables)) {
             $count = sizeof($tables);
-            foreach($tables as $key => $table) {
+            foreach ($tables as $key => $table) {
                 try {
                     $db->createCommand()->dropTable($table->name);
                     unset($tables[$key]);
-                } catch (Exception $ex) {}
+                } catch (Exception $ex) {
+                    // since some tables are bound by foreign keys (that not
+                    // always could be dropped), it's most likely there will be
+                    // some exceptions, so they are just ignored until there is
+                    // cyclic reference or all tables are dropped.
+                }
             }
+        }
+        if ($count > 0) {
+            $tableNames = array();
+            foreach ($tables as $table) {
+                $tableNames[] = $table->name;
+            }
+            $message = sprintf(
+                '%s: Could not clear up database, following tables refused to '.
+                'drop: [%s]',
+                get_called_class(),
+                implode(', ', $tableNames)
+            );
+            static::fail($message);
         }
     }
 }

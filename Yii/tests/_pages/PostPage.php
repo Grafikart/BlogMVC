@@ -60,6 +60,20 @@ class PostPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $commentSubmitButton = '[role="post-comment"]';
+    /**
+     * Delete comment button selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $deleteCommentLink = 'div.row.user-comment [role="delete-comment"]';
+    /**
+     * CSS selector for user comment.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $commentSelector = 'div.row.user-comment';
 
     /**
      * Returns url for particular post by it's slug.
@@ -72,5 +86,16 @@ class PostPage extends \GeneralPage
     public static function route($slug)
     {
         return str_replace('<slug>', $slug, static::$url);
+    }
+
+    /**
+     * Tells if page has errors.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasErrors()
+    {
+        $this->guy->seeElement('#comment-form .alert');
     }
 }

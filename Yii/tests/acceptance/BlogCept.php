@@ -1,59 +1,82 @@
 <?php
-$i = new WebGuy($scenario);
-$i->wantTo('read blog');
-$i->amGoingTo('read posts from different pages on the main feed and category/author page');
-$i->expectTo('see blog posts and encounter 404 on invalid pages');
+$scenario->groups('blog', 'front', 'auth');
+$I = new \WebGuy\MemberSteps($scenario);
+$I->wantTo('read blog');
+$I->amGoingTo('read posts from different pages on the main feed and category/author page');
+$I->expectTo('see blog posts and encounter 404 on invalid pages');
 
-$i->amOnPage('/');
-$i->see('Last posts');
-$i->see('Categories');
-$i->see('The Route Of All Evil', 'article');
-$i->dontSee('Rebirth', 'article');
+$I->amOnPage(\BlogFeedPage::$url);
+$I->see('Last posts');
+$I->see('Categories');
+$I->see('The Route Of All Evil', 'article');
+$I->dontSee('Rebirth', 'article');
 
-$i->see('2', 'ul.pagination');
-$i->click('2', 'ul.pagination');
-$i->seeCurrentUrlEquals('/?page=2');
-$i->see('Rebirth', 'article');
-$i->dontSee('Future shock', 'article');
+$I->see('2', 'ul.pagination');
+$I->click('2', 'ul.pagination');
+$I->seeCurrentUrlEquals(\BlogFeedPage::route(2));
+$I->see('Rebirth', 'article');
+$I->dontSee('Future shock', 'article');
 
-$i->amOnPage('/?page=3');
-$i->see('Page not found');
+$I->amOnPage(\BlogFeedPage::route(3));
+$I->see('heading.httpError');
 
 // categories
 
-$i->amOnPage('/');
-$i->click('Category #1');
-$i->seeCurrentUrlEquals('/category/category-1');
-$i->seeInTitle('Category #1');
-$i->see('Space Pilot 3000', 'article');
-$i->see('Parasites Lost', 'article');
-$i->dontSee('The Route Of All Evil', 'article');
+$I->amOnPage(\BlogFeedPage::$url);
+$I->click('Category #1');
+$I->seeCurrentUrlEquals(\CategoryFeedPage::route('category-1'));
+//$I->canSeeInTitle('Category #1');
+$I->see('Space Pilot 3000', 'article');
+$I->see('Parasites Lost', 'article');
+$I->dontSee('The Route Of All Evil', 'article');
 
-$i->amOnPage('/category/category-1?page=2');
-$i->see('Page not found');
-$i->dontSeeElement('article');
+$I->amOnPage(\CategoryFeedPage::route('category-1', 2));
+$I->see('Page not found');
+$I->dontSeeElement('article');
 
 // authors
 
-$i->amOnPage('/');
-$i->see('admin', 'article');
-$i->click('admin', 'article');
-$i->seeCurrentUrlEquals('authors/1');
-$i->see('The Route Of All Evil', 'article');
-$i->dontSee('Rebirth', 'article');
-$i->see('2', 'ul.pagination');
-$i->click('2', 'ul.pagination');
-$i->seeCurrentUrlEquals('/authors/1?page=2');
-$i->see('Rebirth', 'article');
-$i->dontSee('Future shock', 'article');
-$i->amOnPage('/authors/1?page=3');
-$i->see('Page not found');
-$i->dontSeeElement('article');
+$I->amOnPage(\BlogFeedPage::$url);
+$I->see('admin', 'article');
+$I->click('admin', 'article');
+$I->seeCurrentUrlEquals(\AuthorFeedPage::route(1));
+$I->see('The Route Of All Evil', 'article');
+$I->dontSee('Rebirth', 'article');
+$I->see('2', 'ul.pagination');
+$I->click('2', 'ul.pagination');
+$I->seeCurrentUrlEquals(\AuthorFeedPage::route(1, 2));
+$I->see('Rebirth', 'article');
+$I->dontSee('Future shock', 'article');
+$I->amOnPage(\AuthorFeedPage::route(1, 3));
+$I->see('Page not found');
+$I->dontSeeElement('article');
 
 // commenting
 
-$i->amOnPage('/');
-$i->click('The Route Of All Evil', 'article');
-$i->seeCurrentUrlEquals('/the-route-of-all-evil');
-$i->see('Category #3', 'article');
-$i->see('admin', 'article');
+$I->amOnPage(\BlogFeedPage::$url);
+$I->click('The Route Of All Evil', 'article');
+$I->seeCurrentUrlEquals(\PostPage::route('the-route-of-all-evil'));
+$I->see('Category #3', 'article');
+$I->see('admin', 'article');
+$I->submitCommentForm(
+    'Unauthenticated comment',
+    'noauth',
+    null
+);
+$urlRegex = '~^'.\PostPage::route('the-route-of-all-evil').'~';
+$I->seeCurrentUrlMatches($urlRegex);
+$I->see('Unauthenticated comment', \PostPage::$commentSelector);
+$I->dontSee('delete', \PostPage::$deleteCommentLink);
+
+$I->adminLogin();
+$I->amOnPage(\BlogFeedPage::$url);
+$I->click('The Route Of All Evil', 'article');
+$I->seeCurrentUrlEquals(\PostPage::route('the-route-of-all-evil'));
+$I->commentAuthenticated('Well, that\'s an authenticated comment');
+$I->seeCurrentUrlMatches($urlRegex);
+$I->see('@admin', \PostPage::$commentSelector);
+$I->see('Well, that\'s an authenticated comment', \PostPage::$commentSelector);
+$I->see('delete', \PostPage::$deleteCommentLink);
+$I->click('[role="delete-comment"]');
+$I->seeCurrentUrlEquals(\PostPage::route('the-route-of-all-evil'));
+$I->dontSee('Well, that\'s an authenticated comment', \PostPage::$commentSelector);

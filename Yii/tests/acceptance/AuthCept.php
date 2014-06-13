@@ -1,35 +1,35 @@
 <?php
-$i = new WebGuy($scenario);
+$scenario->group('auth', 'front');
+$i = new \WebGuy\MemberSteps($scenario);
 $i->am('logged-off admin');
 $i->wantTo('check auth mechanism');
 $i->expect('login failure on invalid data and login success on valid data');
 
-$i->amOnPage('/logout');
-$i->seeCurrentUrlEquals('/');
+$i->logout();
+$i->seeCurrentUrlEquals(\FeedPage::$homeLink);
 $i->see('You haven\'t been logged in. Why are you trying to logout?');
 
-$i->see('Login');
+\FeedPage::of($i)->openResponsiveMenu();
+$i->seeElement(\FeedPage::$loginLink);
 $i->click('Login');
-$i->see('Please sign in');
-$i->click('Sign in');
+$i->seeCurrentUrlEquals(\LoginPage::$url);
+
+$i->login(null, null);
 $i->see('Incorrect username or password');
 
-$i->fillField('User[username]', 'a');
-$i->fillField('User[password]', 'b');
-$i->click('Sign in');
+$i->login('missing username', 'nonexisting password');
 $i->see('Incorrect username or password');
 
-$i->fillField('User[username]', 'admin');
-$i->fillField('User[password]', 'admin');
-$i->click('Sign in');
+$i->login('admin', 'admin');
 $i->see('You have successfully logged in');
-$i->seeCurrentUrlEquals('/admin');
+$i->seeCurrentUrlEquals(\AdminPanelPage::$url);
 
-$i->amOnPage('/login');
-$i->seeCurrentUrlEquals('/admin');
+$i->amOnPage(\LoginPage::$url);
+$i->seeCurrentUrlEquals(\AdminPanelPage::$url);
 $i->see('You are already authorized, no need to retry.');
 
+\FeedPage::of($i)->openResponsiveMenu();
 $i->see('Logout');
 $i->click('Logout');
-$i->seeCurrentUrlEquals('/');
-//$i->see('You have successfully logged out');
+$i->seeCurrentUrlEquals(\FeedPage::$homeLink);
+//$i->canSee('You have successfully logged out');

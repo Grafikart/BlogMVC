@@ -40,6 +40,13 @@ abstract class GeneralPage
      */
     public static $homeLink = '.navbar .navbar-header a[href="/"]';
     /**
+     * CSS selector for menu expander button.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $menuToggleButton = '.navbar-header .navbar-toggle';
+    /**
      * Protagonist.
      *
      * @var \WebGuy
@@ -98,5 +105,39 @@ abstract class GeneralPage
         }
         $this->guy->amOnPage(static::$url);
         return $this;
+    }
+    /**
+     * Opens responsive menu (if it was closed).
+     *
+     * @return bool operation success.
+     * @since 0.1.0
+     */
+    public function openResponsiveMenu()
+    {
+        try {
+            $this->guy->click(\GeneralPage::$menuToggleButton);
+            return true;
+        } catch (\Behat\Mink\Exception\ElementException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Basic route function.
+     *
+     * @param string|array $needle      Searched chunk.
+     * @param string|array $replacement Replacement,
+     * @param int|string   $page        Page number.
+     *
+     * @return mixed|string Resulting url
+     * @since 0.1.0
+     */
+    public static function route($needle, $replacement, $page=null)
+    {
+        $url = str_replace($needle, $replacement, static::$url);
+        if ($page > 1) {
+            $url .= '?page='.$page;
+        }
+        return $url;
     }
 }

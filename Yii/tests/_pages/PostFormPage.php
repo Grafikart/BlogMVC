@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /**
  * This class represents both 'New post' and 'Edit post' pages.
@@ -68,6 +68,13 @@ class PostFormPage extends \GeneralPage
      */
     public static $textArea = 'Post[content]';
     /**
+     * Category menu toggle button selector.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $categoryMenuToggleButton = '[role="toggle-category-menu"]';
+    /**
      * Submit button selector.
      *
      * @var string
@@ -90,6 +97,13 @@ class PostFormPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $publishSubmitButton = 'Publish';
+    /**
+     * Error box css selector.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $errorBox = 'form .alert.alert-danger';
 
     /**
      * Returns URL for particular post edit page.
@@ -102,5 +116,39 @@ class PostFormPage extends \GeneralPage
     public static function route($id)
     {
         return str_replace('<id>', $id, static::$editPostUrl);
+    }
+
+    /**
+     * Checks if page's error box is shown.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasErrors()
+    {
+        $this->guy->seeElement(static::$errorBox);
+    }
+
+    /**
+     * Checks if page error box isn't shown.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoErrors()
+    {
+        $this->guy->dontSeeElement(static::$errorBox);
+    }
+
+    /**
+     * Toggles category menu. Adds timeout for animation completion.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function toggleCategoryMenu()
+    {
+        $this->guy->click(static::$categoryMenuToggleButton);
+        $this->guy->wait(1000);
     }
 }

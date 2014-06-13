@@ -31,8 +31,8 @@ class OptionsPage extends \GeneralPage
      * @var string
      * @since 0.1.0
      */
-    public static $appTitleField = 'ApplicationModel[title]';
-                                // '#ApplicationModel_title';
+    public static $appTitleField = 'ApplicationModel[name]';
+                                // '#ApplicationModel_name';
     /**
      * Application language list name.
      *

@@ -13,101 +13,146 @@
 class FeedPage extends \GeneralPage
 {
     /**
-     * Page url for main blog feed.
+     * Template for 'edit post' CSS selector.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $blogPageUrl = '/';
+    static $editPostLinkTemplate = 'article:nth-child(<number>) a[role="edit-post-link"]';
     /**
-     * Yii internal route for standard utility feed.
+     * Template for post category link CSS selector.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $blogPageRoute = 'post/index';
+    static $categoryLinkTemplate = 'article:nth-child(<number>) a[role="category-link"]';
     /**
-     * Category page base url.
+     * Template for post author link CSS selector.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $categoryPageUrl = '/category/<slug>';
+    static $userLinkTemplate = 'article:nth-child(<number>) a[role="user-link"]';
     /**
-     * Yii internal route for particular category feed.
+     * Constant for specifying category link output.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $categoryPageRoute = 'category/index';
+    const CATEGORY_LINK = 'category';
     /**
-     * Author page base url.
+     * Constant for specifying 'edit post' link output.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $authorPageUrl = '/author/<id>';
+    const EDIT_POST_LINK = 'editPost';
     /**
-     * Yii internal route for particular author feed.
+     * Constant for specifying author link output.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $authorPageRoute = 'author/index';
+    const USER_LINK = 'userLink';
 
     /**
-     * Creates url for specified blog page.
+     * Returns link CSS selector
      *
-     * @param int|string $page  Page number.
-     * @param boolean    $force Whether to force `?page=1` appendix on first
-     * page or not.
+     * @param int|string $postNumber Post number as it appears on page.
+     * @param string     $linkType   Link type.
      *
-     * @return string
+     * @return string Resulting selector.
      * @since 0.1.0
      */
-    public static function blogRoute($page, $force=false)
+    public static function getLink($postNumber, $linkType)
     {
-        if ((int)$page === 1 && !$force) {
-            return '/';
+        if ($linkType === static::CATEGORY_LINK) {
+            $template = static::$categoryLinkTemplate;
+        } else if ($linkType === static::EDIT_POST_LINK) {
+            $template = static::$editPostLinkTemplate;
+        } else {
+            $template = static::$userLinkTemplate;
         }
-        return '/?page='.$page;
-    }
-    /**
-     * Creates url for particular category feed.
-     *
-     * @param string $slug Category slug.
-     * @param int    $page Page number.
-     *
-     * @return mixed
-     * @since 0.1.0
-     */
-    public static function categoryRoute($slug, $page=1)
-    {
-        $url = str_replace('<slug>', $slug, static::$categoryPageUrl);
-        if ((int)$page !== 1) {
-            $url .= '?page='.$page;
-        }
-        return $url;
+        return str_replace('<number>', $postNumber * 2 + 1, $template);
     }
 
     /**
-     * Creates url for particular author feed.
+     * Returns category link CSS selector.
      *
-     * @param string $id   Author id.
-     * @param int    $page Page number.
+     * @param int|string $postNumber Post number as it appears on page.
      *
-     * @return mixed
+     * @return string Category link selector.
      * @since 0.1.0
      */
-    public static function authorRoute($id, $page=1)
+    public static function getCategoryLink($postNumber)
     {
-        $url = str_replace('<id>', $id, static::$authorPageUrl);
-        if ((int)$page !== 1) {
-            $url .= '?page='.$page;
-        }
-        return $url;
+        return static::getLink($postNumber, static::CATEGORY_LINK);
     }
 
+    /**
+     * Returns 'edit post' link selector.
+     *
+     * @param int|string $postNumber Post number as it appears on page.
+     *
+     * @return string 'Edit post' link selector.
+     * @since 0.1.0
+     */
+    public static function getEditPostLink($postNumber)
+    {
+        return static::getLink($postNumber, static::EDIT_POST_LINK);
+    }
+
+    /**
+     * Returns post author link selector.
+     *
+     * @param int|string $postNumber Post number as it appears on page.
+     *
+     * @return string Author link selector.
+     * @since 0.1.0
+     */
+    public static function getUserLink($postNumber)
+    {
+        return static::getLink($postNumber, static::USER_LINK);
+    }
+
+    /**
+     * Clicks 'edit post' link for selected post.
+     *
+     * @param int|string $postNumber Post number as it appears on page.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function clickEditPostLink($postNumber)
+    {
+        $this->guy->click(static::getEditPostLink($postNumber));
+    }
+
+    /**
+     * Clicks author link in selected post.
+     *
+     * @param int|string $postNumber Post number as it appears on page.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function clickUserLink($postNumber)
+    {
+        $this->guy->click(static::getUserLink($postNumber));
+    }
+
+    /**
+     * Clicks category link in selected post.
+     *
+     * @param int|string $postNumber Post number as it appears on page.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function clickCategoryLink($postNumber)
+    {
+        $this->guy->click(static::getCategoryLink($postNumber));
+    }
     /**
      * Grabs category data.
      *

@@ -71,63 +71,78 @@ class MemberSteps extends \WebGuy\VisitorSteps
     /**
      * Publishes new post.
      *
-     * @param string      $title Post title.
-     * @param string      $text  Post content.
-     * @param string|null $slug  Post slug (optional).
+     * @param string      $title    Post title.
+     * @param string      $text     Post content.
+     * @param string|null $slug     Post slug (optional).
+     * @param string|null $category Post category.
      *
      * @return void
      * @since 0.1.0
      */
-    public function writePost($title, $text, $slug=null)
+    public function writePost($title, $text, $slug=null, $category=null)
     {
         $I = $this;
         $I->amOnPage(\PostFormPage::$newPostUrl);
         $I->seeCurrentUrlEquals(\PostFormPage::$newPostUrl);;
-        $I->fillPostForm($title, $text, $slug);
+        $I->fillPostForm($title, $text, $slug, $category);
         $I->click(\PostFormPage::$submitButton);
     }
 
     /**
      * Fills post form.
      *
-     * @param string|null $title Post title.
-     * @param string|null $text  Post content
-     * @param string|null $slug  Post slug.
+     * @param string|null $title    Post title.
+     * @param string|null $text     Post content
+     * @param string|null $slug     Post slug.
+     * @param string|null $category Post category.
      *
      * @return void
      * @since 0.1.0
      */
-    public function fillPostForm($title=null, $text=null, $slug=null)
-    {
+    public function fillPostForm(
+        $title=null,
+        $text=null,
+        $slug=null,
+        $category=null
+    ) {
         $I = $this;
-        if ($title) {
+        if (is_string($title)) {
             $I->fillField(\PostFormPage::$titleField, $title);
         }
-        if ($text) {
+        if (is_string($text)) {
             $I->fillField(\PostFormPage::$textArea, $text);
         }
-        if ($slug) {
+        if (is_string($slug)) {
             $I->fillField(\PostFormPage::$slugField, $slug);
+        }
+        if (is_string($category)) {
+            $I->selectOption(\PostFormPage::$categoryList, $category);
         }
     }
 
     /**
      * Updates existing post.
      *
-     * @param int         $id    Post id.
-     * @param string|null $title Post title.
-     * @param string|null $text  Post text.
-     * @param string|null $slug  Post slug.
+     * @param int         $id       Post id.
+     * @param string|null $title    Post title.
+     * @param string|null $text     Post text.
+     * @param string|null $slug     Post slug.
+     * @param string|null $category Post category.
      *
      * @return void
      * @since 0.1.0
      */
-    public function editPost($id, $title=null, $text=null, $slug=null)
-    {
+    public function editPost(
+        $id,
+        $title=null,
+        $text=null,
+        $slug=null,
+        $category=null
+    ) {
         $I = $this;
         $I->amOnPage(\PostFormPage::route($id));
         $I->seeCurrentUrlEquals(\PostFormPage::route($id));
-        $I->fillPostForm($title, $text, $slug);
+        $I->fillPostForm($title, $text, $slug, $category);
         $I->click(\PostFormPage::$submitButton);
     }
 }
