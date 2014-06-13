@@ -5,36 +5,22 @@
  * provides service-related information and (currently) serves as an
  * autoloader for Yii-incompatible classes.
  *
- * @todo 'Autoloading' means Twig should load automatically, not that some
- * ApplicationService takes files as input and includes them one by one.
- * 
- * @author Fike Etki <etki@etki.name>
- * @version 0.1.0
- * @since 0.1.0
+ * @version    Release: 0.1.0
+ * @since      0.1.0
  * @package    BlogMVC
  * @subpackage Yii
+ * @author     Fike Etki <etki@etki.name>
  */
 class ApplicationService
 {
-    /**
-     * List of files that needs to be autoloaded in Yii-alias form
-     * (root.dir.dir.filename).
-     * 
-     * @var string[]
-     * @since 0.1.0
-     */
-    public $files = array();
     /**
      * Standard initialization method.
      * 
      * @return void
      * @since 0.1.0
      */
-    public function init() {
-        foreach($this->files as $preloadedFileAlias) {
-            $path = Yii::getPathOfAlias($preloadedFileAlias).'.php';
-            include($path);
-        }
+    public function init()
+    {
     }
     /**
      * Returns basic service info, such as uptime, Yii version, etc. Uses
@@ -46,20 +32,23 @@ class ApplicationService
      */
     public function getServiceInfo()
     {
-        $cache = Yii::app()->cache->get('serviceStatus');
-        if ($cache) {
-            return $cache;
+        $cache = \Yii::app()->cache->get('serviceStatus');
+        if (!$cache) {
+            $cache = array(
+                'yiiVersion'  => \Yii::getVersion(),
+                'twigVersion' => $this->getTwigVersion(),
+                'phpVersion'  => PHP_VERSION,
+                'os'          => php_uname(),
+                'uptime'      => $this->getUptime(),
+                'serverTime'  => date('Y-m-d H:i'),
+            );
+            \Yii::app()->cache->set('serviceStatus', $cache, 60);
         }
-        $data = array( // different names just to stop netbeans multiple assignment whining
-            'Yii version' => Yii::getVersion(),
-            'Twig version' => $this->getTwigVersion(),
-            'PHP version' => PHP_VERSION,
-            'Operating system' => php_uname(),
-            'Uptime' => $this->getUptime(),
-            'Server time' => date('Y-m-d H:i'),
-        );
-        Yii::app()->cache->set('serviceStatus', $data, 60);
-        return $data;
+        foreach ($cache as $key => $value) {
+            unset($cache[$key]);
+            $cache[\Yii::t('templates', 'status.'.$key)] = $value;
+        }
+        return $cache;
     }
     /**
      * Returns server uptime (if /proc/uptime can be found and read).
@@ -77,7 +66,8 @@ class ApplicationService
             return 'unknown';
         }
         $seconds = (int) $data;
-        return sprintf('%dd:%dh:%dm',
+        return sprintf(
+            '%dd:%dh:%dm',
             floor($seconds/86400),
             $seconds/3600 % 24,
             $seconds/60 % 60
@@ -93,11 +83,15 @@ class ApplicationService
     {
         $fallback = 'unknown (presumably 1.15)';
         $alias = 'application.vendor.twig.twig.composer';
-        $filePath = Yii::getPathOfAlias($alias).'.json';
-        if (!file_exists($filePath) || ($json = file_get_contents($filePath)) === false) {
+        $filePath = \Yii::getPathOfAlias($alias).'.json';
+        if (!file_exists($filePath)) {
             return $fallback;
         }
-        $data = CJSON::decode($json, true);
+        $json = file_get_contents($filePath);
+        if (!$json) {
+            return $fallback;
+        }
+        $data = \CJSON::decode($json, true);
         foreach (array('extra', 'branch-alias') as $key) {
             if (!isset($data[$key])) {
                 return $fallback;
