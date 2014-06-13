@@ -292,8 +292,16 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             return;
         }
         $this->delete($name);
-        if ($this->getDbConnection()->getDriverName() === 'pgsql') {
-            $this->execute('ALTER SEQUENCE '.$name.'_id_seq RESTART WITH 1');
+        $driverName = $this->getDbConnection()->getDriverName();
+        if ($driverName === 'pgsql') { // ffuuu
+            $this->execute('ALTER SEQUENCE ' . $name . '_id_seq RESTART WITH 1');
+        } else if ($driverName === 'sqlite') {
+            $this->update(
+                'SQLITE_SEQUENCE',
+                array('seq' => 0,),
+                'name = :name',
+                array(':name' => $name,)
+            );
         } else {
             $this->execute('ALTER TABLE ' . $name . ' AUTO_INCREMENT = 1');
         }
