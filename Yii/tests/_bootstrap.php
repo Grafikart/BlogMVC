@@ -4,5 +4,8 @@
 // this shit sucks
 // Yii isn't found by standard composer autoload
 require_once dirname(__DIR__).'/boot/testing.php';
+require_once __DIR__.'/_data/YiiBridge/yiit.php';
+launch_codeception_yii_bridge();
 require_once __DIR__.'/_helpers/CacheHelper.php';
+#require_once dirname(__DIR__).'/vendor/codeception/codeception/Platform/RunFailed.php';
 \Codeception\Module\CacheHelper::init();

@@ -11,24 +11,23 @@
 class_name: WebGuy
 modules:
     enabled:
-        - Selenium2
+        - WebDriver
         - WebHelper
     config:
-        #PhpBrowser:
-        #    url: 'http://blogmvc.yii'
-        Selenium2:
-            url: 'http://blogmvc.yii'
-            browser: firefox
+        WebDriver:
+            url: 'http://ci.yii.blogmvc.dev'
+            browser: phantomjs
 env:
-    phantom:
+    firefox:
         modules:
             config:
-                Selenium2:
-                    browser: phantomjs
+                WebDriver:
+                    browser: firefox
+                    window_size: maximize
     chrome:
         modules:
             config:
-                Selemium2:
+                WebDriver:
                     browser: chrome
-    firefox:
-
+                    window_size: maximize
+    phantom:
