@@ -10,6 +10,7 @@ return array(
     'post.categories' => 'Categories',
     'post.content' => 'Text',
     'post.author' => 'Author',
+    'post.created' => 'Created',
     'category.slug' => 'Slug',
     'category.name' => 'Title',
     'comment.post_id' => 'Related post',
@@ -20,4 +21,5 @@ return array(
     'category.postCount' => 'Number of posts in category',
     'application.name' => 'App name (site title)',
     'application.language' => 'Site language',
+    'application.theme' => 'Theme',
 );
