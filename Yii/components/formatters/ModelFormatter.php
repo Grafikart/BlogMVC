@@ -109,7 +109,7 @@ class ModelFormatter extends \CComponent
         foreach ($models as $model) {
             $data[] = $this->getModelPublicAttributes($model);
         }
-        return \CJSon::encode($data);
+        return \CJSON::encode($data);
     }
 
     /**
@@ -145,7 +145,7 @@ class ModelFormatter extends \CComponent
             $modelElement = $xml->addChild(get_class($model));
             $attributes = $this->getModelPublicAttributes($model);
             foreach ($attributes as $key => $value) {
-                $modelElement->addChild($key, $value);
+                $modelElement->$key = $value;
             }
         }
         return $xml->asXML();

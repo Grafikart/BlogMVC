@@ -36,10 +36,10 @@ class RssFormatter
             );
             $pubDate = new \DateTime($post->created);
 
-            $item->addChild('title', $post->name);
-            $item->addChild('link', $url);
-            $item->addChild('description', '<![CDATA['.$post->rendered.']]>');
-            $item->addChild('pubDate', $pubDate->format(\DateTime::RSS));
+            $item->title = $post->name;
+            $item->link = $url;
+            $item->description = $post->rendered;
+            $item->pubDate = $pubDate->format(\DateTime::RSS);
         }
         return $xml->asXML();
     }
