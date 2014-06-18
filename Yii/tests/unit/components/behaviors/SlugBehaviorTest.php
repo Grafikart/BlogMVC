@@ -1,7 +1,7 @@
 <?php
 namespace components\behaviors;
-use Codeception\Module\CacheHelper;
 use Codeception\Module\MigrationHelper;
+use Codeception\Util\Fixtures;
 
 class SlugBehaviorTest extends \Codeception\TestCase\Test
 {
@@ -53,7 +53,7 @@ class SlugBehaviorTest extends \Codeception\TestCase\Test
      */
     public static function tearDownAfterClass()
     {
-        \Yii::app()->language = CacheHelper::$lang;
+        \Yii::app()->language = Fixtures::get('defaultLanguage');
     }
 
     /**
