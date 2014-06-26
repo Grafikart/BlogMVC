@@ -38,14 +38,18 @@ class I18nTest extends \Codeception\TestCase\Test
 
     protected static function loadTranslations()
     {
-        $messagesPath = \Yii::app()->getMessages()->basePath;
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $messagesPath = $app->getMessages()->basePath;
         foreach (new \DirectoryIterator($messagesPath) as $entry) {
-            if ($entry->isDot() || !$entry->isDir()) {
+            if ($entry->isDot() || !$entry->isDir()
+                || $entry->getFilename() === 'testing'
+            ) {
                 continue;
             }
             $lang = $entry->getFilename();
             static::$translations[$lang] = array();
-            foreach(new \DirectoryIterator($entry->getPathname()) as $file) {
+            foreach (new \DirectoryIterator($entry->getPathname()) as $file) {
                 $rpos = strrpos($file->getFilename(), '.php');
                 if ($rpos !== strlen($file->getFilename()) - 4) {
                     continue;
@@ -54,23 +58,26 @@ class I18nTest extends \Codeception\TestCase\Test
                 if (!isset(static::$sections[$section])) {
                     static::$sections[$section] = array();
                 }
-                static::$translations[$lang][$section] = include($file->getPathname());
-                static::$sections[$section] = array_flip(array_merge(
-                    array_flip(static::$sections[$section]),
-                    static::$translations[$lang][$section]
-                ));
+                static::$translations[$lang][$section]
+                    = include $file->getPathname();
+                static::$sections[$section] = array_flip(
+                    array_merge(
+                        array_flip(static::$sections[$section]),
+                        static::$translations[$lang][$section]
+                    )
+                );
             }
         }
     }
-    public function format($messages) {
+    public function format($messages)
+    {
         $repr = '';
         foreach ($messages as $lang => $sections) {
             $repr .= 'language: '.$lang.PHP_EOL;
             foreach ($sections as $section => $errors) {
                 if (is_string($errors)) {
                     $repr .= '  '.$section.': '.$errors.PHP_EOL;
-                }
-                elseif (is_array($errors)) {
+                } elseif (is_array($errors)) {
                     $repr .= '  '.$section.PHP_EOL;
                     foreach ($errors as $tKey => $error) {
                         $repr .= sprintf('    %s: %s'.PHP_EOL, $tKey, $error);
