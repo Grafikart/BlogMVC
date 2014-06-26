@@ -10,7 +10,7 @@ return array(
     'heading.editCategory' => 'Edit {category}',
     'heading.newPost' => 'New post',
     'heading.editPost' => 'Edit post',
-    'heading.nComments' => '{n} comment|{n} comments',
+    'heading.commentsAmount' => '{n} comment|{n} comments',
     'heading.yourPosts' => 'Your posts',
     'heading.options' => 'Options',
     'heading.help' => 'Help',
@@ -99,7 +99,7 @@ return array(
         'service options (language and site name) '.
         '<a href="{optionsUrl}">here</a>.',
     'paragraph.helpAdminNotice' => 'You can view short note about using the '.
-        'service <a href="{dashboardUrl}">here</a>.',
+        'service <a href="{helpUrl}">here</a>.',
     'paragraph.suicideBoothWarning' => 'Clicking button below will delete '.
         'your profile with all of your posts. If you are completely, '.
         'undoubtly, 100% sure, just press the button below. If you are not, '.
@@ -134,5 +134,5 @@ return array(
     'category.listPageTitle' => 'Category list',
     'category.postCount' => '{n} post|{n} posts',
 
-    'format.postDate' => 'M jS Y',
+    //'format.postDate' => 'MMM d y',
 );
