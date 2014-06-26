@@ -1,6 +1,6 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-    <h2>Application</h2>
+    <h2>{{ App.t.t('heading.application') }}</h2>
     <div class="row">
         {% set form = this.beginWidget('CActiveForm') %}
             <div class="col-md-4">
@@ -16,7 +16,8 @@
                 <div class="form-group{{ appModel.getError('name')?' has-error' }}">
                     {{ form.label(appModel, 'name') }}
                     {{ form.textField(appModel, 'name', {
-                        'class':'form-control',
+                        'class': 'form-control',
+                        'autofocus': true
                     }) }}
                 </div>
                 <div class="form-group{{ appModel.getError('language')?' has-error' }}">
@@ -38,19 +39,18 @@
                     {% endif %}
                 </div>
                 <div class="form-group submit-row">
-                    {{ C.Html.submitButton('Save', {
-                        'class':'btn btn-primary',
-                        'role':'update-options'
-                    }) }}
+                    <button type="submit" class="btn btn-primary" role="update-options">
+                        {{ App.t.t('control.save') }}
+                    </button>
                 </div>
             </div>
         {{ void(this.endWidget()) }}
     </div>
-    <h2>Cached values</h2>
+    <h2>{{ App.t.t('heading.cachedValues') }}</h2>
         <a href="{{ this.createUrl('admin/flushCache') }}" class="btn btn-primary" role="flush-cache-link">
-            Flush cache
+            {{ App.t.t('control.flushCache') }}
         </a>
         <a href="{{ this.createUrl('admin/recalculate') }}" class="btn btn-primary" role="recalculate-counters-link">
-            Recalculate counters
+            {{ App.t.t('control.recalculateCounters') }}
         </a>
 {% endblock %}

@@ -1,17 +1,17 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
 <h2>
-    Users
+    {{ App.t.t('heading.users') }}
     <a href="{{ this.createUrl('user/new') }}" class="btn btn-primary pull-right" role="create-user-link">
-        Create new
+        {{ App.t.t('control.createNew') }}
     </a>
 </h2>
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>#</th>
-            <th>Username</th>
-            <th>Number of posts</th>
+            <th>{{ users[0].getAttributeLabel('id') }}</th>
+            <th>{{ users[0].getAttributeLabel('username') }}</th>
+            <th>{{ users[0].getAttributeLabel('postCount') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
                     {{ user.username }}
                     {% if App.user.id == user.id %}
                         <a href="{{ this.createUrl('user/profile') }}" class="btn btn-primary btn-xs" role="edit-profile-link">
-                            Edit
+                            {{ App.t.t('control.edit') }}
                         </a>
                     {% endif %}
                 </td>

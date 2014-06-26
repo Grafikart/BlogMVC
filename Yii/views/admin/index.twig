@@ -1,35 +1,41 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h2>Your posts</h2>
+<h2>{{ App.t.t('heading.yourPosts') }}</h2>
 <div class="container">
     <div class="row">
-        You have written {{ user.postCount }} posts which received
-        {{ user.commentCount }} comments. You can manage them through
-        <a href="{{ this.createUrl('post/dashboard') }}">posts dashboard</a>.
+        {{ App.t.t('paragraph.userPostsAdminNotice', {
+            '{postCount}':user.postCount,
+            '{commentCount}':user.commentCount,
+            '{dashboardUrl}':this.createUrl('post/dashboard')
+        }) }}
     </div>
 </div>
 
-<h2>Options</h2>
+<h2>{{ App.t.t('heading.options') }}</h2>
 <div class="container">
     <div class="row">
-        You can view basic info about registered users and create new one
-        <a href="{{ this.createUrl('user/index') }}">here</a>.
+        {{ App.t.t('paragraph.usersAdminNotice', {
+            '{dashboardUrl}': this.createUrl('user/dashboard')
+        }) }}
     </div>
     <div class="row">
-        If you wish to change your password or visit the suicide booth, you should
-        proceed with this <a href="{{ this.createUrl('user/profile') }}">link</a>.
+        {{ App.t.t('paragraph.userOptionsAdminNotice', {
+            '{dashboardUrl}': this.createUrl('user/profile')
+        }) }}
     </div>
     <div class="row">
-        You also can modify some service options (language and site name)
-        <a href="{{ this.createUrl('admin/options') }}">here</a>.
+        {{ App.t.t('paragraph.serviceOptionsAdminNotice', {
+            '{optionsUrl}': this.createUrl('admin/options')
+        }) }}
     </div>
 </div>
 
-<h2>Help</h2>
+<h2>{{ App.t.t('heading.help') }}</h2>
 <div class="container">
     <div class="row">
-        You can view short note about using the service
-        <a href="{{ this.createUrl('admin/help') }}">here</a>.
+        {{ App.t.t('paragraph.helpAdminNotice', {
+            '{helpUrl}': this.createUrl('admin/help')
+        }) }}
     </div>
 </div>
 {% endblock %}

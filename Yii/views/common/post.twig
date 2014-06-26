@@ -1,21 +1,30 @@
 {% set post_url = this.createUrl('post/show', {'slug': post.slug}) %}
 <article id="post-{{ post.id }}">
     {% block post_content_before %}
-        <h2><a href="{{ post_url }}">{{ post.name }}</a></h2>
+        <h2>
+            <a href="{{ post_url }}">{{ post.name }}</a>
+        </h2>
         <p>
             <small>
-                Category: <a href="{{ this.createUrl('category/index', {'slug':post.category.slug}) }}" role="category-link">
+                {{ App.t.t('text.category') }}:
+                <a href="{{ this.createUrl('category/index', {'slug':post.category.slug}) }}" role="category-link">
                     {{ post.category.name }}
-                </a>, by <a href="{{ this.createUrl('post/author', {'id': post.author.id}) }}" role="user-link">
+                </a>, {{ App.t.t('text.by') }}
+                <a href="{{ this.createUrl('user/index', {'id': post.author.id}) }}" role="user-link">
                     {{ post.author.username }}
-                </a> on <em>{{ post.created }}</em>
+                </a> {{ App.t.t('text.onTime') }} <em>{{ App.dateFormatter.formatDateTime(post.created, 'medium', null) }}</em>
+                {% if App.user.id == post.user_id %}
+                    | <a href="{{ this.createUrl('post/edit', {'id':post.id}) }}" role="post-edit-link">
+                        {{ App.t.t('link.edit') }}
+                    </a>
+                {% endif %}
             </small>
         </p>
     {% endblock %}
 
     <p>
         {% block post_content %}
-            {{ post.formattedContent }}
+            {{ post.rendered }}
         {% endblock %}
     </p>
     {% block post_content_after %}

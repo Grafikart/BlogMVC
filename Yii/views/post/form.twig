@@ -1,16 +1,19 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h1>{{ post.isNewRecord?'New post':'Edit post' }}</h1>
+<h1>{{ App.t.t(post.isNewRecord?'heading.newPost':'heading.editPost') }}</h1>
 <p>
-    <a href="{{ this.createUrl('post/dashboard') }}">&lt; Back to posts</a>
+    <a href="{{ this.createUrl('post/dashboard') }}">{{ App.t.t('link.backToPosts') }}</a>
+    {% if not post.getIsNewRecord() %}
+        | <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}">{{ App.t.t('link.viewPost') }}</a>
+    {% endif %}
 </p>
 {% set form = this.beginWidget('CActiveForm',{
     'htmlOptions':{'accept-charset':'utf-8'}
 }) %}
-    {% if post.hasErrors() %}
+    {% if post.hasErrors() or category.hasErrors() %}
         <div class="alert alert-danger">
             <ul>
-                {% for attribute in post.errors %}
+                {% for attribute in post.getErrors()|merge(category.getErrors()) %}
                     {% for error in attribute %}
                         <li>{{ error }}</li>
                     {% endfor %}
@@ -20,30 +23,45 @@
     {% endif %}
     <div class="row">
         <div class="col-md-4">
-            <div class="form-group required">
+            <div class="form-group required{{ post.getError('name') ? ' has-error' }}">
                 {{ form.label(post, 'name') }}
-                {{ form.textField(post, 'name', {'class':'form-control'}) }}
+                {{ form.textField(post, 'name', {
+                    'class': 'form-control',
+                    'autofocus': true
+                }) }}
             </div>
         </div>
         <div class="col-md-4">
-            <div class="form-group required">
+            <div class="form-group required{{ post.getError('slug') ? ' has-error' }}">
                 {{ form.label(post, 'slug') }}
-                {{ form.textField(post, 'slug', {'class':'form-control'}) }}
+                {{ form.textField(post, 'slug', {'class': 'form-control'}) }}
             </div>
         </div>
         <div class="col-md-4">
-            <div class="form-group required">
+            <div class="required form-group{{ post.getError('category') or category.getErrors()?' has-error' }}">
                 {{ form.label(post, 'category_id') }}
-                {{ form.dropDownList(post, 'category_id', categories, {'class':'form-control'}) }}
+                <div class="row">
+                    <div class="col-md-10" role="category-selector-container">
+                        {{ form.dropDownList(post, 'category_id', categories, {'class': 'form-control'}) }}
+                        {{ form.textField(category, 'name', {
+                            'class':'hidden form-control',
+                            'placeholder':category.getAttributeLabel('name'),
+                            'disabled':true
+                        }) }}
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" type="button" role="toggle-category-menu">+</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="form-group required">
+    <div class="form-group required{{ post.getError('content')?' has-error' }}">
         {{ form.label(post, 'content') }}
         {{ form.textArea(post, 'content', {'class':'form-control', 'cols':30, 'rows':6}) }}
     </div>
     <div class="submit">
-        <input class="btn btn-primary" type="submit" role="submit-post" value="{{ post.isNewRecord?'Publish':'Edit' }}"/>
+        <input class="btn btn-primary" type="submit" role="submit-post" value="{{ App.t.t(post.isNewRecord?'control.publish':'control.edit') }}"/>
     </div>
 {{ void(this.endWidget()) }}
 {% endblock %}

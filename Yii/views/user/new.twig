@@ -1,6 +1,6 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h2>Create new user</h2>
+<h2>{{ App.t.t('heading.createNewUser') }}</h2>
 {% set form = this.beginWidget('CActiveForm', {
     'htmlOptions':{
         'class':'col-md-6',
@@ -10,7 +10,8 @@
 <div class="row form-group{{ user.getError('username')?' has-error' }}">
     {{ form.textField(user, 'username', {
         'placeholder':user.getAttributeLabel('username'),
-        'class':'form-control'
+        'class':'form-control',
+        'autofocus':true
     }) }}
     {% if user.getError('username') %}
         <span class="help-block">{{ user.getError('username') }}</span>
@@ -35,7 +36,9 @@
     {% endif %}
 </div>
 <div class="row form-group">
-    {{ C.Html.tag('button', {'type':'submit', 'class':'btn btn-primary', 'role':'create-user'}, 'Submit') }}
+    <button type="submit" class="btn btn-primary" role="create-user">
+        {{ App.t.t('control.submit') }}
+    </button>
 </div>
 {{ void(this.endWidget()) }}
 {% endblock %}

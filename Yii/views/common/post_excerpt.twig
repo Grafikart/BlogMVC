@@ -1,15 +1,15 @@
 {% extends 'views/common/post.twig' %}
 {% block post_content %}
-    {{ post.formattedContent[:400] }}
-    {% if post.formattedContent|length > 400 %}
-        {{ post.formattedContent[400:]|striptags|truncate(100, true) }}
+    {{ post.rendered[:400] }}
+    {% if post.rendered|length > 400 %}
+        {{ post.rendered[400:]|striptags|truncate(100, true) }}
     {% endif %}
 {% endblock %}
 
 {% block post_content_after %}
-{% if post.formattedContent|length > 500 %}
+{% if post.rendered|length > 500 %}
     <p class="text-right">
-        <a href="{{ post_url }}" class="btn btn-primary">Read more...</a>
+        <a href="{{ post_url }}" class="btn btn-primary">{{ App.t.t('link.readMore') }}</a>
     </p>
 {% endif %}
 {% endblock %}

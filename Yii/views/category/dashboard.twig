@@ -1,0 +1,41 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+    <h1>
+        {{ App.t.t('heading.categories') }}
+        <a href="{{ this.createUrl('category/edit') }}" class="pull-right btn btn-primary" role="new-category-link">
+            {{ App.t.t('control.addNew') }}
+        </a>
+    </h1>
+    {% if categories|length > 0 %}
+    <table class="table table-striped text-center">
+        <thead>
+            <tr>
+                <th>{{ App.t.t('text.id') }}</th>
+                <th class="text-center">{{ App.t.t('text.name') }}</th>
+                <th class="text-center">{{ App.t.t('text.postCount') }}</th>
+                <th class="text-center">{{ App.t.t('text.actions') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td class="text-left">{{ category.getPrimaryKey() }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>
+                        <a href="{{ this.createUrl('category/index', {'slug':category.slug}) }}" role="category-feed-link">
+                            {{ category.post_count }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ this.createUrl('category/edit', {'slug': category.slug}) }}" class="btn btn-small btn-primary" role="edit-category-link">
+                            {{ App.t.t('control.edit') }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-error">{{ App.t.t('text.noCategoriesFound') }}</div>
+    {% endif %}
+{% endblock %}

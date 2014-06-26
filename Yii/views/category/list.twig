@@ -1,0 +1,39 @@
+{% extends 'views/layouts/main.twig' %}
+{% block content %}
+    <h1>
+        {{ App.t.t('heading.categories') }}
+        {% if not App.user.getIsGuest() %}
+            <a class="pull-right btn btn-primary" href="{{ this.createUrl('category/list/type/admin') }}">
+                {{ App.t.t('control.manage') }}
+            </a>
+        {% endif %}
+    </h1>
+    {% if categories|length > 0 %}
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped text-center col-md-6">
+                    <tbody>
+                    {% for category in categories if not App.user.getIsGuest() or category.post_count > 0 %}
+                        <tr>
+                            <td>
+                                <a href="{{ this.createUrl('category/index', {'slug': category.slug}) }}">
+                                    {{ category.name }} - {{ App.t.t('category.postCount', [category.post_count]) }}
+                                </a>
+                                {% if not App.user.getIsGuest() %}
+                                    <a href="{{ this.createUrl('category/edit', {'slug': category.slug}) }}" class="btn btn-xs btn-primary">
+                                        {{ App.t.t('control.edit') }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-error">
+            {{ App.t.t('text.noCategoriesFound') }}
+        </div>
+    {% endif %}
+{% endblock %}
