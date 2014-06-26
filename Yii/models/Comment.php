@@ -196,6 +196,21 @@ class Comment extends ActiveRecordLayer
             'created' => 'comment.created',
         );
     }
+
+    /**
+     * Returns public attributes.
+     *
+     * @return array
+     * @since 0.1.0
+     */
+    public function getPublicAttributes()
+    {
+        $attrs = $this->getAttributes();
+        unset($attrs['mail']);
+        $attrs['timeAgo'] = $this->timeAgo;
+        $attrs['gravatar'] = $this->gravatar;
+        return $attrs;
+    }
     /**
      * Returns relation definitions.
      * 

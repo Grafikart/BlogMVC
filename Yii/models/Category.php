@@ -33,7 +33,7 @@ class Category extends ActiveRecordLayer
      * @var int
      * @since 0.1.0
      */
-    public $post_count;
+    public $post_count = 0;
     /**
      * Returns current model table name.
      * 
@@ -105,14 +105,16 @@ class Category extends ActiveRecordLayer
     /**
      * Scope method for filtering most popular categories.
      * 
-     * @param int $limit How many top categories should be fetched.
+     * @param int $limit            How many top categories should be fetched.
+     * @param int $minimumPostCount Minimum amount of posts in category to be
+     * shown.
      *
      * @throws \BadMethodCallException Thrown if limit is set less than 1.
      *
      * @return \Category Current instance.
      * @since 0.1.0
      */
-    public function popular($limit=5)
+    public function popular($limit=5, $minimumPostCount=1)
     {
         if (($limit = (int)$limit) < 1) {
             throw new \BadMethodCallException('Limit can\'t be less than one');
@@ -121,6 +123,8 @@ class Category extends ActiveRecordLayer
             array(
                 'order' => 'post_count DESC',
                 'limit' => $limit,
+                'condition' => 'post_count >= :minimum',
+                'params' => array(':minimum' => $minimumPostCount),
             )
         );
         return $this;
@@ -160,6 +164,30 @@ class Category extends ActiveRecordLayer
         $this->post_count += $increment;
         $this->save(false, array('post_count'));
     }
+
+    /**
+     * A shortcut method for getting new model instance or model instance with
+     * specified ID.
+     *
+     * @param null|string $slug Category slug which will be used to perform a
+     * search. If nothing is specified, new instance will be returned.
+     *
+     * @return self|null Model instance or null if model with specified slug
+     * doesn't exist.
+     * @since 0.1.0
+     */
+    public function findBySlugOrCreate($slug=null)
+    {
+        if ($slug) {
+            return $this->find('slug = :slug', array(':slug' => $slug));
+        } else {
+            $class = get_class($this);
+            $instance = new $class();
+            $instance->post_count = 0;
+            return $instance;
+        }
+    }
+
     /**
      * Standard Yii method which returns array of relation definitions.
      * 
@@ -200,6 +228,7 @@ class Category extends ActiveRecordLayer
             array(
                 array('name', 'slug',),
                 'length',
+                'allowEmpty' => false,
                 'min' => 3,
                 'max' => 50,
             ),

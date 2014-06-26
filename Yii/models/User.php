@@ -41,12 +41,19 @@ class User extends ActiveRecordLayer
      */
     public $newPassword;
     /**
-     * 
+     * Repetiton of new password.
      * 
      * @var string
      * @since 0.1.0
      */
     public $newPasswordRepeat;
+    /**
+     * Runtime cache for found users.
+     *
+     * @var array List in [:username => \User|false] form.
+     * @since 0.1.0
+     */
+    protected static $userCache = array();
     
     /**
      * Returns model table name.
@@ -106,6 +113,19 @@ class User extends ActiveRecordLayer
             )
         );
         return $this;
+    }
+
+    /**
+     * Returns amount of pages for provided $perPage value.
+     *
+     * @param int $perPage How much records per page should be displayed.
+     *
+     * @return int Amount of pages.
+     * @since 0.1.0
+     */
+    public function totalPages($perPage=10)
+    {
+        return ceil($this->count() / $perPage);
     }
     /**
      * Before-save callback.
@@ -184,12 +204,13 @@ class User extends ActiveRecordLayer
     {
         \Yii::beginProfile('user.validateUsernameUniqueness');
         $username = $this->$attribute;
+        $id = $this->getIsNewRecord()?0:$this->getPrimaryKey();
         $exists = (bool) \Yii::app()->db->createCommand()
             ->select('username')
             ->from($this->tableName())
             ->where(
-                'username = :username',
-                array(':username' => $username)
+                'username = :username AND id != :id',
+                array(':username' => $username, ':id' => $id,)
             )->queryScalar();
         if ($exists) {
             $e = \Yii::t(
@@ -216,6 +237,23 @@ class User extends ActiveRecordLayer
             'newPassword' => 'user.newPassword',
             'newPasswordRepeat' => 'user.newPasswordRepeat',
             'postCount' => 'user.postCount',
+        );
+    }
+
+    /**
+     * Returns publicly available attributes.
+     *
+     * @return array Public attributes.
+     * @since 0.1.0
+     */
+    public function getPublicAttributes()
+    {
+        return array_intersect_key(
+            $this->getAttributes(),
+            array(
+                'id' => 'id',
+                'username' => 'username',
+            )
         );
     }
 
@@ -285,14 +323,6 @@ class User extends ActiveRecordLayer
     }
 
     /**
-     * Runtime cache for found users.
-     *
-     * @var array List in [:username => \User|false] form.
-     * @since 0.1.0
-     */
-    protected static $userCache = array();
-
-    /**
      * Fetches user by it's username.
      *
      * @param string $username Username.
@@ -302,7 +332,11 @@ class User extends ActiveRecordLayer
      */
     public static function findByUsername($username)
     {
-        if (isset(static::$userCache[$username])) {
+        // protecting array_key_exists
+        if (!is_string($username)) {
+            throw new \BadMethodCallException('Username should be a string');
+        }
+        if (array_key_exists($username, static::$userCache)) {
             \Yii::trace('Runtime cache hit for user ['.$username.']');
             return static::$userCache[$username];
         }
@@ -313,7 +347,6 @@ class User extends ActiveRecordLayer
             'username = :username',
             array(':username' => $username)
         );
-        $user = $user !== null ? $user : false;
         static::$userCache[$username] = $user;
         \Yii::endProfile($token);
         return $user;

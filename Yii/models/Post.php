@@ -14,7 +14,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class Post extends ActiveRecordLayer
+class Post extends \ActiveRecordLayer
 {
     /**
      * ID of the related category.
@@ -57,7 +57,7 @@ class Post extends ActiveRecordLayer
      * @var string
      * @since 0.1.0
      */
-    public $formattedContent;
+    public $rendered;
     /**
      * Date of creation.
      *
@@ -87,21 +87,24 @@ class Post extends ActiveRecordLayer
     /**
      * Returns amount of posts pages.
      *
+     * @param int    $postsPerPage Number of posts per page.
+     * @param string $condition    Additional SQL condition.
+     * @param array  $params       Set of parameters to be applied to condition.
+     *
      * @throws \InvalidArgumentException Thrown if <var>$postsPerPage</var>
      * equals to zero or less.
      *
-     * @param int $postsPerPage Number of posts per page.
      * @return int Number of total pages.
      * @since 0.1.0
      */
-    public function totalPages($postsPerPage=5)
+    public function totalPages($postsPerPage=5, $condition='', $params=array())
     {
         if (($postsPerPage = (int)$postsPerPage) < 1) {
             $message = '$postsPerPage argument should be an integer bigger '.
                        'than 0';
             throw new \InvalidArgumentException($message);
         }
-        return ceil($this->count()/$postsPerPage);
+        return (int) ceil($this->count($condition, $params)/$postsPerPage);
     }
     /**
      * Returns number of posts submitted today.
@@ -140,6 +143,29 @@ class Post extends ActiveRecordLayer
         \Yii::endProfile('post.getCurrentCategory');
         return $id;
     }
+
+    /**
+     * Decreases old category counter and increases new category counter. Will
+     * fail silently if one of categories can't be fetched.
+     *
+     * @param int $oldCategory Old category ID.
+     * @param int $newCategory New category ID.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    protected function switchCategory($oldCategory, $newCategory)
+    {
+        if ($oldCategory == $newCategory || !$oldCategory || !$newCategory) {
+            return;
+        }
+        $oldCategory = \Category::model()->findByPk($oldCategory);
+        $newCategory = \Category::model()->findByPk($newCategory);
+        if (isset($oldCategory, $newCategory)) {
+            $oldCategory->updateCounter(-1);
+            $newCategory->updateCounter(1);
+        }
+    }
     /**
      * Scope implementation. This method allows setting additional conditions
      * before performing search.
@@ -163,6 +189,27 @@ class Post extends ActiveRecordLayer
         );
         return $this;
     }
+
+    /**
+     * Updates CDbCriteria to select posts only by supplied user.
+     *
+     * @param int $userId Author's id.
+     *
+     * @return $this Current model instance.
+     * @since 0.1.0
+     */
+    public function by($userId)
+    {
+        $this->getDbCriteria()->mergeWith(
+            array(
+                'condition' => 'user_id = :user_id',
+                'params' => array(
+                    ':user_id' => (int) $userId,
+                )
+            )
+        );
+        return $this;
+    }
     /**
      * Post Markdown-formatting callback.
      *
@@ -174,7 +221,7 @@ class Post extends ActiveRecordLayer
         parent::afterFind();
         /** @var DataFormatter $formatter */
         $formatter = \Yii::app()->formatter;
-        $this->formattedContent = $formatter->renderMarkdown($this->content);
+        $this->rendered = $formatter->renderMarkdown($this->content);
         return true;
     }
     /**
@@ -236,15 +283,21 @@ class Post extends ActiveRecordLayer
      */
     public function afterSave()
     {
-        \Yii::beginProfile('post.afterSave');
-        \Yii::app()->setGlobalState('lastPostUpdate', time());
+        $sign = md5(mt_rand());
+        \Yii::log('updated global state ('.$sign.')');
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $app->setGlobalState('lastPostUpdate', $sign);
+        $app->saveGlobalState();
+        //\Yii::beginProfile('post.afterSave');
         if ($this->getIsNewRecord()) {
             $this->category->updateCounter();
+            \Yii::log('Post successfully created');
         } else if ($this->oldCategory !== (int) $this->category_id) {
-            \Category::model()->findByPk($this->oldCategory)->updateCounter(-1);
-            $this->category->updateCounter();
+            $this->switchCategory($this->oldCategory, $this->category_id);
+            \Yii::log('Post successfully updated');
         }
-        \Yii::endProfile('post.afterSave');
+        //\Yii::endProfile('post.afterSave');
         return true;
     }
 
@@ -256,13 +309,29 @@ class Post extends ActiveRecordLayer
      */
     public function afterDelete()
     {
-        if (!parent::afterDelete()) {
-            return false;
-        }
+        $sign = md5(mt_rand());
+        \Yii::log('updated global state ('.$sign.')');
         $this->category->post_count--;
         $this->category->save(false, array('post_count'));
-        \Yii::app()->setGlobalState('lastPostUpdate', time());
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $app->setGlobalState('lastPostUpdate', $sign);
+        $app->saveGlobalState();
+        \Yii::log('Post successfully deleted');
         return true;
+    }
+
+    /**
+     * Returns all public attributes of
+     *
+     * @return array
+     * @since
+     */
+    public function getPublicAttributes()
+    {
+        $attrs = $this->getAttributes();
+        $attrs['content'] = $this->rendered;
+        return $attrs;
     }
     /**
      * Method for getting internationalized labels. Since it is certanly not
@@ -346,6 +415,7 @@ class Post extends ActiveRecordLayer
             array(
                 array('content',),
                 'length',
+                'allowEmpty' => false,
                 'min' => 10,
                 //'on' => array('insert', 'update'),
             ),

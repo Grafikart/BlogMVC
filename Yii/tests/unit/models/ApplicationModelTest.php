@@ -9,7 +9,8 @@
  * @package mvcblog
  * @subpackage Yii
  */
-class ApplicationModelTest extends CTestCase {
+class ApplicationModelTest extends \Codeception\TestCase\Test
+{
     /**
      * Cached model to prevent recreating it every time.
      *
@@ -59,40 +60,48 @@ class ApplicationModelTest extends CTestCase {
         ),
     );
     protected static $mockConfigFile = 'application.runtime.mock';
-    protected static $runFilesTests = true;
+    /**
+     * A flag to run (or not to run) file-related tests.
+     *
+     * @type bool
+     * @since 0.1.0
+     */
+    protected static $runFileTests = true;
 
     /**
      * Creates mock files on non-windows platforms or skips whole test on
      * windows platforms.
      *
+     * @return void
      * @since 0.1.0
      */
     public static function setUpBeforeClass()
     {
-        static::$model = new ApplicationModel();
+        static::$model = new ApplicationModel;
         static::$defaultConfigAlias = static::$model->configFile;
-        $configFile = Yii::getPathOfAlias(static::$defaultConfigAlias).'.php';
-        $mockConfigFile = Yii::getPathOfAlias(static::$mockConfigFile).'.php';
+        $configFile = \Yii::getPathOfAlias(static::$defaultConfigAlias).'.php';
+        $mockConfigFile = \Yii::getPathOfAlias(static::$mockConfigFile).'.php';
         $data = file_get_contents($configFile);
         if (!$data || !file_put_contents($mockConfigFile, $data)) {
             static::markTestSkipped('Failed to create mock config file');
             return;
         }
         if (strpos('win', strtolower(PHP_OS))) {
-            static::$runFilesTests = false;
+            static::$runFileTests = false;
             return;
         }
         foreach (static::$mockFiles as $def) {
             if (isset($def['createFile']) && $def['createFile'] === false) {
                 continue;
             }
-            $path = Yii::getPathOfAlias($def['alias']).'.php';
+            $path = \Yii::getPathOfAlias($def['alias']).'.php';
             if (file_exists($path) && !chmod($path, 0777)) {
                 static::markTestSkipped('Failed to set permission mode on file');
                 return;
             }
-            if ((isset($def['data']) && !file_put_contents($path, $def['data'])) ||
-                    !touch($path)) {
+            if ((isset($def['data']) && !file_put_contents($path, $def['data']))
+                || !touch($path)
+            ) {
                 static::markTestSkipped('Couldn\'t create mock file');
                 return;
             }
@@ -104,13 +113,24 @@ class ApplicationModelTest extends CTestCase {
     }
 
     /**
+     * A fixer for not-called setUpBeforeClass().
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function _before()
+    {
+    }
+
+    /**
      * Deletes mock files.
      *
+     * @return void
      * @since 0.1.0
      */
     public static function tearDownAfterClass()
     {
-        if (!static::$runFilesTests) {
+        if (!static::$runFileTests) {
             return;
         }
         foreach (static::$mockFiles as $file) {
@@ -164,14 +184,15 @@ class ApplicationModelTest extends CTestCase {
      */
     public function testFileErrors($alias, $expectedError)
     {
-        if (!static::$runFilesTests) {
+        $model = new \ApplicationModel;
+        if (!static::$runFileTests) {
             $msg = 'Config file erroneous reading is skipped on win platforms';
             $this->markTestSkipped($msg);
             return;
         }
-        static::$model->configFile = $alias;
-        static::$model->save(array('language' => 'ru'));
-        $errorKey = key(static::$model->configErrors);
+        $model->configFile = $alias;
+        $model->save(array('language' => 'ru'));
+        $errorKey = key($model->configErrors);
         $this->assertSame($errorKey, $expectedError);
     }
 
@@ -188,8 +209,26 @@ class ApplicationModelTest extends CTestCase {
      */
     public function testLanguageSave($language, $expectedOutput)
     {
-        static::$model->configFile = static::$defaultConfigAlias;
-        static::$model->language = $language;
-        $this->assertSame(static::$model->save(), $expectedOutput);
+        $model = new \ApplicationModel;
+        $model->configFile = static::$defaultConfigAlias;
+        $model->language = $language;
+        $this->assertSame(
+            $expectedOutput,
+            $model->save(),
+            print_r($model->getErrors(), true)
+        );
+    }
+
+    /**
+     * Added as a temporary bugfix for not-calling `setUpBeforeClass()`
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/1295
+     *
+     * @return void
+     * @since
+     */
+    public function testDummy()
+    {
+
     }
 } 

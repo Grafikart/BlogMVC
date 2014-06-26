@@ -47,7 +47,7 @@ class ApplicationModel extends CModel
      * @var string
      * @since 0.1.0
      */
-    public $configFile = 'application.config.front';
+    public $configFile = 'application.config.web';
     /**
      * Public skins path.
      *
@@ -117,9 +117,11 @@ class ApplicationModel extends CModel
      */
     public function init()
     {
-        $this->name = \Yii::app()->name;
-        $this->language = \Yii::app()->language;
-        $this->theme = \Yii::app()->theme->name;
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $this->name = $app->name;
+        $this->language = $app->language;
+        $this->theme = $app->theme->name;
     }
     /**
      * Returns current or cached statistics.
@@ -140,13 +142,13 @@ class ApplicationModel extends CModel
                 'comments.total' => \Comment::model()->count(),
                 'comments.today' => \Comment::model()->today(),
             );
-            foreach ($stats as $key => $value) {
-                unset($stats[$key]);
-                $stats[\Yii::t('templates', 'statistics.'.$key)] = $value;
-            }
             $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
             \Yii::app()->cache->set('app.statistics', $stats, 3600, $dep);
             \Yii::endProfile('applicationModel.retrieveStatistics');
+        }
+        foreach ($stats as $key => $value) {
+            unset($stats[$key]);
+            $stats[\Yii::t('templates', 'statistics.'.$key)] = $value;
         }
         \Yii::endProfile('applicationModel.getStatistics');
         return $stats;
@@ -190,6 +192,7 @@ class ApplicationModel extends CModel
                 $this->configErrors[$result] = $error;
                 return false;
         }
+        \Yii::app()->cache->flush();
         \Yii::endProfile('applicationModel.save');
         return true;
     }
@@ -384,7 +387,14 @@ class ApplicationModel extends CModel
     public function attributeLabels()
     {
         if (!isset($this->attributeLabels)) {
-            $this->attributeLabels = $this->getAttributeLabels();
+            $this->attributeLabels = array();
+            $labels = $this->getAttributeLabels();
+            foreach ($labels as $labelName => $labelTransKey) {
+                $this->attributeLabels[$labelName] = \Yii::t(
+                    'forms-labels',
+                    $labelTransKey
+                );
+            }
         }
         return $this->attributeLabels;
     }
