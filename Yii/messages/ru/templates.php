@@ -38,7 +38,7 @@ return array(
 
     'control.manage' => 'Управлять',
     'control.edit' => 'Редактировать',
-    'control.delete' => 'Уадлить',
+    'control.delete' => 'Удалить',
     'control.save' => 'Сохранить',
     'control.publish' => 'Опубликовать',
     'control.addNew' => 'Добавить новый',
@@ -53,7 +53,7 @@ return array(
     'control.signIn' => 'Войти',
     'control.deleteMyProfile' => 'Удалить мой профиль',
 
-    'link.backTo' => '&lt; Назад к {pageTitle}',
+    'link.backTo' => '&lt; Назад в {pageTitle}',
     'link.backToMainFeed' => '&lt; Назад к основной ленте',
     'link.backToCategories' => '&lt; Назад к списку категорий',
     'link.backToPosts' => '&lt; Назад к записям',
@@ -113,7 +113,7 @@ return array(
         'вернуться на предыдущую страницу</a>.',
     'paragraph.httpError' => 'Похоже, произошла какая-то страшная ошибка. '.
         'Если вы уверены, что прошли по корректному адресу, пожалуйста, '.
-        'свяжитесь с владельцем сайта',
+        'свяжитесь с владельцем сайта.',
 
     'pagination.delimiter' => '...',
     'statistics.users.total' => 'Пользователей',
