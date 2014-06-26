@@ -53,7 +53,7 @@ class SlugBehaviorTest extends \Codeception\TestCase\Test
      */
     public static function tearDownAfterClass()
     {
-        \Yii::app()->language = Fixtures::get('defaultLanguage');
+        \Yii::app()->language = Fixtures::get('defaults:app:language');
     }
 
     /**

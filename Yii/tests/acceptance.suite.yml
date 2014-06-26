@@ -17,6 +17,7 @@ modules:
         WebDriver:
             url: 'http://ci.yii.blogmvc.dev'
             browser: phantomjs
+            window_size: 1024x768
 env:
     firefox:
         modules:

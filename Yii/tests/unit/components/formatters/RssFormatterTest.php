@@ -18,7 +18,7 @@ class RssFormatterTest extends \Codeception\TestCase\Test
 
     protected function _after()
     {
-        $defaultServerName = Fixtures::get('defaultServerName');
+        $defaultServerName = Fixtures::get('defaults:server:host');
         if ($defaultServerName) {
             $_SERVER['SERVER_NAME'] = $defaultServerName;
         } else {
@@ -38,7 +38,7 @@ class RssFormatterTest extends \Codeception\TestCase\Test
         return \Post::model()->findAll(array('limit' => 10));
     }
     // tests
-    public function testMe()
+    public function testRssFormatting()
     {
         $formatter = new \RssFormatter;
         $models = $this->modelProvider();

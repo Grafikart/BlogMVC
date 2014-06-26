@@ -9,36 +9,25 @@
  * @package    BlogMVC
  * @subpackage Yii
  */
-class PostTest extends CTestCase
+class PostTest extends \Codeception\TestCase\Test
 {
     /**
-     * Cached model for tests. Used to prevent model recreation when unnecessary
-     * and decrease test time.
+     * Updates fixtures before every test.
      *
-     * @var Post
-     * @since 0.1.0
-     */
-    protected static $model;
-    /**
-     * Once-run setup method. Used to expand fixtures into database.
-     * 
      * @return void
      * @since 0.1.0
      */
-    public static function setUpBeforeClass()
+    public function _before()
     {
-        static::$model = new Post;
+        \Yii::app()->fixtureManager->prepare();
     }
+
     /**
-     * Once-run method for destroying fixtures.
-     * 
-     * @return void
+     * Simple data provider with sets of attributes for validation.
+     *
+     * @return array
      * @since 0.1.0
      */
-    public static function tearDownAfterClass()
-    {
-        
-    }
     public function validationDataProvider()
     {
         return array(
@@ -60,14 +49,14 @@ class PostTest extends CTestCase
                 'content' => 'valid content',
             ), false),
             array(array(
-                'name' => str_repeat(' too long ', 26),
+                'name' => str_repeat('c', 256),
                 'slug' => '',
                 'content' => 'valid content',
                 'category_id' => 1,
             ), false),
             array(array(
                 'name' => 'too long slug',
-                'slug' => str_repeat(' too long ', 26),
+                'slug' => str_repeat('c', 256),
                 'content' => 'valid content',
                 'category_id' => 1,
             ), false),
@@ -89,17 +78,82 @@ class PostTest extends CTestCase
     /**
      * Tests validation rules.
      *
+     * @param array   $attributes     Attributes to check validation.
+     * @param boolean $expectedResult Expected validation result.
+     *
      * @dataProvider validationDataProvider
      *
-     * @param array $attributes Attributes to check validation.
-     * @param $expectedResult Expected validation result.
+     * @return void
      * @since 0.1.0
      */
     public function testValidation(array $attributes, $expectedResult)
     {
+        $model = new \Post;
         $this->assertSame(
-            static::$model->setAndValidate($attributes),
+            $model->setAndValidate($attributes),
             $expectedResult
         );
+    }
+
+    /**
+     * Verifies that main cache key resets every time post is edited.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function testCacheInvalidation()
+    {
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $value = $app->getGlobalState('lastPostUpdate');
+        $post = new \Post;
+        $attrs = array(
+            'name' => 'just a name',
+            'slug' => 'just-a-name',
+            'content' => 'Dummy content',
+            'created' => '2010-05-05 12:12:12',
+            'user_id' => 1,
+            'category_id' => 1,
+        );
+        $post->setAttributes($attrs, false);
+        $post->save();
+        $this->assertNotSame(
+            $value,
+            $value = $app->getGlobalState('lastPostUpdate')
+        );
+        $post->delete();
+        $this->assertNotSame(
+            $value,
+            $value = $app->getGlobalState('lastPostUpdate')
+        );
+    }
+
+    /**
+     * Tests category counters update after category switching.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function testCategorySwitching()
+    {
+        /** @type \Post $post $post */
+        $post = \Post::model()->findByAttributes(
+            array('slug' => 'first-post',)
+        );
+        $categoryId = $post->category_id;
+        $newCategoryId = $categoryId - 1 > 0 ? $categoryId - 1 : $categoryId + 1;
+        /** @type \Category $category */
+        $category = \Category::model()->findByPk($categoryId);
+        /** @type \Category $newCategory */
+        $newCategory = \Category::model()->findByPk($newCategoryId);
+        $counters = array($category->post_count, $newCategory->post_count);
+        $post->category_id = $newCategoryId;
+        $post->save();
+        /** @type \Category $category */
+        $category = \Category::model()->findByPk($categoryId);
+        /** @type \Category $newCategory */
+        $newCategory = \Category::model()->findByPk($newCategoryId);
+        $this->assertEquals($counters[0] - 1, $category->post_count);
+        $this->assertEquals($counters[1] + 1, $newCategory->post_count);
     }
 }
