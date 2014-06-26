@@ -116,7 +116,7 @@ class Comment extends ActiveRecordLayer
         $this->created = date('Y-m-d H:i:s', strtotime($this->created));
         $this->timeAgo = $formatter->formatDateTime(
             $this->created,
-            'interval'
+            'timeAgo'
         );
         if (!empty($this->mail)) {
             $this->gravatar = 'http://www.gravatar.com/avatar/'.md5($this->mail);
@@ -179,6 +179,28 @@ class Comment extends ActiveRecordLayer
             }
             return $this->author;
         }
+    }
+
+    /**
+     * Performs a batch update of comments changing stored author username to a
+     * new one.
+     *
+     * @param string $oldUsername Previous username.
+     * @param string $newUsername New username.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public static function batchUsernameUpdate($oldUsername, $newUsername)
+    {
+        \Yii::app()->db
+            ->createCommand()
+            ->update(
+                self::tableName(),
+                array('username' => '@'.$newUsername),
+                'username = :username',
+                array(':username' => '@'.$oldUsername)
+           )->execute();
     }
     /**
      * Returns keys for attribute labels localization.

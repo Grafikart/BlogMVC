@@ -155,6 +155,7 @@ class DateFormatterTest extends \Codeception\TestCase\Test
      *
      * @covers \DateFormatter::reset()
      *
+     * @return void
      * @since 0.1.0
      */
     public function testDateReset()
@@ -165,18 +166,23 @@ class DateFormatterTest extends \Codeception\TestCase\Test
         $f = \Yii::app()->dateFormatter;
         usleep(1.1 * 1000 * 1000);
         $f->reset();
-        $this->assertSame('timeInterval.justNow', $f->format(new \DateTime));
+        $this->assertSame(
+            'timeInterval.justNow',
+            $f->formatAsTimeAgo(new \DateTime)
+        );
     }
     /**
      * Testing suite for date conversion.
      *
+     * @param \DateInterval $interval Interval to be converted.
+     * @param string[]      $expected Expected values in
+     * [:lang => :expected_result] format.
+     * @param int           $units    Amount of used units.
+     *
      * @dataProvider dateProvider
      * @covers \DateProvider::format()
      *
-     * @param \DateInterval $interval
-     * @param string[] $expected Expected values in [:lang => :expected_result]
-     * format.
-     * @param int $units
+     * @return void
      * @since 0.1.0
      */
     public function testDateConversion(
@@ -184,12 +190,16 @@ class DateFormatterTest extends \Codeception\TestCase\Test
         array $expected,
         $units=2
     ) {
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        /** @type \DateFormatter $formatter */
+        $formatter = $app->dateFormatter;
         foreach ($expected as $lang => $expectedResult) {
-            \Yii::app()->language = $lang;
-            \Yii::app()->dateFormatter->reset();
+            $app->language = $lang;
+            $formatter->reset();
             $date = new \DateTime;
             $date->sub($interval);
-            $formatted = \Yii::app()->dateFormatter->format($date, $units);
+            $formatted = $formatter->formatAsTimeAgo($date, $units);
             $this->assertSame($expectedResult, $formatted);
         }
     }
@@ -197,29 +207,36 @@ class DateFormatterTest extends \Codeception\TestCase\Test
     /**
      * Tests exception throwage on invalid date.
      *
+     * @param mixed $date Invalid date input.
+     *
      * @dataProvider invalidDateProvider
      * @expectedException \BadMethodCallException
      * @expectedExceptionMessage Invalid date provided.
      *
+     * @return void
      * @since 0.1.0
      */
     public function testInvalidDateException($date)
     {
-        \Yii::app()->dateFormatter->format($date);
+        \Yii::app()->dateFormatter->formatAsTimeAgo($date);
     }
 
     /**
      * Tests exception throwage on invalid units amount.
      *
+     * @param mixed $units Invalid units value.
+     *
      * @dataProvider invalidUnitsProvider
      * @expectedException \BadMethodCallException
      * @expectedExceptionMessage Maximum units limit has to be integer not less than one.
      *
+     *
+     * @return void
      * @since 0.1.0
      */
     public function testInvalidUnitsException($units)
     {
-        \Yii::app()->dateFormatter->format(new \DateTime, $units);
+        \Yii::app()->dateFormatter->formatAsTimeAgo(new \DateTime, $units);
     }
 
 }

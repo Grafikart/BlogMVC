@@ -9,8 +9,16 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class DateFormatter extends \CComponent
+class DateFormatter extends \CDateFormatter
 {
+    /**
+     * Time interval in seconds during which date will be formatted as
+     * 'just now'. Note that values more than 59 seconds will simply
+     *
+     * @type int
+     * @since 0.1.0
+     */
+    public $justNowSpan = 10;
     /**
      * Cached current datetime.
      *
@@ -32,6 +40,15 @@ class DateFormatter extends \CComponent
         'i' => 'minutes',
         's' => 'seconds',
     );
+
+    public function __construct()
+    {
+        try {
+            parent::__construct(\Yii::app()->language);
+        } catch (CException $e) {
+            parent::__construct('en');
+        }
+    }
 
     /**
      * Typical initializer.
@@ -57,7 +74,7 @@ class DateFormatter extends \CComponent
      * @return string Formatted date.
      * @since 0.1.0
      */
-    public function format($date, $unitsLimit=2)
+    public function formatAsTimeAgo($date, $unitsLimit=2)
     {
         if (!is_int($unitsLimit) || $unitsLimit < 1) {
             $message = 'Maximum units limit has to be integer not less than one.';
@@ -70,6 +87,10 @@ class DateFormatter extends \CComponent
                 $message = 'Invalid date provided.';
                 throw new \BadMethodCallException($message, 0, $e);
             }
+        }
+        $tsDiff = $this->now->getTimestamp() - $date->getTimestamp();
+        if ($tsDiff < $this->justNowSpan) {
+            return \Yii::t('templates', 'timeInterval.justNow');
         }
         $diff = $date->diff($this->now);
 
@@ -124,4 +145,3 @@ class DateFormatter extends \CComponent
         $this->now = new \DateTime;
     }
 }
- 
