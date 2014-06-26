@@ -41,6 +41,12 @@ class DateFormatter extends \CDateFormatter
         's' => 'seconds',
     );
 
+    /**
+     * Constructor required to power-up underlying {@link \CDateFormatter}. It
+     * requires valid CLocale instance, which does not provide interface to
+     * validate locale name, so the only way around is through exception. Since
+     * ru/en won't cause an exception, this shouldn't slow down execution.
+     */
     public function __construct()
     {
         try {
