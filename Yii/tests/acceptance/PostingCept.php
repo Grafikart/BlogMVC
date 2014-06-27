@@ -1,7 +1,5 @@
 <?php
 
-/** @todo New category */
-
 $I = new WebGuy\MemberSteps($scenario);
 $I->wantTo('Publish my post');
 $I->amGoingTo('Write a post, edit it, delete it, write lots of posts');
@@ -53,9 +51,18 @@ $I->editPost($id, 'Another title', null, '');
 \PostFormPage::of($I)->hasNoErrors();
 $I->seeInField(\PostFormPage::$slugField, 'another-title');
 
-$I->editPost($id, null, null, 'the-route-of-all-evil');
+$existingPost = \Codeception\Util\Fixtures::get('data:posts[0]');
+$slug = $existingPost['slug'];
+$I->editPost($id, null, null, $slug);
 \PostFormPage::of($I)->hasNoErrors();
-$I->seeInField(\PostFormPage::$slugField, 'the-route-of-all-evil-1');
+$I->seeInField(\PostFormPage::$slugField, $slug.'-1');
+
+$I->click(\PostFormPage::$categoryMenuToggleButton);
+$I->wait(1);
+$I->fillField(\PostFormPage::$newCategoryField, 'Phantom menace');
+$I->click(\PostFormPage::$submitButton);
+$I->click('link.viewPost');
+$I->seeLink('Phantom menace', 'phantom-menace');
 
 $I->amOnPage(\PostsDashboardPage::$url);
 $I->click('control.delete', '#post-'.$id);
@@ -64,12 +71,3 @@ $I->dontSee('Another title', '#post-'.$id); // flash message containing post tit
 
 $I->amOnPage(\BlogFeedPage::$url);
 $I->dontSee('Another title');
-
-for ($i = 0; $i < 25; $i++) {
-    $I->writePost('test-post', 'a, b, c, and their fellow d', 'Category #1');
-}
-$I->amOnPage(\PostsDashboardPage::$url);
-$I->see('2', 'ul.pagination');
-
-$I->amOnPage(\BlogFeedPage::route(7));
-$I->see('7', 'ul.pagination .active');

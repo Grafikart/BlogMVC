@@ -75,6 +75,13 @@ class PostFormPage extends \GeneralPage
      */
     public static $categoryMenuToggleButton = '[role="toggle-category-menu"]';
     /**
+     * Name of the 'new category' field.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $newCategoryField = 'Category[name]';
+    /**
      * Submit button selector.
      *
      * @var string
@@ -88,7 +95,7 @@ class PostFormPage extends \GeneralPage
      * @var string
      * @since
      */
-    public static $editSubmitButton = 'Edit';
+    public static $editSubmitButton = 'control.edit';
     /**
      * Publish submit button name. Should point to the same submit button as
      * {@link self::$submitButton}.
@@ -96,7 +103,7 @@ class PostFormPage extends \GeneralPage
      * @var string
      * @since 0.1.0
      */
-    public static $publishSubmitButton = 'Publish';
+    public static $publishSubmitButton = 'control.publish';
     /**
      * Error box css selector.
      *
