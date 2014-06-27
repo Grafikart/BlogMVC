@@ -1,4 +1,6 @@
 <?php
+use Codeception\Util\Fixtures;
+
 $scenario->group('auth', 'front');
 $i = new \WebGuy\MemberSteps($scenario);
 $i->am('logged-off admin');
@@ -6,30 +8,28 @@ $i->wantTo('check auth mechanism');
 $i->expect('login failure on invalid data and login success on valid data');
 
 $i->logout();
-$i->seeCurrentUrlEquals(\FeedPage::$homeLink);
-$i->see('You haven\'t been logged in. Why are you trying to logout?');
+$i->seeCurrentUrlEquals(\BlogFeedPage::$url);
+$i->seeAlert('auth.logout.guestAttempt');
 
-\FeedPage::of($i)->openResponsiveMenu();
 $i->seeElement(\FeedPage::$loginLink);
-$i->click('Login');
+$i->click('link.login');
 $i->seeCurrentUrlEquals(\LoginPage::$url);
 
 $i->login(null, null);
-$i->see('Incorrect username or password');
+$i->seeAlert('auth.login.fail');
 
 $i->login('missing username', 'nonexisting password');
-$i->see('Incorrect username or password');
+$i->seeAlert('auth.login.fail');
 
-$i->login('admin', 'admin');
-$i->see('You have successfully logged in');
+$i->login(Fixtures::get('users[0]:login'), Fixtures::get('users[0]:password'));
+$i->see('auth.login.greeting');
 $i->seeCurrentUrlEquals(\AdminPanelPage::$url);
 
 $i->amOnPage(\LoginPage::$url);
 $i->seeCurrentUrlEquals(\AdminPanelPage::$url);
-$i->see('You are already authorized, no need to retry.');
+$i->seeAlert('auth.login.alreadyAuthorized');
 
-\FeedPage::of($i)->openResponsiveMenu();
-$i->see('Logout');
-$i->click('Logout');
-$i->seeCurrentUrlEquals(\FeedPage::$homeLink);
+$i->seeLink('link.logout');
+$i->click('link.logout');
+$i->seeCurrentUrlEquals(\BlogFeedPage::$url);
 //$i->canSee('You have successfully logged out');

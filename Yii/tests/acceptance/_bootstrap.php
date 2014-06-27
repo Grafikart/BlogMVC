@@ -3,4 +3,6 @@
 
 \Codeception\Util\Autoload::registerSuffix('Steps', __DIR__.DIRECTORY_SEPARATOR.'_steps');
 
-\Codeception\Module\MigrationHelper::getInstance()->revertMigrations()->applyMigrations();
+\Yii::app()->fixtureManager->prepare();
+
+\Yii::app()->cache->flush();

@@ -8,11 +8,38 @@ $I->amGoingTo('Be very stupid and leave comment several times until blog will co
 
 $I->amOnPage(\BlogFeedPage::$url);
 $I->click('article h2 a');
-$I->see('Comment this post');
+$I->see('text.commentThisPost');
 $currentUrl = $I->grabFromCurrentUrl('~(.*)~');
-$urlWithHash = $currentUrl.'#comment-form';
 $I->submitCommentForm();
-$I->seeCurrentUrlEquals($urlWithHash);
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
 \PostPage::of($I)->hasErrors();
+
 $I->submitCommentForm('tralalal');
-$I->seeCurrentUrlEquals($urlWithHash);
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
+\PostPage::of($I)->hasErrors();
+
+$I->submitCommentForm(
+    'Hey, look at my local email address!',
+    'marabou',
+    'marabou@localhost'
+);
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
+\PostPage::of($I)->hasErrors();
+// checking form saving
+$I->seeInField(\PostPage::$commentTextArea, 'Hey, look at my local email address!');
+$I->seeInField(\PostPage::$commentUsernameField, 'marabou');
+$I->seeInField(\PostPage::$commentEmailField, 'marabou@localhost');
+
+$I->submitCommentForm('This is first correct comment', 'marabou', '');
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
+\PostPage::of($I)->hasNoErrors();
+$I->see('This is first correct comment');
+
+$I->submitCommentForm(
+    'Second correct comment, now using gravatar',
+    'marabou',
+    'hacker@delight.net'
+);
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
+\PostPage::of($I)->hasNoErrors();
+$I->see('Second correct comment, now using gravatar');
