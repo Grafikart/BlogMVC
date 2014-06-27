@@ -25,7 +25,7 @@ test:
     rules:
       - codesize
       - unusedcode
-      - phpci/phpmd/naming.xml
+      - tests/_support/phpci/phpmd/naming.xml
       - controversial
       - design
     ignore:

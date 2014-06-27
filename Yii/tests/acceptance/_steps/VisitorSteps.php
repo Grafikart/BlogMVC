@@ -20,6 +20,30 @@ class VisitorSteps extends \WebGuy
      */
     public $currentPage;
     /**
+     * CSS selector for flash alert windows.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public $alertSelector = '.alert';
+
+    /**
+     * Looks for alert element with provided text (if any).
+     *
+     * @param string $text Optional text to be searched in alert window.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function seeAlert($text=null)
+    {
+        if ($text) {
+            $this->see($text, $this->alertSelector);
+        } else {
+            $this->seeElement($this->alertSelector);
+        }
+    }
+    /**
      * Performs login.
      *
      * @param string $login    User login.
@@ -56,15 +80,12 @@ class VisitorSteps extends \WebGuy
     public function fillCommentForm($comment=null, $username=null, $email=null)
     {
         $I = $this;
-        if (is_string($comment)) {
-            $I->fillField(\PostPage::$commentTextArea, $comment);
-        }
-        if (is_string($username)) {
-            $I->fillField(\PostPage::$commentUsernameField, $username);
-        }
-        if (is_string($email)) {
-            $I->fillField(\PostPage::$commentEmailField, $email);
-        }
+        $email = $email?$email:'';
+        $comment = $comment?$comment:'';
+        $username = $username?$username:'';
+        $I->fillField(\PostPage::$commentTextArea, $comment);
+        $I->fillField(\PostPage::$commentUsernameField, $username);
+        $I->fillField(\PostPage::$commentEmailField, $email);
     }
 
     /**

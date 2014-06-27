@@ -98,4 +98,15 @@ class PostPage extends \GeneralPage
     {
         $this->guy->seeElement('#comment-form .alert');
     }
+
+    /**
+     * Tells if page doesn't have any errors displayed.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoErrors()
+    {
+        $this->guy->dontSeeElement('#comment-form .alert');
+    }
 }
