@@ -17,7 +17,7 @@ class WebUserLayer extends \CWebUser
      * @var string|array
      * @since 0.1.0
      */
-    public $loginUrl = array('user/login');
+    public $loginUrl = array('site/login');
     /**
      * Key for storing user flash messages.
      * 

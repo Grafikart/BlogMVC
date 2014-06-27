@@ -110,7 +110,7 @@ class WidgetLayer extends \CWidget
         if ($indent === null) {
             $indent = $this->currentIndent;
         }
-        $this->e(CHtml::tag($tag, $opts, $content, $closeTag), $indent);
+        $this->e(\CHtml::tag($tag, $opts, $content, $closeTag), $indent);
     }
 
     /**
