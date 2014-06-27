@@ -33,14 +33,14 @@ class HeaderMenuWidget extends WidgetLayer
      * @var string
      * @since 0.1.0
      */
-    public $categoryListingRoute = 'category/index';
+    public $categoryListingRoute = 'category/list';
     /**
      * URL route for page with category posts.
      * 
      * @var string
      * @since 0.1.0
      */
-    public $categoryDisplayRoute = 'category/show';
+    public $categoryDisplayRoute = 'category/index';
     /**
      * URL route for page with list of all authors.
      * 
@@ -123,12 +123,13 @@ class HeaderMenuWidget extends WidgetLayer
             );
         }
         if (sizeof($this->categories) > 0) {
-            $tree['Categories'] = array(
+            $tree[Yii::t('templates', 'link.categories')] = array(
                 'route' => 'post/categories',
                 'tree' => $this->generateCategoriesBranch(),
             );
         }
-        echo $this->walkTree($tree, true);
+        echo $this->render('headerMenu', array('tree' => $tree));
+        //echo $this->walkTree($tree, true);
     }
 
     /**
@@ -142,17 +143,19 @@ class HeaderMenuWidget extends WidgetLayer
         $branch = array();
         $controller = $this->getController();
         foreach ($this->categories as $category) {
-            $branch[$category->name] = array(
+            $branch[] = array(
                 'href' => $controller->createUrl(
                     $this->categoryDisplayRoute,
                     array('slug' => $category->slug)
-                )
+                ),
+                'title' => $category->name,
             );
         }
         if (sizeof($this->categories) === 5) {
             array_pop($branch);
-            $branch[$this->moreText] = array(
+            $branch[] = array(
                 'href' => $controller->createUrl($this->categoryListingRoute),
+                'title' => $this->moreText,
                 'more-link' => true,
             );
         }
@@ -169,16 +172,18 @@ class HeaderMenuWidget extends WidgetLayer
         $branch = array();
         $controller = $this->getController();
         foreach ($this->authors as $author) {
-            $branch[$author->name] = array(
+            $branch[] = array(
                 'href' => $controller->createUrl(
                     $this->authorDisplayRoute,
                     array('id' => $author->id)
                 ),
+                'title' => $author->name,
             );
             if (sizeof($this->authors === 5)) {
                 array_pop($branch);
-                $branch[$this->moreText] = array(
+                $branch[] = array(
                     'href' => $controller->createUrl($this->authorListingRoute),
+                    'title' => $this->moreText,
                     'more-link' => true,
                 );
             }

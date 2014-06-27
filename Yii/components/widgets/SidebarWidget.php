@@ -68,13 +68,6 @@ class SidebarWidget extends WidgetLayer
      */
     public $postsHeaderText;
     /**
-     * Text for 'More...' links.
-     * 
-     * @var string
-     * @since 0.1.0
-     */
-    public $moreLinkText;
-    /**
      * Cached HTML piece.
      * 
      * @var boolean|string
@@ -98,14 +91,16 @@ class SidebarWidget extends WidgetLayer
     public function init()
     {
         // Forces global states to be updated
-        \Yii::app()->loadGlobalState();
-        if (!($this->cached = \Yii::app()->cache->get($this->cacheKey))) {
+        /** @type CWebApplication $app */
+        $app = \Yii::app();
+        $app->loadGlobalState();
+        if (!($this->cached = $app->cache->get($this->cacheKey))) {
             \Yii::trace('Regenerating cache for sidebar widget');
             $this->categoriesHeaderText = \Yii::t(
                 'templates',
-                'sidebar.categories'
+                'heading.categories'
             );
-            $this->postsHeaderText = \Yii::t('templates', 'sidebar.posts');
+            $this->postsHeaderText = \Yii::t('templates', 'heading.lastPosts');
             $this->categories = \Category::model()->popular()->findAll();
             $this->posts = \Post::model()->paged()->findAll();
         }
@@ -123,49 +118,8 @@ class SidebarWidget extends WidgetLayer
             echo $this->cached;
             return;
         }
-        ob_start();
-        if (!empty($this->categories)) {
-            $this->tag('h4', array(), $this->categoriesHeaderText);
-            $this->openTag('div', array('class' => 'list-group categories'));
-            foreach ($this->categories as $key => $category) {
-                $url = $this->getController()->createUrl(
-                    $this->categoryRoute,
-                    array('slug' => $category->slug)
-                );
-                $this->openTag(
-                    'a',
-                    array(
-                        'class' => 'list-group-item item-'.($key + 1),
-                        'href' => $url
-                    )
-                );
-                $this->tag('span', array('class' => 'badge'), $category->post_count);
-                $this->e($category->name);
-                $this->closeTag('a');
-            }
-            $this->closeTag('div');
-        }
-        if (!empty($this->posts)) {
-            $this->tag('h4', array(), $this->postsHeaderText);
-            $this->openTag('div', array('class' => 'list-group posts'));
-            foreach ($this->posts as $key => $post) {
-                $url = $this->getController()->createUrl(
-                    $this->postRoute,
-                    array('slug' => $post->slug)
-                );
-                $this->tag(
-                    'a',
-                    array(
-                        'class' => 'list-group-item item-'.($key + 1),
-                        'href' => $url
-                    ),
-                    $post->name
-                );
-            }
-            $this->closeTag('div');
-        }
-        
+        echo $render = $this->render('sidebar', null, true);
         $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
-        \Yii::app()->cache->set($this->cacheKey, ob_get_flush(), 3600, $dep);
+        \Yii::app()->cache->set($this->cacheKey, $render, 3600, $dep);
     }
 }

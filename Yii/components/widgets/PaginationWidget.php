@@ -17,89 +17,99 @@ class PaginationWidget extends WidgetLayer
     /**
      * Current page number
      * 
-     * @var int
+     * @type int
      * @since 0.1.0
      */
-    public $currentPage = 1;
+    public $currentPage;
     /**
      * Amount of pages in total.
      * 
-     * @var int
+     * @type int
      * @since 0.1.0
      */
     public $totalPages;
     /**
      * Yii `controller/action` for link generation.
      * 
-     * @var string
+     * @type string
      * @since 0.1.0
      */
     public $route;
     /**
      * Optional list of data required to generate link from route.
      * 
-     * @var array
+     * @type array
      * @since 0.1.0
      */
     public $routeOptions = array();
     /**
-     * Pagination block title. If set to false, will be omitted.
-     * 
-     * @var string
-     * @since 0.1.0
-     */
-    public $title;
-    /**
      * Text for the delimiter between last/first page link and near-current
      * page links (if they are separated).
      * 
-     * @var string
+     * @type string
      * @since 0.1.0
      */
     public $delimiterText;
     /**
      * Text for first page button.
      *
-     * @var string
+     * @type string
      * @since 0.1.1
      */
     public $firstPageText = '&laquo;';
     /**
      * Text for last page button.
      *
-     * @var string
+     * @type string
      * @since 0.1.1
      */
     public $lastPageText = '&raquo';
     /**
      * Amount of page links to be shown (excluding side links).
      *
-     * @var int
+     * @type int
      * @since 0.1.1
      */
     public $size = 5;
+    /**
+     * Flag that prevents widget from generating output. Set to true if not
+     * enough information is available.
+     *
+     * @type bool
+     * @since 0.1.0
+     */
+    protected $halt = false;
     
     /**
-     * Preparational method. Gets and stores variables for latter output.
+     * Preparational method. Gets and stores variables for latter output or
+     * halts future processing.
      *
      * @return void
      * @since 0.1.0
      */
     public function init()
     {
-        if (!isset($this->route)) {
-            $message = 'URL route is required to generate links';
-            throw new \BadMethodCallException($message);
+        /** @type \BaseController $controller */
+        $controller = $this->getController();
+        if (!isset($this->currentPage)) {
+            $this->currentPage = $controller->getPageNumber();
         }
-        if (!isset($this->totalPages)) {
-            $message = 'Total pages amount is required to generate pagination';
-            throw new \BadMethodCallException($message);
+        if (!isset($this->totalPages) || $this->totalPages < 2) {
+            $this->totalPages = $controller->getTotalPages();
+        }
+        if (!isset($this->route)) {
+            $this->route = $controller->getPaginationRoute();
+        }
+        if (empty($this->routeOptions)) {
+            $this->routeOptions = $controller->getPaginationOptions();
+        }
+        if (!isset($this->totalPages, $this->route, $this->currentPage)
+            || $this->totalPages < 2
+        ) {
+            $this->halt = true;
         }
         if (!isset($this->delimiterText)) {
             $this->delimiterText = \Yii::t('templates', 'pagination.delimiter');
-        }
-        if (!isset($this->title)) {
-            $this->title = \Yii::t('templates', 'pagination.title');
         }
     }
     /**
@@ -111,11 +121,8 @@ class PaginationWidget extends WidgetLayer
      */
     public function run()
     {
-        if ($this->totalPages < 2) {
+        if ($this->halt) {
             return;
-        }
-        if (is_string($this->title)) {
-            $this->tag('div', array(), $this->title);
         }
         $this->openTag('ul', array('class' => 'pagination'));
         $start = (int) max(1, $this->currentPage - floor($this->size/2));
