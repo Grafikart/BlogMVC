@@ -1,7 +1,6 @@
 /vendor/
 /public/assets
-/config/*.php
-!/config/*.example.php
+/config/db.php
 /nbproject/
 /.project/
 /.settings/
