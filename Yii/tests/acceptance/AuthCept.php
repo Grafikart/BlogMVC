@@ -21,7 +21,7 @@ $i->seeAlert('auth.login.fail');
 $i->login('missing username', 'nonexisting password');
 $i->seeAlert('auth.login.fail');
 
-$i->login(Fixtures::get('users[0]:login'), Fixtures::get('users[0]:password'));
+$i->login(Fixtures::get('data:users[0]:login'), Fixtures::get('data:users[0]:password'));
 $i->see('auth.login.greeting');
 $i->seeCurrentUrlEquals(\AdminPanelPage::$url);
 

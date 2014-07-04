@@ -19,6 +19,13 @@ class AuthorFeedPage extends \FeedPage
      */
     static $url = '/author/<id>';
     /**
+     * Regexp for matching routes.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    static $urlRegexp = '~/author/(\d+)(?:\?page=\d+)?~';
+    /**
      * Yii internal controller route for author pages.
      *
      * @type string

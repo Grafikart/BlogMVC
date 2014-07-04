@@ -12,6 +12,13 @@
 abstract class GeneralPage
 {
     /**
+     * Page heading CSS selector.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $pageHeaderSelector = '.page-header h1';
+    /**
      * Logout link selector.
      *
      * @var string

@@ -3,13 +3,13 @@
 /**
  * This class represents single publication page.
  *
- * @version    Release: 0.1.0
+ * @version    0.1.0
  * @since      0.1.0
  * @package    BlogMVC
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class PostPage extends \GeneralPage
+class PostPage extends \ContentPage
 {
     /**
      * Post page url pattern.
@@ -18,6 +18,13 @@ class PostPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $url = '/<slug>';
+    /**
+     * Regexp for matching urls.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $urlRegexp = '~/([\w\-]+)~u';
     /**
      * Yii controller rout for post page.
      *
@@ -108,5 +115,27 @@ class PostPage extends \GeneralPage
     public function hasNoErrors()
     {
         $this->guy->dontSeeElement('#comment-form .alert');
+    }
+
+    /**
+     * Extracts post slug.
+     *
+     * @param string $url URL to parse.
+     *
+     * @return mixed
+     * @since 0.1.0
+     */
+    public static function extractSlug($url)
+    {
+        if (strlen($url) === 0) {
+            throw new \BadMethodCallException('Url can\'t be empty');
+        }
+        if ($url[0] !== '/') {
+            $url = '/'.$url;
+        }
+        if (!preg_match(static::$urlRegexp, $url, $m) || !$m[1]) {
+            throw new \BadMethodCallException('Invalid URL passed');
+        }
+        return $m[1];
     }
 }

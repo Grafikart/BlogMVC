@@ -19,6 +19,13 @@ class CategoryFeedPage extends \FeedPage
      */
     public static $url = '/category/<slug>';
     /**
+     * Regexp for matching category page url.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $urlRegexp = '~/category/[\w\-]+~us';
+    /**
      * Yii controller route for category page.
      *
      * @type string

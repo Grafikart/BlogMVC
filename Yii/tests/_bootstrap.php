@@ -21,6 +21,7 @@ $posts = include $dbFixtures['posts'];
 $index = 0;
 // fixture uses associative array naming, so i can't iterate with usual for
 foreach ($users as $user) {
+    //Fixtures::add("data:users[$index]", $user);
     Fixtures::add("data:users[$index]:login", $user['username']);
     Fixtures::add("data:users[$index]:password", $user['rawPassword']);
     $index++;
@@ -29,7 +30,13 @@ Fixtures::add('data:users:length', $index);
 
 $index = 0;
 foreach ($posts as $post) {
-    Fixtures::add("data:posts[$index]", $post);
+    //Fixtures::add("data:posts[$index]", $post);
+    Fixtures::add("data:posts[$index]:title", $post['name']);
+    Fixtures::add("data:posts[$index]:content", $post['content']);
+    Fixtures::add("data:posts[$index]:slug", $post['slug']);
+    Fixtures::add("data:posts[$index]:created", $post['created']);
+    Fixtures::add("data:posts[$index]:author", $post['user_id']);
+    Fixtures::add("data:posts[$index]:category", $post['category_id']);
     $index++;
 }
 Fixtures::add('data:posts:length', $index);

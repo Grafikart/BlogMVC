@@ -3,13 +3,13 @@
 /**
  * Represents main feed page.
  *
- * @version    Release: 0.1.0
+ * @version    0.1.1
  * @since      0.1.0
  * @package    BlogMVC
  * @subpackage YiiTests
  * @author     Fike Etki <etki@etki.name>
  */
-class BlogFeedPage
+class BlogFeedPage extends FeedPage
 {
     /**
      * Page url.
