@@ -1,5 +1,6 @@
 <?php
-// disable 'r' get parameter
-require(dirname(dirname(__FILE__)).'/vendor/yiisoft/yii/framework/yii.php');
-$config = dirname(dirname(__FILE__)).'/config/front.php';
+$appRoot = dirname(__DIR__);
+require $appRoot.'/vendor/yiisoft/yii/framework/yii.php';
+require $appRoot.'/vendor/autoload.php';
+$config = include $appRoot.'/config/web.php';
 Yii::createWebApplication($config)->run();
