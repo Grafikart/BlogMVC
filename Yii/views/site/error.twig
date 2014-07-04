@@ -1,5 +1,7 @@
 {% extends 'views/layouts/main.twig' %}
 {% block content %}
-    <h1>{{ App.t.t('heading.httpError', {'{errorCode}': code}) }}</h1>
-    {{ App.t.t('paragraph.httpError') }}
+    <div class="page-header">
+        <h1>{{ App.t.t('heading.httpError', {'{errorCode}': code}) }}</h1>
+        {{ App.t.t('paragraph.httpError') }}
+    </div>
 {% endblock %}
