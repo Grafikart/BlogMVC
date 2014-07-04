@@ -6,6 +6,7 @@
     'heading.httpError' => 'heading.httpError [errorCode:{errorCode}]',
 
     'pageTitle.userFeed' => 'pageTitle.userFeed [username:{username}]',
+    'pageTitle.httpError' => 'pageTitle.httpError [errorCode:{errorCode}]',
 
     'link.backTo' => 'link.backTo [pageTitle:{pageTitle}]',
 

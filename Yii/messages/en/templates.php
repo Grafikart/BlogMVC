@@ -34,6 +34,7 @@ return array(
     'pageTitle.userFeed' => '{username}\'s posts',
     'pageTitle.categoryList' => 'Categories',
     'pageTitle.userList' => 'Authors',
+    'pageTitle.httpError' => 'Error #{errorCode}',
 
     'control.manage' => 'Manage',
     'control.edit' => 'Edit',

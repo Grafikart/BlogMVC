@@ -35,6 +35,7 @@ return array(
     'pageTitle.userFeed' => 'Записи {username}',
     'pageTitle.categoryList' => 'Категории',
     'pageTitle.userList' => 'Авторы',
+    'pageTitle.httpError' => 'Ошибка #{errorCode}',
 
     'control.manage' => 'Управлять',
     'control.edit' => 'Редактировать',
