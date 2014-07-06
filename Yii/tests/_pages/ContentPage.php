@@ -23,7 +23,7 @@ class ContentPage extends \GeneralPage
      * @type string
      * @since 0.1.0
      */
-    public static $postTitleSelector = 'article h2';
+    public static $postTitleSelector = 'article h2 a';
     /**
      * CSS selector for category link in post.
      *

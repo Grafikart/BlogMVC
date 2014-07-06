@@ -84,7 +84,11 @@ class VisitorSteps extends \WebGuy
         $comment = $comment?$comment:'';
         $username = $username?$username:'';
         $I->fillField(\PostPage::$commentTextArea, $comment);
-        $I->fillField(\PostPage::$commentUsernameField, $username);
+        try {
+            $I->fillField(\PostPage::$commentUsernameField, $username);
+        } catch (\UnknownServerException $e) {
+            // field is disabled
+        }
         $I->fillField(\PostPage::$commentEmailField, $email);
     }
 

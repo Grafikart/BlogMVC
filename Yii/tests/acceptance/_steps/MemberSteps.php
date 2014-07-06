@@ -1,6 +1,8 @@
 <?php
 namespace WebGuy;
 
+use Codeception\Util\Fixtures;
+
 /**
  * This class represents common action of logged in user.
  *
@@ -13,19 +15,12 @@ namespace WebGuy;
 class MemberSteps extends \WebGuy\VisitorSteps
 {
     /**
-     * Default admin username.
+     * Currently used login.
      *
-     * @var string
+     * @type string
      * @since 0.1.0
      */
-    public static $adminUsername = 'admin';
-    /**
-     * Default admin password;
-     *
-     * @var string
-     * @since 0.1.0
-     */
-    public static $adminPassword = 'admin';
+    public $username;
     /**
      * Publishes a new comment while on post page.
      *
@@ -54,6 +49,7 @@ class MemberSteps extends \WebGuy\VisitorSteps
      */
     public function logout()
     {
+        $this->username = null;
         $this->amOnPage('/logout');
     }
 
@@ -63,9 +59,11 @@ class MemberSteps extends \WebGuy\VisitorSteps
      * @return void
      * @since 0.1.0
      */
-    public function adminLogin()
+    public function autoLogin()
     {
-        $this->login(static::$adminUsername, static::$adminPassword);
+        $this->username = Fixtures::get('data:users[0]:login');
+        $password = Fixtures::get('data:users[0]:password');
+        $this->login($this->username, $password);
     }
 
     /**

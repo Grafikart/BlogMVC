@@ -2,12 +2,12 @@
 /** @type Codeception\Scenario $scenario */
 $scenario->groups(array('nonauthenticated', 'blog'));
 
-$I = new WebGuy\VisitorSteps($scenario);
+$I = new WebGuy\MemberSteps($scenario);
 $I->wantTo('Leave an anonimous comment');
 $I->amGoingTo('Be very stupid and leave comment several times until blog will consider it correct');
 
 $I->amOnPage(\BlogFeedPage::$url);
-$I->click('article h2 a');
+$I->click(\BlogFeedPage::$postTitleSelector);
 $I->see('text.commentThisPost');
 $currentUrl = $I->grabFromCurrentUrl('~(.*)~');
 $I->submitCommentForm();
@@ -43,3 +43,17 @@ $I->submitCommentForm(
 $I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
 \PostPage::of($I)->hasNoErrors();
 $I->see('Second correct comment, now using gravatar');
+
+$I->autoLogin();
+$username = '@'.$I->username;
+$I->amOnPage(\BlogFeedPage::$url);
+$I->click(\BlogFeedPage::$postTitleSelector);
+$I->seeInField(\PostPage::$commentUsernameField, $username);
+$currentUrl = $I->grabFromCurrentUrl('~(.*)~');
+$I->submitCommentForm();
+$I->seeCurrentUrlMatches('~^'.$currentUrl.'~');
+\PostPage::of($I)->hasErrors();
+$I->submitCommentForm('test comment');
+$I->see('comment.submit.success');
+$I->see($username, \PostPage::$commentSelector);
+$I->see('timeInterval.justNow', \PostPage::$commentSelector);
