@@ -4,7 +4,7 @@ $I = new WebGuy\MemberSteps($scenario);
 $I->wantTo('Publish my post');
 $I->amGoingTo('Write a post, edit it, delete it, write lots of posts');
 
-$I->adminLogin();
+$I->autoLogin();
 
 $I->writePost('', '');
 $I->seeCurrentUrlEquals(\PostFormPage::$newPostUrl);
@@ -51,8 +51,7 @@ $I->editPost($id, 'Another title', null, '');
 \PostFormPage::of($I)->hasNoErrors();
 $I->seeInField(\PostFormPage::$slugField, 'another-title');
 
-$existingPost = \Codeception\Util\Fixtures::get('data:posts[0]');
-$slug = $existingPost['slug'];
+$slug = \Codeception\Util\Fixtures::get('data:posts[0]:slug');
 $I->editPost($id, null, null, $slug);
 \PostFormPage::of($I)->hasNoErrors();
 $I->seeInField(\PostFormPage::$slugField, $slug.'-1');
