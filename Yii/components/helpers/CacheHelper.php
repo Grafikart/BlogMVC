@@ -21,32 +21,81 @@ class CacheHelper extends \CComponent
      * @type string
      * @since 0.1.0
      */
-    public static $postsCacheToken = 'postsCacheToken';
+    public $postsCacheToken = 'posts';
     /**
      * Token for comments cache dependency.
      *
      * @type string
      * @since 0.1.0
      */
-    public static $commentsCacheToken = 'commentsCacheToken';
+    public $commentsCacheToken = 'comments';
     /**
      * Token for global cache dependency.
      *
      * @type string
      * @since 0.1.0
      */
-    public static $globalCacheToken = 'globalCacheToken';
+    public $globalCacheToken = 'global';
+    /**
+     * Prefix to be used in conjunction with token name.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public $tokenPrefix = 'cache.tokens.';
 
+    /**
+     * Typical initializer. Forces Yii to load global state.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function init()
+    {
+        \Yii::app()->loadGlobalState();
+    }
+    /**
+     * Retrieves stored data.
+     *
+     * @param string $key     Cache key.
+     * @param mixed  $default Default value to be returned if cache has been
+     *                        invalidated.
+     *
+     * @return mixed Cached data or default value.
+     * @since 0.1.0
+     */
+    public function get($key, $default=null)
+    {
+        return \Yii::app()->cache->get($key, $default);
+    }
 
+    /**
+     * Just a {@link CCache::set()} wrapper to maintain consistency.
+     *
+     * @param string            $key        Key under which data will be stored.
+     * @param mixed             $data       Data that requires to be stored.
+     * @param int               $lifespan   Cache lifespan
+     * @param \ICacheDependency $dependency Cache dependency that allows
+     *                                      automatic cache invalidation.
+     *
+     * @return boolean True on successful data save, false otherwise.
+     * @since 0.1.0
+     */
+    public function set($key, $data, $lifespan=0, $dependency=null)
+    {
+        return \Yii::app()->cache->set($key, $data, $lifespan, $dependency);
+    }
     /**
      * Returns current posts cache token value.
      *
      * @return string
      * @since 0.1.0
      */
-    public static function getPostsCacheTokenValue()
+    public function getPostsCacheTokenValue()
     {
-        return \Yii::app()->getGlobalState(static::$postsCacheToken);
+        return \Yii::app()->getGlobalState(
+            $this->tokenPrefix.$this->postsCacheToken
+        );
     }
 
     /**
@@ -55,9 +104,11 @@ class CacheHelper extends \CComponent
      * @return string
      * @since 0.1.0
      */
-    public static function getCommentsCacheTokenValue()
+    public function getCommentsCacheTokenValue()
     {
-        return \Yii::app()->getGlobalState(static::$commentsCacheToken);
+        return \Yii::app()->getGlobalState(
+            $this->tokenPrefix.$this->commentsCacheToken
+        );
     }
 
     /**
@@ -66,9 +117,11 @@ class CacheHelper extends \CComponent
      * @return string
      * @since 0.1.0
      */
-    public static function getGlobalCacheTokenValue()
+    public function getGlobalCacheTokenValue()
     {
-        return \Yii::app()->getGlobalState(static::$globalCacheToken);
+        return \Yii::app()->getGlobalState(
+            $this->tokenPrefix.$this->globalCacheToken
+        );
     }
 
     /**
@@ -77,10 +130,10 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function invalidatePostsCache()
+    public function invalidatePostsCache()
     {
-        static::invalidateCache(static::$postsCacheToken);
-        static::invalidateGlobalCache();
+        $this->invalidateCache($this->postsCacheToken);
+        $this->invalidateGlobalCache();
     }
 
     /**
@@ -89,10 +142,10 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function invalidateCommentsCache()
+    public function invalidateCommentsCache()
     {
-        static::invalidateCache(static::$commentsCacheToken);
-        static::invalidateGlobalCache();
+        $this->invalidateCache($this->commentsCacheToken);
+        $this->invalidateGlobalCache();
     }
 
     /**
@@ -101,9 +154,9 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function invalidateGlobalCache()
+    public function invalidateGlobalCache()
     {
-        static::invalidateCache(static::$globalCacheToken);
+        $this->invalidateCache($this->globalCacheToken);
     }
 
     /**
@@ -116,14 +169,9 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function setGlobalDependentCache($key, $data, $time=30)
+    public function setGlobalDependentCache($key, $data, $time=30)
     {
-        static::setDependentData(
-            static::$globalCacheToken,
-            $key,
-            $data,
-            $time
-        );
+        $this->setDependentData($this->globalCacheToken, $key, $data, $time);
     }
 
     /**
@@ -136,14 +184,9 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function setPostsDependentCache($key, $data, $time=30)
+    public function setPostsDependentCache($key, $data, $time=30)
     {
-        static::setDependentData(
-            static::$postsCacheToken,
-            $key,
-            $data,
-            $time
-        );
+        $this->setDependentData($this->postsCacheToken, $key, $data, $time);
     }
 
     /**
@@ -156,14 +199,9 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public static function setCommentsDependentData($key, $data, $time=30)
+    public function setCommentsDependentData($key, $data, $time=30)
     {
-        static::setDependentData(
-            static::$commentsCacheToken,
-            $key,
-            $data,
-            $time
-        );
+        $this->setDependentData($this->commentsCacheToken, $key, $data, $time);
     }
 
     /**
@@ -177,14 +215,13 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    protected static function setDependentData($token, $key, $data, $time)
+    protected function setDependentData($token, $key, $data, $time)
     {
-        \Yii::app()->cache->set(
-            $key,
-            $data,
-            $time,
-            new \CGlobalStateCacheDependency($token)
-        );
+        $token = $this->tokenPrefix.$token;
+        $dependency = new \CGlobalStateCacheDependency($token);
+        \Yii::app()->cache->set($key, $data, $time, $dependency);
+        $message = 'Cached data dependent on %s using %s key fot %d seconds';
+        \Yii::log(sprintf($message, $token, $key, $time));
     }
 
     /**
@@ -194,7 +231,7 @@ class CacheHelper extends \CComponent
      * @return string
      * @since 0.1.0
      */
-    public static function generateSign()
+    public function generateSign()
     {
         return microtime();
         //return microtime().uniqid();
@@ -209,20 +246,16 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    protected static function invalidateCache($token)
+    protected function invalidateCache($token)
     {
         /** @type \CWebApplication $app */
         $app = \Yii::app();
-        $sign = static::generateSign();
-        $token = 'cache.tokens.'.$token;
+        $sign = $this->generateSign();
+        $token = $this->tokenPrefix.$token;
         $app->setGlobalState($token, $sign);
         $app->saveGlobalState();
-        $m = sprintf(
-            'Invalidated cache for %s token, updated global state using %s',
-            $token,
-            $sign
-        );
-        \Yii::log($m);
+        $message = 'Invalidated cache for %s token, updated global state using %s';
+        \Yii::log(sprintf($message, $token, $sign));
     }
 }
  
