@@ -34,89 +34,115 @@ class ServiceStatusPage extends \GeneralPage
      */
     public static $flushCacheLink = '[role="flush-cache-link"]';
     /**
+     * CSS selector for statistics block.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $statisticsSelector = '[role="service-statistics"]';
+    /**
+     * CSS selector for service status block.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $statusSelector = '[role="server-status"]';
+    /**
      * Selector for 'total users' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $totalUsersContainer = '.row-1 [role="stats-value"]';
+    public static $totalUsersSelector
+        = '[role="service-statistics"] .row-1 [role="stats-value"]';
     /**
      * Selector for 'total categories' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $totalCategoriesContainer = '.row-2 [role="stats-value"]';
+    public static $totalCategoriesSelector
+        = '[role="service-statistics"] .row-2 [role="stats-value"]';
     /**
      * Selector for 'total posts' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $totalPostsContainer = '.row-3 [role="stats-value"]';
+    public static $totalPostsSelector
+        = '[role="service-statistics"] .row-3 [role="stats-value"]';
     /**
      * Selector for 'posts today' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $postsTodayContainer = '.row-4 [role="stats-value"]';
+    public static $postsTodaySelector
+        = '[role="service-statistics"] .row-4 [role="stats-value"]';
     /**
      * Selector for 'total comments' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $totalCommentsContainer = '.row-5 [role="stats-value"]';
+    public static $totalCommentsSelector
+        = '[role="service-statistics"] .row-5 [role="stats-value"]';
     /**
      * Selector for 'comments today' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $commentsTodayContainer = '.row-6 [role="stats-value"]';
+    public static $commentsTodaySelector
+        = '[role="service-statistics"] .row-6 [role="stats-value"]';
     /**
      * Selector for 'Yii version' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $yiiVersionContainer = '.row-1 [role="status-value"]';
+    public static $yiiVersionSelector
+        = '[role="service-status"] .row-1 [role="status-value"]';
     /**
      * Selector for 'Twig version' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $twigVersionContainer = '.row-2 [role="status-value"]';
+    public static $twigVersionSelector
+        = '[role="service-status"] .row-2 [role="status-value"]';
     /**
      * Selector for 'PHP version' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $phpVersionContainer = '.row-3 [role="status-value"]';
+    public static $phpVersionSelector
+        = '[role="service-status"] .row-3 [role="status-value"]';
     /**
      * Selector for 'OS' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $unameContainer = '.row-4 [role="status-value"]';
+    public static $unameSelector
+        = '[role="service-status"] .row-4 [role="status-value"]';
     /**
      * Selector for 'uptime' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $uptimeContainer = '.row-5 [role="status-value"]';
+    public static $uptimeSelector
+        = '[role="service-status"] .row-5 [role="status-value"]';
     /**
      * Selector for 'server time' element.
      *
      * @var string
      * @since 0.1.0
      */
-    public static $serverTimeContainer = '.row-6 [role="status-value"]';
+    public static $serverTimeSelector
+        = '[role="service-status"] .row-6 [role="status-value"]';
 
     /**
      * Returns statistics.
@@ -128,12 +154,12 @@ class ServiceStatusPage extends \GeneralPage
     {
         $this->visit();
         return array(
-            'users' => $this->grab(static::$totalUsersContainer),
-            'categories' => $this->grab(static::$totalCategoriesContainer),
-            'totalPosts' => $this->grab(static::$totalPostsContainer),
-            'postsToday' => $this->grab(static::$postsTodayContainer),
-            'totalComments' => $this->grab(static::$totalCommentsContainer),
-            'commentsToday' => $this->grab(static::$commentsTodayContainer),
+            'users' => $this->grab(static::$totalUsersSelector),
+            'categories' => $this->grab(static::$totalCategoriesSelector),
+            'totalPosts' => $this->grab(static::$totalPostsSelector),
+            'postsToday' => $this->grab(static::$postsTodaySelector),
+            'totalComments' => $this->grab(static::$totalCommentsSelector),
+            'commentsToday' => $this->grab(static::$commentsTodaySelector),
         );
     }
 
@@ -147,12 +173,12 @@ class ServiceStatusPage extends \GeneralPage
     {
         $this->visit();
         return array(
-            'yii' => $this->grab(static::$yiiVersionContainer),
-            'twig' => $this->grab(static::$twigVersionContainer),
-            'php' => $this->grab(static::$phpVersionContainer),
-            'uname' => $this->grab(static::$unameContainer),
-            'uptime' => $this->grab(static::$uptimeContainer),
-            'serverTime' => $this->grab(static::$serverTimeContainer),
+            'yii' => $this->grab(static::$yiiVersionSelector),
+            'twig' => $this->grab(static::$twigVersionSelector),
+            'php' => $this->grab(static::$phpVersionSelector),
+            'uname' => $this->grab(static::$unameSelector),
+            'uptime' => $this->grab(static::$uptimeSelector),
+            'serverTime' => $this->grab(static::$serverTimeSelector),
         );
     }
 }
