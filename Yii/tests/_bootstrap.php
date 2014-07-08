@@ -17,6 +17,7 @@ $serverName = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : false;
 $dbFixtures = \Yii::app()->fixtureManager->getFixtures();
 $users = include $dbFixtures['users'];
 $posts = include $dbFixtures['posts'];
+$categories = include $dbFixtures['categories'];
 
 $index = 0;
 // fixture uses associative array naming, so i can't iterate with usual for
@@ -40,6 +41,13 @@ foreach ($posts as $post) {
     $index++;
 }
 Fixtures::add('data:posts:length', $index);
+
+$index = 0;
+foreach ($categories as $category) {
+    Fixtures::add("data:categories[$index]:title", $category['name']);
+    Fixtures::add("data:categories[$index]:slug", $category['slug']);
+}
+Fixtures::add('data:categories:length', $index);
 
 Fixtures::add('data:random:int', mt_rand(0, PHP_INT_MAX));
 Fixtures::add('data:random:string', md5(Fixtures::get('data:random:int')));
