@@ -1,9 +1,8 @@
 <?php
-$appRoot = dirname(__DIR__);
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
     'name' => 'Just another non-wordpress blog',
-    'basePath' => $appRoot,
+    'basePath' => '/srv/http/src/blogmvc/Yii',
     'import' => array(
         'application.components.*',
         'application.components.widgets.*',
@@ -22,7 +21,11 @@ return array(
     'sourceLanguage' => 'en',
     'language' => 'ru',
     'components' => array(
-        'db' => include __DIR__.'/db.php',
+        'db' => array(
+            'connectionString' => 'pgsql:host=localhost;port=5432;dbname=blogmvc_yii',
+            'username' => 'blogmvc',
+            'password' => 'blogmvc',
+        ),
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
@@ -38,6 +41,9 @@ return array(
         ),
         'cache' => array(
             'class' => 'system.caching.CFileCache',
+        ),
+        'cacheHelper' => array(
+            'class' => 'application.components.helpers.CacheHelper',
         ),
         'urlManager' => array(
             'urlFormat' => 'path',
@@ -88,11 +94,11 @@ return array(
             ),
         ),
         'themeManager' => array(
-            'basePath' => $appRoot.'/public/skins',
+            'basePath' => '/srv/http/src/blogmvc/Yii/public/skins',
             'baseUrl' => '/skins',
         ),
         'assetManager' => array(
-            'basePath' => $appRoot.'/public/assets',
+            'basePath' => '/srv/http/src/blogmvc/Yii/public/assets',
             'baseUrl' => '/assets',
         ),
         'errorHandler' => array(
@@ -112,6 +118,9 @@ return array(
         ),
         'dateFormatter' => array(
             'class' => 'application.components.formatters.DateFormatter',
+        ),
+        'cacheHelper' => array(
+            'class' => 'application.components.helpers.CacheHelper',
         ),
     ),
     'theme' => 'default',
