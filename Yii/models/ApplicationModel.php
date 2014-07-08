@@ -132,7 +132,7 @@ class ApplicationModel extends CModel
     public static function getStatistics()
     {
         \Yii::beginProfile('applicationModel.getStatistics');
-        if (($stats = \Yii::app()->cache->get('app.statistics')) === false) {
+        if (($stats = \Yii::app()->cacheHelper->get('app.statistics')) === false) {
             \Yii::beginProfile('applicationModel.retrieveStatistics');
             $stats = array(
                 'users.total' => \User::model()->count(),
@@ -142,8 +142,11 @@ class ApplicationModel extends CModel
                 'comments.total' => \Comment::model()->count(),
                 'comments.today' => \Comment::model()->today(),
             );
-            $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
-            \Yii::app()->cache->set('app.statistics', $stats, 3600, $dep);
+            \Yii::app()->cacheHelper->setGlobalDependentCache(
+                'app.statistics',
+                $stats,
+                3600
+            );
             \Yii::endProfile('applicationModel.retrieveStatistics');
         }
         foreach ($stats as $key => $value) {

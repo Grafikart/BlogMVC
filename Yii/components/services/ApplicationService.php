@@ -32,7 +32,7 @@ class ApplicationService
      */
     public function getServiceInfo()
     {
-        $cache = \Yii::app()->cache->get('serviceStatus');
+        $cache = \Yii::app()->cacheHelper->get('serviceStatus');
         if (!$cache) {
             $cache = array(
                 'yiiVersion'  => \Yii::getVersion(),
@@ -42,7 +42,7 @@ class ApplicationService
                 'uptime'      => $this->getUptime(),
                 'serverTime'  => date('Y-m-d H:i'),
             );
-            \Yii::app()->cache->set('serviceStatus', $cache, 60);
+            \Yii::app()->cacheHelper->set('serviceStatus', $cache, 60);
         }
         foreach ($cache as $key => $value) {
             unset($cache[$key]);

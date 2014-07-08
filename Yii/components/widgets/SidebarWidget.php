@@ -90,11 +90,7 @@ class SidebarWidget extends WidgetLayer
      */
     public function init()
     {
-        // Forces global states to be updated
-        /** @type CWebApplication $app */
-        $app = \Yii::app();
-        $app->loadGlobalState();
-        if (!($this->cached = $app->cache->get($this->cacheKey))) {
+        if (!($this->cached = \Yii::app()->cacheHelper->get($this->cacheKey))) {
             \Yii::trace('Regenerating cache for sidebar widget');
             $this->categoriesHeaderText = \Yii::t(
                 'templates',
@@ -119,7 +115,10 @@ class SidebarWidget extends WidgetLayer
             return;
         }
         echo $render = $this->render('sidebar', null, true);
-        $dep = new \CGlobalStateCacheDependency('lastPostUpdate');
-        \Yii::app()->cache->set($this->cacheKey, $render, 3600, $dep);
+        \Yii::app()->cacheHelper->setPostsDependentCache(
+            $this->cacheKey,
+            $render,
+            3600
+        );
     }
 }

@@ -283,12 +283,7 @@ class Post extends \ActiveRecordLayer
      */
     public function afterSave()
     {
-        $sign = md5(mt_rand());
-        \Yii::log('updated global state ('.$sign.')');
-        /** @type \CWebApplication $app */
-        $app = \Yii::app();
-        $app->setGlobalState('lastPostUpdate', $sign);
-        $app->saveGlobalState();
+        \Yii::app()->cacheHelper->invalidatePostsCache();
         //\Yii::beginProfile('post.afterSave');
         if ($this->getIsNewRecord()) {
             $this->category->updateCounter();
@@ -313,10 +308,7 @@ class Post extends \ActiveRecordLayer
         \Yii::log('updated global state ('.$sign.')');
         $this->category->post_count--;
         $this->category->save(false, array('post_count'));
-        /** @type \CWebApplication $app */
-        $app = \Yii::app();
-        $app->setGlobalState('lastPostUpdate', $sign);
-        $app->saveGlobalState();
+        \Yii::app()->cacheHelper->invalidatePostsCache();
         \Yii::log('Post successfully deleted');
         return true;
     }

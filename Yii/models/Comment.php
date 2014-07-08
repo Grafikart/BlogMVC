@@ -127,6 +127,28 @@ class Comment extends ActiveRecordLayer
     }
 
     /**
+     * Simple wrapper to invalidate related cache.
+     *
+     * @return void
+     * @since
+     */
+    public function afterSave()
+    {
+        \Yii::app()->cacheHelper->invalidateCommentsCache();
+    }
+
+    /**
+     * Simple wrapper to invalidate related cache.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function afterDelete()
+    {
+        \Yii::app()->cacheHelper->invalidateCommentsCache();
+    }
+
+    /**
      * Sanitizes user mail before validation.
      *
      * @return boolean True if parent beforeValidate() fails, true otherwise.
