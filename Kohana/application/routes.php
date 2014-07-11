@@ -6,21 +6,21 @@
  */
 
 //page d'accueil
-Route::set('default', '/')
+Route::set('default', '')
 	->defaults(array(
 		'controller' => 'posts',
 		'action'     => 'index',
 	));
 
 //Route pour l'admin
-Route::set('admin', '/admin(/<action>)')
+Route::set('admin', 'admin(/<action>)')
 	->defaults(array(
 		'controller' => 'admin',
 		'action'     => 'index',
 	));
 
 //Les catégories
-Route::set('category', '/category/<category>', 
+Route::set('category', 'category/<category>', 
 	array( 'category' => '[0-9a-z\-]+' ))
 	->defaults(array(
 		'controller' => 'admin',
@@ -28,7 +28,7 @@ Route::set('category', '/category/<category>',
 	));
 
 //Le profil des utilisateurs
-Route::set('user', '/author/<user>', 
+Route::set('user', 'author/<user>', 
 	array( 'user' => '[0-9\-]+' ))
 	->defaults(array(
 		'controller' => 'user',
@@ -36,7 +36,7 @@ Route::set('user', '/author/<user>',
 	));
 
 //Voir un post
-Route::set('slug', '/<slug>', 
+Route::set('slug', '<slug>', 
 	array( 'slug' => '[0-9a-z\-]+' ))
 	->defaults(array(
 		'controller' => 'posts',
