@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Post extends ORM{
+class Model_Post extends ORM{
 
 	protected $_belongs_to = array(
 			'category' => array(),
