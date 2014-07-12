@@ -11,4 +11,9 @@ class Model_Post extends ORM{
 			'comments' => array()
 		);
 
+	protected $_load_with = array(
+			'category',
+			'author'
+		);
+
 }
