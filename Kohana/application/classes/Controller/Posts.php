@@ -27,7 +27,7 @@ class Controller_Posts extends Controller_Template{
 			throw HTTP_Exception::factory(404);
 		}
 
-		$comments = $post->comments->find_all();
+		$comments = $post->comments->order_by('created' , 'DESC' )->find_all();
 
 		$data = array(
 			'post'        => $post,

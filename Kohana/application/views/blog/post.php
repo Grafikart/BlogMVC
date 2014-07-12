@@ -30,7 +30,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group {{ ($errors->first('email')) ? 'has-error' : '' }}">
-							<?= Form::input('email', '', array('class' => 'form-control', 'placeholder' => 'Your email')) ?>
+							<?= Form::input('mail', '', array('class' => 'form-control', 'placeholder' => 'Your email')) ?>
 						</div>
 					</div>
 					<div class="col-md-6">
