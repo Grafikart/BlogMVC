@@ -33,6 +33,7 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
                     <ul class="nav navbar-nav">
+                        <li>
                         <?php 
                             if(Request::current()->controller() == 'admin'
                                 || Request::current()->action() == 'login'){
@@ -41,6 +42,7 @@
                                 echo HTML::anchor('/admin', 'Admin');
                             }
                         ?>
+                        </li>
                     </ul>
                 </div>
             </div><!-- /.container -->
