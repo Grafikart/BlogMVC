@@ -11,7 +11,9 @@ class Controller_Posts extends Controller_Template{
 			->limit(5)
 			->find_all();
 
-		$this->template->content = View::factory('blog/index')->bind('posts',$posts);
+		View::bind_global('posts',$posts);
+
+		$this->template->content = View::factory('blog/index');
 
 		$this->response->body($this->template);
 	}
