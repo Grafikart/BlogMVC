@@ -64,4 +64,26 @@ class Controller_Posts extends Controller_Template{
 
 	}
 
+	public function action_author(){
+
+		$slug = $this->request->param('user');
+		$user = ORM::factory('User')
+			->where('user.id','=',$slug)
+			->find();
+
+		if(!$user->loaded()){
+			throw HTTP_Exception::factory(404);
+		}
+
+        $data = array(
+            'user' => $user,
+            'posts'    => $user->posts->find_all()
+        );
+
+		$this->template->title = $user->username;
+
+        $this->template->content = View::factory('blog/author' , $data);
+
+	}
+
 }
