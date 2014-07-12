@@ -4,7 +4,10 @@ class Model_Post extends ORM{
 
 	protected $_belongs_to = array(
 			'category' => array(),
-			'user'     => array()
+			'author'     => array(
+					'model' => 'User',
+					'foreign_key' => 'user_id'
+				)
 		);
 
 	protected $_has_many = array(
