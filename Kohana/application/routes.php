@@ -21,18 +21,12 @@ Route::set('default', '')
 		'action'     => 'index',
 	));
 
-//Route pour l'admin
-Route::set('admin', 'admin(/<action>)')
-	->defaults(array(
-		'controller' => 'admin',
-		'action'     => 'index',
-	));
 
 //Les catégories
 Route::set('category', 'category/<category>', 
 	array( 'category' => '[0-9a-z\-]+' ))
 	->defaults(array(
-		'controller' => 'admin',
+		'controller' => 'posts',
 		'action' => 'category'
 	));
 
@@ -40,8 +34,8 @@ Route::set('category', 'category/<category>',
 Route::set('user', 'author/<user>', 
 	array( 'user' => '[0-9\-]+' ))
 	->defaults(array(
-		'controller' => 'user',
-		'action' => 'show'
+		'controller' => 'posts',
+		'action' => 'author'
 	));
 
 //Voir un post
@@ -74,6 +68,7 @@ Route::set('get_login', '/login')
 			'action' => 'get_login'
 		));
 
+// Route pour l'admin
 Route::set('admin' , 'admin')
 	->defaults(array(
 			'controller' => 'admin',

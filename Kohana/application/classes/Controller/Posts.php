@@ -42,4 +42,26 @@ class Controller_Posts extends Controller_Template{
 		
 	}
 
+	public function action_category(){
+
+		$slug = $this->request->param('category');
+		$category = ORM::factory('Category')
+			->where('category.slug','=',$slug)
+			->find();
+
+		if(!$category->loaded()){
+			throw HTTP_Exception::factory(404);
+		}
+
+        $data = array(
+            'category' => $category,
+            'posts'    => $category->posts->find_all()
+        );
+
+		$this->template->title = $category->name;
+
+        $this->template->content = View::factory('blog/category' , $data);
+
+	}
+
 }
