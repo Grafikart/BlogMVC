@@ -9,7 +9,7 @@ abstract class Controller extends Kohana_Controller {
             $sidebar_categories = ORM::factory('Category')
             	->order_by('post_count','DESC')
             	->find_all();
-            Kohana::cache('sidebar_categories', $sidebar_categories->cached(60 * 60 )); // 60s * 60s = 1 heure
+            Kohana::cache('sidebar_categories', $sidebar_categories->cached() , 60 * 60); // 60s * 60s = 1 heure
         }
         View::set_global('sidebar_categories', Kohana::cache('sidebar_categories'));
 
@@ -19,7 +19,7 @@ abstract class Controller extends Kohana_Controller {
             	->order_by('id', 'DESC')
             	->limit(2)
             	->find_all();
-            Kohana::cache('sidebar_posts', $sidebar_posts->cached(60 * 60 )); // 60s * 60s = 1 heure
+            Kohana::cache('sidebar_posts', $sidebar_posts->cached() , 60 * 60); // 60s * 60s = 1 heure
         }
         View::set_global('sidebar_posts', Kohana::cache('sidebar_posts'));
 
