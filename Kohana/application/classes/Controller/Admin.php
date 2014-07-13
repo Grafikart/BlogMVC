@@ -33,4 +33,14 @@ class Controller_Admin extends Controller_Template{
 		}
 	}
 
+	public function action_index(){
+		$posts = ORM::factory('Post')
+			->order_by('post.created' , 'DESC')
+			->limit(5)
+			->find_all();
+
+		$this->template->title = 'Admin';
+		$this->template->content = View::factory('admin/index')->set('posts' , $posts);
+	}
+
 }
