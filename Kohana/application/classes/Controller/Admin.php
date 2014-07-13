@@ -53,4 +53,19 @@ class Controller_Admin extends Controller_Template{
 		$this->template->content = View::factory('admin/create' , $data);
 	}
 
+	public function action_post_create(){
+		$post = ORM::factory('Post');
+
+		$post->values($this->request->post() , array('name' , 'slug' , 'category_id' , 'user_id' , 'content'));
+		$post->created = DB::expr('NOW()');
+
+		try{
+			$post->save();
+			$this->redirect('admin');
+		} catch (ORM_Validation_Exception $e){
+			Session::instance()->set('flash_errors' , $e->errors());
+			$this->redirect('admin/create');
+		}
+	}
+
 }

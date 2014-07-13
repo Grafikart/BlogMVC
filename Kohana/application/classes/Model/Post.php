@@ -19,4 +19,24 @@ class Model_Post extends ORM{
 			'author'
 		);
 
+	public function rules(){
+		return array(
+			'category_id' => array(
+				array('digit')
+				),
+			'user_id' => array(
+				array('digit')
+				),
+			'name' => array(
+				array('not_empty')
+				),
+			'slug' => array(
+				array('regex' , array(':value' , '([0-9a-z\-]+)'))
+				),
+			'content' => array(
+				array('not_empty')
+				)
+			);
+	}
+
 }
