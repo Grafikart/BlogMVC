@@ -1,8 +1,8 @@
 
-	<?php if(Session::instance()->get('flash_error') != NULL): ?>
+	<?php if(Session::instance()->get_once('flash_error') != NULL): ?>
 		<div class="alert alert-danger">
 			<h4><strong>Oh snap !</strong> you forgot your IDs ?</h4>
-			<div><?= Session::instance()->get('flash_error') ?></div>
+			<div><?php // Session::instance()->get('flash_error') ?></div> 
 		</div>
 	<?php endif; ?>
 

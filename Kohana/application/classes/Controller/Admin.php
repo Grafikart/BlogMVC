@@ -11,7 +11,7 @@ class Controller_Admin extends Controller_Template{
 			$this->redirect('login');
 		}
 
-		parent::before();
+		if($this->request->action() != 'post_login') parent::before(); //pas besoin de créer une vue pour ce cas
 	}
 
 	public function action_get_login(){
@@ -19,6 +19,18 @@ class Controller_Admin extends Controller_Template{
 		$this->template->title = 'Login';
 		$this->template->content = View::factory('admin/login');
 
+	}
+
+	public function action_post_login()
+	{
+		if(Auth::instance()->login( $this->request->post('username') , $this->request->post('password') )){
+
+			$this->redirect('admin');
+
+		} else {
+			Session::instance()->set('flash_error' , TRUE );
+			$this->redirect('login');
+		}
 	}
 
 }
