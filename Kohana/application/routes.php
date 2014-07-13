@@ -62,7 +62,7 @@ Route::set('post_login', 'login')
 		));
 
 //Si ce n'est pas une action POST
-Route::set('get_login', '/login')
+Route::set('get_login', 'login')
 	->defaults(array(
 			'controller' => 'guest',
 			'action' => 'get_login'
