@@ -57,14 +57,14 @@ Route::set('comment','comment/<post_slug>' ,
 Route::set('post_login', 'login')
 	->filter($postRequest)
 	->defaults(array(
-			'controller' => 'guest',
+			'controller' => 'admin',
 			'action' => 'post_login'
 		));
 
 //Si ce n'est pas une action POST
 Route::set('get_login', 'login')
 	->defaults(array(
-			'controller' => 'guest',
+			'controller' => 'admin',
 			'action' => 'get_login'
 		));
 

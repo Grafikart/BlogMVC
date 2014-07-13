@@ -35,8 +35,7 @@
                     <ul class="nav navbar-nav">
                         <li>
                         <?php 
-                            if(Request::current()->controller() == 'admin'
-                                || Request::current()->action() == 'login'){
+                            if(Request::current()->controller() == 'Admin'){
                                 echo HTML::anchor('/','< Back to front');
                             } else {
                                 echo HTML::anchor('/admin', 'Admin');

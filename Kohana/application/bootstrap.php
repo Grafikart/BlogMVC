@@ -65,6 +65,8 @@ mb_substitute_character('none');
 
 // -- Configuration and initialization -----------------------------------------
 
+Cookie::$salt = sha1('salt');
+
 /**
  * Set the default language
  */
