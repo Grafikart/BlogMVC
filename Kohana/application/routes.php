@@ -75,14 +75,14 @@ Route::set('admin' , 'admin')
 			'action' => 'index'
 		));
 
-Route::set('admin_edit' , 'admin/post/<action>(/<post_slug>)',
+Route::set('admin_edit' , 'admin/<action>(/<post_slug>)',
 	array('action' => '(create|edit|delete)'))
 	->filter(function($route, $params, $request){
 		//permet de faire un controlleur de type REST
 		if($request->method() == HTTP_Request::POST){
 			$params['action'] = 'post_' . $params['action'];
 		} else {
-			$params['action'] = 'get' . $params['action'];
+			$params['action'] = 'get_' . $params['action'];
 		}
 		return $params;
 

@@ -43,4 +43,14 @@ class Controller_Admin extends Controller_Template{
 		$this->template->content = View::factory('admin/index')->set('posts' , $posts);
 	}
 
+	public function action_get_create(){
+		$data = array(
+			'categories' => ORM::factory('Category')->order_by('name')->find_all()->as_array('id' , 'name'),
+			'authors'    => ORM::factory('User')->order_by('username')->find_all()->as_array('id' , 'username')
+			);
+
+		$this->template->title = 'Add a new post';
+		$this->template->content = View::factory('admin/create' , $data);
+	}
+
 }
