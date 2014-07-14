@@ -131,7 +131,8 @@ Kohana::modules(array(
 	'orm'          => MODPATH.'orm',        // Object Relationship Mapping
 	// 'unittest'  => MODPATH.'unittest',   // Unit testing
 	// 'userguide' => MODPATH.'userguide',  // User guide and API documentation
-	'markdown'     => MODPATH.'markdown'	// Markdown module
+	'markdown'     => MODPATH.'markdown',	// Markdown module
+	'paginator'    => MODPATH.'paginator' 	// Pagination module
 	));
 
 
