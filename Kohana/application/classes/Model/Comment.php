@@ -12,6 +12,7 @@ class Model_Comment extends ORM{
 				array('not_empty')
 				),
 			'mail' => array(
+				array('not_empty'),
 				array('email')
 				),
 			'content' => array(

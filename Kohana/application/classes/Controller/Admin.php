@@ -72,7 +72,7 @@ class Controller_Admin extends Controller_Template{
 			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
-			Session::instance()->set('flash_errors' , $e->errors());
+			Session::instance()->set('flash_errors' , array_keys($e->errors()));
 			$this->redirect('admin/create');
 		}
 	}
@@ -116,7 +116,7 @@ class Controller_Admin extends Controller_Template{
 			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
-			Session::instance()->set('flash_errors' , $e->errors());
+			Session::instance()->set('flash_errors' , array_keys($e->errors()));
 			$this->redirect('admin/edit/' . $slug);
 		}
 	}

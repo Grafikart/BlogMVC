@@ -25,8 +25,7 @@ class Controller_Comment extends Controller_Template{
 			$comment->save();
 
 		} catch( ORM_Validation_Exception $e){
-
-			//A ajouter: mettre les messages d'erreur
+			Session::instance()->set('flash_errors' , array_keys($e->errors()));
 			$this->redirect('post/' . $post->slug);
 
 		}

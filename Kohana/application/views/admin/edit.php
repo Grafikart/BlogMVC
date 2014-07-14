@@ -6,10 +6,9 @@
 	<?php if(Session::instance()->get('flash_errors') != NULL): ?>
 		<div class="alert alert-danger">
 			<h4><strong>Oh snap !</strong> you did some errors</h4>
-			<?php Session::instance()->get_once('flash_errors')
-			//foreach(Session::instance()->get_once('flash_errors') as $error): ?>
-				<div><?php // $error ?></div>
-			<?php //endforeach ?>
+			<?php foreach(Session::instance()->get_once('flash_errors') as $error): ?>
+				<div><?= $error ?></div>
+			<?php endforeach ?>
 		</div>
 	<?php endif ?>
 

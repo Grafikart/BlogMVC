@@ -15,31 +15,32 @@
 		<section id="comments" class="comments">
 			<h3>Comment this post</h3>
 
-			<?php
-			/* if (count($errors->all()) > 0) ?>
+			<?php if (Session::instance()->get('flash_errors') != NULL):
+				$errors =  Session::instance()->get_once('flash_errors') ?>
 				<div class="alert alert-danger">
 					<h4><strong>Oh snap !</strong> you did some errors</h4>
-					@foreach ($errors->all() as $error)
-						<div>{{ $error }}</div>
-					@endforeach
+					<?php foreach ($errors as $error): ?>
+						<div><?= $error ?></div>
+					<?php endforeach ?>
 				</div>
-			<?php endif */
-			?>
+			<?php else:
+				$errors = array();
+				endif ?>
 
 			<?= Form::open('comment/' . $post->slug , array('method' => 'POST')) ?>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group {{ ($errors->first('email')) ? 'has-error' : '' }}">
+						<div class="form-group <?= in_array('mail' , $errors ) ? 'has-error' : '' ?>">
 							<?= Form::input('mail', '', array('class' => 'form-control', 'placeholder' => 'Your email')) ?>
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group {{ ($errors->first('username')) ? 'has-error' : '' }}">
+						<div class="form-group <?= in_array('username' , $errors ) ? 'has-error' : '' ?>">
 							<?= Form::input('username', '', array('class' => 'form-control', 'placeholder' => 'Your username')) ?>
 						</div>
 					</div>
 				</div>
-				<div class="form-group {{ ($errors->first('content')) ? 'has-error' : '' }}">
+				<div class="form-group <?= in_array('content' , $errors ) ? 'has-error' : '' ?>">
 					<?= Form::textarea('content', '', array('class' => 'form-control', 'placeholder' => 'Your comment', 'rows' => 3)) ?>
 				</div>
 				<div class="form-group">
