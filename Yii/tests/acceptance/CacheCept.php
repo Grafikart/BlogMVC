@@ -9,12 +9,20 @@ $I->expectTo('See changes instantly');
 
 $I->autoLogin();
 
+// if any other category is modified but the top one, categories may change
+// positions in sidebar, and this behavior would be much harder to test.
+define('CATEGORY_NUMBER', 0);
+
 $I->flushCache();
 $stats = \ServiceStatusPage::of($I)->grabStats();
 $totalPostsNumber = $stats['totalPosts'];
 $postsTodayNumber = $stats['postsToday'];
 $commentsTodayNumber = $stats['commentsToday'];
 $totalCommentsNumber = $stats['totalComments'];
+
+$I->amOnPage(\BlogFeedPage::$url);
+$categoryTitle = \BlogFeedPage::of($I)->grabCategoryTitle(CATEGORY_NUMBER);
+$categoryPostCount = \BlogFeedPage::of($I)->grabCategoryPostCount(CATEGORY_NUMBER);
 $posts = array();
 
 
@@ -24,7 +32,7 @@ for ($i = 0; $i < 5; $i++) {
     $title = md5(time()).$i;
     $I->amOnPage(\BlogFeedPage::$url);
     $I->dontSee($title);
-    $I->writePost($title, 'superpost is superposted');
+    $I->writePost($title, 'superpost is superposted', null, $categoryTitle);
     $elemId = $I->grabAttributeFrom(\PostPage::$postSelector, 'id');
     preg_match('#\d+#', $elemId, $matches);
     $posts[$matches[0]] = $title;
@@ -33,11 +41,17 @@ for ($i = 0; $i < 5; $i++) {
     $I->see($title, \BlogFeedPage::$sidebarPostListSelector);
     $totalPostsNumber++;
     $postsTodayNumber++;
+    $categoryPostCount++;
 }
 // verify stats
 $I->amOnPage(\ServiceStatusPage::$url);
 $I->see($totalPostsNumber, \ServiceStatusPage::$totalPostsSelector);
 $I->see($postsTodayNumber, \ServiceStatusPage::$postsTodaySelector);
+$I->amOnPage(\BlogFeedPage::$url);
+$I->see(
+    $categoryPostCount,
+    \BlogFeedPage::getCategoryPostCountSelector(CATEGORY_NUMBER)
+);
 
 foreach ($posts as $id => $title) {
     $I->amOnPage(\PostsDashboardPage::$url);
@@ -47,10 +61,16 @@ foreach ($posts as $id => $title) {
     $I->dontSee($title, \BlogFeedPage::$sidebarPostLinkTemplate);
     $totalPostsNumber--;
     $postsTodayNumber--;
+    $categoryPostCount--;
 }
 $I->amOnPage(\ServiceStatusPage::$url);
 $I->see($totalPostsNumber, \ServiceStatusPage::$totalPostsSelector);
 $I->see($postsTodayNumber, \ServiceStatusPage::$postsTodaySelector);
+$I->amOnPage(\BlogFeedPage::$url);
+$I->see(
+    $categoryPostCount,
+    \BlogFeedPage::getCategoryPostCountSelector(CATEGORY_NUMBER)
+);
 
 $I->amOnPage(\BlogFeedPage::$url);
 $I->click(\BlogFeedPage::$postTitleSelector);
