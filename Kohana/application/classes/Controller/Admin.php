@@ -68,4 +68,25 @@ class Controller_Admin extends Controller_Template{
 		}
 	}
 
+	public function action_get_edit(){
+		$slug = $this->request->param('post_slug');
+
+		$post = ORM::factory('Post')
+			->where('post.slug','=',$slug)
+			->find();
+
+		if(!$post->loaded()){
+			throw HTTP_Exception::factory(404);
+		}
+
+		$data = array(
+			'post'       => $post,
+			'categories' => ORM::factory('Category')->order_by('name')->find_all()->as_array('id' , 'name'),
+			'authors'    => ORM::factory('User')->order_by('username')->find_all()->as_array('id' , 'username')
+			);
+
+		$this->template->title = "Edit " . $post->name;
+		$this->template->content = View::factory('admin/edit' , $data);
+	}
+
 }
