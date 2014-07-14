@@ -1,9 +1,10 @@
 <?php
 use Codeception\Util\Fixtures;
 
-$scenario->group('auth', 'front');
+/** @type \Codeception\Scenario $scenario */
+$scenario->groups('auth', 'front');
 $i = new \WebGuy\MemberSteps($scenario);
-$i->am('logged-off admin');
+$i->am('admin');
 $i->wantTo('check auth mechanism');
 $i->expect('login failure on invalid data and login success on valid data');
 
@@ -21,7 +22,7 @@ $i->seeAlert('auth.login.fail');
 $i->login('missing username', 'nonexisting password');
 $i->seeAlert('auth.login.fail');
 
-$i->login(Fixtures::get('data:users[0]:login'), Fixtures::get('data:users[0]:password'));
+$i->autoLogin();
 $i->see('auth.login.greeting');
 $i->seeCurrentUrlEquals(\AdminPanelPage::$url);
 
