@@ -111,4 +111,20 @@ class Controller_Admin extends Controller_Template{
 		}
 	}
 
+	public function action_get_delete(){
+		$slug = $this->request->param('post_slug');
+
+		$post = ORM::factory('Post')
+			->where('post.slug','=',$slug)
+			->find();
+
+		if(!$post->loaded()){
+			throw HTTP_Exception::factory(404);
+		}
+
+		$post->delete();
+
+		$this->redirect('admin');
+	}
+
 }
