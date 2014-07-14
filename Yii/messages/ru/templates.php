@@ -30,12 +30,28 @@ return array(
     'heading.suicideBooth' => 'Будка для самоубийств',
     'heading.httpError' => 'Ошибка #{errorCode}',
 
-    'pageTitle.adminPanel' => 'Панель управления',
-    'pageTitle.blog' => 'Блог',
-    'pageTitle.userFeed' => 'Записи {username}',
-    'pageTitle.categoryList' => 'Категории',
-    'pageTitle.userList' => 'Авторы',
-    'pageTitle.httpError' => 'Ошибка #{errorCode}',
+    'pageTitle.site.login' => 'Вход',
+    'pageTitle.site.error' => 'Ошибка #{errorCode}',
+    'pageTitle.admin.index' => 'Панель управления',
+    'pageTitle.admin.help' => 'Помощь',
+    'pageTitle.admin.devHelp' => 'Расширенная помощь',
+    'pageTitle.admin.status' => 'Статус приложения',
+    'pageTitle.admin.options' => 'Настройки',
+    'pageTitle.category.index' => '{categoryTitle}',
+    'pageTitle.category.list' => 'Категории',
+    'pageTitle.category.dashboard' => 'Управление категориями',
+    'pageTitle.category.edit' => 'Категория {categoryTitle}',
+    'pageTitle.post.index' => 'Блог',
+    'pageTitle.post.show' => '{postTitle}',
+    'pageTitle.post.new' => 'Новая запись',
+    'pageTitle.post.edit' => 'Запись {postTitle}',
+    'pageTitle.post.dashboard' => 'Управление записями',
+    'pageTitle.user.list' => 'Авторы',
+    'pageTitle.user.index' => 'Записи {username}',
+    'pageTitle.user.dashboard' => 'Управление пользователями',
+    'pageTitle.user.new' => 'Новый пользователь',
+    'pageTitle.user.profile' => 'Профиль',
+    'pageTitle.user.suicide' => 'Будка самоубийств имени Бендера Б.Родригеза',
 
     'control.manage' => 'Управлять',
     'control.edit' => 'Редактировать',
@@ -49,12 +65,12 @@ return array(
     'control.create' => 'Создать',
     'control.createNew' => 'Создать новый',
     'control.flushCache' => 'Сбросить кэш',
-    'control.recalculateCounters' => 'Перерассчитать значения счетчиков '.
-        'категорий',
+    'control.recalculateCounters' => 'Пересчитать значения счетчиков категорий',
     'control.signIn' => 'Войти',
     'control.deleteMyProfile' => 'Удалить мой профиль',
 
     'link.backTo' => '&lt; Назад в {pageTitle}',
+    'link.navigation' => '&lt; К {pageTitle}',
     'link.backToMainFeed' => '&lt; Назад к основной ленте',
     'link.backToCategories' => '&lt; Назад к списку категорий',
     'link.backToPosts' => '&lt; Назад к записям',
@@ -101,7 +117,7 @@ return array(
         'посетить будку для самоубийств, то вам необходимо проследовать по '.
         '<a href="{dashboardUrl}">этой ссылке</a>.',
     'paragraph.serviceOptionsAdminNotice' => 'Вы также можете редактировать '.
-        'настройки приложения (язык и заголовок сайта и тему) '.
+        'настройки приложения (язык, заголовок сайта и тему) '.
         '<a href="{optionsUrl}">здесь</a>.',
     'paragraph.helpAdminNotice' => 'Вы можете ознакомиться с коротким '.
         'руководством об использовании сервиса '.
@@ -139,7 +155,6 @@ return array(
     'timeInterval.days' => '{n} день|{n} дня|{n} дней|{n} дня',
     'timeInterval.months' => '{n} месяц|{n} месяца|{n} месяцев|{n} месяца',
     'timeInterval.years' => '{n} год|{n} года|{n} лет|{n} года',
-    'category.listPageTitle' => 'Список категорий',
     'category.postCount' => '{n} запись|{n} записи|{n} записей|{n} записи',
 
     // 'format.postDate' => 'd-m-Y',

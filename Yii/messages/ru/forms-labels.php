@@ -4,6 +4,7 @@ return array(
     'user.password' => 'Пароль',
     'user.newPassword' => 'Новый пароль',
     'user.newPasswordRepeat' => 'Повтор нового пароля',
+    'user.postCount' => 'Количество записей',
     'post.name' => 'Название записи',
     'post.slug' => 'Адрес записи (будет создан автоматически, если оставить '.
         'пустым)',

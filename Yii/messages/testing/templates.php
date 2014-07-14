@@ -9,10 +9,13 @@
     'pageTitle.httpError' => 'pageTitle.httpError [errorCode:{errorCode}]',
 
     'link.backTo' => 'link.backTo [pageTitle:{pageTitle}]',
+    'link.navigation' => 'link.navigation [pageTitle:{pageTitle}]',
 
     'text.profileGreeting' => 'text.profileGreeting [username:{username}]!',
     'text.rss.defaultDescription' => 'text.rss.defaultDescription '.
         '[appName:{appName}]',
+
+    'pageTitle.editPost' => 'Edit post [postTitle:{postTitle}]',
 
     'paragraph.userPostsAdminNotice' => 'paragraph.userPostsAdminNotice '.
         '[{postCount}] [{commentCount}] '.
