@@ -69,6 +69,12 @@ class Controller_Admin extends Controller_Template{
 
 		try{
 			$post->save();
+
+			//Change le post_count des catégories
+			if(!$post->category->loaded())$post->category->find();
+			$post->category->post_count++;
+			$post->category->save();
+
 			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
@@ -112,7 +118,20 @@ class Controller_Admin extends Controller_Template{
 		$post->values($this->request->post() , array('name' , 'slug' , 'category_id' , 'user_id' , 'content'));
 
 		try{
+			if($post->changed('category_id'))$old_category = $post->category_id;
 			$post->save();
+
+			//Change le post_count des catégories
+			if(isset($old_category)){
+				$old_category = ORM::factory('Category' , $old_category);
+				$old_category->post_count--;
+				$old_category->save();
+
+				if(!$post->category->loaded())$post->category->find();
+				$post->category->post_count++;
+				$post->category->save();
+			}
+
 			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
@@ -131,6 +150,11 @@ class Controller_Admin extends Controller_Template{
 		if(!$post->loaded()){
 			throw HTTP_Exception::factory(404);
 		}
+
+		//Change le post_count des catégories
+		if(!$post->category->loaded())$post->category->find();
+		$post->category->post_count--;
+		$post->category->save();
 
 		 // Supprime les commentaires en premier, utilisation de DB car l'ORM n'a pas de fonction de suppression de masse
 		DB::delete('comments')->where('comments.post_id' , '=' , $post->id)->execute();
