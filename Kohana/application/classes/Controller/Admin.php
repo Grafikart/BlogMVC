@@ -11,7 +11,7 @@ class Controller_Admin extends Controller_Template{
 			$this->redirect('login');
 		}
 
-		if(strrpos($this->request->action() , '_post') === FALSE) parent::before(); //pas besoin de créer une vue pour ce cas
+		if(strrpos($this->request->action() , 'post_') === FALSE) parent::before(); //pas besoin de créer une vue pour ce cas
 	}
 
 	public function action_get_login(){
@@ -87,6 +87,28 @@ class Controller_Admin extends Controller_Template{
 
 		$this->template->title = "Edit " . $post->name;
 		$this->template->content = View::factory('admin/edit' , $data);
+	}
+
+	public function action_post_edit(){
+		$slug = $this->request->param('post_slug');
+
+		$post = ORM::factory('Post')
+			->where('post.slug','=',$slug)
+			->find();
+
+		if(!$post->loaded()){
+			throw HTTP_Exception::factory(404);
+		}
+
+		$post->values($this->request->post() , array('name' , 'slug' , 'category_id' , 'user_id' , 'content'));
+
+		try{
+			$post->save();
+			$this->redirect('admin');
+		} catch (ORM_Validation_Exception $e){
+			Session::instance()->set('flash_errors' , $e->errors());
+			$this->redirect('admin/edit/' . $slug);
+		}
 	}
 
 }
