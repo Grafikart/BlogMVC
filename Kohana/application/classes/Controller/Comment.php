@@ -1,8 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Comment extends Controller_Template{
-
-	public $template = 'layouts/blog';
+class Controller_Comment extends Controller{
 
 	public function action_create_comment(){
 
