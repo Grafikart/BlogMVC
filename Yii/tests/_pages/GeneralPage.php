@@ -19,6 +19,14 @@ abstract class GeneralPage
      */
     public static $pageHeaderSelector = '.page-header h1';
     /**
+     * CSS selector for navigation block under page header.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $pageHeaderNavigationSelector
+        = '.page-header .header-navigation';
+    /**
      * Logout link selector.
      *
      * @var string

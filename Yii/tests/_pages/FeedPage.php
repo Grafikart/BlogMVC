@@ -37,6 +37,20 @@ class FeedPage extends \ContentPage
     static $postAuthorLinkTemplate
         = 'article:nth-child(<number>) a[role="user-link"]';
     /**
+     * CSS selector for categories block in sidebar.
+     *
+     * @type string
+     * @since 0.1.1
+     */
+    static $sidebarCategoriesBlockSelector = '.sidebar .categories';
+    /**
+     * CSS selector for posts block in sidebar.
+     *
+     * @type string
+     * @since 0.1.1
+     */
+    static $sidebarPostsBlockSelector = '.sidebar .posts';
+    /**
      * CSS selector template for a category link located in sidebar.
      *
      * @type string
@@ -190,6 +204,25 @@ class FeedPage extends \ContentPage
     }
 
     /**
+     * Returns CSS selector for selected category post count badge.
+     *
+     * @param int $catNumber Category number as it appears in the sidebar.
+     *
+     * @todo integrate into {@link self::getLink()}
+     *
+     * @return string
+     * @since 0.1.0
+     */
+    public static function getCategoryPostCountSelector($catNumber)
+    {
+        return str_replace(
+            '<number>',
+            $catNumber,
+            static::$sidebarCategoryLinkTemplate . ' .badge'
+        );
+    }
+
+    /**
      * Clicks 'edit post' link for selected post.
      *
      * @param int|string $postNumber Post number as it appears on page.
@@ -269,6 +302,7 @@ class FeedPage extends \ContentPage
         preg_match('~(\d+)\s+(\w.*)$~us', $rawText, $m);
         return $m[2];
     }
+
     /**
      * Grabs category data.
      *
@@ -277,14 +311,60 @@ class FeedPage extends \ContentPage
      */
     public function grabCategories()
     {
-        $categories = array();
-        for ($i = 1; $i <= 3; $i++) {
-            $base = '.categories .item-'.$i;
-            $categories[] = array(
-                'name' => $this->grab($base.' a'),
-                'amount' => $this->grab($base.' .badge'),
-            );
+        $text = $this->grab(static::$sidebarCategoriesBlockSelector);
+        $pattern = '/(\d+)\s*([^\n]+)\n/';
+        preg_match_all($pattern, $text, $cats, PREG_SET_ORDER);
+        foreach ($cats as &$cat) {
+            $cat['title'] = $cat[1];
+            $cat['postsCount'] = (int)$cat[0];
         }
-        return $categories;
+        return $cats;
+    }
+
+    /**
+     * Fetches amount of posts in category shown in sidebar.
+     *
+     * @param int $catNumber Category number as it appears in sidebar feed.
+     *
+     * @return int Number of posts in selected category.
+     * @since 0.1.0
+     */
+    public function grabCategoryPostCount($catNumber)
+    {
+        if ($catNumber > 4) {
+            $message = 'Category number should be less than 5';
+            throw new \InvalidArgumentException($message);
+        }
+        $selector = str_replace(
+            '<number>',
+            $catNumber,
+            static::$sidebarCategoryLinkTemplate . ' .badge'
+        );
+        return (int) $this->grab($selector);
+    }
+
+    /**
+     * Grabs category title for category in sidebar listed under provided
+     * number.
+     *
+     * @param int $catNumber Category number as it appears in sidebar.
+     *
+     * @return string Category title.
+     * @since 0.1.0
+     */
+    public function grabCategoryTitle($catNumber)
+    {
+
+        if ($catNumber > 4) {
+            $message = 'Category number should be less than 5';
+            throw new \InvalidArgumentException($message);
+        }
+        $selector = str_replace(
+            '<number>',
+            $catNumber,
+            static::$sidebarCategoryLinkTemplate
+        );
+        $text = $this->grab($selector);
+        return preg_replace('~^\s*\d+\s*~', '', $text);
     }
 }

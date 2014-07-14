@@ -17,26 +17,33 @@ class UsersDashboardPage extends GeneralPage
      * @var string
      * @since 0.1.0
      */
-    static $url = '/admin/users';
+    public static $url = '/admin/users';
     /**
      * Yii page route.
      *
      * @var string
      * @since 0.1.0
      */
-    static $route = 'user/index';
+    public static $route = 'user/index';
     /**
      * Create new user button text.
      *
      * @var string
      * @since 0.1.0
      */
-    static $createNewButton = 'Create new';
+    public static $createNewButtonSelector = '[role="create-user-link"]';
     /**
-     * Edit button text.
+     * Edit button CSS selector.
      *
      * @var string
      * @since 0.1.0
      */
-    static $editLink = 'Edit';
+    public static $editLinkSelector = '[role="edit-profile-link"]';
+    /**
+     * CSS selector for table row containing new user's data.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $createdUserRowSelector = 'tr.success';
 }
