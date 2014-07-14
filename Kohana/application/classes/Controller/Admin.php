@@ -132,6 +132,9 @@ class Controller_Admin extends Controller_Template{
 			throw HTTP_Exception::factory(404);
 		}
 
+		 // Supprime les commentaires en premier, utilisation de DB car l'ORM n'a pas de fonction de suppression de masse
+		DB::delete('comments')->where('comments.post_id' , '=' , $post->id)->execute();
+
 		$post->delete();
 
 		$this->redirect('admin');
