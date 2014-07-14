@@ -54,4 +54,5 @@ Fixtures::add('data:random:string', md5(Fixtures::get('data:random:int')));
 
 Fixtures::add('defaults:app:language', \Yii::app()->language);
 Fixtures::add('defaults:app:name', \Yii::app()->name);
+Fixtures::add('defaults:app:theme', \Yii::app()->theme->name);
 Fixtures::add('defaults:server:host', $serverName);

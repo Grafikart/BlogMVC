@@ -18,6 +18,7 @@ modules:
             url: 'http://ci.yii.blogmvc.dev'
             browser: phantomjs
             window_size: 1024x768
+            clear_cookies: false
 env:
     firefox:
         modules:
