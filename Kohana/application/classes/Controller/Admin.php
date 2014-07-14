@@ -11,7 +11,7 @@ class Controller_Admin extends Controller_Template{
 			$this->redirect('login');
 		}
 
-		if($this->request->action() != 'post_login') parent::before(); //pas besoin de créer une vue pour ce cas
+		if(strrpos($this->request->action() , '_post') === FALSE) parent::before(); //pas besoin de créer une vue pour ce cas
 	}
 
 	public function action_get_login(){
