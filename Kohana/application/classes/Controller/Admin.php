@@ -14,6 +14,11 @@ class Controller_Admin extends Controller_Template{
 		if(strrpos($this->request->action() , 'post_') === FALSE) parent::before(); //pas besoin de créer une vue pour ce cas
 	}
 
+	protected function clear_cache(){
+		Kohana::cache('sidebar_categories',NULL);
+		Kohana::cache('sidebar_posts', NULL);
+	}
+
 	public function action_get_login(){
 
 		$this->template->title = 'Login';
@@ -61,6 +66,7 @@ class Controller_Admin extends Controller_Template{
 
 		try{
 			$post->save();
+			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
 			Session::instance()->set('flash_errors' , $e->errors());
@@ -104,6 +110,7 @@ class Controller_Admin extends Controller_Template{
 
 		try{
 			$post->save();
+			$this->clear_cache();
 			$this->redirect('admin');
 		} catch (ORM_Validation_Exception $e){
 			Session::instance()->set('flash_errors' , $e->errors());
