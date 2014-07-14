@@ -75,6 +75,10 @@ Route::set('admin' , 'admin')
 			'action' => 'index'
 		));
 
+/**
+* Cette route est un petit raccourci pour les actions create,edit,delete
+* (redirige vers une action différente si la requête est en POST ou en GET)
+*/
 Route::set('admin_edit' , 'admin/<action>(/<post_slug>)',
 	array('action' => '(create|edit|delete)'))
 	->filter(function($route, $params, $request){
