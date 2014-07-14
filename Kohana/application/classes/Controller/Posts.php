@@ -8,10 +8,13 @@ class Controller_Posts extends Controller_Template{
 
 		$posts = ORM::factory('Post')
 			->order_by('created','DESC')
-			->limit(5)
 			->find_all();
 
-		View::bind_global('posts',$posts);
+		$paginator = Paginator::factory($posts);
+		$paginator->set_item_count_per_page(5);
+		$paginator->set_current_page_number(Arr::get($_GET , 'page' , 1));
+
+		View::bind_global('posts',$paginator);
 
 		$this->template->content = View::factory('blog/index');
 	}
@@ -53,9 +56,13 @@ class Controller_Posts extends Controller_Template{
 			throw HTTP_Exception::factory(404);
 		}
 
+		$paginator = Paginator::factory($category->posts->order_by('created','DESC')->find_all());
+		$paginator->set_item_count_per_page(5);
+		$paginator->set_current_page_number(Arr::get($_GET , 'page' , 1));
+
         $data = array(
             'category' => $category,
-            'posts'    => $category->posts->find_all()
+            'posts'    => $paginator
         );
 
 		$this->template->title = $category->name;
@@ -75,9 +82,13 @@ class Controller_Posts extends Controller_Template{
 			throw HTTP_Exception::factory(404);
 		}
 
+		$paginator = Paginator::factory($user->posts->order_by('created','DESC')->find_all());
+		$paginator->set_item_count_per_page(5);
+		$paginator->set_current_page_number(Arr::get($_GET , 'page' , 1));
+
         $data = array(
-            'user' => $user,
-            'posts'    => $user->posts->find_all()
+			'user'  => $user,
+			'posts' => $paginator
         );
 
 		$this->template->title = $user->username;

@@ -29,4 +29,4 @@
 		</tbody>
 	</table>
 
-	<?php // $posts->links() ?>
+	<?= $posts->render() ?>

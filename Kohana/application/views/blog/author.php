@@ -7,7 +7,7 @@
 
 		<?= View::factory('blog/posts')->set('posts' , $posts) ?>
 
-		<?php //$posts->links() ?>
+		<?= $posts->render() ?>
 	</div>
 
 	<div class="col-md-4 sidebar">

@@ -4,36 +4,28 @@ $previous_string = 'Previous Page';
 $next_string = 'Next Page';
 $last_string = '&nbsp;>>';
 ?>
-<style type="text/css">
-    <!--
-    .pagination a {
-        border: 1px solid #CCCCCC;
-        margin: 2px;
-        padding: 0.1em 0.2em;
-    }
-    -->
-</style>
-<p class="pagination">
+
+<ul class="pagination">
 	<?php
 	if ($first)
 	{
-		echo '<a href="' . $first . '" rel="first">' . $first_string . '</a>';
+		echo '<li><a href="' . $first . '" rel="first">' . $first_string . '</a></li>';
 	}
 	if ($previous)
 	{
-		echo '<a href="' . $previous . '" rel="previous">' . $previous_string . '</a>';
+		echo '<li><a href="' . $previous . '" rel="previous">' . $previous_string . '</a></li>';
 	}
 	foreach ($pages_in_range as $key => $value)
 	{
-		$value ? print('<a href="' . $value . '">' . $key . '</a>')  : print $key;
+		echo '<li' . ((!$value) ? ' class="active"' : '') .'><a href="' . $value . '">' . $key . '</a></li>';
 	}
 	if ($next)
 	{
-		echo '<a href="' . $next . '" rel="next">' . $next_string . '</a>';
+		echo '<li><a href="' . $next . '" rel="next">' . $next_string . '</a></li>';
 	}
 	if ($last)
 	{
-		echo '<a href="' . $last . '" rel="last">' . $last_string . '</a>';
+		echo '<li><a href="' . $last . '" rel="last">' . $last_string . '</a></li>';
 	}
 	?>
-</p>
+</ul>

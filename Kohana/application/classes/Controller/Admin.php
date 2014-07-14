@@ -41,11 +41,14 @@ class Controller_Admin extends Controller_Template{
 	public function action_index(){
 		$posts = ORM::factory('Post')
 			->order_by('post.created' , 'DESC')
-			->limit(5)
 			->find_all();
 
+		$paginator = Paginator::factory($posts);
+		$paginator->set_item_count_per_page(5);
+		$paginator->set_current_page_number(Arr::get($_GET , 'page' , 1));
+
 		$this->template->title = 'Admin';
-		$this->template->content = View::factory('admin/index')->set('posts' , $posts);
+		$this->template->content = View::factory('admin/index')->set('posts' , $paginator);
 	}
 
 	public function action_get_create(){
