@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') OR die('No direct script access.');
 
-abstract class Controller extends Kohana_Controller {
+abstract class Controller_Template extends Kohana_Controller_Template {
 
 	public function before(){
 
@@ -22,6 +22,8 @@ abstract class Controller extends Kohana_Controller {
             Kohana::cache('sidebar_posts', $sidebar_posts->cached() , 60 * 60); // 60s * 60s = 1 heure
         }
         View::set_global('sidebar_posts', Kohana::cache('sidebar_posts'));
+
+        if(strrpos($this->request->action() , 'post_') === FALSE) parent::before(); //pas besoin de créer une vue pour ce cas
 
 	}
 
