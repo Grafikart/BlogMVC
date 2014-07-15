@@ -15,8 +15,8 @@ class Controller_Admin extends Controller_Template{
 	}
 
 	protected function clear_cache(){
-		Kohana::cache('sidebar_categories',NULL,0);
-		Kohana::cache('sidebar_posts', NULL , 0);
+		Kohana::cache('sidebar_categories',array(),0);
+		Kohana::cache('sidebar_posts', array() , 0);
 	}
 
 	public function action_get_login(){
