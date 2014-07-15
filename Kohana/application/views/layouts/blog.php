@@ -52,5 +52,8 @@
             </div>
         </div><!-- /.container -->
 
+    <!-- Le bootstrap en js à la fin pour ne pas surcharger -->
+    <?= HTML::script('assets/js/jquery.min.js') ?>
+    <?= HTML::script('assets/js/bootstrap.min.js') ?>
     </body>
 </html>
