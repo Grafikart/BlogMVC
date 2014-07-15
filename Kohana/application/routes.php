@@ -50,8 +50,8 @@ Route::set('comment','comment/<post_slug>' ,
 	array( 'post_slug' => '[0-9a-z\-]+' ))
 	->filter($postRequest)
 	->defaults(array(
-			'controller' => 'comment',
-			'action' => 'create_comment'
+			'controller' => 'posts',
+			'action' => 'post_comment'
 		));
 
 Route::set('post_login', 'login')
