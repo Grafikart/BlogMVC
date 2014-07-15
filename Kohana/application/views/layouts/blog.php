@@ -33,15 +33,14 @@
                 </div>
                 <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li>
                         <?php 
                             if(Request::current()->controller() == 'Admin'){
-                                echo HTML::anchor('/','< Back to front');
+                                echo '<li>' . HTML::anchor('/','< Back to front') . '</li>';
+                                if(Request::current()->action() != 'get_login')echo '<li>' . HTML::anchor('/logout' , 'Logout') . '</li>';
                             } else {
-                                echo HTML::anchor('/admin', 'Admin');
+                                echo '<li>' . HTML::anchor('/admin', 'Admin') . '</li>';
                             }
                         ?>
-                        </li>
                     </ul>
                 </div>
             </div><!-- /.container -->

@@ -68,6 +68,12 @@ Route::set('get_login', 'login')
 			'action' => 'get_login'
 		));
 
+Route::set('logout' , 'logout')
+	->defaults(array(
+			'controller' => 'admin',
+			'action' => 'logout'
+		));
+
 // Route pour l'admin
 Route::set('admin' , 'admin')
 	->defaults(array(
