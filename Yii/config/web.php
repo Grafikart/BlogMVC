@@ -119,9 +119,6 @@ return array(
         'dateFormatter' => array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
-        'cacheHelper' => array(
-            'class' => 'application.components.helpers.CacheHelper',
-        ),
     ),
     'theme' => 'default',
 );
