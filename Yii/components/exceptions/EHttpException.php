@@ -4,25 +4,26 @@
  * Another BlogMVC application-Yii interlayer which allows automatic
  * translating of additional HTTP error messages.
  *
- * @version    Release: 0.1.0
+ * @version    0.1.0
  * @since      0.1.0
  * @package    BlogMVC
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class HttpException extends CHttpException
+class EHttpException extends \CHttpException
 {
     /**
      * Constructor with translation support.
      * 
-     * @param int    $status  HTTP error status.
-     * @param string $message Optional error message. Will be translated if
+     * @param int      $status  HTTP error status.
+     * @param string   $message Optional error message. Will be translated if
      * provided.
-     * @param int    $code    Error code.
+     * @param int      $code    Error code.
+     * @param string[] $tArgs   Additional args for translation.
      *
      * @since 0.1.0
      */
-    public function __construct($status, $message=null, $code=0)
+    public function __construct($status, $message=null, $code=0, $tArgs=array())
     {
         if ($message !== null) {
             $message = \Yii::t('http-errors', $message);
