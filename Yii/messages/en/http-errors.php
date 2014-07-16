@@ -7,8 +7,9 @@ return array(
         'comment',
     'badRequest.noDataReceived' => 'Application expected POST data, but '.
         'nothing was received.',
-    'badRequest.invalidPage' => 'Specified page number is invalid.',
     'badRequest.invalidFormat' => 'Invalid format specified.',
+    'badRequest.invalidPageNumber' => 'Specified page number is invalid.',
+    'badRequest.specifiedRssPageNumber' => 'RSS feed does not support paging',
     'notAuthorized.postOwnership' => 'You are trying to modify or delete post '.
         'that doesn\'t belong to you. You should be ashamed!',
     'internalServerError.dataIntegrityFailure' => 'Couldn\'t continue because '.
