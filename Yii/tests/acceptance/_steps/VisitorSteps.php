@@ -43,27 +43,6 @@ class VisitorSteps extends \WebGuy
             $this->seeElement($this->alertSelector);
         }
     }
-    /**
-     * Performs login.
-     *
-     * @param string $login    User login.
-     * @param string $password User password.
-     *
-     * @return void
-     * @since 0.1.0
-     */
-    public function login($login, $password)
-    {
-        $I = $this;
-        $I->amOnPage(\LoginPage::$url);
-        if ($login !== null) {
-            $I->fillField(\LoginPage::$loginField, $login);
-        }
-        if ($password !== null) {
-            $I->fillField(\LoginPage::$passwordField, $password);
-        }
-        $I->click(\LoginPage::$submitButton);
-    }
 
     /**
      * Fills comment form.

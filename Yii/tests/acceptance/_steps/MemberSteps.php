@@ -22,6 +22,21 @@ class MemberSteps extends \WebGuy\VisitorSteps
      */
     public $username;
     /**
+     * Currently used password.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public $password;
+    /**
+     * Flag that represents current authentication state.
+     *
+     * @type bool
+     * @since 0.1.0
+     */
+    protected $isAuthenticated = false;
+
+    /**
      * Publishes a new comment while on post page.
      *
      * @param string $text  Comment text.
@@ -30,7 +45,7 @@ class MemberSteps extends \WebGuy\VisitorSteps
      * @return void
      * @since 0.1.0
      */
-    public function commentAuthenticated($text, $email=null)
+    public function commentAuthenticated($text, $email = null)
     {
         $I = $this;
         $I->amGoingTo('Post a comment');
@@ -49,7 +64,8 @@ class MemberSteps extends \WebGuy\VisitorSteps
      */
     public function logout()
     {
-        $this->username = null;
+        $this->username = $this->password = null;
+        $this->isAuthenticated = false;
         $this->amOnPage('/logout');
     }
 
@@ -67,6 +83,38 @@ class MemberSteps extends \WebGuy\VisitorSteps
     }
 
     /**
+     * Performs login.
+     *
+     * @param string $login    User login.
+     * @param string $password User password.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function login($login, $password)
+    {
+        $I = $this;
+        $I->amOnPage(\LoginPage::$url);
+        if ($login !== null) {
+            $I->fillField(\LoginPage::$loginField, $login);
+        }
+        if ($password !== null) {
+            $I->fillField(\LoginPage::$passwordField, $password);
+        }
+        $I->click(\LoginPage::$submitButton);
+        $url = $I->grabFromCurrentUrl();
+        if ($url !== \LoginPage::$url) {
+            $this->isAuthenticated = true;
+            $this->username = $login;
+            $this->password = $password;
+        } else {
+            $this->isAuthenticated = false;
+            $this->username = null;
+            $this->password = null;
+        }
+    }
+
+    /**
      * Publishes new post.
      *
      * @param string      $title    Post title.
@@ -77,7 +125,7 @@ class MemberSteps extends \WebGuy\VisitorSteps
      * @return void
      * @since 0.1.0
      */
-    public function writePost($title, $text, $slug=null, $category=null)
+    public function writePost($title, $text, $slug = null, $category = null)
     {
         $I = $this;
         $I->amOnPage(\PostFormPage::$newPostUrl);
@@ -132,15 +180,80 @@ class MemberSteps extends \WebGuy\VisitorSteps
      */
     public function editPost(
         $id,
-        $title=null,
-        $text=null,
-        $slug=null,
-        $category=null
-    ) {
+        $title = null,
+        $text = null,
+        $slug = null,
+        $category = null
+    )
+    {
         $I = $this;
         $I->amOnPage(\PostFormPage::route($id));
         $I->seeCurrentUrlEquals(\PostFormPage::route($id));
         $I->fillPostForm($title, $text, $slug, $category);
         $I->click(\PostFormPage::$submitButton);
+    }
+
+    /**
+     * Performs 'flush cache' action.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function flushCache()
+    {
+        $I = $this;
+        $I->amOnPage(\OptionsPage::$url);
+        $I->click('control.flushCache');
+    }
+
+    /**
+     * Performs 'recalculate category counters' action.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function recalculateCategoryCounters()
+    {
+        $I = $this;
+        $I->amOnPage(\OptionsPage::$url);
+        $I->click('control.recalculateCounters');
+    }
+
+    /**
+     * Updates username from wev interface.
+     *
+     * @param string $username New username.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function switchUsername($username)
+    {
+        $I = $this;
+        $I->amOnPage(\ProfilePage::$url);
+        $I->fillField(\ProfilePage::$usernameField, $username);
+        $I->click(\ProfilePage::$usernameUpdateButton);
+    }
+
+    /**
+     * Updates current user password.
+     *
+     * @param string $newPassword New password.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function updatePassword($newPassword)
+    {
+        if (!$this->isAuthenticated) {
+            throw new \BadMethodCallException('Please authenticate first');
+        }
+        $I = $this;
+        $I->amOnPage(\ProfilePage::$url);
+        $I->fillField(\ProfilePage::$currentPasswordField, $this->password);
+        $I->fillField(\ProfilePage::$newPasswordField, $newPassword);
+        $I->fillField(\ProfilePage::$repeatNewPasswordField, $newPassword);
+        $I->click(\ProfilePage::$passwordUpdateButton);
+        $this->password = $newPassword;
     }
 }
