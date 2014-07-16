@@ -4,13 +4,16 @@
  * This class holds data about current page, it's number, total pages number,
  * parent page, etc.
  *
+ * @property int $number Current page number.
+ * @property int $total  Total amount of pages.
+ *
  * @version    0.1.0
  * @since      0.1.0
  * @package    BlogMVC
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class Page
+class Page extends \CComponent
 {
     /**
      * List of parent pages in descendent order (parent page goes first, then
@@ -48,7 +51,14 @@ class Page
      * @type string
      * @since 0.1.0
      */
-    public $headingTitle;
+    public $heading;
+    /**
+     * Description that is placed right under page heading.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public $headingDescription;
     /**
      * Current page number.
      *
@@ -63,6 +73,13 @@ class Page
      * @since 0.1.0
      */
     public $totalPages = 1;
+    /**
+     * Format in which page should be represented.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public $format = 'html';
     /**
      * List of navigation links to be placed under page header in [url => text]
      * form.
@@ -111,15 +128,105 @@ class Page
      */
     public function __construct(\BaseController $controller)
     {
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $this->loadPageNumber();
+        $this->loadPageFormat();
         $this->controller = $controller;
+        $this->loadControllerOptions($controller);
+        $this->uri = $app->getRequest()->getRequestUri();
+        $this->loadAncestors();
+        $this->loadNavigation();
+    }
+
+    /**
+     * Loads current page number.
+     *
+     * @throws \EHttpInvalidPageNumberException Thrown if invalid page number is
+     *                                          provided,
+     *
+     * @return int Current page number.
+     * @since 0.1.0
+     */
+    protected function loadPageNumber()
+    {
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $pageNumber = $app->getRequest()->getParam('page');
+        if ($pageNumber !== null && (int) $pageNumber < 1) {
+            throw new \EHttpInvalidPageNumberException;
+        }
+        return $this->pageNumber = $pageNumber ? (int) $pageNumber : 1;
+    }
+
+    /**
+     * Loads format current page should be returned in.
+     *
+     * @throws \EHttpInvalidPageFormatException Thrown if invalid page format is
+     *                                          specified
+     * @throws \EHttpRestrictedPagingException  Thrown if end user has specified
+     *                                          page number for RSS feed.
+     *
+     * @return string Current format.
+     * @since 0.1.0
+     */
+    protected function loadPageFormat()
+    {
+        /** @type \CWebApplication $app */
+        $app = \Yii::app();
+        $format = $app->getRequest()->getParam('format', 'html');
+        $pageNumber = $app->getRequest()->getParam('page');
+        if ($format === 'rss' && $pageNumber !== null) {
+            throw new \EHttpRestrictedPagingException(
+                'badRequest.specifiedRssPageNumber'
+            );
+        }
+        if ($format !== 'html'
+            && !\Yii::app()->formatter->knownFormat($format)
+        ) {
+            throw new \EHttpInvalidPageFormatException;
+        }
+        return $this->format = $format;
+    }
+
+    /**
+     * Loads pagination options stored in controller.
+     *
+     * @param \BaseController $controller Controller to be examinde.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    protected function loadControllerOptions(\BaseController $controller)
+    {
         $this->title = $controller->getPageTitle();
         $this->route = $controller->getRoute();
         $this->routeOptions = $_GET; // CHttpRequest cannot into this
-        /** @type \CWebApplication $app */
-        $app = \Yii::app();
-        $this->pageNumber = $app->getRequest()->getParam('page', 1);
-        $this->uri = $app->getRequest()->getRequestUri();
-        $this->loadAncestors();
+    }
+
+    /**
+     * Loads up navigation links.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function loadNavigation()
+    {
+        $navigation = $this->controller->navigationLinks();
+        $action = $this->controller->getAction()->getId();
+        if (isset($navigation[$action])) {
+            $navRoutes = $navigation[$action];
+            foreach ($navRoutes as &$route) {
+                if (strpos($route, '/') === false) {
+                    $route = $this->controller->getId().'/'.$route;
+                }
+                $titleKey = 'pageTitle.'.str_replace('/', '.', $route);
+                $this->headerNavigation[] = array(
+                    'url' => $this->controller->createUrl($route),
+                    'title' => \Yii::t('templates', $titleKey),
+                );
+            }
+        }
     }
 
     /**
@@ -158,6 +265,20 @@ class Page
                 $page['uri'] = $this->controller->createUrl($page['action']);
                 $page['slug'] = basename($page['uri']);
             }
+        }
+        if (YII_DEBUG) {
+            $message = 'built page ancestors list: ' . PHP_EOL;
+            $items = array();
+            foreach ($this->ancestors as $ancestor) {
+                $itemChunks = array('[');
+                foreach ($ancestor as $k => $v) {
+                    $prefix = "  $k:";
+                    $itemChunks[] = str_pad($prefix, 12).$v;
+                }
+                $itemChunks[] = ']';
+                $items[] = implode(PHP_EOL, $itemChunks);
+            }
+            \Yii::trace($message.implode(','.PHP_EOL, $items));
         }
     }
 
@@ -227,7 +348,14 @@ class Page
             );
             $key = implode('.', $implodable);
         }
-        $this->title = \Yii::t('templates', $key, $data);
+        $newTitle = \Yii::t('templates', $key, $data);
+        $message = sprintf(
+            'Switched page title from [%s] to [%s]',
+            $this->title,
+            $newTitle
+        );
+        \Yii::trace($message);
+        $this->title = $newTitle;
     }
 
     /**
@@ -282,7 +410,7 @@ class Page
      * @return bool
      * @since 0.1.0
      */
-    public function hasAncestor($level)
+    public function hasAncestor($level=0)
     {
         if ($level < 0) {
             $level = sizeof($this->ancestors) + $level;
@@ -300,7 +428,7 @@ class Page
      * @return mixed
      * @since
      */
-    public function getAncestor($level)
+    public function getAncestor($level=0)
     {
         if ($level < 0) {
             $level = sizeof($this->ancestors) + $level;
@@ -320,7 +448,7 @@ class Page
      */
     public function hasParent()
     {
-        return $this->hasAncestor(-1);
+        return $this->hasAncestor();
     }
 
     /**
@@ -331,6 +459,58 @@ class Page
      */
     public function getParent()
     {
-        return $this->getAncestor(-1);
+        return $this->getAncestor();
+    }
+
+    /**
+     * Shortcut to get value of {@link self::$totalPages} by requesting
+     * {@link self::$total} property.
+     *
+     * @return int
+     * @since 0.1.0
+     */
+    public function getTotal()
+    {
+        return $this->totalPages;
+    }
+
+    /**
+     * Shortcut to set value of {@link self::$totalPages} by setting
+     * {@link self::$total} property.
+     *
+     * @param int $total Total pages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function setTotal($total)
+    {
+        $this->totalPages = $total;
+    }
+
+    /**
+     * Shortcut to get value of {@link self::$pageNumber} by requesting
+     * {@link self::$number} property.
+     *
+     * @return int
+     * @since 0.1.0
+     */
+    public function getNumber()
+    {
+        return $this->pageNumber;
+    }
+
+    /**
+     * Shortcut to set value of {@link self::$pageNumber} by setting
+     * {@link self::$pageNumber} property
+     *
+     * @param int $number Current page number.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function setNumber($number)
+    {
+        $this->pageNumber = $number;
     }
 }
