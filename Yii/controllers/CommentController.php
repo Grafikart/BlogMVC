@@ -16,9 +16,9 @@ class CommentController extends \BaseController
      *
      * @param string $postSlug Slug of the post comment should be added to.
      * 
-     * @throws \HttpException HTTP error 400 is raised if specified post
+     * @throws \EHttpException HTTP error 400 is raised if specified post
      * hasn't been found.
-     * @throws \HttpException HTTP error 400 is raised if no data hasn't been
+     * @throws \EHttpException HTTP error 400 is raised if no data hasn't been
      * received.
      *
      * @return void
@@ -28,44 +28,74 @@ class CommentController extends \BaseController
     {
         $post = \Post::model()->find('slug = :slug', array(':slug' => $postSlug));
         $data = \Yii::app()->request->getPost('Comment', false);
-        if ($post === null) {
-            throw new \HttpException(400, 'badRequest.postNotFound');
-        } else if ($data === false) {
-            throw new \HttpException(400, 'badRequest.noDataReceived');
+        if (!$post) {
+            throw new \EHttpException(400, 'badRequest.postNotFound');
+        } else if (!$data) {
+            throw new \EHttpException(400, 'badRequest.noDataReceived');
         }
         $comment = new Comment;
         $comment->post_id = $post->getPrimaryKey();
         if ($comment->setAndSave($data)) {
-            \Yii::app()->user->sendMessage(
-                'comment.submit.success',
-                WebUserLayer::FLASH_SUCCESS
-            );
+            \Yii::app()->user->sendSuccessMessage('comment.submit.success');
         } else {
-            \Yii::app()->user->sendMessage(
-                'comment.submit.fail',
-                WebUserLayer::FLASH_ERROR
-            );
+            \Yii::app()->user->sendErrorMessage('comment.submit.fail');
             \Yii::app()->user->saveData('comment', $data);
         }
-        $this->redirect(
-            array(
-                'post/show',
-                'slug' => $post->slug,
-                '#' => 'comment-form',
-            )
+        $redirect = array(
+            'post/show',
+            'slug' => $post->slug,
+            '#' => 'comment-form',
         );
+        $this->redirect($redirect);
     }
+
+    /**
+     * Adds comment via ajax.
+     *
+     * @param string $postSlug Parent post slug.
+     *
+     * @throws \EHttpException HTTP error 400 is thrown if non-ajax request is
+     *                         received, there is no post with provided slug or
+     *                         no data has been posted.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionAjaxAdd($postSlug)
+    {
+        if (\Yii::app()->request->isAjaxRequest
+            && (!defined('YII_DEBUG') || !YII_DEBUG)
+        ) {
+            throw new \EHttpException(400, 'badRequest.ajaxOnly');
+        }
+        $post = \Post::model()->find('slug = :slug', array(':slug' => $postSlug));
+        $data = \Yii::app()->request->getPost('Comment', false);
+        if (!$post) {
+            throw new \EHttpException(400, 'badRequest.postNotFound');
+        } else if (!$data) {
+            throw new \EHttpException(400, 'badRequest.noDataReceived');
+        }
+        $comment = new Comment;
+        $comment->post_id = $post->getPrimaryKey();
+        $response = array('success' => true,);
+        if (!$comment->setAndSave($data)) {
+            $response['success'] = false;
+            $response['errors'] = $comment->getErrors();
+        }
+        echo \CJSON::encode($response);
+    }
+
     /**
      * Deletes comment specified by <var>$id</var>.
      *
      * @param int $id ID of the comment to be deleted.
      * 
-     * @throws \HttpException HTTP error 400 is generated if specified comment
+     * @throws \EHttpException HTTP error 400 is generated if specified comment
      * hasn't been found.
-     * @throws \HttpException HTTP error 500 is generated if parent post for
+     * @throws \EHttpException HTTP error 500 is generated if parent post for
      * specified comment hasn't been found (since it points to data integrity
      * failure).
-     * @throws \HttpException HTTP error 403 is generated if comment's parent
+     * @throws \EHttpException HTTP error 403 is generated if comment's parent
      * post doesn't belong to current user.
      *
      * @return void
@@ -75,18 +105,20 @@ class CommentController extends \BaseController
     {
         $comment = \Comment::model()->with('post')->findByPk($id);
         if ($comment === null) {
-            throw new \HttpException(400, 'badRequest.commentNotFound');
+            throw new \EHttpException(400, 'badRequest.commentNotFound');
         } else if ($comment->post === null) {
-            Yii::log(
-                'Data integrity failure: comment#'.$id.' doesn\'t have parent post',
-                CLogger::LEVEL_ERROR
+            $message = 'Data integrity failure: comment#'.$id. ' doesn\'t '.
+                'have parent post';
+            \Yii::log($message, CLogger::LEVEL_ERROR );
+            throw new \EHttpException(
+                500,
+                'internalServerError.dataIntegrityFailure'
             );
-            throw new \HttpException(500, 'internalServerError.dataIntegrityFailure');
-        } else if ((int)$comment->post->user_id !== Yii::app()->user->id) {
-            throw new \HttpException(403, 'notAuthorized.postOwnership');
+        } else if ((int) $comment->post->user_id !== \Yii::app()->user->id) {
+            throw new \EHttpException(403, 'notAuthorized.postOwnership');
         }
         $comment->delete();
-        \Yii::app()->user->sendMessage('comment.delete');
+        \Yii::app()->user->sendNotice('comment.delete');
         $this->redirect(array('post/show', 'slug' => $comment->post->slug));
     }
 }
