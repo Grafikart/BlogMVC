@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This controller holds single action for displaying category posts.
+ * Displays category feeds, listings and manages category list.
  *
  * @version    Release: 0.1.0
  * @since      0.1.0
@@ -9,85 +9,170 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class CategoryController extends BaseController
+class CategoryController extends \BaseController
 {
-    /**
-     * Alters breadcrumb array by adding proper name to the last element
-     * 
-     * @param \Category $category current category.
-     *
-     * @return void
-     * @since 0.1.0
-     */
-    public function alterBreadcrumbs($lastPageName)
-    {
-        $this->breadcrumbs[sizeof($this->breadcrumbs) - 1]['title'] = $lastPageName;
-    }
     /**
      * Main action that displays category page.
      *
-     * @todo get rid of irrelevant scope approach
-     *
-     * @throws \HttpException HTTP error 400 is generated if incorrect page
-     * is requested.
-     * @throws \HttpException HTTP error 404 is generated if requested page
-     * doesn't exist.
-     * 
      * @param string $slug Category slug.
-     * @param int|string $page Page number.
+     *
+     * @throws \EHttpException HTTP error 404 is generated if requested page
+     * doesn't exist.
+     *
      * @return void
      * @since 0.1.0
      */
-    public function actionIndex($slug, $page=1)
+    public function actionIndex($slug)
     {
-        $page = $this->setPageNumber($page);
-        $category = Category::model()->paged($page, 5)->with(array( // note that paged scope is applied on Category :/
-            'posts' => array(
-                //'scopes' => array('paged' => $page,),
-                'order' => 'created DESC',
-            ),
-            'postCount',
-        ))->find('t.slug = :slug', array(':slug' => $slug));
-        if ($category === null || sizeof($category->posts) === 0) {
-            throw new \HttpException(404);
+        $category = \Category::model()->findBySlug($slug);
+        if (!$category || !$category->post_count) {
+            throw new \EHttpException(404);
         }
-        $this->addBreadcrumbsReplacement($category->slug, $category->name);
-        $this->generateBreadcrumbs();
-        $this->render('index', array(
-            'category' => $category,
-            'pagination' => array(
-                'currentPage' => $page,
-                'totalPages' => ceil((int) $category->postCount / 5),
-                'route' => 'category/index',
-                'routeOptions' => array('slug' => $slug),
-            ),
-        ));
+        // if post_count is correct, there is more than zero posts to show
+        // if post_count is incorrect, i'm deeply tucked even before this line
+        $category->posts = $posts = \Post::model()
+            ->paged($this->page->pageNumber, 5)
+            ->findByCategory($category->id);
+        $this->page->totalPages = ceil($category->post_count / 5);
+        $this->page->resetI18n(array('{categoryTitle}', $category->name));
+        $data = array('category' => $category, 'posts' => $posts);
+        $this->render('index', $data, $category);
     }
+
     /**
-     * Lists page (25 records) of available categories.
-     * 
-     * @throws \HttpException HTTP error 400 is generated if invalid page
+     * Lists page (10 records) of available categories.
+     *
+     * @throws \EHttpException HTTP error 400 is generated if invalid page
      * number is supplied.
-     * 
-     * @param int $page Page number
+     *
+     * @return void
      * @since 0.1.0
      */
-    public function actionList($page=1)
+    public function actionList()
     {
-        if (($page = (int) $page) < 1) {
-            throw new \HttpException(400, 'badRequest.invalidPage');
+        $categories = \Category::model()
+            ->paged($this->page->pageNumber, 10)
+            ->findAll();
+        if (empty($categories) && $this->page->pageNumber > 1) {
+            throw new \EHttpException(404);
         }
-        $this->alterBreadcrumbs(Yii::t('templates', 'category.listTitle'));
-        $categories = Category::model()->paged($page, 25)->findAll();
-        $totalPages = ceil(Category::model()->count()/25);
-        $this->render('listing', array(
-            'categories' => $categories,
-            'pagination' => array(
-                'currentPage' => $page,
-                'totalPages' => $totalPages,
-                'route' => 'category/index',
-            ),
-        ));
+        $this->page->totalPages = ceil(\Category::model()->count() / 10);
+        $this->render('list', array('categories' => $categories,));
+    }
+
+    /**
+     * Displays category dashboard.
+     *
+     * @throws EHttpException HTTP error 404 is thrown if requested page doesn't
+     *                        exist.
+     *
+     * @todo 95% of code is simply identical to actionList(). Any chance to
+     * merge it without breaking access rules and minds?
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionDashboard()
+    {
+        $categories = \Category::model()
+            ->paged($this->page->pageNumber, 10)
+            ->findAll();
+        if (empty($categories) && $this->page->pageNumber > 1) {
+            throw new \EHttpException(404);
+        }
+        $this->page->totalPages = ceil(\Category::model()->count() / 10);
+        $this->render('dashboard', array('categories' => $categories,));
+    }
+
+    /**
+     * Renders category form for new or existing category.
+     *
+     * @param null|string|int $slug Category slug.
+     *
+     * @throws \EHttpException Thrown if category for specified ID doesn't
+     *                         exist.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionEdit($slug=null)
+    {
+        if (!($category = \Category::model()->findBySlugOrCreate($slug))) {
+            throw new \EHttpException(404);
+        }
+        if ($data = \Yii::app()->user->getData('category')) {
+            $category->setAndValidate($data);
+        }
+        $this->page->resetI18n(array('{categoryTitle}' => $category->name));
+        $this->render('form', array('category' => $category));
+    }
+
+    /**
+     * Saves new/existing model via AJAX call.
+     *
+     * @param null|string|int $slug Category slug.
+     *
+     * @throws \EHttpException Thrown if accessed non-ajaxly, no data sent or
+     * model with specified ID doesn't exist.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionSaveAjax($slug=null)
+    {
+        if (\Yii::app()->request->isAjaxRequest
+            && (!defined('YII_DEBUG') || !YII_DEBUG)
+        ) {
+            throw new \EHttpException(400, 'badRequest.ajaxOnly');
+        }
+        if (!($data = \Yii::app()->request->getPost('Category'))) {
+            throw new \EHttpException(400, 'badRequest.noDataReceived');
+        }
+        if (!($category = \Category::model()->findBySlugOrCreate($slug))) {
+            throw new \EHttpException(404);
+        }
+        $response = array('success' => true);
+        if (!$category->setAndSave($data)) {
+            $response['success'] = false;
+            $response['errors'] = $category->getErrors();
+        }
+        echo \CJSON::encode($response);
+    }
+
+    /**
+     * Adds new record or bounces back errors.
+     *
+     * @param int|string|null $slug Category slug.
+     *
+     * @throws \EHttpException Thrown if no data received or category doesn't
+     * exist.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionSave($slug=null)
+    {
+        if (!($data = \Yii::app()->request->getPost('Category'))) {
+            throw new \EHttpException(400, 'badRequest.noDataReceived');
+        }
+        if (!($category = \Category::model()->findBySlugOrCreate($slug))) {
+            throw new \EHttpException(404);
+        }
+        $prefix = 'category.'.($category->isNewRecord?'submit':'update').'.';
+        $i18nData = array('{category}' => $category->name);
+        if ($category->setAndSave($data)) {
+            $i18nData['{category}'] = $category->name;
+            \Yii::app()->user->sendSuccessMessage($prefix.'success', $i18nData);
+            $this->redirect(array('category/dashboard'));
+        } else {
+            \Yii::app()->user->saveData('category', $data);
+            \Yii::app()->user->sendErrorMessage($prefix.'fail', $i18nData);
+            $data = array('category/edit');
+            if ($slug) {
+                $data['slug'] = $slug;
+            }
+            $this->redirect($data);
+        }
     }
 
     /**
@@ -110,8 +195,41 @@ class CategoryController extends BaseController
     public function accessRules()
     {
         return array(
-            array('deny', 'actions' => array('recalculate'), 'users' => array('?')),
+            array(
+                'deny',
+                'actions' => array('recalculate', 'ajaxAdd', 'add'),
+                'users' => array('?')
+            ),
             array('allow'),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string[] List of action parent actions.
+     * @since 0.1.0
+     */
+    public function getActionAncestors()
+    {
+        return array(
+            'index' => 'list',
+            'list' => 'post/index',
+            'dashboard' => 'admin/index',
+            'edit' => 'dashboard'
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array Navigation links definitions.
+     * @since 0.1.0
+     */
+    public function navigationLinks()
+    {
+        return array(
+            'index' => array('list', 'post/index',),
         );
     }
 }
