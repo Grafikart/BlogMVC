@@ -20,8 +20,9 @@ class AdminController extends BaseController
      */
     public function actionIndex()
     {
-        $user = \User::model()->with('postCount', 'commentCount')
-                              ->findByPk(\Yii::app()->user->id);
+        $user = \User::model()
+            ->with('postCount', 'commentCount')
+            ->findByPk(\Yii::app()->user->id);
         $this->render('index', array('user' => $user));
     }
 
@@ -55,15 +56,11 @@ class AdminController extends BaseController
      */
     public function actionStatus()
     {
-        /** @var ApplicationService $service */
-        $service = \Yii::app()->applicationService;
-        $this->render(
-            'status',
-            array(
-                'statistics' => \ApplicationModel::getStatistics(),
-                'status' => $service->getServiceInfo()
-            )
+        $data = array(
+            'statistics' => \ApplicationModel::getStatistics(),
+            'status' => \Yii::app()->applicationService->getServiceInfo(),
         );
+        $this->render('status', $data);
     }
 
     /**
@@ -77,6 +74,8 @@ class AdminController extends BaseController
         $model = new \ApplicationModel;
         if ($data = \Yii::app()->request->getPost('ApplicationModel', false)) {
             $model->save($data); // setAndSave analog, errors fetched in view
+            // resetting page title after language switch
+            $this->page->resetTitle();
         }
         $this->render('options', array('appModel' => $model));
     }
@@ -93,14 +92,8 @@ class AdminController extends BaseController
     public function actionFlushCache($returnUrl=null)
     {
         \Yii::app()->cache->flush();
-        \Yii::app()->user->sendMessage(
-            'cache.afterFlush',
-            WebUserLayer::FLASH_SUCCESS
-        );
-        if ($returnUrl !== null) {
-            $this->redirect($returnUrl);
-        }
-        $this->redirect(array('admin/options'));
+        \Yii::app()->user->sendSuccessMessage('cache.afterFlush');
+        $this->redirect($returnUrl ? $returnUrl : array('admin/options'));
     }
 
     /**
@@ -112,11 +105,8 @@ class AdminController extends BaseController
     public function actionRecalculate()
     {
         \Category::model()->recalculateCounters();
-        \Yii::app()->user->sendMessage(
-            'category.recalculated',
-            WebUserLayer::FLASH_SUCCESS
-        );
-        \Yii::app()->setGlobalState('lastPostUpdate', time());
+        \Yii::app()->user->sendSuccessMessage('category.recalculated');
+        \Yii::app()->cacheHelper->invalidatePostsCache();
         $this->redirect(array('admin/options'));
     }
 
@@ -144,6 +134,38 @@ class AdminController extends BaseController
         return array(
             array('allow', 'users' => array('@'),),
             array('deny',),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return string[]
+     * @since 0.1.0
+     */
+    public function getActionAncestors()
+    {
+        return array(
+            'index' => 'post/index',
+            'help' => 'index',
+            'devHelp' => 'help',
+            'status' => 'index',
+            'options' => 'index',
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array Set of actions navigation links definitions.
+     * @since 0.1.0
+     */
+    public function navigationLinks()
+    {
+        return array(
+            'help' => array('index',),
+            'devHelp' => array('index', 'help',),
+            'status' => array('options', 'index',),
         );
     }
 }
