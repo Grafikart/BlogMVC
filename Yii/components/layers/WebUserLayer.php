@@ -226,4 +226,29 @@ class WebUserLayer extends \CWebUser
         }
         return $result;
     }
+
+    /**
+     * Logouts user and sends some goodbye messages.
+     *
+     * @param bool $destroySession Whether to destroy session or not. Please
+     *                             note that if set to true, messages will be
+     *                             muted and `$mute` flag won't have any effect.
+     * @param bool $mute           Controls user flash messages generation.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function logout($destroySession = false, $mute = false)
+    {
+        if ($this->getIsGuest()) {
+            if (!$destroySession && !$mute) {
+                $this->sendErrorMessage('auth.logout.guestAttempt');
+            }
+            return;
+        }
+        parent::logout($destroySession);
+        if (!$mute) {
+            $this->sendNotice('auth.logout.goodbye');
+        }
+    }
 }
