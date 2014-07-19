@@ -189,4 +189,41 @@ class WebUserLayer extends \CWebUser
     {
         return $this->hasFlash($this->dataKeyPrefix.$alias);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \IUserIdentity $identity The user identity (which should already
+     *                                 be authenticated).
+     * @param integer        $duration Number of seconds that the user can
+     *                                 remain in logged-in status. Defaults to
+     *                                 0, meaning login till the user closes the
+     *                                 browser.
+     * @param boolean        $mute     Defines if this method should generate
+     *                                 flash user messages.
+     *
+     * @return boolean Whether the user is logged in.
+     * @since 0.1.0
+     */
+    public function login(
+        \IUserIdentity $identity,
+        $duration = 0,
+        $mute = false
+    ) {
+        if (!$this->getIsGuest()) {
+            if (!$mute) {
+                $this->sendNotice('auth.login.alreadyAuthorized');
+            }
+            return true;
+        }
+        $result = parent::login($identity, $duration);
+        if (!$mute) {
+            if ($result) {
+                $this->sendSuccessMessage('auth.login.greeting');
+            } else {
+                $this->sendErrorMessage('auth.login.fail');
+            }
+        }
+        return $result;
+    }
 }
