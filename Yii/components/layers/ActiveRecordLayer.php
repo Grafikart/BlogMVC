@@ -134,4 +134,58 @@ abstract class ActiveRecordLayer extends \CActiveRecord
         $this->resetAttributes($attributes);
         return $this->validate();
     }
+
+    /**
+     * Returns array of public attributes that may be shown in API call.
+     *
+     * @return array Attributes.
+     * @since 0.1.0
+     */
+    public function getPublicAttributes()
+    {
+        return array_merge(
+            $this->getAttributes(),
+            $this->getRelatedAttributes()
+        );
+    }
+
+    /**
+     * Returns all loaded related attributes.
+     *
+     * @return array
+     * @since 0.1.0
+     */
+    public function getRelatedAttributes()
+    {
+        $attrs = array();
+        $relations = $this->relations();
+        foreach ($relations as $key => $value) {
+            if ($this->hasRelated($key)) {
+                $related = $this->getRelated($key);
+                if (is_array($related)) {
+                    $attrs[$key] = array();
+                    foreach ($related as $model) {
+                        /** @type \CModel $model */
+                        if (method_exists($model, 'getPublicAttributes')) {
+                            $attrs[$key][] = $model->getPublicAttributes();
+                        } elseif ($related instanceof \CModel) {
+                            $attrs[$key][] = $model->getAttributes();
+                        } else {
+                            $attrs[$key][] = $model;
+                        }
+                    }
+                } else {
+                    /** @type \CModel $related */
+                    if (method_exists($related, 'getPublicAttributes')) {
+                        $attrs[$key] = $related->getPublicAttributes();
+                    } elseif ($related instanceof \CModel) {
+                        $attrs[$key] = $related->getAttributes();
+                    } else {
+                        $attrs[$key] = $related;
+                    }
+                }
+            }
+        }
+        return $attrs;
+    }
 }

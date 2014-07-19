@@ -122,11 +122,10 @@ class ModelFormatter extends \CComponent
      */
     public function xmlifyModel(\CModel $model)
     {
-        $xml = new SimpleXMLElement('<xml/>');
-        $attributes = $this->getModelPublicAttributes($model);
-        foreach ($attributes as $key => $value) {
-            $xml->addChild($key, $value);
-        }
+        $xml = $this->xmlWalker(
+            new \SimpleXMLElement('<xml/>'),
+            $this->getModelPublicAttributes($model)
+        );
         return $xml->asXML();
     }
 
@@ -140,15 +139,41 @@ class ModelFormatter extends \CComponent
      */
     public function xmlifyModels($models)
     {
-        $xml = new SimpleXMLElement('<xml/>');
-        foreach ($models as $model) {
-            $modelElement = $xml->addChild(get_class($model));
-            $attributes = $this->getModelPublicAttributes($model);
-            foreach ($attributes as $key => $value) {
-                $modelElement->$key = $value;
+        $xml = $this->xmlWalker(new \SimpleXMLElement('<xml/>'), $models);
+        return $xml->asXML();
+    }
+
+    /**
+     * Walks down provided data and fills up provided XML element.
+     *
+     * @param \SimpleXMLElement $root Root element.
+     * @param mixed             $data Data to be included in document:
+     *                                attributes, model itself, list of models,
+     *                                etc.
+     *
+     * @return \SimpleXMLElement Populated root element.
+     * @since 0.1.0
+     */
+    public function xmlWalker(\SimpleXMLElement $root, $data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_int($key)) {
+                $key = 'item'; // FFFFUUUU
+            }
+            if ($value instanceof \CModel) {
+                $element = $root->addChild(get_class($value));
+                $this->xmlWalker(
+                    $element,
+                    $this->getModelPublicAttributes($value)
+                );
+            } elseif (is_array($value)) {
+                $element = $root->addChild($key);
+                $this->xmlWalker($element, $value);
+            } else {
+                $root->$key = $value;
             }
         }
-        return $xml->asXML();
+        return $root;
     }
 
     /**
