@@ -82,7 +82,7 @@ class BaseController extends \CController
             return parent::render($view, $data, $return);
         } else {
             if (empty($rawData)) {
-                throw new \EHttpException(404);
+                throw new \EHttpException(400, 'badRequest.invalidFormat');
             }
             $formatter = \Yii::app()->formatter;
             if (is_array($rawData)) {
