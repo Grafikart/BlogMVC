@@ -67,7 +67,7 @@ class SlugBehavior extends CActiveRecordBehavior
      */
     public function uniqifySlug($slug)
     {
-        Yii::trace('Uniqifying slug ['.$slug.']');
+        \Yii::trace('Uniqifying slug ['.$slug.']');
         if (!is_string($slug) || strlen($slug) === 0) {
             $error = \Yii::t(
                 'validation-errors',
