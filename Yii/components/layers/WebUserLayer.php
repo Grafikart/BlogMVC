@@ -82,6 +82,50 @@ class WebUserLayer extends \CWebUser
         );
         $this->setFlash($this->messageKey, $messages);
     }
+
+    /**
+     * Simple wrapper around {@link self::sendMessage()}. Please note that
+     * calling this is the same as calling {@link self::sendMessage()} with
+     * default message level.
+     *
+     * @param string   $message Message or it's translation key.
+     * @param string[] $data    Additional data to translate the message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function sendNotice($message, $data=array())
+    {
+        $this->sendMessage($message, self::FLASH_NOTICE, $data);
+    }
+
+    /**
+     * Simple wrapper around {@link self::sendMessage()}
+     *
+     * @param string   $message Message or it's translation key.
+     * @param string[] $data    Additional data to translate the message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function sendErrorMessage($message, $data=array())
+    {
+        $this->sendMessage($message, self::FLASH_ERROR, $data);
+    }
+
+    /**
+     * Simple wrapper around {@link self::sendMessage()}
+     *
+     * @param string   $message Message or it's translation key.
+     * @param string[] $data    Additional data to translate the message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function sendSuccessMessage($message, $data=array())
+    {
+        $this->sendMessage($message, self::FLASH_SUCCESS, $data);
+    }
     /**
      * Fetches all previously stored user messages.
      *
