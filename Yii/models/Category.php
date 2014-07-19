@@ -4,6 +4,7 @@
  * Category representation.
  *
  * @method static Category model() Gets category model.
+ * @property \Post[] $posts Child posts.
  *
  * @version    Release: 0.1.0
  * @since      0.1.0
@@ -53,7 +54,7 @@ class Category extends ActiveRecordLayer
      * @return \Category current instance.
      * @since 0.1.0
      */
-    public function paged($page=1, $perPage=25)
+    public function paged($page=1, $perPage=5)
     {
         $this->getDbCriteria()->mergeWith(
             array(

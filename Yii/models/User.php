@@ -248,13 +248,10 @@ class User extends ActiveRecordLayer
      */
     public function getPublicAttributes()
     {
-        return array_intersect_key(
-            $this->getAttributes(),
-            array(
-                'id' => 'id',
-                'username' => 'username',
-            )
-        );
+        $attrs = $this->getRelatedAttributes();
+        $attrs['id'] = $this->id;
+        $attrs['username'] = $this->username;
+        return $attrs;
     }
 
     /**

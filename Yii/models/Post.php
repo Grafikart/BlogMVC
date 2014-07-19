@@ -159,6 +159,8 @@ class Post extends \ActiveRecordLayer
         if ($oldCategory == $newCategory || !$oldCategory || !$newCategory) {
             return;
         }
+        /** @type \Category $oldCategory */
+        /** @type \Category $newCategory */
         $oldCategory = \Category::model()->findByPk($oldCategory);
         $newCategory = \Category::model()->findByPk($newCategory);
         if (isset($oldCategory, $newCategory)) {
@@ -314,19 +316,25 @@ class Post extends \ActiveRecordLayer
     }
 
     /**
-     * Returns all public attributes of
+     * Returns all public attributes of post.
      *
-     * @return array
-     * @since
+     * @return array Public attributes.
+     * @since 0.1.0
      */
     public function getPublicAttributes()
     {
-        $attrs = $this->getAttributes();
+        $attrs = parent::getPublicAttributes();
         $attrs['content'] = $this->rendered;
+        if (isset($attrs['author'])) {
+            unset($attrs['user_id']);
+        }
+        if (isset($attrs['category'])) {
+            unset($attrs['category_id']);
+        }
         return $attrs;
     }
     /**
-     * Method for getting internationalized labels. Since it is certanly not
+     * Method for getting internationalized labels. Since it is certainly not
      * the best idea to internationalize labels every time
      * {@link attributeLabels()} is called, this method is called only once
      * for caching internationalized labels, and {@link ActiveRecordLayer}
