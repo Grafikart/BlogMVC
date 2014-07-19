@@ -4,8 +4,11 @@
  * This class holds data about current page, it's number, total pages number,
  * parent page, etc.
  *
- * @property int $number Current page number.
- * @property int $total  Total amount of pages.
+ * @property string[] $parent  Returns parent page data (if parent page exists).
+ * @property int      $number  Current page number.
+ * @property int      $total   Total amount of pages.
+ * @property bool     $isFirst Tells if current page is the first one.
+ * @property bool     $isLast  Tells if current page is the last one.
  *
  * @version    0.1.0
  * @since      0.1.0
@@ -130,10 +133,16 @@ class Page extends \CComponent
     {
         /** @type \CWebApplication $app */
         $app = \Yii::app();
-        $this->loadPageNumber();
-        $this->loadPageFormat();
         $this->controller = $controller;
         $this->loadControllerOptions($controller);
+        // dirty, dirty hack
+        // prevents exception recreation when Yii forwards error to errorAction
+        // thus creating new controller and invoking new page object.
+        $errorAction = \Yii::app()->getErrorHandler()->errorAction;
+        if ($this->controller->route !== $errorAction) {
+            $this->loadPageNumber();
+            $this->loadPageFormat();
+        }
         $this->uri = $app->getRequest()->getRequestUri();
         $this->loadAncestors();
         $this->loadNavigation();
@@ -174,7 +183,7 @@ class Page extends \CComponent
     {
         /** @type \CWebApplication $app */
         $app = \Yii::app();
-        $format = $app->getRequest()->getParam('format', 'html');
+        $format = strtolower($app->getRequest()->getParam('format', 'html'));
         $pageNumber = $app->getRequest()->getParam('page');
         if ($format === 'rss' && $pageNumber !== null) {
             throw new \EHttpRestrictedPagingException(
@@ -192,7 +201,7 @@ class Page extends \CComponent
     /**
      * Loads pagination options stored in controller.
      *
-     * @param \BaseController $controller Controller to be examinde.
+     * @param \BaseController $controller Controller to be examined.
      *
      * @return void
      * @since 0.1.0
@@ -341,12 +350,12 @@ class Page extends \CComponent
     public function resetTitle(array $data=array(), $key=null)
     {
         if (!$key) {
-            $implodable = array(
+            $bits = array(
                 'pageTitle',
                 $this->controller->getId(),
                 $this->controller->getAction()->getId()
             );
-            $key = implode('.', $implodable);
+            $key = implode('.', $bits);
         }
         $newTitle = \Yii::t('templates', $key, $data);
         $message = sprintf(
@@ -485,7 +494,7 @@ class Page extends \CComponent
      */
     public function setTotal($total)
     {
-        $this->totalPages = $total;
+        $this->totalPages = ceil($total);
     }
 
     /**
@@ -512,5 +521,81 @@ class Page extends \CComponent
     public function setNumber($number)
     {
         $this->pageNumber = $number;
+    }
+
+    /**
+     * Tells if current page is the first one.
+     *
+     * @return bool
+     * @since 0.1.0
+     */
+    public function isFirstPage()
+    {
+        return $this->pageNumber === 1;
+    }
+
+    /**
+     * Shortcut to check if this page is the first one via {@link self::isFirst}
+     * property.
+     *
+     * @return bool
+     * @since 0.1.0
+     */
+    public function getIsFirst()
+    {
+        return $this->pageNumber === 1;
+    }
+
+    /**
+     * Tells if current page is the lasst one.
+     *
+     * @return bool
+     * @since 0.1.0
+     */
+    public function isLastPage()
+    {
+        return $this->pageNumber === $this->totalPages;
+    }
+
+    /**
+     * Shortcut to check if this page is the first one via {@link self::isLast}
+     * property.
+     *
+     * @return bool
+     * @since 0.1.0
+     */
+    public function getIsLast()
+    {
+        return $this->pageNumber === $this->totalPages;
+    }
+
+    /**
+     * Creates header for currently selected format.
+     *
+     * @return string
+     * @since 0.1.0
+     */
+    public function generateFormatHeader()
+    {
+        switch ($this->format) {
+            case 'json':
+                $contentType = 'application/json';
+                break;
+            case 'xml':
+                $contentType = 'application/xml';
+                break;
+            case 'rss':
+                $contentType = 'application/rss+xml';
+                break;
+            case 'html':
+            default:
+                $contentType = 'text/html';
+                break;
+        }
+        return sprintf(
+            'Content-Type: %s; charset=%s',
+            $contentType,
+            \Yii::app()->charset
+        );
     }
 }

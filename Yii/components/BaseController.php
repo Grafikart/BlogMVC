@@ -59,6 +59,54 @@ class BaseController extends \CController
     }
 
     /**
+     * A simple wrapper around standard Yii {@link \CController::render()}
+     * method that allows easy data formatting.
+     *
+     * @param string     $view    View name.
+     * @param array|null $data    Data that is used to render a template.
+     * @param mixed      $rawData Raw data that should be formatted using
+     *                            {@link \DataFormatter}
+     * @param bool       $return  Whether to return data or output it directly.
+     *
+     * @throws \EHttpException Thrown if non-html format is used, but no
+     * `$rawData` is received.
+     *
+     * @return string|void Output as string or nothing (depending on `$return`
+     *                     argument).
+     * @since 0.1.0
+     */
+    public function render($view, $data=null, $rawData=null, $return=false)
+    {
+        header($this->page->generateFormatHeader());
+        if ($this->page->format === 'html') {
+            return parent::render($view, $data, $return);
+        } else {
+            if (empty($rawData)) {
+                throw new \EHttpException(404);
+            }
+            $formatter = \Yii::app()->formatter;
+            if (is_array($rawData)) {
+                $render = $formatter->formatModels($rawData, $this->page->format);
+            } else if ($rawData instanceof \CModel) {
+                $render = $formatter->formatModel($rawData, $this->page->format);
+            } else {
+                \Yii::log(
+                    'Unexpected data type: '.gettype($rawData),
+                    CLogger::LEVEL_ERROR
+                );
+                throw new \EHttpException(
+                    500,
+                    'internalServerError.unexpectedDataType'
+                );
+            }
+            if ($return) {
+                return $render;
+            }
+            echo $render;
+        }
+    }
+
+    /**
      * Finds localized or general markdown file.
      *
      * @param string $alias Markdown file alias.
@@ -111,7 +159,6 @@ class BaseController extends \CController
     {
         $this->catchUnwantedRequest();
         parent::init();
-        //$this->page = new Page($this->getPageTitle(), $this->route);
     }
 
     /**
@@ -143,6 +190,19 @@ class BaseController extends \CController
      * @since 0.1.0
      */
     public function getActionAncestors()
+    {
+        return array();
+    }
+
+    /**
+     * Another terrible solution to setup links for navigation menu outside of
+     * actions. It's quite unclear where they should be defined, though.
+     *
+     * @return array List of navigation links in [actionId => [actions]] form,
+     *               e.g. [index => [post/index, user/index]]
+     * @since
+     */
+    public function navigationLinks()
     {
         return array();
     }
