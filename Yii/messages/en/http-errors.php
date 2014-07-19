@@ -15,5 +15,9 @@ return array(
     'internalServerError.dataIntegrityFailure' => 'Couldn\'t continue because '.
         'of data integrity failure. If you\'re site admin, check application '.
         'log for precise error description.',
-    'internalServerError.missingFile' => 'Requested file could not be read.'
+    'internalServerError.missingFile' => 'Requested file could not be read.',
+    'internalServerError.unexpectedDataType' => 'Couldn\'t continue because '.
+        'of unexpected data received. If you\'re site admin, check '.
+        'application log for precise error description, and, if possible, '.
+        'send log contents to application vendor.',
 );
