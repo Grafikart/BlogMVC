@@ -166,6 +166,7 @@ class AdminController extends BaseController
             'help' => array('index',),
             'devHelp' => array('index', 'help',),
             'status' => array('options', 'index',),
+            'options' => array('index',),
         );
     }
 }
