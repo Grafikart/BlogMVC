@@ -163,7 +163,8 @@ class PostController extends \BaseController
         }
         $this->pageTitle = $model->name;
         $url = $this->createUrl('post/show', array('slug' => $model->slug));
-        $this->page->addNavigationItem($url, 'link.viewPost');
+        $this->page->addNavigationItem($url, 'link.thisPost');
+        $this->page->resetI18n(array('{postTitle}' => $model->name,));
         $templateVars = array(
             'post' => $model,
             'categories' => \Category::model()->getList(),
@@ -214,7 +215,10 @@ class PostController extends \BaseController
      */
     public function actionDashboard()
     {
-        $this->page->totalPages = \Post::model()->totalPages(10);
+        $this->page->totalPages = \Post::model()->count(
+            'user_id = :user_id',
+            array(':user_id' => \Yii::app()->user->id)
+        ) / 10;
         $posts = \Post::model()
             ->paged($this->page->pageNumber, 10)
             ->by(\Yii::app()->user->id)

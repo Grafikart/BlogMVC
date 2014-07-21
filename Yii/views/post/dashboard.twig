@@ -27,7 +27,7 @@
             <td>{{ post.created }}</td>
             <td>
                 <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}" class="btn btn-primary" role="view-post-link">
-                    {{ App.t.t('control.viewPost') }}
+                    {{ App.t.t('control.view') }}
                 </a>
                 <a href="{{ this.createUrl('post/edit', {'id':post.id}) }}" class="btn btn-primary" role="edit-post-link">
                     {{ App.t.t('control.edit') }}

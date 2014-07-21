@@ -28,13 +28,14 @@ class CategoryController extends \BaseController
         if (!$category || !$category->post_count) {
             throw new \EHttpException(404);
         }
-        // if post_count is correct, there is more than zero posts to show
+        // if post_count is correct, there is more than zero posts to show and
+        // following statement will cause no error
         // if post_count is incorrect, i'm deeply tucked even before this line
         $category->posts = \Post::model()
             ->paged($this->page->pageNumber, 5)
             ->findByCategory($category->id);
         $this->page->totalPages = ceil($category->post_count / 5);
-        $this->page->resetI18n(array('{categoryTitle}', $category->name));
+        $this->page->resetI18n(array('{categoryTitle}' => $category->name));
         $data = array('category' => $category, 'posts' => $category->posts);
         $this->render('index', $data, $category);
     }
@@ -229,7 +230,7 @@ class CategoryController extends \BaseController
     public function navigationLinks()
     {
         return array(
-            'index' => array('list', 'post/index',),
+            'index' => array('post/index', 'list',),
         );
     }
 }
