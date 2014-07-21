@@ -68,7 +68,7 @@ class SiteController extends \BaseController
         if (!$error) {
             throw new \EHttpException(404);
         }
-        $this->page->resetTitle(array('{errorCode}' => $error['code'],));
+        $this->page->resetI18n(array('{errorCode}' => $error['code'],));
         $this->page->format = 'html';
         $this->render('error', $error);
     }
