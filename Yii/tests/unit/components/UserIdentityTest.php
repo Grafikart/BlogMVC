@@ -11,19 +11,12 @@ class UserIdentityTest extends \Codeception\TestCase\Test
     */
     protected $guy;
 
-    protected function _before()
-    {
-    }
-
-    protected function _after()
-    {
-    }
-
     // tests
     public function testAuthentication()
     {
         $username = Fixtures::get('data:users[0]:login');
         $password = Fixtures::get('data:users[0]:password');
+        \Yii::app()->fixtureManager->prepare();
 
         // setting inexsiting username
         $identity = new \UserIdentity(md5(mt_rand(0, PHP_INT_MAX)), $password);
