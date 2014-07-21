@@ -146,6 +146,8 @@ class Page extends \CComponent
         $this->uri = $app->getRequest()->getRequestUri();
         $this->loadAncestors();
         $this->loadNavigation();
+        $this->resetTitle();
+        $this->resetHeading();
     }
 
     /**
@@ -162,10 +164,10 @@ class Page extends \CComponent
         /** @type \CWebApplication $app */
         $app = \Yii::app();
         $pageNumber = $app->getRequest()->getParam('page');
-        if ($pageNumber !== null && (int) $pageNumber < 1) {
+        if ($pageNumber !== null && (int)$pageNumber < 1) {
             throw new \EHttpInvalidPageNumberException;
         }
-        return $this->pageNumber = $pageNumber ? (int) $pageNumber : 1;
+        return $this->pageNumber = $pageNumber ? (int)$pageNumber : 1;
     }
 
     /**
@@ -224,18 +226,70 @@ class Page extends \CComponent
         $navigation = $this->controller->navigationLinks();
         $action = $this->controller->getAction()->getId();
         if (isset($navigation[$action])) {
-            $navRoutes = $navigation[$action];
-            foreach ($navRoutes as &$route) {
-                if (strpos($route, '/') === false) {
-                    $route = $this->controller->getId().'/'.$route;
+            $items = $navigation[$action];
+            foreach ($items as $item) {
+                if (is_array($item)) {
+                    if (!isset($item['route'])) {
+                        $message = 'One of the navigation links is missing ' .
+                            'route';
+                        throw new \BadMethodCallException($message);
+                    }
+                    $route = $item['route'];
+                    $title = isset($item['title']) ? $item['title'] : null;
+                    $type = isset($item['type']) ? $item['type'] : null;
+                } else {
+                    $route = $item;
+                    $title = $type = null;
                 }
-                $titleKey = 'pageTitle.'.str_replace('/', '.', $route);
-                $this->headerNavigation[] = array(
-                    'url' => $this->controller->createUrl($route),
-                    'title' => \Yii::t('templates', $titleKey),
-                );
+                $this->createNavigationItem($route, $type, $title);
             }
         }
+    }
+
+    /**
+     * Adds single header navigation item.
+     *
+     * @param string $route Item route.
+     * @param string $type  Item type: link or button.
+     * @param string $title Localization key.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function createNavigationItem($route, $type = null, $title = null)
+    {
+        $type = $type ? $type : 'link';
+        if ($type !== 'link' && $type !== 'button') {
+            $message = '$type should be either \'link\' or \'button\'';
+            throw new \InvalidArgumentException($message);
+        }
+        if (strpos($route, '/') === false) {
+            $route = $this->controller->getId() . '/' . $route;
+        }
+        if (!$title) {
+            $title = 'pageTitle.' . str_replace('/', '.', $route);
+        }
+        $url = $this->controller->createUrl($route);
+        $this->addNavigationItem($url, $title, $type);
+    }
+
+    /**
+     * Additional method to simplify header navigation interface.
+     *
+     * @param string $url   Item url.
+     * @param string $title Item title or title translation key.
+     * @param string $type  Item type, 'link' or 'button'.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function addNavigationItem($url, $title, $type = 'link')
+    {
+        $this->headerNavigation[] = array(
+            'url'   => $url,
+            'title' => \Yii::t('templates', $title),
+            'type'  => $type,
+        );
     }
 
     /**
@@ -248,10 +302,10 @@ class Page extends \CComponent
     {
         $ancestor = $this->controller->getAction()->getId();
         while ($ancestor = $this->getActionAncestor($ancestor)) {
-            $titleKey = 'pageTitle.'.str_replace('/', '.', $ancestor);
+            $titleKey = 'pageTitle.' . str_replace('/', '.', $ancestor);
             $this->ancestors[] = array(
                 'action' => $ancestor,
-                'title' => \Yii::t('templates', $titleKey),
+                'title'  => \Yii::t('templates', $titleKey),
             );
         }
         $segments = array_reverse(explode('/', trim($this->uri, '/')));
@@ -264,7 +318,7 @@ class Page extends \CComponent
             // calling `createUrl()`.
             $uri = '';
             for ($i = $hierarchySize - 2; $i >= 0; $i--) {
-                $this->ancestors[$i]['uri'] = ($uri .= '/'.$segments[$i]);
+                $this->ancestors[$i]['uri'] = ($uri .= '/' . $segments[$i]);
                 $this->ancestors[$i]['slug'] = $segments[$i];
             }
             $this->ancestors[$hierarchySize - 1]['uri'] = '/';
@@ -282,12 +336,12 @@ class Page extends \CComponent
                 $itemChunks = array('[');
                 foreach ($ancestor as $k => $v) {
                     $prefix = "  $k:";
-                    $itemChunks[] = str_pad($prefix, 12).$v;
+                    $itemChunks[] = str_pad($prefix, 12) . $v;
                 }
                 $itemChunks[] = ']';
                 $items[] = implode(PHP_EOL, $itemChunks);
             }
-            \Yii::trace($message.implode(','.PHP_EOL, $items));
+            \Yii::trace($message . implode(',' . PHP_EOL, $items));
         }
     }
 
@@ -298,7 +352,7 @@ class Page extends \CComponent
      *                      just `action`, current controller will be used
      *                      then).
      *
-     * @todo This method doesn't cover all possible cases, modules, for example.
+     * @todo  This method doesn't cover all possible cases, modules, for example.
      *       This should be fixed even if this project won't see modules
      * integration.
      *
@@ -324,7 +378,7 @@ class Page extends \CComponent
             }
             $this->cache['controllers'][$controller] = array(
                 'instance' => $instance,
-                'actions' => $instance->getActionAncestors(),
+                'actions'  => $instance->getActionAncestors(),
             );
         }
         $actions = $this->cache['controllers'][$controller]['actions'];
@@ -333,7 +387,7 @@ class Page extends \CComponent
         }
         $ancestor = $actions[$action];
         if (strpos($ancestor, '/') === false) {
-            return $controller.'/'.$ancestor;
+            return $controller . '/' . $ancestor;
         }
         return $ancestor;
     }
@@ -347,7 +401,7 @@ class Page extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function resetTitle(array $data=array(), $key=null)
+    public function resetTitle(array $data = array(), $key = null)
     {
         if (!$key) {
             $bits = array(
@@ -365,6 +419,58 @@ class Page extends \CComponent
         );
         \Yii::trace($message);
         $this->title = $newTitle;
+    }
+
+    /**
+     * Resets page heading using provided data and/or key.
+     *
+     * @param array $data Data for translation.
+     * @param null  $key  Heading translation key.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function resetHeading(array $data = array(), $key = null)
+    {
+        if (!$key) {
+            $bits = array(
+                'pageHeading',
+                $this->controller->getId(),
+                $this->controller->getAction()->getId(),
+            );
+            $key = implode('.', $bits);
+        }
+        $newHeading = \Yii::t('templates', $key, $data);
+        if ($key === $newHeading) {
+            $message = sprintf(
+                'Using page title [%s] as heading',
+                $this->title
+            );
+            $this->heading = $this->title;
+        } else {
+            $message = sprintf(
+                'Switched page heading from [%s] to [%s]',
+                $this->heading,
+                $newHeading
+            );
+            $this->heading = $newHeading;
+        }
+        \Yii::trace($message);
+    }
+
+    /**
+     * Resets page title and heading using provided data. Translation keys are
+     * generated automatically.
+     *
+     * @param string[] $data Translation keys.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function resetI18n(array $data)
+    {
+        $this->resetTitle($data);
+        $this->resetHeading($data);
     }
 
     /**
