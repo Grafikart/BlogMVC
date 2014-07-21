@@ -349,21 +349,21 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "4.1.2",
+            "version": "4.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "095cf4db559bebc78d967890eb93280d8ceb5a08"
+                "reference": "012b2aecbda4e38f119c19580898685851015fa7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/095cf4db559bebc78d967890eb93280d8ceb5a08",
-                "reference": "095cf4db559bebc78d967890eb93280d8ceb5a08",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/012b2aecbda4e38f119c19580898685851015fa7",
+                "reference": "012b2aecbda4e38f119c19580898685851015fa7",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "guzzlehttp/streams": "~1.0",
+                "guzzlehttp/streams": "~1.3",
                 "php": ">=5.4.0"
             },
             "require-dev": {
@@ -410,20 +410,20 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-06-18 18:22:41"
+            "time": "2014-07-16 03:01:02"
         },
         {
             "name": "guzzlehttp/streams",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/streams.git",
-                "reference": "d6aaa91cfdbae86355dd2a168a3ca536755898a2"
+                "reference": "3b761a328e5ed6ed519e960aded95d7acbe77894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/streams/zipball/d6aaa91cfdbae86355dd2a168a3ca536755898a2",
-                "reference": "d6aaa91cfdbae86355dd2a168a3ca536755898a2",
+                "url": "https://api.github.com/repos/guzzle/streams/zipball/3b761a328e5ed6ed519e960aded95d7acbe77894",
+                "reference": "3b761a328e5ed6ed519e960aded95d7acbe77894",
                 "shasum": ""
             },
             "require": {
@@ -435,7 +435,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.2.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -463,7 +463,7 @@
                 "Guzzle",
                 "stream"
             ],
-            "time": "2014-07-15 22:02:02"
+            "time": "2014-07-19 18:43:42"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -715,16 +715,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.1.3",
+            "version": "4.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "939cb801b3b2aa253aedd0b279f40bb8f35cec91"
+                "reference": "a71c4842c5fb836d8b200624583b859ec34e8a26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/939cb801b3b2aa253aedd0b279f40bb8f35cec91",
-                "reference": "939cb801b3b2aa253aedd0b279f40bb8f35cec91",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a71c4842c5fb836d8b200624583b859ec34e8a26",
+                "reference": "a71c4842c5fb836d8b200624583b859ec34e8a26",
                 "shasum": ""
             },
             "require": {
@@ -785,7 +785,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2014-06-11 14:15:47"
+            "time": "2014-07-18 07:15:58"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
