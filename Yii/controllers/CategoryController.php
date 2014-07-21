@@ -116,10 +116,12 @@ class CategoryController extends \BaseController
      * @throws \EHttpException Thrown if accessed non-ajaxly, no data sent or
      * model with specified ID doesn't exist.
      *
+     * @todo update render method(s) to avoid lines of code like the last ones
+     *
      * @return void
      * @since 0.1.0
      */
-    public function actionSaveAjax($slug=null)
+    public function actionAjaxSave()
     {
         if (\Yii::app()->request->isAjaxRequest
             && (!defined('YII_DEBUG') || !YII_DEBUG)
@@ -129,14 +131,24 @@ class CategoryController extends \BaseController
         if (!($data = \Yii::app()->request->getPost('Category'))) {
             throw new \EHttpException(400, 'badRequest.noDataReceived');
         }
-        if (!($category = \Category::model()->findBySlugOrCreate($slug))) {
-            throw new \EHttpException(404);
+        if (isset($data['id'])) {
+            if (!($category = \Category::model()->findByPk($data['id']))) {
+                throw new \EHttpException(404);
+            }
+        } else {
+            $category = new \Category;
         }
-        $response = array('success' => true);
+        $response = array(
+            'success' => true,
+        );
         if (!$category->setAndSave($data)) {
             $response['success'] = false;
             $response['errors'] = $category->getErrors();
+        } else {
+            $response['data'] = $category->getPublicAttributes();
         }
+        $this->page->format = 'json';
+        header($this->page->generateFormatHeader());
         echo \CJSON::encode($response);
     }
 
@@ -174,6 +186,37 @@ class CategoryController extends \BaseController
             }
             $this->redirect($data);
         }
+    }
+
+    /**
+     * Deletes category.
+     *
+     * @param string $slug Category slug.
+     *
+     * @throws \EHttpException Thrown if category doesn't exist (404).
+     * @throws \EHttpException Thrown if category is not empty (403).
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionDelete($slug)
+    {
+        $category = \Category::model()->findBySlug($slug);
+        if (!$category) {
+            throw new \EHttpException(404);
+        } elseif ($category->post_count != 0) {
+            $data = array('{categoryTitle}' => $category->name);
+            $key = 'badRequest.categoryNotEmpty';
+            throw new \EHttpException(400, $key, $data);
+        } else if ($category->delete()) {
+            \Yii::app()->user->sendSuccessMessage(
+                'category.delete.success',
+                array('{categoryTitle}' => $category->name)
+            );
+        } else {
+            \Yii::app()->user->sendErrorMessage('category.delete.fail');
+        }
+        $this->redirect(array('dashboard'));
     }
 
     /**
@@ -231,6 +274,14 @@ class CategoryController extends \BaseController
     {
         return array(
             'index' => array('post/index', 'list',),
+            'edit' => array('dashboard',),
+            'dashboard' => array(
+                array(
+                    'route' => 'edit',
+                    'type' => 'button',
+                    'title' => 'control.addNew',
+                ),
+            )
         );
     }
 }
