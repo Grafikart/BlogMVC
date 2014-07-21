@@ -1,5 +1,6 @@
-{% set start = max(1, this.currentPage - (this.size/2)|round(0, 'floor') - 1) %}
-{% set end = min(this.totalPages, this.currentPage + (this.size/2)|round(1, 'ceil') + 1) %}
+{% set offset = (max(0, (this.size - 1))/2)|round(0, 'ceil') %}
+{% set start = max(1, this.currentPage - offset) %}
+{% set end = min(this.totalPages, this.currentPage + offset) %}
 <ul class="pagination">
     {% if this.currentPage != 1 %}
         <li>
