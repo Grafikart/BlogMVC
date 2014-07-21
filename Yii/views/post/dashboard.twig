@@ -1,11 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h1>{{ App.t.t('heading.managePosts') }}</h1>
-<p>
-    <a href="{{ this.createUrl('post/new') }}" class="btn btn-primary" role="create-post-link">
-        {{ App.t.t('link.createNewPost') }}
-    </a>
-</p>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -20,7 +14,11 @@
         {% for post in posts %}
         <tr id="post-{{ post.id }}" class="text-center">
             <td>{{ post.id }}</td>
-            <td>{{ post.name }}</td>
+            <td>
+                <a href="{{ this.createUrl('post/show', {'slug': post.slug}) }}">
+                    {{ post.name }}
+                </a>
+            </td>
             <td>
                 <a href="{{ this.createUrl('category/edit', {'slug': post.category.slug}) }}">
                     {{ post.category.name }}
@@ -28,6 +26,9 @@
             </td>
             <td>{{ post.created }}</td>
             <td>
+                <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}" class="btn btn-primary" role="view-post-link">
+                    {{ App.t.t('control.viewPost') }}
+                </a>
                 <a href="{{ this.createUrl('post/edit', {'id':post.id}) }}" class="btn btn-primary" role="edit-post-link">
                     {{ App.t.t('control.edit') }}
                 </a>

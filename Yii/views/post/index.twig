@@ -1,14 +1,1 @@
 {% extends 'views/layouts/feed.twig' %}
-{% block content %}
-    {% block feed_page_header %}
-        <div class="page-header">
-            <h1>{{ App.t.t('heading.blog') }}</h1>
-            <p class="lead">{{ App.t.t('text.welcomeMessage') }}</p>
-        </div>
-    {% endblock %}
-{% for post in posts %}
-    {% include 'views/common/post_excerpt.twig' %}
-{% else %}
-    {{ App.t.t('text.sorryNoPostsYet') }}
-{% endfor %}
-{% endblock %}

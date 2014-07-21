@@ -1,5 +1,6 @@
 {% extends 'views/layouts/main.twig' %}
 {% block header_auth_link %}{% endblock %}
+{% block page_header %}{% endblock %}
 {% block content %}
     {% set form = this.beginWidget('CActiveForm', {
         'htmlOptions':{'class':'form-signin'}

@@ -1,12 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h1>{{ App.t.t(post.isNewRecord?'heading.newPost':'heading.editPost') }}</h1>
-<p>
-    <a href="{{ this.createUrl('post/dashboard') }}">{{ App.t.t('link.backToPosts') }}</a>
-    {% if not post.getIsNewRecord() %}
-        | <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}">{{ App.t.t('link.viewPost') }}</a>
-    {% endif %}
-</p>
 {% set form = this.beginWidget('CActiveForm',{
     'htmlOptions':{'accept-charset':'utf-8'}
 }) %}

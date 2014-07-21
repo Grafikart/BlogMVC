@@ -1,6 +1,9 @@
 {% extends 'views/layouts/feed.twig' %}
+{% block page_header %}{% endblock %}
 {% block content %}
+<div class="single-post-margin-compensation">
 {% include 'views/common/post.twig' %}
+</div>
 
 <section class="comments">
     {% set form = this.beginWidget('CActiveForm', {

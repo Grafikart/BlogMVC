@@ -1,13 +1,1 @@
-{% extends 'views/post/index.twig' %}
-{% set posts = category.posts %}
-{% block feed_page_header %}
-    <div class="page-header">
-        <h1>
-            {{ category.name }}
-            {% if this.getPageNumber() > 1 %}
-                | {{ App.t.t('heading.pageNumber', this.getPageNumber()) }}
-            {% endif %}
-        </h1>
-        <a href="{{ this.createUrl('post/index') }}">{{ App.t.t('link.backToMainFeed') }}</a>
-    </div>
-{% endblock %}
+{% extends 'views/layouts/feed.twig' %}

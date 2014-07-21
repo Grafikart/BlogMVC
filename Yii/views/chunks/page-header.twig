@@ -1,0 +1,33 @@
+{% block page_header_heading %}
+    {% if this.page.heading %}
+        <h1>
+            {% block page_header_heading_content %}
+                {{ this.page.heading }}
+                {% if this.page.pageNumber != 1 %}
+                    | {{ App.t.t('heading.pageNumber', this.page.pageNumber) }}
+                {% endif %}
+            {% endblock %}
+        </h1>
+    {% endif %}
+    {% if this.page.headingDescription %}
+        <p class="lead">{{ this.page.headingDescription }}</p>
+    {% endif %}
+{% endblock %}
+{% block page_header_navigation %}
+    {% if this.page.headerNavigation %}
+        <p>
+            {% for link in this.page.headerNavigation %}
+                {{ not loop.first?' | ' }}
+                {% if link['type'] == 'button' %}
+                    <a href="{{ link['url'] }}" class="btn btn-primary">
+                        {{- App.t.t(link['title']) -}}
+                    </a>
+                {% else %}
+                    <a href="{{ link['url'] }}">
+                        {{- App.t.t('link.navigation', {'{location}': link['title']}) -}}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </p>
+    {% endif %}
+{% endblock %}

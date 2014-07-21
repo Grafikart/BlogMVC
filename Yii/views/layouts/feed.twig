@@ -1,13 +1,13 @@
 {% extends 'views/layouts/main.twig' %}
-{% block content_wrap %}
-    <div class="col-md-8">
-        <div class="row">
-            {% block content %}{% endblock %}
-        </div><!-- /.content -->
-        {% block pagination %}
-            {{ void(this.widget('PaginationWidget')) }}
-        {% endblock %}
-    </div>
+{% block main_column_class %}col-md-8{% endblock %}
+{% block content %}
+    {% for post in posts %}
+        {% include 'views/common/post_excerpt.twig' %}
+    {% else %}
+        {{ App.t.t('text.sorryNoPostsYet') }}
+    {% endfor %}
+{% endblock %}
+{% block after_content_wrap %}
     <div class="col-md-4 sidebar">
         {{ void(this.widget('SidebarWidget')) }}
     </div><!-- /.sidebar -->

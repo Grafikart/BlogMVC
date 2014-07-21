@@ -27,9 +27,13 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ this.createUrl('post/author', {'id':user.id}) }}" role="user-page-link">
+                    {% if user.postCount %}
+                        <a href="{{ this.createUrl('user/index', {'id': user.id}) }}" role="user-page-link">
+                            {{ user.postCount }}
+                        </a>
+                    {% else %}
                         {{ user.postCount }}
-                    </a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
