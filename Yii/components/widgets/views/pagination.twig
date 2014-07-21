@@ -1,0 +1,53 @@
+{% set start = max(1, this.currentPage - (this.size/2)|round(0, 'floor') - 1) %}
+{% set end = min(this.totalPages, this.currentPage + (this.size/2)|round(1, 'ceil') + 1) %}
+<ul class="pagination">
+    {% if this.currentPage != 1 %}}
+        <li>
+            <a href="{{ this.controller.createUrl(this.route, this.routeOptions|merge({'page': 1})) }}">
+                {{ this.firstPageText }}
+            </a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span>{{ this.firstPageText }}</span>
+        </li>
+    {% endif %}
+
+
+    {% if start > 2 %}
+        <li>
+            <span>{{ this.delimiterText }}</span>
+        </li>
+    {% endif %}
+
+
+    {% for i in range(start, end) %}
+        {% set url = this.controller.createUrl(
+            this.route,
+            this.routeOptions|merge({'page': i})
+        ) %}
+        <li{{ this.currentPage == i ? ' class="active"' }}>
+            <a href="{{ url }}">{{ i }}</a>
+        </li>
+    {% endfor %}
+
+
+    {% if end < this.totalPages - 1 %}
+        <li>
+            <span>{{ this.delimiterText }}</span>
+        </li>
+    {% endif %}
+
+
+    {% if this.currentPage < this.totalPages %}
+        <li>
+            <a href="{{ this.controller.createUrl(this.route, this.routeOptions|merge({'page': this.totalPages})) }}">
+                {{ this.lastPageText }}
+            </a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <span>{{ this.lastPageText }}</span>
+        </li>
+    {% endif %}
+</ul>

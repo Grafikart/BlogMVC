@@ -92,16 +92,16 @@ class PaginationWidget extends WidgetLayer
         /** @type \BaseController $controller */
         $controller = $this->getController();
         if (!isset($this->currentPage)) {
-            $this->currentPage = $controller->getPageNumber();
+            $this->currentPage = $controller->page->pageNumber;
         }
         if (!isset($this->totalPages) || $this->totalPages < 2) {
-            $this->totalPages = $controller->getTotalPages();
+            $this->totalPages = $controller->page->totalPages;
         }
         if (!isset($this->route)) {
-            $this->route = $controller->getPaginationRoute();
+            $this->route = $controller->page->route;
         }
         if (empty($this->routeOptions)) {
-            $this->routeOptions = $controller->getPaginationOptions();
+            $this->routeOptions = $controller->page->routeOptions;
         }
         if (!isset($this->totalPages, $this->route, $this->currentPage)
             || $this->totalPages < 2
@@ -124,96 +124,6 @@ class PaginationWidget extends WidgetLayer
         if ($this->halt) {
             return;
         }
-        $this->openTag('ul', array('class' => 'pagination'));
-        $start = (int) max(1, $this->currentPage - floor($this->size/2));
-        $end = (int) min(
-            $this->totalPages,
-            $this->currentPage + ceil($this->size/2)
-        );
-
-        $this->sideLink(true, $start === 1);
-        for ($i = $start; $i <= $end; $i++) {
-            $this->link($i, null, $i === $this->currentPage);
-        }
-        $this->sideLink(false, $end === $this->totalPages);
-        $this->closeTag('ul');
-    }
-    /**
-     * Returns HTML link tag pointing to page with provided number.
-     * 
-     * @param int     $page     Page number.
-     * @param string  $text     Link text.
-     * @param boolean $current  True if processed page is requested page.
-     * @param boolean $disabled True if link should be disabled.
-     *
-     * @return string HTML tag.
-     * @since 0.1.0
-     */
-    protected function link($page, $text=null, $current=false, $disabled=false)
-    {
-        if ($text === null) {
-            $text = (string)$page;
-        }
-        $htmlOpts = array();
-        if ($disabled) {
-            $htmlOpts = array('class' => 'disabled');
-            $content = array('span', array(), $text);
-        } else {
-            if ($current) {
-                $htmlOpts = array('class' => 'active');
-            }
-            $opts = array_merge($this->routeOptions, array('page' => $page));
-            $link = $this->getController()->createUrl($this->route, $opts);
-            $content = array('a', array('href' => $link,), $text);
-        }
-        $this->openTag('li', $htmlOpts);
-        $this->tag($content[0], $content[1], $content[2]);
-        $this->closeTag('li');
-    }
-
-    /**
-     * Returns side link (« or ») to first or last page.
-     *
-     * @param bool $first    Tells if link for first page should be returned.
-     * @param bool $disabled Tells if link should be disabled.
-     *
-     * @return string Link text.
-     * @since 0.1.0
-     */
-    protected function sideLink($first=true, $disabled=false)
-    {
-        if ($first) {
-            $this->link(1, $this->firstPageText, false, $disabled);
-        } else {
-            $this->link($this->totalPages, $this->lastPageText, false, $disabled);
-        }
-    }
-    /**
-     * Returns HTML tag that serves as a delimiter between links.
-     * 
-     * @return string Delimiter tag.
-     * @since 0.1.0
-     */
-    protected function delimiter()
-    {
-        $this->tag(
-            'span',
-            array('class' => 'pagination-delimiter'),
-            $this->delimiterText
-        );
-    }
-
-    /**
-     * Sets pagination title.
-     *
-     * @param string|null $title New pagination title. Use `null` to disable
-     * pagination title.
-     *
-     * @return void
-     * @since 0.1.0
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+        $this->render('pagination');
     }
 }
