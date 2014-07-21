@@ -68,9 +68,10 @@ return array(
     'control.recalculateCounters' => 'Пересчитать значения счетчиков категорий',
     'control.signIn' => 'Войти',
     'control.deleteMyProfile' => 'Удалить мой профиль',
+    'control.view' => 'Посмотреть',
 
     'link.backTo' => '&lt; Назад в {pageTitle}',
-    'link.navigation' => '&lt; К {pageTitle}',
+    'link.navigation' => '&lt; Перейти в {location}',
     'link.backToMainFeed' => '&lt; Назад к основной ленте',
     'link.backToCategories' => '&lt; Назад к списку категорий',
     'link.backToPosts' => '&lt; Назад к записям',

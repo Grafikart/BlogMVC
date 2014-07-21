@@ -5,17 +5,15 @@
     'heading.commentsAmount' => 'heading.commentsAmount [n:{n}]',
     'heading.httpError' => 'heading.httpError [errorCode:{errorCode}]',
 
-    'pageTitle.userFeed' => 'pageTitle.userFeed [username:{username}]',
-    'pageTitle.httpError' => 'pageTitle.httpError [errorCode:{errorCode}]',
+    'pageTitle.user.index' => 'pageTitle.user.index [username:{username}]',
+    'pageTitle.site.error' => 'pageTitle.site.error [errorCode:{errorCode}]',
 
     'link.backTo' => 'link.backTo [pageTitle:{pageTitle}]',
-    'link.navigation' => 'link.navigation [pageTitle:{pageTitle}]',
+    'link.navigation' => 'link.navigation [location:{location}]',
 
     'text.profileGreeting' => 'text.profileGreeting [username:{username}]!',
     'text.rss.defaultDescription' => 'text.rss.defaultDescription '.
         '[appName:{appName}]',
-
-    'pageTitle.editPost' => 'Edit post [postTitle:{postTitle}]',
 
     'paragraph.userPostsAdminNotice' => 'paragraph.userPostsAdminNotice '.
         '[{postCount}] [{commentCount}] '.
