@@ -167,6 +167,19 @@ class Category extends ActiveRecordLayer
     }
 
     /**
+     * Returns record found by slug.
+     *
+     * @param string $slug Slug to search for.
+     *
+     * @return self
+     * @since 0.1.0
+     */
+    public function findBySlug($slug)
+    {
+        return $this->find('slug = :slug', array(':slug' => $slug));
+    }
+
+    /**
      * A shortcut method for getting new model instance or model instance with
      * specified ID.
      *

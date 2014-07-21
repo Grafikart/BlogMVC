@@ -212,6 +212,20 @@ class Post extends \ActiveRecordLayer
         );
         return $this;
     }
+
+    /**
+     * Finds posts by category id.
+     *
+     * @param int $id Category id.
+     *
+     * @return self
+     * @since 0.1.0
+     */
+    public function findByCategory($id)
+    {
+        return $this->findAll('t.category_id = :id', array(':id' => $id));
+    }
+
     /**
      * Post Markdown-formatting callback.
      *
