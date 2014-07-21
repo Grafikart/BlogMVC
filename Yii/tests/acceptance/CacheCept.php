@@ -1,6 +1,7 @@
 <?php
 
-use Codeception\Util\Fixtures;
+/** @type \Codeception\Scenario $scenario */
+$scenario->groups('front', 'posts', 'cache');
 
 $I = new WebGuy\MemberSteps($scenario);
 $I->am('Web developer');
@@ -11,7 +12,7 @@ $I->autoLogin();
 
 // if any other category is modified but the top one, categories may change
 // positions in sidebar, and this behavior would be much harder to test.
-define('CATEGORY_NUMBER', 0);
+$categoryNumber = 0;
 
 $I->flushCache();
 $stats = \ServiceStatusPage::of($I)->grabStats();
@@ -21,8 +22,8 @@ $commentsTodayNumber = $stats['commentsToday'];
 $totalCommentsNumber = $stats['totalComments'];
 
 $I->amOnPage(\BlogFeedPage::$url);
-$categoryTitle = \BlogFeedPage::of($I)->grabCategoryTitle(CATEGORY_NUMBER);
-$categoryPostCount = \BlogFeedPage::of($I)->grabCategoryPostCount(CATEGORY_NUMBER);
+$categoryTitle = \BlogFeedPage::of($I)->grabCategoryTitle($categoryNumber);
+$categoryPostCount = \BlogFeedPage::of($I)->grabCategoryPostCount($categoryNumber);
 $posts = array();
 
 
@@ -50,7 +51,7 @@ $I->see($postsTodayNumber, \ServiceStatusPage::$postsTodaySelector);
 $I->amOnPage(\BlogFeedPage::$url);
 $I->see(
     $categoryPostCount,
-    \BlogFeedPage::getCategoryPostCountSelector(CATEGORY_NUMBER)
+    \BlogFeedPage::getCategoryPostCountSelector($categoryNumber)
 );
 
 foreach ($posts as $id => $title) {
@@ -69,7 +70,7 @@ $I->see($postsTodayNumber, \ServiceStatusPage::$postsTodaySelector);
 $I->amOnPage(\BlogFeedPage::$url);
 $I->see(
     $categoryPostCount,
-    \BlogFeedPage::getCategoryPostCountSelector(CATEGORY_NUMBER)
+    \BlogFeedPage::getCategoryPostCountSelector($categoryNumber)
 );
 
 $I->amOnPage(\BlogFeedPage::$url);
