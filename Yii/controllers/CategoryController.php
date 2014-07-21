@@ -30,12 +30,12 @@ class CategoryController extends \BaseController
         }
         // if post_count is correct, there is more than zero posts to show
         // if post_count is incorrect, i'm deeply tucked even before this line
-        $category->posts = $posts = \Post::model()
+        $category->posts = \Post::model()
             ->paged($this->page->pageNumber, 5)
             ->findByCategory($category->id);
         $this->page->totalPages = ceil($category->post_count / 5);
         $this->page->resetI18n(array('{categoryTitle}', $category->name));
-        $data = array('category' => $category, 'posts' => $posts);
+        $data = array('category' => $category, 'posts' => $category->posts);
         $this->render('index', $data, $category);
     }
 
