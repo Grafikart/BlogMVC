@@ -19,8 +19,9 @@ there's no point in leaving comments in it.
 As stated above, this application is run with the help of Yii, so
 [same rules apply](http://www.yiiframework.com/doc/guide/1.1/en/topics.theming)
 (except for using Twig). You'll want to place your theme files in
-`public/skins/{{ your skin name }}` folder and activate your theme by setting
-`theme => 'your skin name'` in configuration root. Then you can overriding
+`public/skins/{{ your skin name }}` folder and activate your theme by choosing
+ it on [options page](/admin/options) or by setting
+`theme => 'your skin name'` in config. Then you can overriding
 default templates with yours placed in `public/skins/{{ your skin name }}/views`
 folder (just use the same names and everything will be ok). You can also safely
 point to your new assets placed in your skin folder: site root is pointing to
@@ -66,6 +67,25 @@ with simple current date/time expressions, but PostgreSQL banned my every move;
 i guess i just lack some experience to work this out correctly. You can inspect
 my attempts to create a unified expression provider in
 `components/services/DatabaseService.php`.
+
+### Q: Getters, i see getters everywhere! Why are you placing them in places where there is no need for them?
+
+**A**: Let's be honest: PHP is freaking paranoid for years. "What if somebody
+iinvades my code and changes single variable?", asks himself nearly every PHP
+programmer. And though there are rarely any reasons for such security (i don't
+remember any security breaks through changing internal variables, but i do
+remember "don't use regexps they are slow!" whining and the timthumb case), i
+just *did it in usual style*. Whenever i was in doubt, i just did it as i'd
+expect it to see in other libraries. However, i'm quite sure that even some of
+properties would be open, i wouldn't occasionally mess everything up and it's
+completely safe to leave 'pageNumber' public in controller.
+
+### Q: Why haven't you used Yiistrap or Yiibooster?
+
+**A**: Yiistrap behaved very weird, i couldn't even launch the demo, while
+ Yiibooster won't run on anything but PHP 5.4.0+ (while whole project is built
+ with 5.3.0+ support). So i've banned them both and made everything as plainly
+ as possible.
 
 ### Q: You did something wrong, Yii has a native tool for that!
 
