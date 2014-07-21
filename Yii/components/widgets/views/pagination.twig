@@ -1,7 +1,7 @@
 {% set start = max(1, this.currentPage - (this.size/2)|round(0, 'floor') - 1) %}
 {% set end = min(this.totalPages, this.currentPage + (this.size/2)|round(1, 'ceil') + 1) %}
 <ul class="pagination">
-    {% if this.currentPage != 1 %}}
+    {% if this.currentPage != 1 %}
         <li>
             <a href="{{ this.controller.createUrl(this.route, this.routeOptions|merge({'page': 1})) }}">
                 {{ this.firstPageText }}
