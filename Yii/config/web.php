@@ -1,7 +1,7 @@
 <?php
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
-    'name' => 'Just another non-wordpress blog',
+    'name' => 'Horse Tickler\\\\\'s Dagger Fan Club',
     'basePath' => '/srv/http/src/blogmvc/Yii',
     'import' => array(
         'application.components.*',
@@ -119,5 +119,5 @@ return array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
     ),
-    'theme' => 'default',
+    'theme' => 'ambinight',
 );

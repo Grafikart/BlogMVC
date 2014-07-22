@@ -10,7 +10,9 @@ $config = \CMap::mergeArray(
     )
 );
 $config['components']['log']['routes'] = array();
-if (!isset($_REQUEST['useDefaultLanguage'])) {
+$useDefaultLanguage = isset($_REQUEST['useDefaultLanguage'])
+    || isset($_COOKIE['useDefaultLanguage']);
+if (!$useDefaultLanguage) {
     if (isset($_REQUEST['language'])) {
         $config['language'] = $_REQUEST['language'];
     } elseif (isset($_COOKIE['language'])) {
