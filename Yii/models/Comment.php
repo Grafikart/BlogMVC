@@ -215,14 +215,16 @@ class Comment extends ActiveRecordLayer
      */
     public static function batchUsernameUpdate($oldUsername, $newUsername)
     {
+        $oldUsername = mb_strtolower('@'.$oldUsername, \Yii::app()->charset);
+        $newUsername = '@'.$newUsername;
         \Yii::app()->db
             ->createCommand()
             ->update(
                 self::tableName(),
-                array('username' => '@'.$newUsername),
-                'username = :username',
-                array(':username' => '@'.$oldUsername)
-           )->execute();
+                array('username' => $newUsername,),
+                'LOWER(username) = :old_username',
+                array(':old_username' => $oldUsername,)
+           );
     }
     /**
      * Returns keys for attribute labels localization.

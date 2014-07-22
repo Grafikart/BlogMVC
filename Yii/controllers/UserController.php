@@ -144,7 +144,7 @@ class UserController extends BaseController
             \Yii::app()->user->sendErrorMessage('profile.usernameUpdate.noData');
         } elseif ($data['username'] === \Yii::app()->user->username) {
             \Yii::app()->user->sendNotice('profile.usernameUpdate.alreadyOwned');
-        } elseif (!$user->setAndSave($data)) {
+        } elseif (!$user->updateUsername($data['username'])) {
             \Yii::app()->user->sendErrorMessage('profile.usernameUpdate.fail');
             \Yii::app()->user->saveData('user.usernameUpdate', $data);
         } else {

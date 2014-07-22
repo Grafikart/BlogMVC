@@ -19,14 +19,14 @@ class User extends ActiveRecordLayer
 {
     /**
      * User's login and display name.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $username;
     /**
      * User's password hash.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
@@ -35,18 +35,19 @@ class User extends ActiveRecordLayer
      * New password which should be set instead of current one. Virtual
      * property, isn't stored in database - it's value is hashed and put into
      * {@link $password} property.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $newPassword;
     /**
      * Repetiton of new password.
-     * 
+     *
      * @var string
      * @since 0.1.0
      */
     public $newPasswordRepeat;
+
     /**
      * Runtime cache for found users.
      *
@@ -54,10 +55,10 @@ class User extends ActiveRecordLayer
      * @since 0.1.0
      */
     protected static $userCache = array();
-    
+
     /**
      * Returns model table name.
-     * 
+     *
      * @return string Related table name.
      * @since 0.1.0
      */
@@ -65,27 +66,29 @@ class User extends ActiveRecordLayer
     {
         return 'users';
     }
+
     /**
      * Scope method which allows paged access to records.
-     * 
+     *
      * @param int $page    Page number. Note that it isn't validated inside the
-     * method.
+     *                     method.
      * @param int $perPage Number of records per page.
      *
      * @return \User Current instance.
      * @since 0.1.0
      */
-    public function paged($page, $perPage=25)
+    public function paged($page, $perPage = 25)
     {
         $this->getDbCriteria()->mergeWith(
             array(
-                'limit' => $perPage,
+                'limit'  => $perPage,
                 'offset' => ($page - 1) * $perPage,
-                'order' => 'id ASC',
+                'order'  => 'id ASC',
             )
         );
         return $this;
     }
+
     /**
      * Scope method which allows to fetch most active users.
      *
@@ -97,7 +100,7 @@ class User extends ActiveRecordLayer
      * @return \User current instance
      * @since 0.1.0
      */
-    public function mostActive($limit=5)
+    public function mostActive($limit = 5)
     {
         if (($limit = (int)$limit) < 1) {
             $message = 'Limit argument has to be an integer not less than 1';
@@ -106,7 +109,7 @@ class User extends ActiveRecordLayer
         $this->getDbCriteria()->mergeWith(
             array(
                 'alias' => 'users',
-                'join' => 'INNER JOIN posts ON posts.user_id = users.id',
+                'join'  => 'INNER JOIN posts ON posts.user_id = users.id',
                 'group' => 'users.id',
                 'order' => 'COUNT(posts.id)',
                 'limit' => $limit,
@@ -123,13 +126,14 @@ class User extends ActiveRecordLayer
      * @return int Amount of pages.
      * @since 0.1.0
      */
-    public function totalPages($perPage=10)
+    public function totalPages($perPage = 10)
     {
         return ceil($this->count() / $perPage);
     }
+
     /**
      * Before-save callback.
-     * 
+     *
      * @return boolean Returns false if parent beforeSave() returns false,
      * otherwise returns true.
      * @since 0.1.0
@@ -144,6 +148,25 @@ class User extends ActiveRecordLayer
         }
         return true;
     }
+
+    /**
+     * Updates current user username.
+     *
+     * @param string $newUsername New username.
+     *
+     * @return bool Operation success.
+     * @since 0.1.0
+     */
+    public function updateUsername($newUsername)
+    {
+        $oldUsername = $this->username;
+        if (!$this->setAndSave(array('username' => $newUsername,))) {
+            return false;
+        }
+        \Comment::batchUsernameUpdate($oldUsername, $newUsername);
+        return true;
+    }
+
     /**
      * Validator method for entered password. Note that validation comes with
      * internal hashing, so this is different from native CCompareValidator.
@@ -333,6 +356,7 @@ class User extends ActiveRecordLayer
         if (!is_string($username)) {
             throw new \BadMethodCallException('Username should be a string');
         }
+        $lcUsername = mb_strtolower($username, \Yii::app()->charset);
         if (array_key_exists($username, static::$userCache)) {
             \Yii::trace('Runtime cache hit for user ['.$username.']');
             return static::$userCache[$username];
@@ -341,8 +365,8 @@ class User extends ActiveRecordLayer
         $token = 'user.findByUsername';
         \Yii::beginProfile($token);
         $user = \User::model()->find(
-            'username = :username',
-            array(':username' => $username)
+            'LOWER(username) = :username',
+            array(':username' => $lcUsername)
         );
         static::$userCache[$username] = $user;
         \Yii::endProfile($token);
