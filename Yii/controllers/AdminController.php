@@ -75,7 +75,7 @@ class AdminController extends BaseController
         if ($data = \Yii::app()->request->getPost('ApplicationModel', false)) {
             $model->save($data); // setAndSave analog, errors fetched in view
             // resetting page title after language switch
-            $this->page->resetTitle();
+            $this->page->resetI18n();
         }
         $this->render('options', array('appModel' => $model));
     }
