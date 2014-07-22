@@ -103,9 +103,7 @@ class PostTest extends \Codeception\TestCase\Test
      */
     public function testCacheInvalidation()
     {
-        /** @type \CWebApplication $app */
-        $app = \Yii::app();
-        $value = $app->getGlobalState('lastPostUpdate');
+        $value = \Yii::app()->cacheHelper->getPostsCacheTokenValue();
         $post = new \Post;
         $attrs = array(
             'name' => 'just a name',
@@ -119,12 +117,12 @@ class PostTest extends \Codeception\TestCase\Test
         $post->save();
         $this->assertNotSame(
             $value,
-            $value = $app->getGlobalState('lastPostUpdate')
+            $value = \Yii::app()->cacheHelper->getPostsCacheTokenValue()
         );
         $post->delete();
         $this->assertNotSame(
             $value,
-            $value = $app->getGlobalState('lastPostUpdate')
+            $value = \Yii::app()->cacheHelper->getPostsCacheTokenValue()
         );
     }
 
