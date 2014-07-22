@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             {% for user in users %}
-                <tr>
+                <tr data-user-id="{{ user.id }}">
                     <td>{{ user.username }}</td>
                     <td>
                         {% if user.postCount > 0 %}

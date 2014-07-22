@@ -7,8 +7,11 @@
 
 <section class="comments">
     {% set form = this.beginWidget('CActiveForm', {
-        'action':this.createUrl('comment/add', {'postSlug': post.slug}),
-        'id':'comment-form'
+        'action': this.createUrl('comment/add', {'postSlug': post.slug}),
+        'id': 'comment-form',
+        'htmlOptions': {
+            'data-action-ajax': this.createUrl('comment/ajaxAdd', {'postSlug': post.slug})
+        }
     }) %}
         <h3>{{ App.t.t('text.commentThisPost') }}</h3>
         {% if comment.hasErrors() %}
