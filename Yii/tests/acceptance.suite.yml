@@ -13,6 +13,7 @@ modules:
     enabled:
         - WebDriver
         - WebHelper
+        - SettingsHelper
     config:
         WebDriver:
             url: 'http://ci.yii.blogmvc.dev'
