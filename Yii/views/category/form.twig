@@ -1,7 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-    <h1>{{ App.t.t(category.getIsNewRecord()?'heading.newCategory':'heading.editCategory', {'{category}':category.name}) }}</h1>
-    <a href="{{ this.createUrl('category/list/type/admin') }}">{{ App.t.t('link.backToCategories') }}</a>
     {% set form = this.beginWidget('CActiveForm',{
         'action': this.createUrl('category/save', category.getIsNewRecord()?{}:{'slug':category.slug})
     }) %}

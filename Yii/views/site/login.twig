@@ -3,7 +3,7 @@
 {% block page_header %}{% endblock %}
 {% block content %}
     {% set form = this.beginWidget('CActiveForm', {
-        'htmlOptions':{'class':'form-signin'}
+        'htmlOptions': {'class': 'form-signin', 'role': 'login-form'}
     }) %}
     <h4>{{ App.t.t('heading.pleaseSignIn') }}</h4>
     <div class="form-group{{ user.hasErrors()?' has-error' }}">

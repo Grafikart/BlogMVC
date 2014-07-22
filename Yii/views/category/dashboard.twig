@@ -1,11 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-    <h1>
-        {{ App.t.t('heading.categories') }}
-        <a href="{{ this.createUrl('category/edit') }}" class="pull-right btn btn-primary" role="new-category-link">
-            {{ App.t.t('control.addNew') }}
-        </a>
-    </h1>
     {% if categories|length > 0 %}
     <table class="table table-striped text-center">
         <thead>
@@ -22,14 +16,23 @@
                     <td class="text-left">{{ category.getPrimaryKey() }}</td>
                     <td>{{ category.name }}</td>
                     <td>
+                        {% if category.post_count > 0 %}
                         <a href="{{ this.createUrl('category/index', {'slug':category.slug}) }}" role="category-feed-link">
                             {{ category.post_count }}
                         </a>
+                        {% else %}
+                            {{ category.post_count }}
+                        {% endif %}
                     </td>
                     <td>
                         <a href="{{ this.createUrl('category/edit', {'slug': category.slug}) }}" class="btn btn-small btn-primary" role="edit-category-link">
                             {{ App.t.t('control.edit') }}
                         </a>
+                        {% if category.post_count == 0 %}
+                            <a href="{{ this.createUrl('category/delete', {'slug': category.slug}) }}" class="btn btn-small btn-danger">
+                                {{ App.t.t('control.delete') }}
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

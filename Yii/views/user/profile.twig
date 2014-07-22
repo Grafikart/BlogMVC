@@ -7,7 +7,8 @@
     <h3>{{ App.t.t('heading.username') }}</h3>
     <div class="row">
         {% set form = this.beginWidget('CActiveForm', {
-            'action':this.createUrl('user/updateUsername')
+            'action': this.createUrl('user/updateUsername'),
+            'htmlOptions': {'role': 'username-update-form'}
         }) %}
         <div class="col-md-6">
             <div class="form-group{{ user.getError('username')?' has-error' }}">
@@ -31,7 +32,8 @@
     <h3>{{ App.t.t('heading.passwordUpdate') }}</h3>
     <div class="row">
         {% set form = this.beginWidget('CActiveForm', {
-            'action':this.createUrl('user/updatePassword')
+            'action':this.createUrl('user/updatePassword'),
+            'htmlOptions': {'role': 'password-update-form'}
         }) %}
         <div class="col-md-6">
             <div class="form-group{{ user.getError('password')?' has-error' }}">
