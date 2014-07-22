@@ -98,6 +98,7 @@ return array(
     'text.sorryNoPostsYet' => 'Sorry, no posts yet',
     'text.profileGreeting' => 'Hi there, {username}!',
     'text.rss.defaultDescription' => '{appName} RSS feed.',
+    'text.noRegisteredUsers' => 'System doesn\'t have registered users yet.',
 
     'paragraph.serviceStatusCache' => 'Data you are looking at may be cached. '.
         'Cache timeout is set to one minute for status data and to one hour '.

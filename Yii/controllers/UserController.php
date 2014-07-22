@@ -16,7 +16,7 @@ class UserController extends BaseController
     /**
      * Displays all user's posts.
      *
-     * @param string|int $id     User ID.
+     * @param string|int $id User ID.
      *
      * @throws \EHttpException Thrown if such user or page isn't found (404).
      *
@@ -93,7 +93,7 @@ class UserController extends BaseController
     {
         $user = \User::model()->findByPk(\Yii::app()->user->id);
         foreach (array('usernameUpdate', 'passwordUpdate') as $key) {
-            $data = \Yii::app()->user->getData('user.'.$key);
+            $data = \Yii::app()->user->getData('user.' . $key);
             if ($data !== null) {
                 $user->setScenario($key);
                 $user->setAttributes($data);
@@ -176,6 +176,25 @@ class UserController extends BaseController
     }
 
     /**
+     * Publicly lists available users.
+     *
+     * @throws \EHttpException Thrown if requested page doesn't contain users
+     *                         (404)
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function actionList()
+    {
+        $users = \User::model()->paged($this->page->pageNumber, 25)->findAll();
+        if (!$users && $this->page->pageNumber > 1) {
+            throw new \EHttpException(404);
+        }
+        $this->page->totalPages = \User::model()->count() / 25;
+        $this->render('list', array('users' => $users,), $users);
+    }
+
+    /**
      * Defines action access rules.
      *
      * @return array Set of access rules.
@@ -185,7 +204,11 @@ class UserController extends BaseController
     {
         return array(
             array('allow', 'users' => array('@',),),
-            array('allow', 'users' => array('*',), 'actions' => array('index')),
+            array(
+                'allow',
+                'users' => array('*',),
+                'actions' => array('index', 'list',),
+            ),
             array('deny',),
         );
     }
@@ -214,7 +237,8 @@ class UserController extends BaseController
             'dashboard' => 'admin/index',
             'new' => 'dashboard',
             'profile' => 'admin/index',
-            'suicide' => 'profile'
+            'suicide' => 'profile',
+            'list' => 'post/index',
         );
     }
 
@@ -229,6 +253,9 @@ class UserController extends BaseController
         return array(
             'index' => array('list', 'post/index'),
             'new' => array('dashboard', 'admin/index'),
+            'list' => array('post/index',),
+            'profile' => array('admin/index',),
+            'dashboard' => array('admin/index',),
         );
     }
 }
