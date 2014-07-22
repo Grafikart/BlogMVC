@@ -75,10 +75,12 @@ class CommentController extends \BaseController
         } else if (!$data) {
             throw new \EHttpException(400, 'badRequest.noDataReceived');
         }
-        $comment = new Comment;
+        $comment = new \Comment;
         $comment->post_id = $post->getPrimaryKey();
         $response = array('success' => true,);
-        if (!$comment->setAndSave($data)) {
+        if ($comment->setAndSave($data)) {
+            $response['data'] = $comment->getPublicAttributes();
+        } else {
             $response['success'] = false;
             $response['errors'] = $comment->getErrors();
         }
