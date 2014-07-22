@@ -1,10 +1,16 @@
+# Vendor stuff
 /vendor/
+
+# Local stuff
 /public/assets
+*.log
+
+# Local config
 /config/db.php
+/composer.lock
+
+# IDE project files
 /nbproject/
 /.project/
 /.settings/
-/tests/_log/*
-!/tests/_log/.gitkeep
-/composer.lock
-*.log
+/.idea
