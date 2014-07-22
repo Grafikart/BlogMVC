@@ -31,9 +31,9 @@ to a single category and will appear at main and corresponding category pages
 instantly after it was submitted. 
 Post controls are quite simple: one category, no tags, Markdown syntax, no
 "comments open/closed" flag. Any post modifications may be done only by it's
-owner; owner also can delete comments to his post.  
+owner.  
 Comments can be written by virtually anyone: the only difference is that system
-will put an asterisk before name of unregistered user.
+will put an `@` sign before name of unregistered user.
 
 ### Under the hood
 

@@ -1,12 +1,12 @@
 # Dev-help
 
-This page describes extending options for application.
+This page describes extending options for application and contains some
+sweet talk.
 
 ## Yii
 
-This application was built with Yii 1.1.14. This means that it can be extended
-in every way Yii supports - extensions, widgets (it's nearly the same syntax in
-Twig), custom parameters in config.
+This application was built with Yii 1.1.15. This means that it can be extended
+in every way Yii supports - extensions, widgets custom parameters in config.
 This application was built as a part of *contest-like* project, so feel free to
 explore, rewrite, tear and break everything down or build something using
 application components.
@@ -19,19 +19,22 @@ there's no point in leaving comments in it.
 As stated above, this application is run with the help of Yii, so
 [same rules apply](http://www.yiiframework.com/doc/guide/1.1/en/topics.theming)
 (except for using Twig). You'll want to place your theme files in
-`public/skins/{{ your skin name }}` folder and activate your theme by choosing
+`public/skins/your-skin-name` folder and activate your theme by choosing
  it on [options page](/admin/options) or by setting
-`theme => 'your skin name'` in config. Then you can overriding
-default templates with yours placed in `public/skins/{{ your skin name }}/views`
+`theme => 'your-skin-name'` in config. Then you can override
+default templates with yours placed in `public/skins/your-skin-name/views`
 folder (just use the same names and everything will be ok). You can also safely
 point to your new assets placed in your skin folder: site root is pointing to
-the `public/` application folder.
+the `public/` application folder.  
+The last thing i need to say is that some pieces of main layout are placed
+in `views/chunks` folder. That gives you ability to partially reformat main
+layout without shaking the whole inheritance tree.
 
 ## Proper cache
 
 This application uses file cache by default, and that is definitely not a
 recommended option. To use a proper caching engine, just open
-`config/front.php` file and update cache settings according to
+`config/web.php` file and update cache settings according to
 [Yii manual](http://www.yiiframework.com/doc/guide/1.1/en/caching.overview).
 
 ## Q? A.
@@ -71,7 +74,7 @@ my attempts to create a unified expression provider in
 ### Q: Getters, i see getters everywhere! Why are you placing them in places where there is no need for them?
 
 **A**: Let's be honest: PHP is freaking paranoid for years. "What if somebody
-iinvades my code and changes single variable?", asks himself nearly every PHP
+invades my code and changes single variable?", asks himself nearly every PHP
 programmer. And though there are rarely any reasons for such security (i don't
 remember any security breaks through changing internal variables, but i do
 remember "don't use regexps they are slow!" whining and the timthumb case), i
@@ -105,6 +108,13 @@ would come one day and rewrite half of application keeping other half intact.
 
 **A**: They are not technically proxies. However, i remembered word 'proxy' only
 when i was close to finish my development, so i left everything as is.
+
+### Q: Your code is inconsistent in some places. Why?
+
+**A**: Sadly, i didn't have time to refactor everything, some code needs extra
+abstraction, some code duplicates itself, ajax actions are halfly-done, and i
+surely see that. I really wanted this to be a top-notch project, but i simply
+don't have enough time for this.
 
 ### Q: I have more questions / i have a suggestion / i want to hug you
 
