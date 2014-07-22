@@ -24,7 +24,7 @@
                     </a>
                 {% else %}
                     <a href="{{ link['url'] }}">
-                        {{- App.t.t('link.navigation', {'{location}': link['title']}) -}}
+                        {{- App.t.t('link.navigation', {'{location}': link['title']|lower}) -}}
                     </a>
                 {% endif %}
             {% endfor %}
