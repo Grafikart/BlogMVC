@@ -73,9 +73,9 @@ class DataFormatter
      * otherwise.
      * @since 0.1.0
      */
-    public static function knownFormat($format)
+    public function knownFormat($format)
     {
-        return in_array($format, self::$supportedFormats, true);
+        return in_array($format, $this->supportedFormats, true);
     }
 
     /**
@@ -312,7 +312,7 @@ class DataFormatter
      */
     public function formatModels(array $models, $format)
     {
-        if (!static::knownFormat($format)) {
+        if (!$this->knownFormat($format)) {
             throw new \BadMethodCallException('Unknown format supplied');
         }
         if ($format === 'rss') {
@@ -325,26 +325,26 @@ class DataFormatter
     }
 
     /**
-     * Returns header for provided format. Normally it should go in Response
-     * class.
+     * Formats single model to provided format.
      *
-     * @param string $format Format which header should represent.
+     * @param \CModel $model  Model to be formatted.
+     * @param string  $format
      *
-     * @return string Header text.
+     * @return string
      * @since 0.1.0
      */
-    public function formatHeader($format)
+    public function formatModel(\CModel $model, $format)
     {
-        if (!static::knownFormat($format)) {
+        if (!$this->knownFormat($format)) {
             throw new \BadMethodCallException('Unknown format supplied');
         }
-        if ($format === 'json') {
-            $header = 'application/json';
-        } else if ($format === 'xml') {
-            $header = 'application/xml';
+        if ($format === 'rss') {
+            throw new \InvalidArgumentException(
+                'RSS format isn\'t supported for posts'
+            );
         } else {
-            $header = 'application/rss+xml';
+            $formatter = $this->getModelFormatter();
+            return $formatter->format($model, $format);
         }
-        return 'Content-Type: '.$header.'; charset='.\Yii::app()->charset;
     }
 }
