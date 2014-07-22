@@ -467,7 +467,7 @@ class Page extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function resetI18n(array $data)
+    public function resetI18n(array $data=array())
     {
         $this->resetTitle($data);
         $this->resetHeading($data);
