@@ -241,7 +241,12 @@ class CategoryController extends \BaseController
         return array(
             array(
                 'deny',
-                'actions' => array('recalculate', 'ajaxAdd', 'add'),
+                'actions' => array(
+                    'recalculate',
+                    'ajaxAdd',
+                    'add',
+                    'dashboard',
+                ),
                 'users' => array('?')
             ),
             array('allow'),
