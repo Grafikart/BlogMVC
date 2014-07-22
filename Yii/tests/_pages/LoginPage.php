@@ -39,4 +39,11 @@ class LoginPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $submitButton = '[role="sign-in-button"]'; // 'Sign in';
+    /**
+     * Submit form selector.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $formSelector = 'form[role="login-form"]';
 }

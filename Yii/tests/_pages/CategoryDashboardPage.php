@@ -24,7 +24,7 @@ class CategoryDashboardPage extends \GeneralPage
      * @type string
      * @since 0.1.0
      */
-    public static $route = 'category/list/type/admin';
+    public static $route = 'category/dashboard';
     /**
      * 'Add new category' button selector.
      *

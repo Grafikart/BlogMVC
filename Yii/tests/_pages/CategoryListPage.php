@@ -24,5 +24,5 @@ class CategoryListPage extends \GeneralPage
      * @type string
      * @since 0.1.0
      */
-    public static $route = 'category/list/type/public';
+    public static $route = 'category/list';
 }

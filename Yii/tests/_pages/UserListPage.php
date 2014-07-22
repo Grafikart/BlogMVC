@@ -1,25 +1,28 @@
 <?php
 
-class UserListPage
+/**
+ * This page holds data about user listing page.
+ *
+ * @version    0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
+ */
+class UserListPage extends \GeneralPage
 {
-    // include url of current page
-    static $URL = '';
-
     /**
-     * Declare UI map for this page here. CSS or XPath allowed.
-     * public static $usernameField = '#username';
-     * public static $formSubmitButton = "#mainForm input[type=submit]";
+     * Page url.
+     *
+     * @type string
+     * @since 0.1.0
      */
-
+    public static $url = '/author';
     /**
-     * Basic route example for your current URL
-     * You can append any additional parameter to URL
-     * and use it in tests like: EditPage::route('/123-post');
+     * Yii page route.
+     *
+     * @type string
+     * @since 0.1.0
      */
-     public static function route($param)
-     {
-        return static::$URL.$param;
-     }
-
-
+    public static $route = 'user/list';
 }

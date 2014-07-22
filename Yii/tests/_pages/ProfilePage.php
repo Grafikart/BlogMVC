@@ -40,6 +40,14 @@ class ProfilePage extends \GeneralPage
      */
     public static $usernameUpdateButton = '[role="update-username"]';
     /**
+     * CSS selector for username update form.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $usernameUpdateFormSelector
+        = 'form[role="username-update-form"]';
+    /**
      * `Current password` field name.
      *
      * @var string
@@ -67,6 +75,14 @@ class ProfilePage extends \GeneralPage
      * @since 0.1.0
      */
     public static $passwordUpdateButton = '[role="update-password"]';
+    /**
+     * CSS selector for password update form.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $passwordUpdateFormSelector
+        = 'form[role="password-update-form"]';
     /**
      * Selector for link to first Futurama episode.
      *
