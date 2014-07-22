@@ -8,8 +8,6 @@ return array(
     'heading.pagination' => 'Навигация',
     'heading.newCategory' => 'Добавить категорию',
     'heading.editCategory' => 'Редактировать категорию {category}',
-    'heading.newPost' => 'Новая запись',
-    'heading.editPost' => 'Редактировать запись',
     'heading.commentsAmount' => '{n} комментарий|{n} комментария|'.
         '{n} комментариев|{n} комментария',
     'heading.yourPosts' => 'Ваши записи',
@@ -19,7 +17,6 @@ return array(
     'heading.cachedValues' => 'Кэшированные значения',
     'heading.statistics' => 'Статистика',
     'heading.serviceStatus' => 'Статус сервиса',
-    'heading.managePosts' => 'Управление записями',
     'heading.users' => 'Пользователи',
     'heading.profile' => 'Профиль',
     'heading.username' => 'Логин',
@@ -78,7 +75,7 @@ return array(
     'link.edit' => 'Редактировать',
     'link.more' => 'Далее...',
     'link.readMore' => 'Читать далее...',
-    'link.viewPost' => 'Просмотреть запись',
+    'link.thisPost' => 'Эта запись',
     'link.here' => 'здесь',
     'link.link' => 'ссылка',
     'link.login' => 'Войти',
@@ -102,6 +99,8 @@ return array(
     'text.sorryNoPostsYet' => 'Простите, пока не написано ни одного поста',
     'text.profileGreeting' => 'Привет, {username}!',
     'text.rss.defaultDescription' => '{appName} лента RSS.',
+    'text.noRegisteredUsers' => 'В данный момент в системе не зарегистрирован '.
+        'ни один пользователь.',
 
     'paragraph.serviceStatusCache' => 'Показываемые данные кэшируются и могут '.
         'быть устаревшими. Время жизни кэша составляет одну минуту для секции '.

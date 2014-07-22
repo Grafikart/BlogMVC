@@ -41,6 +41,14 @@ return array(
     'category.update.success' => 'Категория {category} была обновлена.',
     'category.update.fail' => 'категория {category} не была обновлена, '.
         'проверьте форму на ошибки.',
+    'category.delete.success' => 'Категория {categoryTitle} была успешно '.
+        'удалена.',
+    'category.delete.notEmpty' => 'Категория {categoryTitle} содержит записи '.
+        'и не может быть удалена.',
+    'category.delete.doesNotExist' => 'Категория не существует и не может '.
+        'быть удалена',
+    'category.delete.fail' => 'Категория {categoryTitle} не удалось удалить '.
+        'неизвестной причине.',
     'options.update.success' => 'Настройки приложения были обновлены.',
     'options.update.fail' => 'Настрйоки приложения не были обновлены.',
 );

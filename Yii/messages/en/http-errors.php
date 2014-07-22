@@ -5,6 +5,8 @@ return array(
     'badRequest.postNotFound' => 'Application couldn\'t find specified post',
     'badRequest.commentNotFound' => 'Application couldn\'t find specified '.
         'comment',
+    'badRequest.categoryNotEmpty' => 'Category {categoryTitle} isn\'t empty '.
+        'and can\'t be deleted',
     'badRequest.noDataReceived' => 'Application expected POST data, but '.
         'nothing was received.',
     'badRequest.invalidFormat' => 'Invalid format specified.',
