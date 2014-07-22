@@ -21,11 +21,7 @@ return array(
     'sourceLanguage' => 'en',
     'language' => 'ru',
     'components' => array(
-        'db' => array(
-            'connectionString' => 'pgsql:host=localhost;port=5432;dbname=blogmvc_yii',
-            'username' => 'blogmvc',
-            'password' => 'blogmvc',
-        ),
+        'db' => include __DIR__.'/db.php',
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
