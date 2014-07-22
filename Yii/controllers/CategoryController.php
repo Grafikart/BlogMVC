@@ -204,17 +204,16 @@ class CategoryController extends \BaseController
         $category = \Category::model()->findBySlug($slug);
         if (!$category) {
             throw new \EHttpException(404);
-        } elseif ($category->post_count != 0) {
-            $data = array('{categoryTitle}' => $category->name);
+        }
+        $data = array('{categoryTitle}' => $category->name,);
+        if ($category->post_count != 0) {
             $key = 'badRequest.categoryNotEmpty';
             throw new \EHttpException(400, $key, $data);
         } else if ($category->delete()) {
-            \Yii::app()->user->sendSuccessMessage(
-                'category.delete.success',
-                array('{categoryTitle}' => $category->name)
-            );
+            $key = 'category.delete.success';
+            \Yii::app()->user->sendSuccessMessage($key, $data);
         } else {
-            \Yii::app()->user->sendErrorMessage('category.delete.fail');
+            \Yii::app()->user->sendErrorMessage('category.delete.fail', $data);
         }
         $this->redirect(array('dashboard'));
     }
