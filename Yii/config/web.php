@@ -1,7 +1,7 @@
 <?php
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
-    'name' => 'Horse Tickler\\\\\'s Dagger Fan Club',
+    'name' => 'Another non-wordpress blog',
     'basePath' => '/srv/http/src/blogmvc/Yii',
     'import' => array(
         'application.components.*',
@@ -19,9 +19,13 @@ return array(
         'log',
     ),
     'sourceLanguage' => 'en',
-    'language' => 'ru',
+    'language' => 'en',
     'components' => array(
-        'db' => include __DIR__.'/db.php',
+        'db' => array(
+            'connectionString' => 'pgsql:dbname=blogmvc_yii',
+            'username' => 'blogmvc',
+            'password' => 'blogmvc',
+        ),
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
