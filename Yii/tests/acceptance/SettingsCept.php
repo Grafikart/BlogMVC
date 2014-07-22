@@ -21,3 +21,5 @@ $I->seeOptionIsSelected(\OptionsPage::$themeList, 'ambinight');
 $I->see('Настройки', \OptionsPage::$pageHeaderSelector);
 $I->amOnPage(\BlogFeedPage::$url);
 $I->see('Категории', \BlogFeedPage::$sidebarSelector);
+
+$I->resetApplicationSettings();
