@@ -459,18 +459,18 @@ class Page extends \CComponent
     }
 
     /**
-     * Resets page title and heading using provided data. Translation keys are
-     * generated automatically.
+     * Resets page title and heading using provided data.
      *
-     * @param string[] $data Translation keys.
+     * @param string[] $data Data required for translation.
+     * @param string   $key  Translation key.
      *
      * @return void
      * @since 0.1.0
      */
-    public function resetI18n(array $data=array())
+    public function resetI18n(array $data=array(), $key=null)
     {
-        $this->resetTitle($data);
-        $this->resetHeading($data);
+        $this->resetTitle($data, $key);
+        $this->resetHeading($data, $key);
     }
 
     /**

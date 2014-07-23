@@ -104,7 +104,11 @@ class CategoryController extends \BaseController
         if ($data = \Yii::app()->user->getData('category')) {
             $category->setAndValidate($data);
         }
-        $this->page->resetI18n(array('{categoryTitle}' => $category->name));
+        if ($slug) {
+            $this->page->resetI18n(array('{categoryTitle}' => $category->name));
+        } else {
+            $this->page->resetI18n(array(), 'pageTitle.category.new');
+        }
         $this->render('form', array('category' => $category));
     }
 
