@@ -16,17 +16,19 @@ $I->amOnPage(\AuthorFeedPage::route(1));
 $I->see($login, \AuthorFeedPage::$postSelector);
 
 $I->amOnPage(\LoginPage::$url);
-$I->fillField(\LoginPage::$loginField, $login);
-$I->fillField(\LoginPage::$passwordField, $password);
-$I->click(\LoginPage::$submitButton);
+$I->submitForm(\LoginPage::$formSelector, array(
+    \LoginPage::$loginField => $login,
+    \LoginPage::$passwordField => $password
+));
 $I->amOnPage(\SuicideBoothPage::$url);
-$I->click(\SuicideBoothPage::$benderButton);
+$I->click(\SuicideBoothPage::$benderButtonXPath);
 $I->seeCurrentUrlEquals('/');
 
 $I->amOnPage(\LoginPage::$url);
-$I->fillField(\LoginPage::$loginField, $login);
-$I->fillField(\LoginPage::$passwordField, $login);
-$I->click(\LoginPage::$submitButton);
+$I->submitForm(\LoginPage::$formSelector, array(
+    \LoginPage::$loginField => $login,
+    \LoginPage::$passwordField => $password
+));
 $I->see('auth.login.fail');
 
 $I->amOnPage(\AuthorFeedPage::route(1));

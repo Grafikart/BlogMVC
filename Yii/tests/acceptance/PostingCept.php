@@ -1,4 +1,6 @@
 <?php
+/** @type \Codeception\Scenario $scenario */
+$scenario->groups('content');
 
 $I = new WebGuy\MemberSteps($scenario);
 $I->wantTo('Publish my post');
@@ -60,13 +62,14 @@ $I->click(\PostFormPage::$categoryMenuToggleButton);
 $I->wait(1);
 $I->fillField(\PostFormPage::$newCategoryField, 'Phantom menace');
 $I->click(\PostFormPage::$submitButton);
-$I->click('link.viewPost');
+$I->click('link.navigation [location:link.thispost]');
 $I->seeLink('Phantom menace', 'phantom-menace');
 
 $I->amOnPage(\PostsDashboardPage::$url);
 $I->click('control.delete', '#post-'.$id);
 $I->seeCurrentUrlEquals(\PostsDashboardPage::$url);
-$I->dontSee('Another title', '#post-'.$id); // flash message containing post title will be shown
+// flash message containing post title will be shown
+$I->dontSee('Another title', '#post-'.$id);
 
 $I->amOnPage(\BlogFeedPage::$url);
 $I->dontSee('Another title');
