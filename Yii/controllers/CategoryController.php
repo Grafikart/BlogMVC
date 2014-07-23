@@ -249,6 +249,7 @@ class CategoryController extends \BaseController
                     'ajaxAdd',
                     'add',
                     'dashboard',
+                    'edit',
                 ),
                 'users' => array('?')
             ),
