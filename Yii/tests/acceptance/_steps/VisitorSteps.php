@@ -127,4 +127,21 @@ class VisitorSteps extends \WebGuy
     {
         $this->resizeWindow(1024, 768);
     }
+
+    /**
+     * Verifies that user ended up on an HTTP error page.
+     *
+     * @param int $errorCode HTTP error code that has to be seen.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function seeHttpErrorPage($errorCode = null)
+    {
+        $I = $this;
+        $I->see('pageTitle.site.error', \GeneralPage::$pageHeaderSelector);
+        if ($errorCode) {
+            $I->see($errorCode, \GeneralPage::$pageHeaderSelector);
+        }
+    }
 }

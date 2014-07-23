@@ -233,6 +233,7 @@ class MemberSteps extends \WebGuy\VisitorSteps
         $I->amOnPage(\ProfilePage::$url);
         $I->fillField(\ProfilePage::$usernameField, $username);
         $I->click(\ProfilePage::$usernameUpdateButton);
+        $I->username = $username;
     }
 
     /**
