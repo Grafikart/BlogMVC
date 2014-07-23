@@ -130,12 +130,12 @@ class ApplicationModelTest extends \Codeception\TestCase\Test
      */
     public static function tearDownAfterClass()
     {
-        if (!static::$runFileTests) {
-            return;
-        }
+        //$uid = getmyuid();
+        //$gid = getmygid();
         foreach (static::$mockFiles as $file) {
             $path = Yii::getPathOfAlias($file['alias']).'.php';
-            if (file_exists($path) && chmod($path, 0777)) {
+            //$stats = stat($path);
+            if (file_exists($path) && @chmod($path, 0777)) {
                 unlink($path);
             }
         }
