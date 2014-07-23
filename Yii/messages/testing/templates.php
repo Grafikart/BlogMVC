@@ -7,6 +7,12 @@
 
     'pageTitle.user.index' => 'pageTitle.user.index [username:{username}]',
     'pageTitle.site.error' => 'pageTitle.site.error [errorCode:{errorCode}]',
+    'pageTitle.category.index' => 'pageTitle.category.index '.
+        '[categoryTitle:{categoryTitle}]',
+    'pageTitle.category.edit' => 'pageTitle.category.edit '.
+        '[categoryTitle:{categoryTitle}]',
+    'pageTitle.post.show' => 'pageTitle.post.show [postTitle:{postTitle}]',
+    'pageTitle.post.edit' => 'pageTitle.post.edit [postTitle:{postTitle}]',
 
     'link.backTo' => 'link.backTo [pageTitle:{pageTitle}]',
     'link.navigation' => 'link.navigation [location:{location}]',

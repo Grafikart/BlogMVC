@@ -37,6 +37,7 @@ return array(
     'pageTitle.category.list' => 'Categories',
     'pageTitle.category.dashboard' => 'Category dashboard',
     'pageTitle.category.edit' => 'Edit category {categoryTitle}',
+    'pageTitle.category.new' => 'New category',
     'pageTitle.post.index' => 'Blog',
     'pageTitle.post.show' => '{postTitle}',
     'pageTitle.post.new' => 'New post',

@@ -38,6 +38,7 @@ return array(
     'pageTitle.category.list' => 'Категории',
     'pageTitle.category.dashboard' => 'Управление категориями',
     'pageTitle.category.edit' => 'Категория {categoryTitle}',
+    'pageTitle.category.new' => 'Новая категория',
     'pageTitle.post.index' => 'Блог',
     'pageTitle.post.show' => '{postTitle}',
     'pageTitle.post.new' => 'Новая запись',
