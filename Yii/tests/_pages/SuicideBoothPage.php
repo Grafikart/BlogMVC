@@ -32,4 +32,11 @@ class SuicideBoothPage extends \GeneralPage
      * @since 0.1.0
      */
     public static $benderButton = 'button[role="suicide"]';
+    /**
+     * Bender button selector for XPath.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $benderButtonXPath = 'button[role=suicide]';
 }
