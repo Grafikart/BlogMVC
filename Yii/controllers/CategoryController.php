@@ -242,18 +242,13 @@ class CategoryController extends \BaseController
     public function accessRules()
     {
         return array(
+            array('allow', 'users' => array('@'),),
             array(
-                'deny',
-                'actions' => array(
-                    'recalculate',
-                    'ajaxAdd',
-                    'add',
-                    'dashboard',
-                    'edit',
-                ),
+                'allow',
+                'actions' => array('index', 'list',),
                 'users' => array('?')
             ),
-            array('allow'),
+            array('deny,'),
         );
     }
 

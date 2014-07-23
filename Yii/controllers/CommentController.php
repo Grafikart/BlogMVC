@@ -123,4 +123,33 @@ class CommentController extends \BaseController
         \Yii::app()->user->sendNotice('comment.delete');
         $this->redirect(array('post/show', 'slug' => $comment->post->slug));
     }
+
+    /**
+     * Defines controller filters.
+     *
+     * @return array Filters definitions
+     * @since 0.1.0
+     */
+    public function filters()
+    {
+        return array('accessControl',);
+    }
+
+    /**
+     * Defines access rules for controller.
+     *
+     * @return array Set of rules.
+     * @since 0.1.0
+     */
+    public function accessRules()
+    {
+        return array(
+            array(
+                'deny',
+                'actions' => array('delete',),
+                'users' => array('?',),
+            ),
+            array('allow',),
+        );
+    }
 }
