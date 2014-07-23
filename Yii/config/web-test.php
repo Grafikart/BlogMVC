@@ -5,7 +5,8 @@ $config = \CMap::mergeArray(
         'components' => array(
             'request' => array(
                 'baseUrl' => '',
-            )
+            ),
+            'db' => include __DIR__.'/db-test.php',
         )
     )
 );

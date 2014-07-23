@@ -18,7 +18,10 @@ return CMap::mergeArray(
             ),
             'sqliteTestConnection' => array(
                 'class' => 'CDbConnection',
-                'connectionString' => 'sqlite:'.dirname(__DIR__).'/runtime/test.sqlite',
+                // whatever you do, make sure this name doesn't intersect with
+                // the one in db-test.php
+                'connectionString' => 'sqlite:'.dirname(__DIR__).'/runtime/dummy.db',
+                'tablePrefix' => 'test_conn_',
             ),
             'pgsqlTestConnection' => array(
                 'class' => 'CDbConnection',
