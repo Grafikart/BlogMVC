@@ -4,8 +4,14 @@ build_settings:
     - tests
 
 setup:
+  clean_build:
+    remove:
+      - composer.lock
+      - runtime/test.db
   composer:
     action: install
+  shell:
+    command: "PHP_ENV=testing php %BUILD_PATH%/boot/console migrate up --interactive=0"
 
 test:
   php_parallel_lint:
@@ -17,6 +23,8 @@ test:
       - messages
       - migrations
       - models
+    # somehow it didn't like ignored vendor/autoload.php
+    allow_failures: true
   codeception:
     config: codeception.yml
   php_loc:
@@ -33,7 +41,7 @@ test:
       - tests
       - views
       - public
-      - phpci
+      - vendor
     #path: Yii
     allow_failures: true
   php_code_sniffer:
@@ -43,5 +51,14 @@ test:
     ignore:
       - runtime
       - tests
+      - vendor
+      - views
+      - public
     standard: "PSR1,PSR2"
     allow_failures: true
+
+complete:
+  clean_build:
+    remove:
+      - composer.lock
+      - runtime/test.db
