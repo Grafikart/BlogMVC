@@ -3,6 +3,7 @@ return CMap::mergeArray(
     include 'web.php',
     array(
         'components' => array(
+            'db' => require __DIR__.'/db-test.php',
             'request' => array(
                 'baseUrl' => '',
             ),
