@@ -5,8 +5,8 @@
         <thead>
             <tr>
                 <th>{{ App.t.t('text.id') }}</th>
-                <th class="text-center">{{ App.t.t('text.name') }}</th>
-                <th class="text-center">{{ App.t.t('text.postCount') }}</th>
+                <th class="text-center">{{ categories[0].getAttributeLabel('name') }}</th>
+                <th class="text-center">{{ categories[0].getAttributeLabel('post_count') }}</th>
                 <th class="text-center">{{ App.t.t('text.actions') }}</th>
             </tr>
         </thead>

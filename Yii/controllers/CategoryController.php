@@ -261,7 +261,7 @@ class CategoryController extends \BaseController
     public function getActionAncestors()
     {
         return array(
-            'index' => 'list',
+            'index' => 'post/index',
             'list' => 'post/index',
             'dashboard' => 'admin/index',
             'edit' => 'dashboard'
@@ -276,16 +276,24 @@ class CategoryController extends \BaseController
      */
     public function navigationLinks()
     {
-        return array(
+        $nav = array(
             'index' => array('post/index', 'list',),
-            'edit' => array('dashboard',),
+            'edit' => array('admin/index', 'dashboard',),
             'dashboard' => array(
                 array(
                     'route' => 'edit',
                     'type' => 'button',
-                    'title' => 'control.addNew',
+                    'title' => 'control.createNewF',
+                ),
+            ),
+            'list' => \Yii::app()->user->getIsGuest() ? array() : array(
+                array(
+                    'route' => 'dashboard',
+                    'type' => 'button',
+                    'title' => 'control.manage',
                 ),
             )
         );
+        return $nav;
     }
 }

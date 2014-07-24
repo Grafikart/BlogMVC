@@ -275,6 +275,7 @@ class PostController extends \BaseController
         return array(
             'index' => null,
             'show' => 'index',
+            'new' => 'dashboard',
             'edit' => 'dashboard',
             'dashboard' => 'admin/index',
         );

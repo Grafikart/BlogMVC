@@ -233,7 +233,7 @@ class UserController extends BaseController
     public function getActionAncestors()
     {
         return array(
-            'index' => 'list',
+            'index' => 'post/index',
             'dashboard' => 'admin/index',
             'new' => 'dashboard',
             'profile' => 'admin/index',

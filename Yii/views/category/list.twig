@@ -1,13 +1,5 @@
 {% extends 'views/layouts/main.twig' %}
 {% block content %}
-    <h1>
-        {{ App.t.t('heading.categories') }}
-        {% if not App.user.getIsGuest() %}
-            <a class="pull-right btn btn-primary" href="{{ this.createUrl('category/list/type/admin') }}">
-                {{ App.t.t('control.manage') }}
-            </a>
-        {% endif %}
-    </h1>
     {% if categories|length > 0 %}
         <div class="row">
             <div class="col-md-6">
