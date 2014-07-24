@@ -25,4 +25,3 @@ class EHttpInvalidPageFormatException extends \EHttpException
         parent::__construct(400, $message, $tArgs);
     }
 }
- 

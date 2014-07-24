@@ -23,7 +23,7 @@ class EHttpException extends \CHttpException
      *
      * @since 0.1.0
      */
-    public function __construct($status, $message=null, $tArgs=array())
+    public function __construct($status, $message = null, $tArgs = array())
     {
         if ($message !== null) {
             $message = \Yii::t('http-errors', $message);

@@ -20,9 +20,8 @@ class EHttpRestrictedPagingException extends \EHttpException
      *
      * @since 0.1.0
      */
-    public function __construct($messageKey, $tArgs=array())
+    public function __construct($messageKey, $tArgs = array())
     {
         parent::__construct(400, $messageKey, 0, $tArgs);
     }
 }
- 
