@@ -50,7 +50,7 @@ foreach ($languages as $language) {
     }
 }
 
-$I->click(\GeneralPage::$logoutLink);
+$I->click(\GeneralPage::$logoutLinkXPath);
 $I->resetCookie('language');
 
 $prepareData = function ($data, $redirects = false) {
