@@ -258,4 +258,3 @@ class CacheHelper extends \CComponent
         \Yii::log(sprintf($message, $token, $sign));
     }
 }
- 

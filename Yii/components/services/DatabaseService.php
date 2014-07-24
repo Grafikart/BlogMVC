@@ -181,4 +181,3 @@ class DatabaseService extends CComponent
         return new \CDbExpression($expr);
     }
 }
- 

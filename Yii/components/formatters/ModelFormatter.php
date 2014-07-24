@@ -192,4 +192,3 @@ class ModelFormatter extends \CComponent
         return $model->getAttributes();
     }
 }
- 

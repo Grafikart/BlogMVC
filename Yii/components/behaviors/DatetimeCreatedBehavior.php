@@ -18,7 +18,7 @@ class DatetimeCreatedBehavior extends \CActiveRecordBehavior
      * owner is new model.
      *
      * @param CModelEvent $event Event to keep strict standards happy about
-     * method signature.
+     *                           method signature.
      *
      * @return void
      * @since 0.1.0
@@ -30,4 +30,4 @@ class DatetimeCreatedBehavior extends \CActiveRecordBehavior
             $this->getOwner()->created = $dt->format(\DateTime::ISO8601);
         }
     }
-} 
+}

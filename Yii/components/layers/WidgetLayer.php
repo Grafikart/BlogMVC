@@ -138,4 +138,4 @@ class WidgetLayer extends \CWidget
         echo $text;
         echo "\n";
     }
-} 
+}
