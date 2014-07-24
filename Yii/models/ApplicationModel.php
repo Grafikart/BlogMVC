@@ -165,7 +165,7 @@ class ApplicationModel extends CModel
      * @return bool True on success, false otherwise.
      * @since 0.1.0
      */
-    public function save(array $attributes=null)
+    public function save(array $attributes = null)
     {
         \Yii::beginProfile('applicationModel.save');
         if ($attributes !== null) {
@@ -177,21 +177,22 @@ class ApplicationModel extends CModel
         $this->configErrors = array();
         $result = $this->updateConfig();
         $l10nData = array('{path}' => \Yii::getPathOfAlias($this->configFile));
+        $section = 'validation-errors';
         switch ($result) {
             case self::CONFIG_FILE_MISSING:
-                $error = \Yii::t('validation-errors', 'app.missingConfig', $l10nData);
+                $error = \Yii::t($section, 'app.missingConfig', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_MISSING_DATA:
-                $error = \Yii::t('validation-errors', 'app.missingConfigData', $l10nData);
+                $error = \Yii::t($section, 'app.missingConfigData', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_NOT_WRITABLE:
-                $error = \Yii::t('validation-errors', 'app.configNotWritable', $l10nData);
+                $error = \Yii::t($section, 'app.configNotWritable', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
             case self::CONFIG_FILE_UNREADABLE:
-                $error = \Yii::t('validation-errors', 'app.unreadableConfig', $l10nData);
+                $error = \Yii::t($section, 'app.unreadableConfig', $l10nData);
                 $this->configErrors[$result] = $error;
                 return false;
         }
@@ -263,7 +264,7 @@ class ApplicationModel extends CModel
         $path = \Yii::getPathOfAlias($alias).'.php';
         if (!file_exists($path)) {
             return self::CONFIG_FILE_MISSING;
-        } else if (!is_writable($path)) {
+        } elseif (!is_writable($path)) {
             return self::CONFIG_FILE_NOT_WRITABLE;
         }
         $template = "<?php\nreturn :config;\n";

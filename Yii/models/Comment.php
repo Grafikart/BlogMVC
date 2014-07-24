@@ -224,7 +224,7 @@ class Comment extends ActiveRecordLayer
                 array('username' => $newUsername,),
                 'LOWER(username) = :old_username',
                 array(':old_username' => $oldUsername,)
-           );
+            );
     }
     /**
      * Returns keys for attribute labels localization.

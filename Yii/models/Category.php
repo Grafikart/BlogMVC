@@ -54,7 +54,7 @@ class Category extends ActiveRecordLayer
      * @return \Category current instance.
      * @since 0.1.0
      */
-    public function paged($page=1, $perPage=5)
+    public function paged($page = 1, $perPage = 5)
     {
         $this->getDbCriteria()->mergeWith(
             array(
@@ -115,7 +115,7 @@ class Category extends ActiveRecordLayer
      * @return \Category Current instance.
      * @since 0.1.0
      */
-    public function popular($limit=5, $minimumPostCount=1)
+    public function popular($limit = 5, $minimumPostCount = 1)
     {
         if (($limit = (int)$limit) < 1) {
             throw new \BadMethodCallException('Limit can\'t be less than one');
@@ -145,7 +145,7 @@ class Category extends ActiveRecordLayer
         }
         if (!empty($this->slug)) {
             $this->slug = \Yii::app()->formatter->slugify($this->slug);
-        } else if (!empty($this->name)) {
+        } elseif (!empty($this->name)) {
             $this->slug = \Yii::app()->formatter->slugify($this->name);
         }
         return true;
@@ -160,7 +160,7 @@ class Category extends ActiveRecordLayer
      * @return void
      * @since 0.1.0
      */
-    public function updateCounter($increment=1)
+    public function updateCounter($increment = 1)
     {
         $this->post_count += $increment;
         $this->save(false, array('post_count'));
@@ -190,7 +190,7 @@ class Category extends ActiveRecordLayer
      * doesn't exist.
      * @since 0.1.0
      */
-    public function findBySlugOrCreate($slug=null)
+    public function findBySlugOrCreate($slug = null)
     {
         if ($slug) {
             return $this->find('slug = :slug', array(':slug' => $slug));

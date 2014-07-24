@@ -97,8 +97,11 @@ class Post extends \ActiveRecordLayer
      * @return int Number of total pages.
      * @since 0.1.0
      */
-    public function totalPages($postsPerPage=5, $condition='', $params=array())
-    {
+    public function totalPages(
+        $postsPerPage = 5,
+        $condition = '',
+        $params = array()
+    ) {
         if (($postsPerPage = (int)$postsPerPage) < 1) {
             $message = '$postsPerPage argument should be an integer bigger '.
                        'than 0';
@@ -180,7 +183,7 @@ class Post extends \ActiveRecordLayer
      * @return \Post Current model instance.
      * @since 0.1.0
      */
-    public function paged($page=1, $perPage=5)
+    public function paged($page = 1, $perPage = 5)
     {
         $this->getDbCriteria()->mergeWith(
             array(
@@ -304,7 +307,7 @@ class Post extends \ActiveRecordLayer
         if ($this->getIsNewRecord()) {
             $this->category->updateCounter();
             \Yii::log('Post successfully created');
-        } else if ($this->oldCategory !== (int) $this->category_id) {
+        } elseif ($this->oldCategory !== (int) $this->category_id) {
             $this->switchCategory($this->oldCategory, $this->category_id);
             \Yii::log('Post successfully updated');
         }
