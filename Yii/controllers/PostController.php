@@ -144,7 +144,7 @@ class PostController extends \BaseController
         $model = \Post::model()->findByPk($id);
         if ($model === null) {
             throw new \EHttpException(404);
-        } else if ((int) $model->user_id !== \Yii::app()->user->id) {
+        } elseif ((int) $model->user_id !== \Yii::app()->user->id) {
             throw new \EHttpException(403, 'notAuthorized.postOwnership');
         }
         $data = \Yii::app()->request->getPost('Post');

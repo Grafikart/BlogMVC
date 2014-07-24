@@ -30,7 +30,7 @@ class CommentController extends \BaseController
         $data = \Yii::app()->request->getPost('Comment', false);
         if (!$post) {
             throw new \EHttpException(400, 'badRequest.postNotFound');
-        } else if (!$data) {
+        } elseif (!$data) {
             throw new \EHttpException(400, 'badRequest.noDataReceived');
         }
         $comment = new Comment;
@@ -72,7 +72,7 @@ class CommentController extends \BaseController
         $data = \Yii::app()->request->getPost('Comment', false);
         if (!$post) {
             throw new \EHttpException(400, 'badRequest.postNotFound');
-        } else if (!$data) {
+        } elseif (!$data) {
             throw new \EHttpException(400, 'badRequest.noDataReceived');
         }
         $comment = new \Comment;
@@ -108,15 +108,15 @@ class CommentController extends \BaseController
         $comment = \Comment::model()->with('post')->findByPk($id);
         if ($comment === null) {
             throw new \EHttpException(400, 'badRequest.commentNotFound');
-        } else if ($comment->post === null) {
+        } elseif ($comment->post === null) {
             $message = 'Data integrity failure: comment#'.$id. ' doesn\'t '.
                 'have parent post';
-            \Yii::log($message, CLogger::LEVEL_ERROR );
+            \Yii::log($message, CLogger::LEVEL_ERROR);
             throw new \EHttpException(
                 500,
                 'internalServerError.dataIntegrityFailure'
             );
-        } else if ((int) $comment->post->user_id !== \Yii::app()->user->id) {
+        } elseif ((int) $comment->post->user_id !== \Yii::app()->user->id) {
             throw new \EHttpException(403, 'notAuthorized.postOwnership');
         }
         $comment->delete();

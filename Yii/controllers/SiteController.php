@@ -87,4 +87,3 @@ class SiteController extends \BaseController
         );
     }
 }
- 

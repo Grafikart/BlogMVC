@@ -96,7 +96,7 @@ class CategoryController extends \BaseController
      * @return void
      * @since 0.1.0
      */
-    public function actionEdit($slug=null)
+    public function actionEdit($slug = null)
     {
         if (!($category = \Category::model()->findBySlugOrCreate($slug))) {
             throw new \EHttpException(404);
@@ -167,7 +167,7 @@ class CategoryController extends \BaseController
      * @return void
      * @since 0.1.0
      */
-    public function actionSave($slug=null)
+    public function actionSave($slug = null)
     {
         if (!($data = \Yii::app()->request->getPost('Category'))) {
             throw new \EHttpException(400, 'badRequest.noDataReceived');
@@ -213,7 +213,7 @@ class CategoryController extends \BaseController
         if ($category->post_count != 0) {
             $key = 'badRequest.categoryNotEmpty';
             throw new \EHttpException(400, $key, $data);
-        } else if ($category->delete()) {
+        } elseif ($category->delete()) {
             $key = 'category.delete.success';
             \Yii::app()->user->sendSuccessMessage($key, $data);
         } else {

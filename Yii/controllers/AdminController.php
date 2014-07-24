@@ -89,7 +89,7 @@ class AdminController extends BaseController
      * @return void
      * @since 0.1.0
      */
-    public function actionFlushCache($returnUrl=null)
+    public function actionFlushCache($returnUrl = null)
     {
         \Yii::app()->cache->flush();
         \Yii::app()->user->sendSuccessMessage('cache.afterFlush');
