@@ -19,7 +19,7 @@ abstract class ActiveRecordLayer extends \CActiveRecord
      * @var string[] List of attribute labels.
      * @since 0.1.0
      */
-    protected $cachedAttributeLabels;
+    protected $cachedAttrLabels;
     /**
      * A wrapper around {@link getAttributeLabels()} (original
      * {@link CModel::attributeLabels()} substitute). Allows caching attribute
@@ -30,16 +30,16 @@ abstract class ActiveRecordLayer extends \CActiveRecord
      */
     public function attributeLabels()
     {
-        if (!isset($this->cachedAttributeLabels)) {
-            $this->cachedAttributeLabels = array();
+        if (!isset($this->cachedAttrLabels)) {
+            $this->cachedAttrLabels = array();
             foreach ($this->getAttributeLabels() as $attribute => $l18nKey) {
-                $this->cachedAttributeLabels[$attribute] = \Yii::t(
+                $this->cachedAttrLabels[$attribute] = \Yii::t(
                     'forms-labels',
                     $l18nKey
                 );
             }
         }
-        return $this->cachedAttributeLabels;
+        return $this->cachedAttrLabels;
     }
     /**
      * Returns localized attribute labels for caching.
@@ -57,7 +57,7 @@ abstract class ActiveRecordLayer extends \CActiveRecord
      * @return self Instance of current model.
      * @since 0.1.0
      */
-    public static function model($className=null)
+    public static function model($className = null)
     {
         if ($className === null) {
             $className = get_called_class();
@@ -88,7 +88,7 @@ abstract class ActiveRecordLayer extends \CActiveRecord
      * @return void
      * @since 0.1.0
      */
-    public function resetAttributes(array $attributes=null)
+    public function resetAttributes(array $attributes = null)
     {
         $defaults = $this->attributeDefaults();
         $safeAttributes = $this->getSafeAttributeNames();
@@ -159,7 +159,7 @@ abstract class ActiveRecordLayer extends \CActiveRecord
     {
         $attrs = array();
         $relations = $this->relations();
-        foreach ($relations as $key => $value) {
+        foreach (array_keys($relations) as $key) {
             if ($this->hasRelated($key)) {
                 $related = $this->getRelated($key);
                 if (is_array($related)) {

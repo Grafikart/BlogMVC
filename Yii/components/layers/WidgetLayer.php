@@ -52,9 +52,9 @@ class WidgetLayer extends \CWidget
      * @return void
      * @since 0.1.0
      */
-    public function openTag($tag, $opts=array(), $indent=null)
+    public function openTag($tag, $opts = array(), $indent = null)
     {
-        $this->e(\CHtml::openTag($tag, $opts), $indent);
+        $this->put(\CHtml::openTag($tag, $opts), $indent);
         if ($indent === null) {
             if ($this->indentStyle === self::INDENT_TABS) {
                 $this->currentIndent++;
@@ -74,7 +74,7 @@ class WidgetLayer extends \CWidget
      * @return void
      * @since 0.1.0
      */
-    public function closeTag($tag, $indent=null)
+    public function closeTag($tag, $indent = null)
     {
         if ($indent === null) {
             if ($this->indentStyle === self::INDENT_TABS) {
@@ -83,7 +83,7 @@ class WidgetLayer extends \CWidget
                 $this->currentIndent -= 4;
             }
         }
-        $this->e(\CHtml::closeTag($tag), $indent);
+        $this->put(\CHtml::closeTag($tag), $indent);
     }
 
     /**
@@ -102,15 +102,15 @@ class WidgetLayer extends \CWidget
      */
     public function tag(
         $tag,
-        $opts=array(),
-        $content=false,
-        $closeTag=true,
-        $indent=null
+        $opts = array(),
+        $content = false,
+        $closeTag = true,
+        $indent = null
     ) {
         if ($indent === null) {
             $indent = $this->currentIndent;
         }
-        $this->e(\CHtml::tag($tag, $opts, $content, $closeTag), $indent);
+        $this->put(\CHtml::tag($tag, $opts, $content, $closeTag), $indent);
     }
 
     /**
@@ -123,7 +123,7 @@ class WidgetLayer extends \CWidget
      * @return void
      * @since 0.1.0
      */
-    public function e($text, $indent=null)
+    public function put($text, $indent = null)
     {
         if ($indent === null) {
             $indent = $this->currentIndent;
@@ -131,7 +131,7 @@ class WidgetLayer extends \CWidget
         if ($indent > 0) {
             if ($this->indentStyle === self::INDENT_TABS) {
                 echo str_repeat("\t", $indent);
-            } else if ($this->indentStyle === self::INDENT_SPACES) {
+            } elseif ($this->indentStyle === self::INDENT_SPACES) {
                 echo str_repeat(' ', $indent);
             }
         }

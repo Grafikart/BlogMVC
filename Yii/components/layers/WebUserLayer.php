@@ -69,8 +69,8 @@ class WebUserLayer extends \CWebUser
      */
     public function sendMessage(
         $message,
-        $level=self::FLASH_NOTICE,
-        $data=array()
+        $level = self::FLASH_NOTICE,
+        $data = array()
     ) {
         $messages = $this->getFlash($this->messageKey, array());
         while (sizeof($messages) >= 10) {
@@ -94,7 +94,7 @@ class WebUserLayer extends \CWebUser
      * @return void
      * @since 0.1.0
      */
-    public function sendNotice($message, $data=array())
+    public function sendNotice($message, $data = array())
     {
         $this->sendMessage($message, self::FLASH_NOTICE, $data);
     }
@@ -108,7 +108,7 @@ class WebUserLayer extends \CWebUser
      * @return void
      * @since 0.1.0
      */
-    public function sendErrorMessage($message, $data=array())
+    public function sendErrorMessage($message, $data = array())
     {
         $this->sendMessage($message, self::FLASH_ERROR, $data);
     }
@@ -122,7 +122,7 @@ class WebUserLayer extends \CWebUser
      * @return void
      * @since 0.1.0
      */
-    public function sendSuccessMessage($message, $data=array())
+    public function sendSuccessMessage($message, $data = array())
     {
         $this->sendMessage($message, self::FLASH_SUCCESS, $data);
     }
@@ -134,7 +134,7 @@ class WebUserLayer extends \CWebUser
      * @return string[] List of messages.
      * @since 0.1.0
      */
-    public function getMessages($delete=true)
+    public function getMessages($delete = true)
     {
         return $this->getFlash($this->messageKey, array(), $delete);
     }
@@ -160,7 +160,7 @@ class WebUserLayer extends \CWebUser
      */
     public function saveData($alias, $data)
     {
-        $this->setFlash($this->dataKeyPrefix.$alias, $data);
+        $this->setFlash($this->dataKeyPrefix . $alias, $data);
     }
     /**
      * Getter for saved data, simple wrapper around {@link getFlash()}.
@@ -172,9 +172,9 @@ class WebUserLayer extends \CWebUser
      * @return mixed Stored data or null on failure.
      * @since 0.1.0
      */
-    public function getData($alias, $delete=true)
+    public function getData($alias, $delete = true)
     {
-        return $this->getFlash($this->dataKeyPrefix.$alias, null, $delete);
+        return $this->getFlash($this->dataKeyPrefix . $alias, null, $delete);
     }
     /**
      * Tells if there is stored data under provided key.
