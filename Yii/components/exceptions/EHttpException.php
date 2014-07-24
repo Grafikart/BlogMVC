@@ -18,7 +18,6 @@ class EHttpException extends \CHttpException
      * @param int      $status  HTTP error status.
      * @param string   $message Optional error message. Will be translated if
      * provided.
-     * @param int      $code    Error code.
      * @param string[] $tArgs   Additional args for translation.
      *
      * @since 0.1.0
@@ -26,7 +25,7 @@ class EHttpException extends \CHttpException
     public function __construct($status, $message = null, $tArgs = array())
     {
         if ($message !== null) {
-            $message = \Yii::t('http-errors', $message);
+            $message = \Yii::t('http-errors', $message, $tArgs);
         }
         parent::__construct($status, $message, 0);
     }
