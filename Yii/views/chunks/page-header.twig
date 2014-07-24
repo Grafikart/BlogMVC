@@ -15,7 +15,7 @@
 {% endblock %}
 {% block page_header_navigation %}
     {% if this.page.headerNavigation %}
-        <p>
+        <p class="header-navigation">
             {% for link in this.page.headerNavigation %}
                 {{ not loop.first?' | ' }}
                 {% if link['type'] == 'button' %}
