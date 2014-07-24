@@ -104,14 +104,14 @@ class DataFormatter
         $preserveIndexes = false,
         $indent = 0
     ) {
-        $q = '\'';
+        $apst = '\'';
         $curIndent = str_repeat(' ', $indent);
         $nextIndent = str_repeat(' ', $indent + 4);
-        $s = $curIndent.'array('.PHP_EOL;
+        $render = $curIndent . 'array('.PHP_EOL;
         foreach ($data as $key => $item) {
-            $s .= $nextIndent;
+            $render .= $nextIndent;
             if (is_string($item)) {
-                $item = $q.$this->escape($item).$q;
+                $item = $apst . $this->escape($item) . $apst;
             } elseif (is_array($item)) {
                 $item = $this->renderArray(
                     $item,
@@ -125,19 +125,19 @@ class DataFormatter
                     $indent + 4
                 );
             } elseif (is_bool($item)) {
-                $item = $item?'true':'false';
+                $item = $item ? 'true' : 'false';
             }
             if (is_string($key)) {
-                $key = $q.$key.$q;
+                $key = $apst . $key . $apst;
             }
             if (!is_int($key) || $preserveIndexes) {
-                $s .= $key.' => '.trim($item).','.PHP_EOL;
+                $render .= $key . ' => ' . trim($item) . ',' . PHP_EOL;
             } else {
-                $s .= trim($item).','.PHP_EOL;
+                $render .= trim($item) . ',' . PHP_EOL;
             }
         }
-        $s .= $curIndent.')';
-        return $s;
+        $render .= $curIndent.')';
+        return $render;
     }
     /**
      * Renders markdown-formatted text.
