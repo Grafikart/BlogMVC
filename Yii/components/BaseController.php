@@ -75,8 +75,12 @@ class BaseController extends \CController
      *                     argument).
      * @since 0.1.0
      */
-    public function render($view, $data=null, $rawData=null, $return=false)
-    {
+    public function render(
+        $view,
+        $data = null,
+        $rawData = null,
+        $return = false
+    ) {
         header($this->page->generateFormatHeader());
         if ($this->page->format === 'html') {
             return parent::render($view, $data, $return);
@@ -87,7 +91,7 @@ class BaseController extends \CController
             $formatter = \Yii::app()->formatter;
             if (is_array($rawData)) {
                 $render = $formatter->formatModels($rawData, $this->page->format);
-            } else if ($rawData instanceof \CModel) {
+            } elseif ($rawData instanceof \CModel) {
                 $render = $formatter->formatModel($rawData, $this->page->format);
             } else {
                 \Yii::log(
@@ -99,10 +103,10 @@ class BaseController extends \CController
                     'internalServerError.unexpectedDataType'
                 );
             }
-            if ($return) {
-                return $render;
+            if (!$return) {
+                echo $render;
             }
-            echo $render;
+            return $render;
         }
     }
 

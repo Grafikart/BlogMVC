@@ -31,11 +31,11 @@ class ModelFormatter extends \CComponent
      * @return string
      * @since 0.1.0
      */
-    public function format($subject, $format='json')
+    public function format($subject, $format = 'json')
     {
         if ($format === 'json') {
             return $this->jsonify($subject);
-        } else if ($format === 'xml') {
+        } elseif ($format === 'xml') {
             return $this->xmlify($subject);
         } else {
             $message = 'Unknown format supported ('.$format.')';
@@ -55,7 +55,7 @@ class ModelFormatter extends \CComponent
     {
         if ($subject instanceof \CModel) {
             return $this->jsonifyModel($subject);
-        } else if (is_array($subject)) {
+        } elseif (is_array($subject)) {
             return $this->jsonifyModels($subject);
         } else {
             throw new \BadMethodCallException('Invalid argument');
@@ -75,7 +75,7 @@ class ModelFormatter extends \CComponent
     {
         if ($subject instanceof \CModel) {
             return $this->xmlifyModel($subject);
-        } else if (is_array($subject)) {
+        } elseif (is_array($subject)) {
             return $this->xmlifyModels($subject);
         } else {
             throw new \BadMethodCallException('Invalid argument');

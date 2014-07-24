@@ -11,7 +11,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class DatabaseService extends CComponent
+class DatabaseService extends \CComponent
 {
     /**
      * Default driver name.
@@ -114,7 +114,7 @@ class DatabaseService extends CComponent
      * @return CDbExpression
      * @since 0.1.0
      */
-    public static function getCurDateExpression($driver=null)
+    public static function getCurDateExpression($driver = null)
     {
         $driver = self::getDriver($driver);
         switch ($driver) {
@@ -142,7 +142,7 @@ class DatabaseService extends CComponent
      * @return \CDbExpression
      * @since 0.1.0
      */
-    public static function getNowExpression($driver=null)
+    public static function getNowExpression($driver = null)
     {
         $driver = self::getDriver($driver);
         if ($driver === 'sqlite') {
@@ -162,7 +162,7 @@ class DatabaseService extends CComponent
      * @return CDbExpression
      * @since 0.1.0
      */
-    public static function getCurTimeExpression($driver=null)
+    public static function getCurTimeExpression($driver = null)
     {
         $driver = self::getDriver($driver);
         switch ($driver) {

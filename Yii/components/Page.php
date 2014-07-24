@@ -467,7 +467,7 @@ class Page extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function resetI18n(array $data=array(), $key=null)
+    public function resetI18n(array $data = array(), $key = null)
     {
         $this->resetTitle($data, $key);
         $this->resetHeading($data, $key);
@@ -525,7 +525,7 @@ class Page extends \CComponent
      * @return bool
      * @since 0.1.0
      */
-    public function hasAncestor($level=0)
+    public function hasAncestor($level = 0)
     {
         if ($level < 0) {
             $level = sizeof($this->ancestors) + $level;
@@ -543,7 +543,7 @@ class Page extends \CComponent
      * @return mixed
      * @since
      */
-    public function getAncestor($level=0)
+    public function getAncestor($level = 0)
     {
         if ($level < 0) {
             $level = sizeof($this->ancestors) + $level;

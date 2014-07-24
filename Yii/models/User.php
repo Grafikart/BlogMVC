@@ -236,12 +236,12 @@ class User extends ActiveRecordLayer
                 array(':username' => $username, ':id' => $id,)
             )->queryScalar();
         if ($exists) {
-            $e = \Yii::t(
+            $error = \Yii::t(
                 'validation-errors',
                 'user.usernameExists',
                 array('{username}' => $username,)
             );
-            $this->addError($attribute, $e);
+            $this->addError($attribute, $error);
         }
         \Yii::endProfile('user.validateUsernameUniqueness');
     }

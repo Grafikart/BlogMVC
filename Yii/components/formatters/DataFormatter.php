@@ -99,8 +99,11 @@ class DataFormatter
      * @return string
      * @since 0.1.0
      */
-    public function renderArray(array $data, $preserveIndexes=false, $indent=0)
-    {
+    public function renderArray(
+        array $data,
+        $preserveIndexes = false,
+        $indent = 0
+    ) {
         $q = '\'';
         $curIndent = str_repeat(' ', $indent);
         $nextIndent = str_repeat(' ', $indent + 4);
@@ -109,19 +112,19 @@ class DataFormatter
             $s .= $nextIndent;
             if (is_string($item)) {
                 $item = $q.$this->escape($item).$q;
-            } else if (is_array($item)) {
+            } elseif (is_array($item)) {
                 $item = $this->renderArray(
                     $item,
                     $preserveIndexes,
                     $indent + 4
                 );
-            } else if (is_object($item)) {
+            } elseif (is_object($item)) {
                 $item = $this->renderArray(
                     get_object_vars($item),
                     $preserveIndexes,
                     $indent + 4
                 );
-            } else if (is_bool($item)) {
+            } elseif (is_bool($item)) {
                 $item = $item?'true':'false';
             }
             if (is_string($key)) {
@@ -199,7 +202,7 @@ class DataFormatter
      * @return string Escaped text.
      * @since 0.1.0
      */
-    public function escape($text, $mode=self::ESCAPE_SINGLE_QUOTES)
+    public function escape($text, $mode = self::ESCAPE_SINGLE_QUOTES)
     {
         $rules = array(
             'subs' => array('\\'),
@@ -228,7 +231,7 @@ class DataFormatter
      * @return string Resulting slug.
      * @since 0.1.0
      */
-    public function slugify($text, $translit=false)
+    public function slugify($text, $translit = false)
     {
         $text = trim(mb_strtolower($text, 'UTF-8'));
         if ($translit) {
@@ -257,7 +260,7 @@ class DataFormatter
      * @return string Text.
      * @since 0.1.0
      */
-    public static function deslugify($slug, $capitalize=false)
+    public static function deslugify($slug, $capitalize = false)
     {
         $rules = array(
             'pats' => array('#\-{3,}#u', '#\-+#u'),
@@ -283,7 +286,7 @@ class DataFormatter
      * @return string Formatted date.
      * @since 0.1.0
      */
-    public static function formatDateTime($date, $format='timeAgo')
+    public static function formatDateTime($date, $format = 'timeAgo')
     {
         /** @type \DateFormatter $formatter */
         $formatter = \Yii::app()->dateFormatter;

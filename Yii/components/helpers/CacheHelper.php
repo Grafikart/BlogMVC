@@ -64,7 +64,7 @@ class CacheHelper extends \CComponent
      * @return mixed Cached data or default value.
      * @since 0.1.0
      */
-    public function get($key, $default=null)
+    public function get($key, $default = null)
     {
         return \Yii::app()->cache->get($key, $default);
     }
@@ -81,7 +81,7 @@ class CacheHelper extends \CComponent
      * @return boolean True on successful data save, false otherwise.
      * @since 0.1.0
      */
-    public function set($key, $data, $lifespan=0, $dependency=null)
+    public function set($key, $data, $lifespan = 0, $dependency = null)
     {
         return \Yii::app()->cache->set($key, $data, $lifespan, $dependency);
     }
@@ -169,7 +169,7 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function setGlobalDependentCache($key, $data, $time=30)
+    public function setGlobalDependentCache($key, $data, $time = 30)
     {
         $this->setDependentData($this->globalCacheToken, $key, $data, $time);
     }
@@ -184,7 +184,7 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function setPostsDependentCache($key, $data, $time=30)
+    public function setPostsDependentCache($key, $data, $time = 30)
     {
         $this->setDependentData($this->postsCacheToken, $key, $data, $time);
     }
@@ -199,7 +199,7 @@ class CacheHelper extends \CComponent
      * @return void
      * @since 0.1.0
      */
-    public function setCommentsDependentData($key, $data, $time=30)
+    public function setCommentsDependentData($key, $data, $time = 30)
     {
         $this->setDependentData($this->commentsCacheToken, $key, $data, $time);
     }

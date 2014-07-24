@@ -80,7 +80,7 @@ class DateFormatter extends \CDateFormatter
      * @return string Formatted date.
      * @since 0.1.0
      */
-    public function formatAsTimeAgo($date, $unitsLimit=2)
+    public function formatAsTimeAgo($date, $unitsLimit = 2)
     {
         if (!is_int($unitsLimit) || $unitsLimit < 1) {
             $message = 'Maximum units limit has to be integer not less than one.';
@@ -118,7 +118,8 @@ class DateFormatter extends \CDateFormatter
         }
         if (sizeof($dateInterval) > 0) {
             return \Yii::t(
-                'templates', 'timeInterval.ago',
+                'templates',
+                'timeInterval.ago',
                 array('{interval}' => implode(', ', $dateInterval),)
             );
         }

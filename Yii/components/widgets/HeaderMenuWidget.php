@@ -11,7 +11,7 @@
  * @subpackage Yii
  * @author     Fike Etki <etki@etki.name>
  */
-class HeaderMenuWidget extends WidgetLayer
+class HeaderMenuWidget extends \WidgetLayer
 {
     /**
      * List of popular categories.
@@ -199,7 +199,7 @@ class HeaderMenuWidget extends WidgetLayer
      * @return string Formatted HTML.
      * @since 0.1.0
      */
-    protected function walkTree(array $tree, $level=0)
+    protected function walkTree(array $tree, $level = 0)
     {
         $listOpts = ($level===0)?array('class' => $this->class):array();
         $this->openTag('ul', $listOpts, $level * 4);

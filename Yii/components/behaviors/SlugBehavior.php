@@ -47,7 +47,7 @@ class SlugBehavior extends CActiveRecordBehavior
      * @return string Slug.
      * @since 0.1.0
      */
-    public function createSlug($text, $maxLength=50)
+    public function createSlug($text, $maxLength = 50)
     {
         $slug = preg_replace(
             array('#(:?^\W+|\W+$)#u', '#\W+#u'),
@@ -75,7 +75,7 @@ class SlugBehavior extends CActiveRecordBehavior
             );
             $this->owner->addError('slug', $error);
             return false;
-        } else if (in_array($slug, $this->getRestrictedSlugs(), true)) {
+        } elseif (in_array($slug, $this->getRestrictedSlugs(), true)) {
             $error = \Yii::t(
                 'validation-errors',
                 'slugBehavior.restrictedSlug',
@@ -121,7 +121,7 @@ class SlugBehavior extends CActiveRecordBehavior
      * @return boolean True if exists, false otherwise.
      * @since 0.1.0
      */
-    public function slugExists($slug, $id=0)
+    public function slugExists($slug, $id = 0)
     {
         $token = 'behavior.slug.exists'.get_class($this->owner).'Slug';
         \Yii::beginProfile($token);
