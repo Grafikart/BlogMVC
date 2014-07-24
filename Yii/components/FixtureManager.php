@@ -23,14 +23,14 @@ class FixtureManager extends CDbFixtureManager
      */
     public function prepare()
     {
-        $initFile=$this->basePath . DIRECTORY_SEPARATOR . $this->initScript;
+        $initFile = $this->basePath . DIRECTORY_SEPARATOR . $this->initScript;
 
         //$this->checkIntegrity(false);
 
         if (is_file($initFile)) {
             include $initFile;
         } else {
-            foreach ($this->getFixtures() as $tableName => $fixturePath) {
+            foreach (array_keys($this->getFixtures()) as $tableName) {
                 $this->resetTable($tableName);
                 $this->loadFixture($tableName);
             }
