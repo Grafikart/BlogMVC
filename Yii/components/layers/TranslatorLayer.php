@@ -37,7 +37,7 @@ class TranslatorLayer extends \CComponent
      */
     public function t(
         $message,
-        $params=array()
+        $params = array()
     ) {
         return \Yii::t('templates', $message, $params);
     }
