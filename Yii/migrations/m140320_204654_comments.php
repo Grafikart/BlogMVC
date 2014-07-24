@@ -11,14 +11,16 @@ class m140320_204654_comments extends CDbMigration
             'mail' => 'string NOT NULL',
             'content' => 'MEDIUMTEXT NOT NULL',
             'created' => 'DATETIME NOT NULL',
-            'CONSTRAINT fk_comments_posts FOREIGN KEY (post_id) REFERENCES posts(id) ON UPDATE CASCADE ON DELETE CASCADE'
+            'CONSTRAINT fk_comments_posts FOREIGN KEY (post_id) REFERENCES '.
+                'posts(id) ON UPDATE CASCADE ON DELETE CASCADE'
         );
-       if ($this->getDbConnection()->getDriverName() === 'pgsql') {
-           $comments['content'] = 'TEXT NOT NULL';
-           $comments['created'] = 'TIMESTAMP NOT NULL';
-       }
+        if ($this->getDbConnection()->getDriverName() === 'pgsql') {
+            $comments['content'] = 'TEXT NOT NULL';
+            $comments['created'] = 'TIMESTAMP NOT NULL';
+        }
         $this->createTable('comments', $comments);
-        /* Commented because of SQLite impossibility ot create foreign keys on-the-fly
+        /* Commented because of SQLite impossibility ot create foreign keys
+         * on-the-fly
         $this->addForeignKey(
             'fk_comments_posts',
             'comments',
@@ -28,7 +30,7 @@ class m140320_204654_comments extends CDbMigration
             'CASCADE',
             'CASCADE'
         );
-         */
+        */
     }
 
     public function down()

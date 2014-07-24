@@ -295,7 +295,7 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
         $driverName = $this->getDbConnection()->getDriverName();
         if ($driverName === 'pgsql') { // ffuuu
             $this->execute('ALTER SEQUENCE ' . $name . '_id_seq RESTART WITH 1');
-        } else if ($driverName === 'sqlite') {
+        } elseif ($driverName === 'sqlite') {
             $this->update(
                 'SQLITE_SEQUENCE',
                 array('seq' => 0,),
