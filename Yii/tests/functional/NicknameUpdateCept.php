@@ -35,3 +35,6 @@ $I->see('profile.usernameUpdate.success');
 
 $I->amOnPage($url);
 $I->seeLink('@'.$newUsername);
+
+
+\Yii::app()->fixtureManager->prepare();

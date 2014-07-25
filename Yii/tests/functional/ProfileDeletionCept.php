@@ -46,3 +46,5 @@ $I->assertEmpty(
         )
     )->findAll()
 );
+
+\Yii::app()->fixtureManager->prepare();
