@@ -4,20 +4,34 @@ namespace Codeception\Module;
 use \Codeception\Util\Fixtures;
 
 /**
- * 
+ * This helper contains all the global bootstrapping code.
  *
- * @version Release: 0.1.0
- * @since   
- * @package _support\helpers
- * @author  Fike Etki <etki@etki.name>
+ * @version    0.1.0
+ * @since      0.1.0
+ * @package    BlogMVC
+ * @subpackage YiiTests
+ * @author     Fike Etki <etki@etki.name>
  */
 class BootstrapHelper
 {
+    /**
+     * Runs bootstrap procedures.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function bootstrap()
     {
         $this->prepareDatabase();
         $this->loadRuntimeFixtures();
     }
+
+    /**
+     * Loads fixture data.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function loadRuntimeFixtures()
     {
         $serverName = false;
@@ -64,8 +78,16 @@ class BootstrapHelper
         Fixtures::add('defaults:app:theme', \Yii::app()->theme->name);
         Fixtures::add('defaults:server:host', $serverName);
     }
+
+    /**
+     * Prepares database for work.
+     *
+     * @return void
+     * @since 0.1.0
+     */
     public function prepareDatabase()
     {
+        /*
         if (\Yii::app()->db->getDriverName() === 'sqlite') {
             $dsn = \Yii::app()->db->connectionString;
             $path = str_replace('sqlite:', '', $dsn);
@@ -73,11 +95,14 @@ class BootstrapHelper
                 unlink($path);
             }
             if (!file_exists($path)) {
-                touch($path);
+                $h = fopen($path, 'w');
+                fclose($h);
             }
         }
+        */
         $helper = new MigrationHelper;
         $helper->applyMigrations();
+        //\Yii::app()->db->createCommand('');
         \Yii::app()->fixtureManager->prepare();
     }
 }
