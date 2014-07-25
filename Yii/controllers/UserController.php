@@ -255,7 +255,13 @@ class UserController extends BaseController
             'new' => array('dashboard', 'admin/index'),
             'list' => array('post/index',),
             'profile' => array('admin/index',),
-            'dashboard' => array('admin/index',),
+            'dashboard' => array(
+                array(
+                    'route' => 'user/new',
+                    'type' => 'button',
+                    'title' => 'control.createUser',
+                ),
+            ),
         );
     }
 }

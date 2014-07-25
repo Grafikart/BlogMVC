@@ -1,11 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-<h2>
-    {{ App.t.t('heading.users') }}
-    <a href="{{ this.createUrl('user/new') }}" class="btn btn-primary pull-right" role="create-user-link">
-        {{ App.t.t('control.createNew') }}
-    </a>
-</h2>
 <table class="table table-striped">
     <thead>
         <tr>

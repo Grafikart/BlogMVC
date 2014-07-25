@@ -64,6 +64,7 @@ return array(
     'control.create' => 'Создать',
     'control.createNew' => 'Создать новый',
     'control.createNewF' => 'Создать новую',
+    'control.createUser' => 'Создать пользователя',
     'control.flushCache' => 'Сбросить кэш',
     'control.recalculateCounters' => 'Пересчитать значения счетчиков категорий',
     'control.signIn' => 'Войти',

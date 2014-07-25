@@ -63,6 +63,7 @@ return array(
     'control.create' => 'Create',
     'control.createNew' => 'Create new',
     'control.createNewF' => 'Create new',
+    'control.createUser' => 'Создать пользователя',
     'control.flushCache' => 'Flush cache',
     'control.recalculateCounters' => 'Recalculate counters',
     'control.signIn' => 'Sign in',
