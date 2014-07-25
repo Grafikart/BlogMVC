@@ -54,6 +54,7 @@ class CacheHelper extends \CComponent
     {
         \Yii::app()->loadGlobalState();
     }
+
     /**
      * Retrieves stored data.
      *
@@ -85,6 +86,7 @@ class CacheHelper extends \CComponent
     {
         return \Yii::app()->cache->set($key, $data, $lifespan, $dependency);
     }
+
     /**
      * Returns current posts cache token value.
      *
@@ -94,7 +96,7 @@ class CacheHelper extends \CComponent
     public function getPostsCacheTokenValue()
     {
         return \Yii::app()->getGlobalState(
-            $this->tokenPrefix.$this->postsCacheToken
+            $this->tokenPrefix . $this->postsCacheToken
         );
     }
 
@@ -107,7 +109,7 @@ class CacheHelper extends \CComponent
     public function getCommentsCacheTokenValue()
     {
         return \Yii::app()->getGlobalState(
-            $this->tokenPrefix.$this->commentsCacheToken
+            $this->tokenPrefix . $this->commentsCacheToken
         );
     }
 
@@ -120,7 +122,7 @@ class CacheHelper extends \CComponent
     public function getGlobalCacheTokenValue()
     {
         return \Yii::app()->getGlobalState(
-            $this->tokenPrefix.$this->globalCacheToken
+            $this->tokenPrefix . $this->globalCacheToken
         );
     }
 
@@ -217,7 +219,7 @@ class CacheHelper extends \CComponent
      */
     protected function setDependentData($token, $key, $data, $time)
     {
-        $token = $this->tokenPrefix.$token;
+        $token = $this->tokenPrefix . $token;
         $dependency = new \CGlobalStateCacheDependency($token);
         \Yii::app()->cache->set($key, $data, $time, $dependency);
         $message = 'Cached data dependent on %s using %s key fot %d seconds';
@@ -251,10 +253,22 @@ class CacheHelper extends \CComponent
         /** @type \CWebApplication $app */
         $app = \Yii::app();
         $sign = $this->generateSign();
-        $token = $this->tokenPrefix.$token;
+        $token = $this->tokenPrefix . $token;
         $app->setGlobalState($token, $sign);
         $app->saveGlobalState();
         $message = 'Invalidated cache for %s token, updated global state using %s';
         \Yii::log(sprintf($message, $token, $sign));
+    }
+
+    /**
+     * Flushes all cache at once.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function flush()
+    {
+        $this->invalidatePostsCache();
+        $this->invalidateCommentsCache();
     }
 }
