@@ -45,9 +45,9 @@ class BootstrapHelper
                 Fixtures::add($keyBase, $item);
                 foreach ($item as $field => $value) {
                     if (isset($map[$field])) {
-                        $key = $keyBase . "\[$index\]:" . $map[$field];
+                        $key = $keyBase . "[$index]:" . $map[$field];
                     } else {
-                        $key = $keyBase . "\[$index\]:" . $field;
+                        $key = $keyBase . "[$index]:" . $field;
                     }
                     Fixtures::add($key, $value);
                 }

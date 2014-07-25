@@ -20,9 +20,9 @@ abstract class BaseMigrationTest extends CTestCase
      */
     protected static $db;
     /**
-     * List of migrations.
+     * List of migrations in [driverName => [migrations]] form.
      * 
-     * @var CDbMigration[]
+     * @var array
      * @since 0.1.0
      */
     protected static $migrations = array();
@@ -64,7 +64,7 @@ abstract class BaseMigrationTest extends CTestCase
      */
     public static function setUpBeforeClass()
     {
-        Yii::import('application.migrations');
+        \Yii::import('application.migrations');
         $provider = static::getDbProviderName().'TestConnection';
         /** @type CWebApplication $app */
         $app = \Yii::app();
@@ -82,7 +82,7 @@ abstract class BaseMigrationTest extends CTestCase
      * Frees up memory taken by migrations after test.
      * I seriously don't know for how long test is kept in memory so better be
      * safe than fatty.
-     * 
+     *
      * @return void
      * @since 0.1.0
      */
@@ -92,7 +92,7 @@ abstract class BaseMigrationTest extends CTestCase
     }
     /**
      * Sets up list of migrations.
-     * 
+     *
      * @return void
      * @since 0.1.0
      */
@@ -101,6 +101,10 @@ abstract class BaseMigrationTest extends CTestCase
         $path = Yii::getPathOfAlias('application.migrations');
         Yii::import('application.migrations.*');
         $files = scandir($path);
+        // this was very weird, but late static binding didn't help all
+        // migrations being put in the very same array
+        $driverName = static::$db->getDriverName();
+        static::$migrations[$driverName] = array();
         foreach ($files as $file) {
             if (preg_match('#^m\d{6}_\d{6}[\w_]*\.php$#', $file)) {
                 $migrationName = substr($file, 0, strlen($file) - 4);
@@ -109,7 +113,8 @@ abstract class BaseMigrationTest extends CTestCase
                  */
                 $migration = new $migrationName;
                 $migration->setDbConnection(static::$db);
-                static::$migrations[] = $migration;
+                $tthis = get_called_class();
+                static::$migrations[$driverName][] = $migration;
             }
         }
     }
@@ -165,20 +170,42 @@ abstract class BaseMigrationTest extends CTestCase
     public function testMigrations()
     {
         static::startBuffering();
-        foreach (static::$migrations as $migration) {
+        $driverName = $this->getDbProviderName();
+        $migrations = static::$migrations[$driverName];
+        foreach ($migrations as $migration) {
+            /** @type \CDbMigration $migration */
             try {
                 if ($migration->up() === false) {
-                    $this->fail('Migration has returned "failed" status');
+                    $message = sprintf(
+                        'Migration %s returned "failed" status during up() ' .
+                        'action' . PHP_EOL . PHP_EOL .
+                        'Migration driver name: %s' . PHP_EOL .
+                        'Migration driver connectionString: %s',
+                        get_class($migration),
+                        $migration->getDbConnection()->getDriverName(),
+                        $migration->getDbConnection()->connectionString
+                    );
+                    $this->fail($message);
                 }
             } catch (CDbException $e) {
                 $this->fail('CDbException: '.$e->getMessage());
             }
         }
-        static::$migrations = array_reverse(static::$migrations);
-        foreach (static::$migrations as $migration) {
+        $migrations = array_reverse($migrations);
+        foreach ($migrations as $migration) {
+            /** @type \CDbMigration $migration */
             try {
                 if ($migration->down() === false) {
-                    $this->fail('Migration has returned "failed" status');
+                    $message = sprintf(
+                        'Migration %s returned "failed" status during down() ' .
+                        'action' . PHP_EOL . PHP_EOL .
+                        'Migration driver name: %s' . PHP_EOL .
+                        'Migration driver connectionString: %s',
+                        get_class($migration),
+                        $migration->getDbConnection()->getDriverName(),
+                        $migration->getDbConnection()->connectionString
+                    );
+                    $this->fail($message);
                 }
             } catch (CDbException $e) {
                 $this->fail('CDbException: '.$e->getMessage());
