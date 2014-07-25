@@ -196,7 +196,8 @@ class ApplicationModel extends CModel
                 $this->configErrors[$result] = $error;
                 return false;
         }
-        \Yii::app()->cache->flush();
+        //\Yii::app()->cache->flush();
+        \Yii::app()->cacheHelper->flush();
         \Yii::endProfile('applicationModel.save');
         return true;
     }
