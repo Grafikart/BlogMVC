@@ -68,7 +68,7 @@ return array(
     \UsersDashboardPage::$url => array(
         'title' => 'Управление пользователями',
         'backTo' => 'Панель управления',
-        'nav' => array('панель управления',),
+        'nav' => array('Создать пользователя',),
     ),
     \CreateNewUserPage::$url => array(
         'title' => 'Новый пользователь',

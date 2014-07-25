@@ -10,7 +10,7 @@ $scenario->groups('front');
 
 $I = new TestGuy($scenario);
 $I->am('A superpedantic person');
-$I->wantTo('Find translation error or improper \'back to\' link');
+$I->wantTo('Find translation error or improper "back to" link');
 $I->expectTo('Fail in my quest');
 
 $languages = array('en', 'ru');
@@ -49,6 +49,9 @@ foreach ($languages as $language) {
         }
     }
 }
+
+$I->amOnPage(\UsersDashboardPage::$url.'?language=ru');
+$I->see('Создать пользователя');
 
 $I->click(\GeneralPage::$logoutLinkXPath);
 $I->resetCookie('language');

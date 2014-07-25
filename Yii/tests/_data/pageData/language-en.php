@@ -23,7 +23,7 @@ return array(
     \CategoryListPage::$url => array(
         'title' => 'Categories',
         'backTo' => 'Blog',
-        'nav' => array('Manage'),
+        'nav' => array('Manage',),
     ),
     \CategoryFeedPage::route($firstCategorySlug) => array(
         'title' => $firstCategoryTitle,
@@ -68,7 +68,7 @@ return array(
     \UsersDashboardPage::$url => array(
         'title' => 'Users management',
         'backTo' => 'Admin panel',
-        'nav' => array('Admin panel',),
+        'nav' => array('Create user',),
     ),
     \CreateNewUserPage::$url => array(
         'title' => 'New user',
