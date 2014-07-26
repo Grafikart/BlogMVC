@@ -95,13 +95,16 @@ class MemberSteps extends \WebGuy\VisitorSteps
     {
         $I = $this;
         $I->amOnPage(\LoginPage::$url);
-        if ($login !== null) {
-            $I->fillField(\LoginPage::$loginField, $login);
+        $currentUrl = $I->grabFromCurrentUrl();
+        if ($currentUrl === \LoginPage::$url) {
+            if ($login !== null) {
+                $I->fillField(\LoginPage::$loginField, $login);
+            }
+            if ($password !== null) {
+                $I->fillField(\LoginPage::$passwordField, $password);
+            }
+            $I->click(\LoginPage::$submitButton);
         }
-        if ($password !== null) {
-            $I->fillField(\LoginPage::$passwordField, $password);
-        }
-        $I->click(\LoginPage::$submitButton);
         $url = $I->grabFromCurrentUrl();
         if ($url !== \LoginPage::$url) {
             $this->isAuthenticated = true;

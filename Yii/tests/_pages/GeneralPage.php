@@ -34,6 +34,13 @@ abstract class GeneralPage
      */
     public static $logoutLink = 'a[role="logout-link"]';
     /**
+     * DOMQuery-compatible logout link selector.
+     *
+     * @var string
+     * @since 0.1.0
+     */
+    public static $logoutLinkXPath = 'a[role=logout-link]';
+    /**
      * Login link selector.
      *
      * @var string
@@ -61,6 +68,34 @@ abstract class GeneralPage
      * @since 0.1.0
      */
     public static $menuToggleButton = '.navbar-header .navbar-toggle';
+    /**
+     * Generic CSS selector for flash message.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $flashMessageSelector = '.alert';
+    /**
+     * CSS selector for error flash message.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $errorFlashMessageSelector = '.alert.alert-error';
+    /**
+     * CSS selector for notice flash message.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $noticeFlashMessageSelector = '.alert.alert-notice';
+    /**
+     * CSS selector for success flash message.
+     *
+     * @type string
+     * @since 0.1.0
+     */
+    public static $successFlashMessageSelector = '.alert.alert-success';
     /**
      * Protagonist.
      *
@@ -121,6 +156,7 @@ abstract class GeneralPage
         $this->guy->amOnPage(static::$url);
         return $this;
     }
+
     /**
      * Opens responsive menu (if it was closed).
      *
@@ -147,12 +183,100 @@ abstract class GeneralPage
      * @return mixed|string Resulting url
      * @since 0.1.0
      */
-    public static function route($needle, $replacement, $page=null)
+    public static function route($needle, $replacement, $page = null)
     {
         $url = str_replace($needle, $replacement, static::$url);
         if ($page > 1) {
-            $url .= '?page='.$page;
+            $url .= '?page=' . $page;
         }
         return $url;
+    }
+
+    /**
+     * Verifies that page has no flash messages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoFlashMessages()
+    {
+        $this->guy->dontSeeElement(static::$flashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has some flash messages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasFlashMessages()
+    {
+        $this->guy->seeElement(static::$flashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has no error flash messages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoErrorFlashMessages()
+    {
+        $this->guy->dontSeeElement(static::$errorFlashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has at least one error flash message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasErrorFlashMessages()
+    {
+        $this->guy->seeElement(static::$errorFlashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has no notice flash messages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoNoticeFlashMessages()
+    {
+        $this->guy->dontSeeElement(static::$noticeFlashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has at least one notice flash message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoticeFlashMessages()
+    {
+        $this->guy->seeElement(static::$noticeFlashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has no success flash messages.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasNoSuccessFlashMessages()
+    {
+        $this->guy->dontSeeElement(static::$successFlashMessageSelector);
+    }
+
+    /**
+     * Verifies that page has at least one success flash message.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function hasSuccessFlashMessages()
+    {
+        $this->guy->seeElement(static::$successFlashMessageSelector);
     }
 }
