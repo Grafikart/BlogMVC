@@ -19,6 +19,7 @@ $I->seeInTitle('Horse Tickler\'s Dagger Fan Club');
 $I->seeOptionIsSelected(\OptionsPage::$siteLanguageList, 'ru');
 $I->seeOptionIsSelected(\OptionsPage::$themeList, 'ambinight');
 $I->see('Настройки', \OptionsPage::$pageHeaderSelector);
+\OptionsPage::of($I)->hasNoErrorFlashMessages();
 $I->amOnPage(\BlogFeedPage::$url);
 $I->see('Категории', \BlogFeedPage::$sidebarSelector);
 
