@@ -4,6 +4,8 @@ use \Codeception\Util\Fixtures;
 /** @type \Codeception\Scenario $scenario */
 $scenario->groups('api', 'ajax');
 
+\Yii::app()->fixtureManager->prepare();
+
 $I = new ApiGuy($scenario);
 $I->wantTo('Ensure ajax comment update works fine');
 

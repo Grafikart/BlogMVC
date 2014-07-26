@@ -3,8 +3,10 @@
 $scenario->groups(array('nonauthenticated', 'blog'));
 
 $I = new WebGuy\MemberSteps($scenario);
-$I->wantTo('Leave an anonimous comment');
-$I->amGoingTo('Be very stupid and leave comment several times until blog will consider it correct');
+$I->wantTo('Play with comments');
+$I->amGoingTo('Be very stupid and leave comment several times until blog ' .
+    'will consider it correct');
+$I->logout();
 
 $I->amOnPage(\BlogFeedPage::$url);
 $I->click(\BlogFeedPage::$postTitleSelector);

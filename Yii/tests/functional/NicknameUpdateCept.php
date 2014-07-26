@@ -4,6 +4,8 @@ use \Codeception\Util\Fixtures;
 /** @type \Codeception\Scenario $scenario */
 $scenario->groups('internals', 'content', 'update');
 
+\Yii::app()->fixtureManager->prepare();
+
 $I = new TestGuy($scenario);
 $I->am('Dr. Jan Itor');
 $I->wantTo('Update my nickname and see fancy cascade of nickname update in '.

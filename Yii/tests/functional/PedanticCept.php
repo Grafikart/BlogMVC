@@ -8,6 +8,8 @@ use \Codeception\Util\Fixtures;
 /** @type \Codeception\Scenario $scenario */
 $scenario->groups('front');
 
+\Yii::app()->fixtureManager->prepare();
+
 $I = new TestGuy($scenario);
 $I->am('A superpedantic person');
 $I->wantTo('Find translation error or improper "back to" link');

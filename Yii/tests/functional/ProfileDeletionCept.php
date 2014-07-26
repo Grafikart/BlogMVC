@@ -4,6 +4,8 @@ use Codeception\Util\Fixtures;
 /** @type \Codeception\Scenario $scenario */
 $scenario->groups('front', 'user-management');
 
+\Yii::app()->fixtureManager->prepare();
+
 $I = new TestGuy($scenario);
 $I->wantTo('Delete my account');
 $I->expectTo('Lose ability to sign in under my regular account and all my posts');
@@ -35,7 +37,11 @@ $I->amOnPage(\AuthorFeedPage::route(1));
 $I->see('pageTitle.site.error', \AuthorFeedPage::$pageHeaderSelector);
 $I->seeResponseCodeIs(404);
 
-$I->assertNull(\User::findByUsername($login));
+$h = fopen(\Yii::getPathOfAlias('application.runtime.login'), 'a');
+fwrite($h, $login.PHP_EOL);
+fclose($h);
+
+$I->assertNull(\User::findByUsername($login, false));
 $I->assertEmpty(
     \Post::model()->with(
         array(
@@ -46,5 +52,3 @@ $I->assertEmpty(
         )
     )->findAll()
 );
-
-\Yii::app()->fixtureManager->prepare();

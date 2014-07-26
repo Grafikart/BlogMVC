@@ -24,3 +24,4 @@ $I->amOnPage(\BlogFeedPage::$url);
 $I->see('Категории', \BlogFeedPage::$sidebarSelector);
 
 $I->resetApplicationSettings();
+$I->resetCookie('useDefaultLanguage');

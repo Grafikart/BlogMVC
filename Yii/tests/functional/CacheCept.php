@@ -1,4 +1,9 @@
-<?php 
+<?php
+/** @type \Codeception\Scenario $scenario */
+$scenario->groups('cache', 'front');
+
+\Yii::app()->fixtureManager->prepare();
+
 $I = new TestGuy($scenario);
 $I->wantTo('Verify that sidebar is updated correctly');
 
