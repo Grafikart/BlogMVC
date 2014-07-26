@@ -42,6 +42,7 @@ test:
       - views
       - public
       - vendor
+      - migrations
     #path: Yii
     allow_failures: true
   php_code_sniffer:
@@ -54,6 +55,7 @@ test:
       - vendor
       - views
       - public
+      - migrations
     standard: "PSR1,PSR2"
     allow_failures: true
 
