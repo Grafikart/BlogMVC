@@ -346,18 +346,19 @@ class User extends ActiveRecordLayer
      * Fetches user by it's username.
      *
      * @param string $username Username.
+     * @param bool   $useCache Whether to use cached values or not.
      *
      * @return \User|null
      * @since 0.1.0
      */
-    public static function findByUsername($username)
+    public static function findByUsername($username, $useCache = true)
     {
         // protecting array_key_exists
         if (!is_string($username)) {
             throw new \BadMethodCallException('Username should be a string');
         }
         $lcUsername = mb_strtolower($username, \Yii::app()->charset);
-        if (array_key_exists($username, static::$userCache)) {
+        if ($useCache && array_key_exists($username, static::$userCache)) {
             \Yii::trace('Runtime cache hit for user ['.$username.']');
             return static::$userCache[$username];
         }
@@ -371,5 +372,16 @@ class User extends ActiveRecordLayer
         static::$userCache[$username] = $user;
         \Yii::endProfile($token);
         return $user;
+    }
+
+    /**
+     * Erases user cache.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public static function dropCache()
+    {
+        static::$userCache = array();
     }
 }
