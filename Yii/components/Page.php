@@ -237,11 +237,12 @@ class Page extends \CComponent
                     $route = $item['route'];
                     $title = isset($item['title']) ? $item['title'] : null;
                     $type = isset($item['type']) ? $item['type'] : null;
+                    $role = isset($item['role']) ? $item['role'] : null;
                 } else {
                     $route = $item;
-                    $title = $type = null;
+                    $role = $title = $type = null;
                 }
-                $this->createNavigationItem($route, $type, $title);
+                $this->createNavigationItem($route, $type, $title, $role);
             }
         }
     }
@@ -252,12 +253,17 @@ class Page extends \CComponent
      * @param string $route Item route.
      * @param string $type  Item type: link or button.
      * @param string $title Localization key.
+     * @param string $role  Addition role to be inserted in element.
      *
      * @return void
      * @since 0.1.0
      */
-    public function createNavigationItem($route, $type = null, $title = null)
-    {
+    public function createNavigationItem(
+        $route,
+        $type = null,
+        $title = null,
+        $role = null
+    ) {
         $type = $type ? $type : 'link';
         if ($type !== 'link' && $type !== 'button') {
             $message = '$type should be either \'link\' or \'button\'';
@@ -270,7 +276,7 @@ class Page extends \CComponent
             $title = 'pageTitle.' . str_replace('/', '.', $route);
         }
         $url = $this->controller->createUrl($route);
-        $this->addNavigationItem($url, $title, $type);
+        $this->addNavigationItem($url, $title, $type, $role);
     }
 
     /**
@@ -279,16 +285,22 @@ class Page extends \CComponent
      * @param string $url   Item url.
      * @param string $title Item title or title translation key.
      * @param string $type  Item type, 'link' or 'button'.
+     * @param string $role  Additional role for element.
      *
      * @return void
      * @since 0.1.0
      */
-    public function addNavigationItem($url, $title, $type = 'link')
-    {
+    public function addNavigationItem(
+        $url,
+        $title,
+        $type = 'link',
+        $role = null
+    ) {
         $this->headerNavigation[] = array(
             'url'   => $url,
             'title' => \Yii::t('templates', $title),
             'type'  => $type,
+            'role'  => $role,
         );
     }
 

@@ -260,6 +260,7 @@ class UserController extends BaseController
                     'route' => 'user/new',
                     'type' => 'button',
                     'title' => 'control.createUser',
+                    'role' => 'create-user-link'
                 ),
             ),
         );

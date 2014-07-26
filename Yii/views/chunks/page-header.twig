@@ -19,7 +19,7 @@
             {% for link in this.page.headerNavigation %}
                 {{ not loop.first?' | ' }}
                 {% if link['type'] == 'button' %}
-                    <a href="{{ link['url'] }}" class="btn btn-primary">
+                    <a href="{{ link['url'] }}" class="btn btn-primary" {{ link['role']?'role="' ~ link['role'] ~ '"' }}>
                         {{- App.t.t(link['title']) -}}
                     </a>
                 {% else %}
