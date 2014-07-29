@@ -91,7 +91,7 @@ return array(
 
     'text.category' => 'Категория',
     'text.onTime' => ',',
-    'text.by' => ' ',
+    'text.by' => 'автор: ',
     'text.id' => 'ID',
     'text.name' => 'Название',
     'text.postCount' => 'Количество записей',

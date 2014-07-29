@@ -9,7 +9,7 @@
                 {{ App.t.t('text.category') }}:
                 <a href="{{ this.createUrl('category/index', {'slug':post.category.slug}) }}" role="category-link">
                     {{- post.category.name -}}
-                </a>, {{- App.t.t('text.by') -}}
+                </a>, {{ App.t.t('text.by') }}
                 <a href="{{ this.createUrl('user/index', {'id': post.author.id}) }}" role="user-link">
                     {{- post.author.username -}}
                 </a> {{- App.t.t('text.onTime') }} <em>{{- App.dateFormatter.formatDateTime(post.created, 'medium', null) -}}</em>
