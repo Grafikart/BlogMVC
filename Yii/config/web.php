@@ -122,5 +122,5 @@ return array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
     ),
-    'theme' => 'simple',
+    'theme' => 'default',
 );

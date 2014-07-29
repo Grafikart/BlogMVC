@@ -121,7 +121,7 @@ class ApplicationModel extends CModel
         $app = \Yii::app();
         $this->name = $app->name;
         $this->language = $app->language;
-        $this->theme = $app->theme->name;
+        $this->theme = $app->theme ? $app->theme->name : 'default';
     }
     /**
      * Returns current or cached statistics.
