@@ -1,7 +1,5 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
-    <h2>{{ App.t.t('heading.profile') }}</h2>
-
     {{ App.t.t('text.profileGreeting', {'{username}': App.user.username}) }}
 
     <h3>{{ App.t.t('heading.username') }}</h3>
