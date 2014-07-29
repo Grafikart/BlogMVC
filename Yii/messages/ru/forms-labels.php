@@ -17,8 +17,7 @@ return array(
     'category.name' => 'Название',
     'comment.post_id' => 'Связанная запись',
     'comment.username' => 'Ваше имя',
-    'comment.mail' => 'Ваш email (необязательное поле, используется для '.
-        'gravatar)',
+    'comment.mail' => 'Ваш email (необязательное поле для gravatar)',
     'comment.content' => 'Ваш комментарий',
     'comment.created' => 'Дата создания',
     'category.postCount' => 'Количество записей в категории',
