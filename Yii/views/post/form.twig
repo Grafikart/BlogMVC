@@ -16,8 +16,18 @@
     {% endif %}
     <div class="row">
         <div class="col-md-4">
+            {{ form.label(post, 'name') }}
+        </div>
+        <div class="col-md-4">
+            {{ form.label(post, 'slug') }}
+        </div>
+        <div class="col-md-4">
+            {{ form.label(post, 'category_id') }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
             <div class="form-group required{{ post.getError('name') ? ' has-error' }}">
-                {{ form.label(post, 'name') }}
                 {{ form.textField(post, 'name', {
                     'class': 'form-control',
                     'autofocus': true
@@ -26,13 +36,11 @@
         </div>
         <div class="col-md-4">
             <div class="form-group required{{ post.getError('slug') ? ' has-error' }}">
-                {{ form.label(post, 'slug') }}
                 {{ form.textField(post, 'slug', {'class': 'form-control'}) }}
             </div>
         </div>
         <div class="col-md-4">
             <div class="required form-group{{ post.getError('category') or category.getErrors()?' has-error' }}">
-                {{ form.label(post, 'category_id') }}
                 <div class="row">
                     <div class="col-md-10" role="category-selector-container">
                         {{ form.dropDownList(post, 'category_id', categories, {'class': 'form-control'}) }}
