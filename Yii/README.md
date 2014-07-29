@@ -13,6 +13,7 @@ Greetings! This is a Yii-based [BlogMVC](http://blogmvc.com) realization.
 6. Point your web server to the `public/index.php` file (there are prepared
 configuration file templates in `config` directory).
 7. Have fun! Password-login pair is **admin**/**admin**, go ahead and change it.
+8. Optionally you can add some meta tags in `/views/chunks/meta.twig`.
 
 ### Installation in detail
 
