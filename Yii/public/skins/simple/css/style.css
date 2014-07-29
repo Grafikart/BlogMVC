@@ -1,0 +1,84 @@
+body {
+  font-family: "PT Sans", sans-serif;
+  background-color: white; }
+  body > .container, body .sidebar {
+    margin-top: 40px;
+    background-color: #e8e8e8; }
+
+a {
+  color: #01bb2c;
+  text-decoration: none;
+  border-bottom: 1px solid; }
+  a:hover {
+    color: #21db4c;
+    text-decoration: none;
+    border-bottom-style: dotted; }
+
+.navbar a, .navbar.navbar-inverse .navbar-nav li a, .navbar a.navbar-brand {
+  border: none;
+  color: #01bb2c;
+  font-size: 150%; }
+  .navbar a:hover, .navbar.navbar-inverse .navbar-nav li a:hover, .navbar a.navbar-brand:hover {
+    color: #21db4c; }
+
+.hidden, .js-hidden, .no-js-hidden {
+  display: none; }
+
+.list-group .list-group-item {
+  margin-top: 2px;
+  border-radius: 5px; }
+  .list-group .list-group-item .badge {
+    background-color: #009b0c; }
+  .list-group .list-group-item:hover {
+    background-color: rgba(1, 187, 44, 0.6);
+    color: white; }
+
+.pagination li a {
+  color: #01bb2c; }
+  .pagination li a:hover {
+    color: #21db4c; }
+.pagination .active a, .pagination .active span {
+  background-color: #01bb2c;
+  border-color: #01bb2c; }
+  .pagination .active a:hover, .pagination .active span:hover {
+    background-color: #21db4c;
+    border-color: #21db4c; }
+
+.alert {
+  color: white;
+  border: none; }
+  .alert.alert-success {
+    background-color: rgba(33, 219, 76, 0.6); }
+  .alert.alert-info {
+    background-color: rgba(0, 123, 0, 0.6); }
+    .alert.alert-info .alert-link {
+      color: white; }
+  .alert.alert-danger {
+    background-color: rgba(221, 17, 17, 0.6); }
+
+body > .container > .alert {
+  margin-top: 30px;
+  margin-bottom: -10px; }
+
+.btn.btn-primary {
+  background-color: #01bb2c;
+  border-color: #009b0c; }
+
+.form-control {
+  border-color: #009b0c; }
+  .form-control:focus {
+    box-shadow: 0 0 8px #01bb2c;
+    border-color: #009b0c; }
+
+.has-error .form-control {
+  border-color: #dd1111; }
+  .has-error .form-control:focus {
+    box-shadow: 0 0 8px #dd1111;
+    border-color: #dd1111; }
+
+.table th {
+  background-color: rgba(0, 155, 12, 0.6);
+  color: white; }
+
+code {
+  color: #007b00; }

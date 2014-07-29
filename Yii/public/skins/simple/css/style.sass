@@ -1,0 +1,118 @@
+$accent-color: #01bb2c
+$accent-color-lighter: #21db4c
+$accent-color-lightest: #41fb6c
+$accent-color-darker: #009b0c
+$accent-color-darkest: #007b00
+
+$danger-color: #d11
+
+$link-color: $accent-color
+$link-color-hover: $accent-color-lighter
+
+$background-color: #eee
+$background-color-lighter: #e8e8e8
+$background-color-lightest: #fff
+$background-color-darker: #d8d8d8
+$background-color-darkest: #ddd
+
+$background-color-accent: $accent-color
+$background-color-accent-lighter: $accent-color-lighter
+$background-color-accent-lightest: $accent-color-lightest
+$background-color-accent-darker: $accent-color-darker
+$background-color-accent-darkest: $accent-color-darkest
+
+$background-color-danger: $danger-color
+
+$border-radius-tiny: 3px
+$border-radius-small: 5px
+$border-radius-standard: 10px
+
+body
+  font-family: 'PT Sans', sans-serif
+  background-color: $background-color-lightest
+  >.container, .sidebar
+    margin-top: 40px
+    background-color: $background-color-lighter
+
+a
+  color: $link-color
+  text-decoration: none
+  border-bottom: 1px solid
+  &:hover
+    color: $link-color-hover
+    text-decoration: none
+    border-bottom-style: dotted
+
+.navbar
+  a, &.navbar-inverse .navbar-nav li a, a.navbar-brand
+    border: none
+    color: $link-color
+    font-size: 150%
+    &:hover
+      color: $link-color-hover
+
+.hidden, .js-hidden, .no-js-hidden
+  display: none
+
+.list-group
+  .list-group-item
+    margin-top: 2px
+    border-radius: $border-radius-small
+    .badge
+      background-color: $background-color-accent-darker
+    &:hover
+      background-color: rgba($background-color-accent, .6)
+      color: #fff
+
+.pagination
+  li a
+    color: $link-color
+    &:hover
+      color: $link-color-hover
+  .active
+    a, span
+      background-color: $background-color-accent
+      border-color: $background-color-accent
+      &:hover
+        background-color: $background-color-accent-lighter
+        border-color: $background-color-accent-lighter
+
+.alert
+  color: #fff
+  border: none
+  &.alert-success
+    background-color: rgba($background-color-accent-lighter, .6)
+  &.alert-info
+    background-color: rgba($background-color-accent-darkest, .6)
+    .alert-link
+      color: #fff
+  &.alert-danger
+    background-color: rgba($background-color-danger, .6)
+body > .container > .alert
+  margin-top: 30px
+  margin-bottom: -10px
+
+.btn
+  &.btn-primary
+    background-color: $background-color-accent
+    border-color: $accent-color-darker
+
+.form-control
+  border-color: $accent-color-darker
+  &:focus
+    box-shadow: 0 0 8px $accent-color
+    border-color: $accent-color-darker
+
+.has-error .form-control
+  border-color: $danger-color
+  &:focus
+    box-shadow: 0 0 8px $danger-color
+    border-color: $danger-color
+
+.table
+  th
+    background-color: rgba($background-color-accent-darker, .6)
+    color: #fff
+
+code
+  color: $accent-color-darkest
