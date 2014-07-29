@@ -1,0 +1,206 @@
+$text-color: #ddd
+$text-color-lighter: #eee
+$text-color-lightest: #fff
+$accent-color: #ffa800
+$accent-color-lighter: #ffc820
+$accent-color-darker: #df9800
+$second-accent-color: #7098d5
+$second-accent-color-lighter: #90a8f5
+$second-accent-color-darker: #5078b5
+$alert-accent-color: #dd0000
+$alert-accent-color-lighter: #ed0000
+//$link-color: #7098d5
+//$link-hover-color: #80a8e5
+$link-color: $accent-color
+$link-hover-color: $accent-color-lighter
+$background-color: #080808
+$text-background-color: #282828
+$lighter-background-color: #383838
+$lightest-background-color: #484848
+
+$border-radius-tiny: 5px
+$border-radius-small: 10px
+$border-radius-standard: 15px
+
+@mixin cornered($radius)
+  border-radius: 0
+  border-top-left-radius: $radius
+  border-bottom-right-radius: $radius
+
+@mixin cornered-standard
+  @include cornered($border-radius-standard)
+
+@mixin cornered-small
+  @include cornered($border-radius-small)
+
+@mixin cornered-tiny
+  @include cornered($border-radius-tiny)
+
+body
+  padding-top: 70px
+  background-color: #080808
+  color: $text-color
+
+.sidebar
+  margin-top: 10px
+
+.page-header
+  margin-top: 0
+
+body
+  > .container
+    > .row
+      background-color: #282828
+      padding-bottom: 10px
+
+a
+  color: $link-color
+  &:hover
+    color: $link-hover-color
+
+hr, .page-header
+  border-color: #484848
+
+.pagination
+  margin-bottom: 0
+
+.login-form
+  max-width: 300px
+  margin: 0 auto
+  text-align: center
+
+  input
+    border-radius: 0
+    margin-bottom: 10px
+  button
+    padding: 5px
+    border-radius: 0
+
+table.table
+  background-color: #333
+  &.table-striped
+    tr:nth-child(odd)
+      td
+        background-color: #444
+  thead
+    th
+      border-bottom-color: $text-background-color
+  tbody
+    tr
+      td
+        border-top: none
+
+.list-group
+  @include cornered-standard
+  background-color: $lighter-background-color
+  .list-group-item
+    @include cornered-standard
+    background-color: transparent
+    color: $text-color
+    border: none
+    &:hover
+      color: $link-hover-color
+      background-color: $lightest-background-color
+    .badge
+      color: $text-color
+      @include cornered-small
+
+.pagination
+  @include cornered-standard
+  li
+    span, a
+      background-color: $lighter-background-color
+      border: none
+      border-left: 2px solid $text-background-color
+      color: $link-color
+      &:hover
+        background-color: $lightest-background-color
+        color: $link-hover-color
+        border-color: $text-background-color
+    &.disabled
+      span, a
+        background-color: $lighter-background-color
+        border-color: $text-background-color
+        &:hover
+          background-color: $lighter-background-color
+    &.active
+      span, a
+        background-color: $lightest-background-color
+        border-color: $text-background-color
+        border-width: 0
+        border-left-width: 2px
+        margin-right: 1px
+        color: $link-color
+        &:hover
+          background-color: $lightest-background-color
+          border-color: $text-background-color
+    &:first-child
+      span, a
+        border-top-left-radius: $border-radius-small
+        border-bottom-left-radius: $border-radius-small
+        border-left-width: 0
+    &:last-child
+      span, a
+        border-top-right-radius: $border-radius-small
+        border-bottom-right-radius: $border-radius-small
+
+.container
+  >.alert
+    margin-left: -15px
+    margin-right: -15px
+.alert
+  color: $text-color-lighter
+  border: none
+  &.alert-success
+    background-color: $accent-color
+  &.alert-info
+    background: $second-accent-color
+    .alert-link
+      color: $text-color-lightest
+  &.alert-danger
+    background-color: $alert-accent-color
+
+.btn
+  @include cornered-tiny
+  &.btn-primary
+    background-color: $accent-color
+    border-color: $accent-color
+    &:hover
+      background-color: $accent-color-lighter
+      border-color: $accent-color-lighter
+  &.btn-danger
+    background-color: $alert-accent-color
+    border-color: $alert-accent-color
+    &:hover
+      background-color: $alert-accent-color-lighter
+      border-color: $alert-accent-color-lighter
+  &.btn-info
+    background-color: $second-accent-color
+    border-color: $second-accent-color
+    &:hover
+      background-color: $second-accent-color-lighter
+      border-color: $second-accent-color-lighter
+
+.form-control
+  background-color: $lighter-background-color
+  color: $text-color
+  border-width: 0
+  border-bottom-width: 1px
+  border-color: $accent-color
+  border-radius: 0
+  &:focus, &:active
+    border-color: $accent-color
+    box-shadow: none
+    background-color: $lightest-background-color
+  &.disabled, &[disabled]
+    background-color: $lighter-background-color
+
+.has-error
+  .form-control
+    border-color: $alert-accent-color
+    &:active, &:focus
+      box-shadow: none
+
+code
+  color: $accent-color-lighter
+  background-color: $lightest-background-color

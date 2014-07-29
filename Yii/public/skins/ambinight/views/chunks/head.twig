@@ -1,0 +1,23 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% if this.page.title %}
+        <title>{{ this.page.title }} | {{ App.name }}</title>
+    {% else %}
+        <title>{{ App.name }}</title>
+    {% endif %}
+
+    <!-- Bootstrap core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" type="text/javascript"></script>
+    {% block theme_styles %}
+        <link href="/skins/ambinight/css/style.css" rel="stylesheet" />
+    {% endblock %}
+    {% block theme_scripts %}
+        <script src="/skins/default/js/default.js" type="text/javascript"></script>
+    {% endblock %}
+</head>
