@@ -25,6 +25,7 @@ return array(
     'heading.createNewUser' => 'Create new user',
     'heading.suicideBooth' => 'Suicide booth',
     'heading.httpError' => 'Error #{errorCode}',
+    'heading.noCommentsYet' => 'No comments yet',
 
     'pageTitle.site.login' => 'Login',
     'pageTitle.site.error' => 'Error #{errorCode}',

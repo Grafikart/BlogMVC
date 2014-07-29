@@ -26,6 +26,7 @@ return array(
     'heading.createNewUser' => 'Создать нового пользователя',
     'heading.suicideBooth' => 'Будка для самоубийств',
     'heading.httpError' => 'Ошибка #{errorCode}',
+    'heading.noCommentsYet' => 'Пока никто не оставил ни одного комментария',
 
     'pageTitle.site.login' => 'Вход',
     'pageTitle.site.error' => 'Ошибка #{errorCode}',
