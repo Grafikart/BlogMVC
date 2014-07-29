@@ -19,7 +19,7 @@ return array(
         'log',
     ),
     'sourceLanguage' => 'en',
-    'language' => 'ru',
+    'language' => 'en',
     'components' => array(
         'db' => array(
             'connectionString' => 'pgsql:dbname=blogmvc_yii',
@@ -122,5 +122,5 @@ return array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
     ),
-    'theme' => 'ambinight',
+    'theme' => 'simple',
 );
