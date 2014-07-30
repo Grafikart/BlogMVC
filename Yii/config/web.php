@@ -1,8 +1,9 @@
 <?php
+$basePath = dirname(dirname(__FILE__));
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
     'name' => 'Another non-wordpress blog',
-    'basePath' => dirname(dirname(__FILE__)),
+    'basePath' => $basePath,
     'import' => array(
         'application.components.*',
         'application.components.widgets.*',
@@ -96,11 +97,11 @@ return array(
             ),
         ),
         'themeManager' => array(
-            'basePath' => '/srv/http/src/blogmvc/Yii/public/skins',
+            'basePath' => $basePath.'/public/skins',
             'baseUrl' => '/skins',
         ),
         'assetManager' => array(
-            'basePath' => '/srv/http/src/blogmvc/Yii/public/assets',
+            'basePath' => $basePath.'/public/assets',
             'baseUrl' => '/assets',
         ),
         'errorHandler' => array(
