@@ -12,7 +12,9 @@ explore, rewrite, tear and break everything down or build something using
 application components.
 The only thing i have to mention is that config is rewritten every time
 application name or language is switched on [options page](/admin/options), so
-there's no point in leaving comments in it.
+there's no point in leaving comments in it. All include directives will be
+(sadly) overwritten too, so `db.php` contents will be placed inside main config
+as soon as application options are updated.
 
 ## Theming
 
