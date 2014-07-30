@@ -1,5 +1,6 @@
 {% extends 'views/layouts/admin.twig' %}
 {% block content %}
+{% if posts.length > 0 %}
 <table class="table table-striped">
     <thead>
         <tr>
@@ -40,7 +41,7 @@
         {% endfor %}
     </tbody>
 </table>
-{% if posts|length == 0 %}
+{% else %}
     <div class="alert alert-info">
         {{ App.t.t('text.noPostsYet') }}
     </div>
