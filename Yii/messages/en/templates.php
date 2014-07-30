@@ -104,13 +104,14 @@ return array(
     'text.profileGreeting' => 'Hi there, {username}!',
     'text.rss.defaultDescription' => '{appName} RSS feed.',
     'text.noRegisteredUsers' => 'System doesn\'t have registered users yet.',
+    'text.postsAmount' => '{n} post|{n} posts',
+    'text.commentsAmount' => '{n} comment|{n} comments',
 
     'paragraph.serviceStatusCache' => 'Data you are looking at may be cached. '.
         'Cache timeout is set to one minute for status data and to one hour '.
         'for statistics data. You can flush the cache manually, though:',
-    'paragraph.userPostsAdminNotice' => 'You have written '.
-        '{postCount} posts which received {commentCount} comments. '.
-        'You can manage them through '.
+    'paragraph.userPostsAdminNotice' => 'You have written {postsAmount} which '.
+        'received {commentsAmount}. You can manage them through '.
         '<a href="{dashboardUrl}">posts dashboard</a>.',
     'paragraph.usersAdminNotice' => 'You can view basic info about registered '.
         'users and create new one <a href="{dashboardUrl}">here</a>.',

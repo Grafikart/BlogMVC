@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row">
         {{ App.t.t('paragraph.userPostsAdminNotice', {
-            '{postCount}':user.postCount,
-            '{commentCount}':user.commentCount,
-            '{dashboardUrl}':this.createUrl('post/dashboard')
+            '{postsAmount}': App.t.t('text.postsAmount', user.postCount),
+            '{commentsAmount}': App.t.t('text.commentsAmount', user.commentCount),
+            '{dashboardUrl}': this.createUrl('post/dashboard')
         }) }}
     </div>
 </div>
