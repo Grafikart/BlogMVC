@@ -471,10 +471,25 @@ class Page extends \CComponent
     }
 
     /**
+     * Resets navigation data.
+     *
+     * @return void
+     * @since 0.1.0
+     */
+    public function resetNavigation()
+    {
+        $this->headerNavigation = array();
+        $this->loadNavigation();
+    }
+
+    /**
      * Resets page title and heading using provided data.
      *
      * @param string[] $data Data required for translation.
      * @param string   $key  Translation key.
+     *
+     * @todo navigation can be translated on Twig request. Wouldn't that be
+     * great?
      *
      * @return void
      * @since 0.1.0
@@ -483,6 +498,7 @@ class Page extends \CComponent
     {
         $this->resetTitle($data, $key);
         $this->resetHeading($data, $key);
+        $this->resetNavigation();
     }
 
     /**
