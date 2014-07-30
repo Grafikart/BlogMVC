@@ -12,8 +12,9 @@ Greetings! This is a Yii-based [BlogMVC](http://blogmvc.com) realization.
 `--interactive=0` to auto-confirm prompts.
 6. Point your web server to the `public/index.php` file (there are prepared
 configuration file templates in `config` directory).
-7. Have fun! Password-login pair is **admin**/**admin**, go ahead and change it.
-8. Optionally you can add some meta tags in `/views/chunks/meta.twig`.
+7. Make sure `runtime` and `public/assets` directories are writable.
+8. Have fun! Password-login pair is **admin**/**admin**, go ahead and change it.
+9. Optionally you can add some meta tags in `/views/chunks/meta.twig`.
 
 ### Installation in detail
 
@@ -43,6 +44,8 @@ i've cheated, so all you need to do is to run migrations. This is done via
 calling the application from console: `php boot/console migrate up`:
 `php boot/console` invokes the application, `migrate` tells application to call
 migration module, and `up` tells that migrations should populate the database.
+Also, don't forget to make sure `runtime` and `public/assets` directories are
+writable (`chmod` and `chown` commands usually do the trick).
 6. The last step of whole operation is to connect application with web server.
 Again, this topic is too big to describe every possible server here, but, as
 with database, you can find configuration templates in `config/templates`
