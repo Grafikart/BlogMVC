@@ -41,19 +41,26 @@
         </div>
         <div class="col-md-4">
             <div class="required form-group{{ post.getError('category') or category.getErrors()?' has-error' }}">
-                <div class="row">
-                    <div class="col-md-10" role="category-selector-container">
-                        {{ form.dropDownList(post, 'category_id', categories, {'class': 'form-control'}) }}
-                        {{ form.textField(category, 'name', {
-                            'class':'hidden form-control',
-                            'placeholder':category.getAttributeLabel('name'),
-                            'disabled':true
-                        }) }}
+                {% if categories|length > 0 %}
+                    <div class="row">
+                        <div class="col-md-10" role="category-selector-container">
+                            {{ form.dropDownList(post, 'category_id', categories, {'class': 'form-control'}) }}
+                            {{ form.textField(category, 'name', {
+                                'class':'hidden form-control',
+                                'placeholder':category.getAttributeLabel('name'),
+                                'disabled':true
+                            }) }}
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" type="button" role="toggle-category-menu">+</button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary" type="button" role="toggle-category-menu">+</button>
-                    </div>
-                </div>
+                {% else %}
+                    {{ form.textField(category, 'name', {
+                        'class':'form-control',
+                        'placeholder':category.getAttributeLabel('name')
+                    }) }}
+                {% endif %}
             </div>
         </div>
     </div>
