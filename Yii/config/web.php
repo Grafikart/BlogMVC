@@ -2,7 +2,7 @@
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
     'name' => 'Another non-wordpress blog',
-    'basePath' => '/srv/http/src/blogmvc/Yii',
+    'basePath' => dirname(dirname(__FILE__)),
     'import' => array(
         'application.components.*',
         'application.components.widgets.*',
