@@ -59,10 +59,12 @@ a
     margin-top: 2px
     border-radius: $border-radius-small
     .badge
-      background-color: $background-color-accent-darker
+      background-color: $background-color-accent
     &:hover
       background-color: rgba($background-color-accent, .6)
       color: #fff
+      .badge
+        background-color: $background-color-accent-darker
 
 .pagination
   li a
@@ -94,8 +96,8 @@ body > .container > .alert
 
 .btn
   &.btn-primary
-    background-color: $background-color-accent
-    border-color: $accent-color-darker
+    background-color: $background-color-accent-darker
+    border-color: $accent-color-darkest
 
 .form-control
   border-color: $accent-color-darker

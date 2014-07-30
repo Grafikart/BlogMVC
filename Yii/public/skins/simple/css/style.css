@@ -28,10 +28,12 @@ a {
   margin-top: 2px;
   border-radius: 5px; }
   .list-group .list-group-item .badge {
-    background-color: #009b0c; }
+    background-color: #01bb2c; }
   .list-group .list-group-item:hover {
     background-color: rgba(1, 187, 44, 0.6);
     color: white; }
+    .list-group .list-group-item:hover .badge {
+      background-color: #009b0c; }
 
 .pagination li a {
   color: #01bb2c; }
@@ -61,8 +63,8 @@ body > .container > .alert {
   margin-bottom: -10px; }
 
 .btn.btn-primary {
-  background-color: #01bb2c;
-  border-color: #009b0c; }
+  background-color: #009b0c;
+  border-color: #007b00; }
 
 .form-control {
   border-color: #009b0c; }
