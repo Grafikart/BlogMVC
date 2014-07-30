@@ -84,3 +84,9 @@ body > .container > .alert {
 
 code {
   color: #007b00; }
+
+.page-header {
+  margin-bottom: -20px; }
+
+.single-post-margin-compensation {
+  padding-top: 20px; }

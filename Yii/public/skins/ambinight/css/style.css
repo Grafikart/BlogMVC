@@ -162,3 +162,6 @@ table.table {
 code {
   color: #ffc820;
   background-color: #484848; }
+
+.single-post-margin-compensation {
+  margin-top: -5px; }
