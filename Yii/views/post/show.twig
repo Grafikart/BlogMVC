@@ -70,7 +70,7 @@
                 <img src="{{ comment.gravatar }}{{ comment.mail?'?s=100&d=identicon' }}" width="100%" />
             </div>
             <div class="col-md-10">
-                <p>
+                <div>
                     {% if post.user_id == App.user.id %}
                         <div class="pull-right">
                             <a href="{{ this.createUrl('comment/delete', {
@@ -82,16 +82,23 @@
                         </div>
                     {% endif %}
                     {% if comment.getAuthor() %}
-                    <strong>
-                        <a href="{{ this.createUrl('user/index', {
-                            'id':comment.getAuthor().getPrimaryKey()
-                        }) }}">{{ comment.username }}</a>
-                    </strong>
+                        <strong>
+                            <a href="{{ this.createUrl('user/index', {
+                                'id':comment.getAuthor().id
+                            }) }}">{{ comment.username }}</a>
+                        </strong>
+                        {% if comment.getAuthor().id == post.author.id %}
+                            <span class="badge badge-primary">
+                                {{ App.t.t('text.postAuthor') }}
+                            </span>
+                        {% endif %}
                     {% else %}
-                    <strong>{{ comment.username }}</strong>
+                        <strong>{{ comment.username }}</strong>
                     {% endif %}
-                    {{ comment.timeAgo }}
-                </p>
+                    <div class="text-muted">
+                        {{ comment.timeAgo }}
+                    </div>
+                </div>
                 <p>
                     {{ comment.content }}
                 </p>

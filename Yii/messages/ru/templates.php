@@ -96,6 +96,7 @@ return array(
     'text.id' => 'ID',
     'text.name' => 'Название',
     'text.postCount' => 'Количество записей',
+    'text.postAuthor' => 'Автор записи',
     'text.actions' => 'Действия',
     'text.noCategoriesFound' => 'Не найдено ни одной категории :/',
     'text.noPostsYet' => 'Записей не найдено.',

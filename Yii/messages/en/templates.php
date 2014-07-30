@@ -95,6 +95,7 @@ return array(
     'text.id' => 'ID',
     'text.name' => 'Name',
     'text.postCount' => 'Post count',
+    'text.postAuthor' => 'Post author',
     'text.actions' => 'Actions',
     'text.noCategoriesFound' => 'No categories found :/',
     'text.noPostsYet' => 'No posts yet.',
