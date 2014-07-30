@@ -2,7 +2,6 @@
 /vendor/
 
 # Local stuff
-/public/assets
 *.log
 
 # Local config
