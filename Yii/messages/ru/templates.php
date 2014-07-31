@@ -91,8 +91,8 @@ return array(
     'link.suicideBooth' => 'Пжл удалите меня',
 
     'text.category' => 'Категория',
-    'text.onTime' => ',',
-    'text.by' => 'автор: ',
+    'text.onTime' => ' ',
+    'text.by' => 'написан ',
     'text.id' => 'ID',
     'text.name' => 'Название',
     'text.postCount' => 'Количество записей',
