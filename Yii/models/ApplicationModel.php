@@ -214,11 +214,15 @@ class ApplicationModel extends CModel
         if (!is_array($config)) {
             return $config;
         }
-        $config['name'] = \Yii::app()->formatter->escape($this->name);
-        \Yii::app()->language = $config['language'] = $this->language;
-        \Yii::app()->name = $this->name;
-        \Yii::app()->theme = $config['theme'] = $this->theme;
-        $result = $this->writeConfig($this->configFile, $config);
+        $updates = array(
+            'name' => $this->name,
+            'language' => $this->language,
+            'theme' => $this->theme,
+        );
+        foreach ($updates as $key => $value) {
+            \Yii::app()->$key = $value;
+        }
+        $result = $this->writeConfig($this->configFile, $updates);
         \Yii::endProfile('applicationModel.updateConfig');
         return $result;
     }
@@ -259,7 +263,7 @@ class ApplicationModel extends CModel
      * codes should no intersect with it.
      * @since 0.1.0
      */
-    protected function writeConfig($alias, array $config)
+    protected function writeConfig($alias, array $updates)
     {
         \Yii::beginProfile('applicationModel.writeConfig');
         $path = \Yii::getPathOfAlias($alias).'.php';
@@ -268,12 +272,9 @@ class ApplicationModel extends CModel
         } elseif (!is_writable($path)) {
             return self::CONFIG_FILE_NOT_WRITABLE;
         }
-        $template = "<?php\nreturn :config;\n";
-        $config = str_replace(
-            ':config',
-            \Yii::app()->formatter->renderArray($config),
-            $template
-        );
+        $editor = new ConfigEditor;
+        $configText = file_get_contents($path);
+        $config = $editor->rewriteConfig($configText, $updates);
         $result = file_put_contents($path, $config);
         \Yii::endProfile('applicationModel.writeConfig');
         return $result;
