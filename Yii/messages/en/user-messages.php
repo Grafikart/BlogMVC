@@ -36,6 +36,8 @@ return array(
         'below.',
     'post.delete.success' => 'Your post "{title}" has been successfully '.
         'deleted.',
+    'post.update.success' => 'Your post "{title}" has been successfully '.
+        'updated.',
     'user.creation.success' => 'User {user} has been successfully created.',
     'user.creation.fail' => 'User hasn\'t been created. Check form below for '.
         'errors.',

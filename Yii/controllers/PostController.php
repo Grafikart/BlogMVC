@@ -160,11 +160,15 @@ class PostController extends \BaseController
         }
         if ($data && !$failed) {
             $model->setAndSave($data);
+            \Yii::app()->user->sendSuccessMessage(
+                'post.update.success',
+                array('{postTitle}' => $model->name)
+            );
         }
         $this->pageTitle = $model->name;
         $url = $this->createUrl('post/show', array('slug' => $model->slug));
         $this->page->addNavigationItem($url, 'link.thisPost');
-        $this->page->resetI18n(array('{postTitle}' => $model->name,));
+        $this->page->resetI18n(array('{title}' => $model->name,));
         $templateVars = array(
             'post' => $model,
             'categories' => \Category::model()->getList(),
