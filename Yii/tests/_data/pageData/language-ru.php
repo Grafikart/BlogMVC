@@ -61,7 +61,7 @@ return array(
         'nav' => array('управление записями', 'блог',),
     ),
     \PostFormPage::route($firstPostId) => array(
-        'title' => 'Запись '.$firstPostTitle,
+        'title' => 'Запись "' . $firstPostTitle . '"',
         'backTo' => 'Управление записями',
         'nav' => array('управление записями', 'блог', 'эту запись',),
     ),
@@ -86,7 +86,7 @@ return array(
         'nav' => array('управление категориями', 'панель управления',),
     ),
     \CategoryFormPage::route($firstCategorySlug) => array(
-        'title' => 'Категория '.$firstCategoryTitle,
+        'title' => 'Категория "' . $firstCategoryTitle . '"',
         'backTo' => 'Управление категориями',
         'nav' => array('управление категориями', 'панель управления',),
     ),

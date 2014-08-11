@@ -61,7 +61,7 @@ return array(
         'nav' => array('Posts management', 'Blog',),
     ),
     \PostFormPage::route($firstPostId) => array(
-        'title' => 'Edit '.$firstPostTitle,
+        'title' => 'Edit post "' . $firstPostTitle . '"',
         'backTo' => 'Posts management',
         'nav' => array('Posts management', 'Blog', 'This post',),
     ),
@@ -86,7 +86,7 @@ return array(
         'nav' => array('Categories management', 'Admin panel',),
     ),
     \CategoryFormPage::route($firstCategorySlug) => array(
-        'title' => 'Edit category '.$firstCategoryTitle,
+        'title' => 'Edit category "' . $firstCategoryTitle . '"',
         'backTo' => 'Categories management',
         'nav' => array('Categories management', 'Admin panel',),
     ),
