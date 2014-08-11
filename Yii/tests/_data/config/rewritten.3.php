@@ -3,7 +3,7 @@ $appRoot = dirname(dirname(__FILE__));
 return array(
     //just a comment
     'id' => 'BlogMVC/Yii 1.1.14',
-    'name' => 'testName',
+    'name' => 'Test guy\'s test name',
     'basePath' => $appRoot,
     'import' => array(
         'application.components.*',

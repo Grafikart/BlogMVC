@@ -26,7 +26,7 @@ class ConfigFormatterTest extends \Codeception\TestCase\Test
                 3,
                 array(
                     'theme' => 'ambinight',
-                    'name' => 'testName',
+                    'name' => 'Test guy\'s test name',
                     'language' => 'ru',
                 )),
         );
@@ -36,6 +36,7 @@ class ConfigFormatterTest extends \Codeception\TestCase\Test
         return array(
             array(1, 1,),
             array('supper', "'supper'",),
+            array("Tony's blog", "'Tony\\'s blog'"),
             array('supper\'', "'supper\''",),
             array('supper\\', "'supper\\'",),
             array(true, 'true',),
@@ -85,7 +86,7 @@ class ConfigFormatterTest extends \Codeception\TestCase\Test
         $rawFileContent = file_get_contents($rawFilePath);
         // $rawFileData = require $rawFilePath;
         $rewrittenFileContent = file_get_contents($rewrittenFilePath);
-        $rewrittenFileData = require $rewrittenFilePath;
+        // $rewrittenFileData = require $rewrittenFilePath;
         $hambda = new \ConfigEditor;
         $newConfig = $hambda->rewriteConfig($rawFileContent, $data);
         file_put_contents($dumpPath, $newConfig);

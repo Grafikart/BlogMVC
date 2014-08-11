@@ -20,7 +20,7 @@ class ConfigEditor extends \CComponent
      * @since 0.1.0
      */
     protected $pattern
-        = "~'%s'\s*=>\s*(?:'(?:[^']|\\')*?'|array\(.*\)|\[.*\]|true|false|null|\d+)~uis";
+        = "~'%s'\s*=>\s*(?:'.*?(?<!\\\\)'|array\(.*\)|\[.*\]|true|false|null|\d+)~uis";
 
     /**
      *
@@ -59,7 +59,7 @@ class ConfigEditor extends \CComponent
         } elseif ($value === null) {
             return 'null';
         } elseif (is_string($value)) {
-            return "'".str_replace("'", "\'", $value)."'";
+            return "'".str_replace("'", "\\'", $value)."'";
         } else {
             throw new \InvalidArgumentException('Unsupported type');
         }
