@@ -30,8 +30,8 @@ return array(
     'post.submit.success' => 'Ваша запись была успешно сохранена.',
     'post.submit.fail' => 'Ваша запись не была сохранена, проверьте форму на '.
         'ошибки.',
-    'post.delete.success' => 'Ваша запись "{title}" была успешно удалена.',
-    'post.update.success' => 'Ваша запись "{title}" была успешно обновлена',
+    'post.delete.success' => 'Ваша запись "{postTitle}" была успешно удалена.',
+    'post.update.success' => 'Ваша запись "{postTitle}" была успешно обновлена',
     'user.creation.success' => 'Пользователь {user} был успешно создан.',
     'user.creation.fail' => 'Пользователь не был создан, проверьте форму на '.
         'ошибки.',

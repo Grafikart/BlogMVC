@@ -168,7 +168,7 @@ class PostController extends \BaseController
         $this->pageTitle = $model->name;
         $url = $this->createUrl('post/show', array('slug' => $model->slug));
         $this->page->addNavigationItem($url, 'link.thisPost');
-        $this->page->resetI18n(array('{title}' => $model->name,));
+        $this->page->resetI18n(array('{postTitle}' => $model->name,));
         $templateVars = array(
             'post' => $model,
             'categories' => \Category::model()->getList(),
@@ -203,7 +203,7 @@ class PostController extends \BaseController
         } else {
             \Yii::app()->user->sendSuccessMessage(
                 'post.delete.success',
-                array('{title}' => $model->name,)
+                array('{postTitle}' => $model->name,)
             );
             $this->redirect(array('post/dashboard'));
         }

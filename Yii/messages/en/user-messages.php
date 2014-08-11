@@ -34,9 +34,9 @@ return array(
     'post.submit.success' => 'Your post has been successfully created.',
     'post.submit.fail' => 'Your post hasn\'t been created - check for errors '.
         'below.',
-    'post.delete.success' => 'Your post "{title}" has been successfully '.
+    'post.delete.success' => 'Your post "{postTitle}" has been successfully '.
         'deleted.',
-    'post.update.success' => 'Your post "{title}" has been successfully '.
+    'post.update.success' => 'Your post "{postTitle}" has been successfully '.
         'updated.',
     'user.creation.success' => 'User {user} has been successfully created.',
     'user.creation.fail' => 'User hasn\'t been created. Check form below for '.
