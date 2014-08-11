@@ -19,3 +19,5 @@ status code 400 is much more appropriate.
 * `/admin/category/:slug/edit` works, but `/admin/category/:slug` won't because
 of `/admin/category/new` being the single url in that range.
 * Cache admin index values (\# of posts and comments)
+* Get rid of those config editors and simply place volatile values in a separate
+file.
