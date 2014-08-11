@@ -1,9 +1,10 @@
 <?php
-$basePath = dirname(dirname(__FILE__));
+$configRoot = dirname(__FILE__);
+$appRoot = dirname($configRoot);
 return array(
     'id' => 'BlogMVC/Yii 1.1.14',
     'name' => 'Another non-wordpress blog',
-    'basePath' => $basePath,
+    'basePath' => $appRoot,
     'import' => array(
         'application.components.*',
         'application.components.widgets.*',
@@ -22,7 +23,7 @@ return array(
     'sourceLanguage' => 'en',
     'language' => 'en',
     'components' => array(
-        'db' => include(__DIR__.'/db.php'),
+        'db' => include __DIR__.'/db.php',
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(
@@ -93,11 +94,11 @@ return array(
             ),
         ),
         'themeManager' => array(
-            'basePath' => $basePath.'/public/skins',
+            'basePath' => $appRoot . '/public/skins',
             'baseUrl' => '/skins',
         ),
         'assetManager' => array(
-            'basePath' => $basePath.'/public/assets',
+            'basePath' => $appRoot . '/public/assets',
             'baseUrl' => '/assets',
         ),
         'errorHandler' => array(
@@ -119,5 +120,5 @@ return array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
     ),
-    'theme' => 'default',
+    'theme' => 'ambinight',
 );
