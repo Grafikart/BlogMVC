@@ -282,23 +282,24 @@ class Page extends \CComponent
     /**
      * Additional method to simplify header navigation interface.
      *
-     * @param string $url   Item url.
-     * @param string $title Item title or title translation key.
-     * @param string $type  Item type, 'link' or 'button'.
-     * @param string $role  Additional role for element.
+     * @param string $url      Item url.
+     * @param string $titleKey Item title translation key.
+     * @param string $type     Item type, 'link' or 'button'.
+     * @param string $role     Additional role for element.
      *
      * @return void
      * @since 0.1.0
      */
     public function addNavigationItem(
         $url,
-        $title,
+        $titleKey,
         $type = 'link',
         $role = null
     ) {
         $this->headerNavigation[] = array(
             'url'   => $url,
-            'title' => \Yii::t('templates', $title),
+            'titleKey' => $titleKey,
+            'title' => \Yii::t('templates', $titleKey),
             'type'  => $type,
             'role'  => $role,
         );
@@ -473,13 +474,16 @@ class Page extends \CComponent
     /**
      * Resets navigation data.
      *
+     * @param string[] $data Translation data.
+     *
      * @return void
      * @since 0.1.0
      */
-    public function resetNavigation()
+    public function resetNavigation(array $data = array())
     {
-        $this->headerNavigation = array();
-        $this->loadNavigation();
+        foreach ($this->headerNavigation as &$item) {
+            $item['title'] = \Yii::t('templates', $item['titleKey'], $data);
+        }
     }
 
     /**
@@ -498,7 +502,7 @@ class Page extends \CComponent
     {
         $this->resetTitle($data, $key);
         $this->resetHeading($data, $key);
-        $this->resetNavigation();
+        $this->resetNavigation($data);
     }
 
     /**
