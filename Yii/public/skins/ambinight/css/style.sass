@@ -2,7 +2,7 @@ $text-color: #ddd
 $text-color-lighter: #eee
 $text-color-lightest: #fff
 $accent-color: #ffa800
-$accent-color-lighter: #ffc820
+$accent-color-lighter: #ffb810
 $accent-color-darker: #df9800
 $second-accent-color: #7098d5
 $second-accent-color-lighter: #90a8f5
@@ -49,6 +49,7 @@ body
 
 body
   > .container
+    margin-bottom: 20px
     > .row
       background-color: #282828
       padding-bottom: 10px
@@ -93,8 +94,8 @@ table.table
 .list-group
   @include cornered-standard
   background-color: $lighter-background-color
+  overflow: hidden
   .list-group-item
-    @include cornered-standard
     background-color: transparent
     color: $text-color
     border: none
@@ -207,3 +208,9 @@ code
 
 .single-post-margin-compensation
   margin-top: -5px
+
+.comments
+  button
+    float: right
+  h3
+    clear: both

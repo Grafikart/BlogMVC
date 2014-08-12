@@ -1,6 +1,11 @@
 body {
   font-family: "PT Sans", sans-serif;
   background-color: white; }
+  body > .container {
+    padding-bottom: 20px;
+    margin-bottom: 40px; }
+  body .sidebar {
+    margin-bottom: 10px; }
   body > .container, body .sidebar {
     margin-top: 40px;
     background-color: #e8e8e8; }
@@ -28,12 +33,10 @@ a {
   margin-top: 2px;
   border-radius: 5px; }
   .list-group .list-group-item .badge {
-    background-color: #01bb2c; }
+    background-color: rgba(0, 155, 12, 0.6); }
   .list-group .list-group-item:hover {
     background-color: rgba(1, 187, 44, 0.6);
     color: white; }
-    .list-group .list-group-item:hover .badge {
-      background-color: #009b0c; }
 
 .pagination li a {
   color: #01bb2c; }
@@ -63,8 +66,17 @@ body > .container > .alert {
   margin-bottom: -10px; }
 
 .btn.btn-primary {
-  background-color: #009b0c;
-  border-color: #007b00; }
+  background-color: rgba(0, 155, 12, 0.6);
+  border-color: #01bb2c; }
+  .btn.btn-primary:hover, .btn.btn-primary:active {
+    background-color: #01bb2c;
+    border-color: #01bb2c; }
+.btn.btn-danger:hover, .btn.btn-danger:active {
+  background-color: #f03d38;
+  border-color: #f03d38; }
+.btn.btn-info:hover, .btn.btn-info:hover {
+  background-color: #4dcff5;
+  border-color: #4dcff5; }
 
 .form-control {
   border-color: #009b0c; }
@@ -85,8 +97,29 @@ body > .container > .alert {
 code {
   color: #007b00; }
 
-.page-header {
-  margin-bottom: -20px; }
-
 .single-post-margin-compensation {
   padding-top: 20px; }
+
+article {
+  background-color: white;
+  padding: 10px; }
+  article h2 {
+    margin-top: 0; }
+
+.table > tbody > tr > td {
+  vertical-align: baseline; }
+
+.login-form {
+  width: 300px;
+  margin: 30px auto 0;
+  text-align: center; }
+  .login-form input[type="text"] {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
+  .login-form input[type="password"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    margin-bottom: 10px; }
+  .login-form button {
+    padding-top: 5px;
+    padding-bottom: 5px; }

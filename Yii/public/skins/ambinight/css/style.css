@@ -9,14 +9,16 @@ body {
 .page-header {
   margin-top: 0; }
 
-body > .container > .row {
-  background-color: #282828;
-  padding-bottom: 10px; }
+body > .container {
+  margin-bottom: 20px; }
+  body > .container > .row {
+    background-color: #282828;
+    padding-bottom: 10px; }
 
 a {
   color: #ffa800; }
   a:hover {
-    color: #ffc820; }
+    color: #ffb810; }
 
 hr, .page-header {
   border-color: #484848; }
@@ -48,16 +50,14 @@ table.table {
   border-radius: 0;
   border-top-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  background-color: #383838; }
+  background-color: #383838;
+  overflow: hidden; }
   .list-group .list-group-item {
-    border-radius: 0;
-    border-top-left-radius: 15px;
-    border-bottom-right-radius: 15px;
     background-color: transparent;
     color: #dddddd;
     border: none; }
     .list-group .list-group-item:hover {
-      color: #ffc820;
+      color: #ffb810;
       background-color: #484848; }
     .list-group .list-group-item .badge {
       color: #dddddd;
@@ -76,7 +76,7 @@ table.table {
     color: #ffa800; }
     .pagination li span:hover, .pagination li a:hover {
       background-color: #484848;
-      color: #ffc820;
+      color: #ffb810;
       border-color: #282828; }
   .pagination li.disabled span, .pagination li.disabled a {
     background-color: #383838;
@@ -125,8 +125,8 @@ table.table {
     background-color: #ffa800;
     border-color: #ffa800; }
     .btn.btn-primary:hover {
-      background-color: #ffc820;
-      border-color: #ffc820; }
+      background-color: #ffb810;
+      border-color: #ffb810; }
   .btn.btn-danger {
     background-color: #dd0000;
     border-color: #dd0000; }
@@ -160,8 +160,13 @@ table.table {
     box-shadow: none; }
 
 code {
-  color: #ffc820;
+  color: #ffb810;
   background-color: #484848; }
 
 .single-post-margin-compensation {
   margin-top: -5px; }
+
+.comments button {
+  float: right; }
+.comments h3 {
+  clear: both; }

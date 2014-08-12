@@ -5,6 +5,10 @@ $accent-color-darker: #009b0c
 $accent-color-darkest: #007b00
 
 $danger-color: #d11
+$danger-color-lighter: #f03d38
+
+$info-color: #4dcff5
+$info-color-darker: darken($info-color, 0.1)
 
 $link-color: $accent-color
 $link-color-hover: $accent-color-lighter
@@ -30,6 +34,11 @@ $border-radius-standard: 10px
 body
   font-family: 'PT Sans', sans-serif
   background-color: $background-color-lightest
+  >.container
+    padding-bottom: 20px
+    margin-bottom: 40px
+  .sidebar
+    margin-bottom: 10px
   >.container, .sidebar
     margin-top: 40px
     background-color: $background-color-lighter
@@ -59,12 +68,10 @@ a
     margin-top: 2px
     border-radius: $border-radius-small
     .badge
-      background-color: $background-color-accent
+      background-color: rgba($background-color-accent-darker, .6)
     &:hover
       background-color: rgba($background-color-accent, .6)
       color: #fff
-      .badge
-        background-color: $background-color-accent-darker
 
 .pagination
   li a
@@ -96,8 +103,17 @@ body > .container > .alert
 
 .btn
   &.btn-primary
-    background-color: $background-color-accent-darker
-    border-color: $accent-color-darkest
+    background-color: rgba($background-color-accent-darker, .6)
+    border-color: $accent-color
+    &:hover, &:active
+      background-color: $background-color-accent
+      border-color: $accent-color
+  &.btn-danger:hover, &.btn-danger:active
+    background-color: $danger-color-lighter
+    border-color: darken($danger-color-lighter, 0.1)
+  &.btn-info:hover, &.btn-info:hover
+    background-color: $info-color
+    border-color: $info-color-darker
 
 .form-control
   border-color: $accent-color-darker
@@ -119,8 +135,35 @@ body > .container > .alert
 code
   color: $accent-color-darkest
 
-.page-header
-  margin-bottom: -20px
+//.page-header
+//  margin-bottom: -20px
 
 .single-post-margin-compensation
   padding-top: 20px
+
+article
+  background-color: white
+  padding: 10px
+  h2
+    margin-top: 0
+
+.table
+  &>tbody
+    &>tr
+      &>td
+        vertical-align: baseline
+
+.login-form
+  width: 300px
+  margin: 30px auto 0
+  text-align: center
+  input[type="text"]
+    border-bottom-left-radius: 0
+    border-bottom-right-radius: 0
+  input[type="password"]
+    border-top-left-radius: 0
+    border-top-right-radius: 0
+    margin-bottom: 10px
+  button
+    padding-top: 5px
+    padding-bottom: 5px
