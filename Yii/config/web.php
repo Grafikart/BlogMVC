@@ -120,5 +120,5 @@ return array(
             'class' => 'application.components.formatters.DateFormatter',
         ),
     ),
-    'theme' => 'ambinight',
+    'theme' => 'default',
 );
