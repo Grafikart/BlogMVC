@@ -61,7 +61,6 @@
             {{ C.Html.tag('button', {'class':'btn btn-primary', 'role':'post-comment'}, App.t.t('control.submit')) }}
         </div>
     {{ void(this.endWidget()) }}
-</section>
 {% if post.comments|length > 0 %}
     <h3>{{ App.t.t('heading.commentsAmount', post.comments|length) }}</h3>
     {% for comment in post.comments %}
@@ -109,4 +108,5 @@
 {% else %}
     <h3>{{ App.t.t('heading.noCommentsYet', post.comments|length) }}</h3>
 {% endif %}
+</section>
 {% endblock %}
