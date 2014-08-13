@@ -214,3 +214,22 @@ code
     float: right
   h3
     clear: both
+
+table
+  @extend .table
+  margin: 5px
+  th, td
+    padding: 8px
+    line-height: 1.42857143
+    vertical-align: top
+  th
+    background-color: $lightest-background-color
+
+$i: 0
+$s: blockquote
+$c: $lighter-background-color
+@while $i < 6
+  #{$s}
+    background-color: lighten($lighter-background-color, $i * 2.5)
+  $s: "blockquote #{$s}"
+  $i: $i + 1

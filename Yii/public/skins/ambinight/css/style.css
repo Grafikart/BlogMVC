@@ -37,13 +37,13 @@ hr, .page-header {
     padding: 5px;
     border-radius: 0; }
 
-table.table {
+table.table, table {
   background-color: #333333; }
-  table.table.table-striped tr:nth-child(odd) td {
+  table.table.table-striped tr:nth-child(odd) td, table.table-striped tr:nth-child(odd) td {
     background-color: #444444; }
-  table.table thead th {
+  table.table thead th, table thead th {
     border-bottom-color: #282828; }
-  table.table tbody tr td {
+  table.table tbody tr td, table tbody tr td {
     border-top: none; }
 
 .list-group {
@@ -170,3 +170,30 @@ code {
   float: right; }
 .comments h3 {
   clear: both; }
+
+table {
+  margin: 5px; }
+  table th, table td {
+    padding: 8px;
+    line-height: 1.42857;
+    vertical-align: top; }
+  table th {
+    background-color: #484848; }
+
+blockquote {
+  background-color: #383838; }
+
+blockquote blockquote {
+  background-color: #3e3e3e; }
+
+blockquote blockquote blockquote {
+  background-color: #454545; }
+
+blockquote blockquote blockquote blockquote {
+  background-color: #4b4b4b; }
+
+blockquote blockquote blockquote blockquote blockquote {
+  background-color: #525252; }
+
+blockquote blockquote blockquote blockquote blockquote blockquote {
+  background-color: #585858; }
