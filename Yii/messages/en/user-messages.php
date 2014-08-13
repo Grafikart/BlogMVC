@@ -42,20 +42,20 @@ return array(
     'user.creation.fail' => 'User hasn\'t been created. Check form below for '.
         'errors.',
     'category.recalculated' => 'Categories counters have been recalculated.',
-    'category.submit.success' => 'Category {category} has been created.',
+    'category.submit.success' => 'Category "{category}" has been created.',
     'category.submit.failure' => 'Category hasn\'t been created, check below '.
         'for errors.',
-    'category.update.success' => 'Category {category} has been updated.',
-    'category.update.fail' => 'Category {category} hasn\'t been updated, '.
+    'category.update.success' => 'Category "{category}" has been updated.',
+    'category.update.fail' => 'Category "{category}" hasn\'t been updated, '.
         'check below for errors.',
-    'category.delete.success' => 'Category {categoryTitle} has been '.
+    'category.delete.success' => 'Category "{categoryTitle}" has been '.
         'successfully deleted.',
-    'category.delete.notEmpty' => 'Category {categoryTitle} isn\'t empty and '.
-        'can\'t be deleted.',
-    'category.delete.doesNotExist' => 'Category doesn\'t exist and can\'t be '.
+    'category.delete.notEmpty' => 'Category "{categoryTitle}" isn\'t empty ' .
+        'and can\'t be deleted.',
+    'category.delete.doesNotExist' => 'Category doesn\'t exist and can\'t be ' .
         'deleted',
-    'category.delete.fail' => 'Category {categoryTitle} couldn\'t be deleted '.
-        'due to unknown reason.',
+    'category.delete.fail' => 'Category "{categoryTitle}" couldn\'t be ' .
+        'deleted due to unknown reason.',
     'options.update.success' => 'Application options have been successfully '.
         'updated.',
     'options.update.fail' => 'Application options haven\'t been updated.',

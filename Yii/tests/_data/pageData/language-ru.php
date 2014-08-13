@@ -53,7 +53,7 @@ return array(
     \PostsDashboardPage::$url => array(
         'title' => 'Управление записями',
         'backTo' => 'Панель управления',
-        'nav' => array('Создать новую запись',),
+        'nav' => array('Создать новую запись', 'Управление категориями',),
     ),
     \PostFormPage::$newPostUrl => array(
         'title' => 'Новая запись',

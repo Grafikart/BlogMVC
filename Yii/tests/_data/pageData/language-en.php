@@ -53,7 +53,7 @@ return array(
     \PostsDashboardPage::$url => array(
         'title' => 'Posts management',
         'backTo' => 'Admin panel',
-        'nav' => array('Create new post',),
+        'nav' => array('Create new post', 'Categories management',),
     ),
     \PostFormPage::$newPostUrl => array(
         'title' => 'New post',

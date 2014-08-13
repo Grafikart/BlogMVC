@@ -301,6 +301,11 @@ class PostController extends \BaseController
                     'route' => 'new',
                     'title' => 'link.createNewPost',
                     'type' => 'button',
+                ),
+                array(
+                    'route' => 'category/dashboard',
+                    'title' => 'pageTitle.category.dashboard',
+                    'type' => 'button',
                 )
             ),
         );
