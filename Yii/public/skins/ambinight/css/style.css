@@ -82,7 +82,8 @@ table.table, table {
     background-color: #383838;
     border-color: #282828; }
     .pagination li.disabled span:hover, .pagination li.disabled a:hover {
-      background-color: #383838; }
+      background-color: #383838;
+      border-color: #282828; }
   .pagination li.active span, .pagination li.active a {
     background-color: #484848;
     border-color: #282828;

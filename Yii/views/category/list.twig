@@ -9,7 +9,7 @@
                         <tr>
                             <td>
                                 <a href="{{ this.createUrl('category/index', {'slug': category.slug}) }}">
-                                    {{ category.name }} - {{ App.t.t('category.postCount', [category.post_count]) }}
+                                    {{ category.name }} - {{ App.t.t('category.postCount', [category.post_count]) -}}
                                 </a>
                                 {% if not App.user.getIsGuest() %}
                                     <a href="{{ this.createUrl('category/edit', {'slug': category.slug}) }}" class="btn btn-xs btn-primary">
