@@ -1,11 +1,13 @@
 #mkFramework http://mkframework.com
 
-*import mkframework using "php install.php"
-
-connexion file in conf/connexion.ini.php
-
+### Logs:
+*at moment (2013/10/06) finished
+*at moment (2013/10/05) it needs url rewriting
 *at moment (2013/10/05) it needs cache management + url rewriting
 
-*at moment (2013/10/05) it needs url rewriting
-
-*at moment (2013/10/06) finished
+### Installation
+1. Run composer install
+2. Create a new database ( BlogMVC)
+3. Open conf/connexion.ini.php and change username/password if needed
+4. In mysql, execute the dump https://raw.githubusercontent.com/Grafikart/BlogMVC/master/dump.sql
+Enjoy ;)
