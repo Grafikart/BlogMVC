@@ -11,3 +11,6 @@
 3. Open conf/connexion.ini.php and change username/password if needed
 4. In mysql, execute the dump https://raw.githubusercontent.com/Grafikart/BlogMVC/master/dump.sql
 Enjoy ;)
+
+
+note: directories data/log and data/cache should be writable by apache, please change rights if you have some problems
