@@ -7,9 +7,6 @@ class module_default extends abstract_module{
 		//instancier le module
 		$oModuleCategories=new module_categories;
 
-		//si vous souhaitez indiquer au module integrable des informations sur le module parent
-		//$oModuleExamplemodule->setRootLink('module::action',array('parametre'=>_root::getParam('parametre')));
-
 		//recupere la vue du module
 		$oView=$oModuleCategories->_index();
 
@@ -19,9 +16,6 @@ class module_default extends abstract_module{
 		//posts (main)
 		$oModuleExamplemodule=new module_posts();
 		
-		//si vous souhaitez indiquer au module integrable des informations sur le module parent
-		//$oModuleExamplemodule->setRootLink('module::action',array('parametre'=>_root::getParam('parametre')));
-		
 		//recupere la vue du module
 		$oViewModule=$oModuleExamplemodule->_lastList();
 		
@@ -30,23 +24,15 @@ class module_default extends abstract_module{
 	}
 	
 	public function _index(){
-	    $oView=new _view('default::index');
-		
-		$this->oLayout->add('main',$oView);
-		
+	   
 		//posts (main)
-		$oModuleExamplemodule=new module_posts();
-		
-		//si vous souhaitez indiquer au module integrable des informations sur le module parent
-		//$oModuleExamplemodule->setRootLink('module::action',array('parametre'=>_root::getParam('parametre')));
+		$oModulePosts=new module_posts();
 		
 		//recupere la vue du module
-		$oViewModule=$oModuleExamplemodule->_index();
+		$oViewModule=$oModulePosts->_index();
 		
 		//assigner la vue retournee a votre layout
 		$this->oLayout->add('main',$oViewModule);
-		
-		
 		
 	}
 	public function _category(){
