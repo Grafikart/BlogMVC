@@ -42,7 +42,6 @@ class module_privatePosts extends abstract_module{
 		$tMessage=$this->processSave();
 	
 		$oPosts=new row_posts;
-		$oPosts=$this->fillRow($oPosts);
 		
 		$oView=new _view('privatePosts::new');
 		$oView->oPosts=$oPosts;
@@ -63,7 +62,6 @@ class module_privatePosts extends abstract_module{
 		$tMessage=$this->processSave();
 		
 		$oPosts=model_posts::getInstance()->findById( _root::getParam('id') );
-		$oPosts=$this->fillRow($oPosts);
 		
 		$oView=new _view('privatePosts::edit');
 		$oView->oPosts=$oPosts;
@@ -83,27 +81,6 @@ class module_privatePosts extends abstract_module{
 		$tMessage=$this->processDelete();
 
 		
-	}
-
-	
-	
-	private function fillRow($oPosts){
-		if(!_root::getRequest()->isPost() ){ //si ce n'est pas une requete POST on ne soumet pas
-			return $oPosts;
-		}
-		
-		$tId=model_posts::getInstance()->getIdTab();
-		$tColumn=model_posts::getInstance()->getListColumn();
-		foreach($tColumn as $sColumn){
-			if( _root::getParam($sColumn,null) === null ){ 
-				continue;
-			}else if( in_array($sColumn,$tId)){
-				 continue;
-			}
-			
-			$oPosts->$sColumn=_root::getParam($sColumn,null) ;
-		}
-		return $oPosts;
 	}
 
 	private function processSave(){
