@@ -57,11 +57,11 @@ class Category extends ActiveRecordLayer
     public function paged($page = 1, $perPage = 5)
     {
         $this->getDbCriteria()->mergeWith(
-            array(
+            [
                 'order' => 'id ASC',
                 'limit' => $perPage,
                 'offset' => ($page - 1) * $perPage,
-            )
+            ]
         );
         return $this;
     }
@@ -77,10 +77,10 @@ class Category extends ActiveRecordLayer
         /** @var CDbConnection $db */
         $db = \Yii::app()->db;
         $categories = $db->createCommand()
-            ->select(array('id', 'name'))
+            ->select(['id', 'name'])
             ->from($this->tableName())
             ->queryAll();
-        $list = array();
+        $list = [];
         foreach ($categories as $category) {
             $list[(int)$category['id']] = $category['name'];
         }
@@ -121,12 +121,12 @@ class Category extends ActiveRecordLayer
             throw new \BadMethodCallException('Limit can\'t be less than one');
         }
         $this->getDbCriteria()->mergeWith(
-            array(
+            [
                 'order' => 'post_count DESC',
                 'limit' => $limit,
                 'condition' => 'post_count >= :minimum',
-                'params' => array(':minimum' => $minimumPostCount),
-            )
+                'params' => [':minimum' => $minimumPostCount],
+            ]
         );
         return $this;
     }
@@ -163,7 +163,7 @@ class Category extends ActiveRecordLayer
     public function updateCounter($increment = 1)
     {
         $this->post_count += $increment;
-        $this->save(false, array('post_count'));
+        $this->save(false, ['post_count']);
     }
 
     /**
@@ -176,7 +176,7 @@ class Category extends ActiveRecordLayer
      */
     public function findBySlug($slug)
     {
-        return $this->find('slug = :slug', array(':slug' => $slug));
+        return $this->find('slug = :slug', [':slug' => $slug]);
     }
 
     /**
@@ -193,13 +193,30 @@ class Category extends ActiveRecordLayer
     public function findBySlugOrCreate($slug = null)
     {
         if ($slug) {
-            return $this->find('slug = :slug', array(':slug' => $slug));
+            return $this->find('slug = :slug', [':slug' => $slug]);
         } else {
             $class = get_class($this);
             $instance = new $class();
             $instance->post_count = 0;
             return $instance;
         }
+    }
+    /**
+     * Simple wrapper around parent `setAndSave()` that invalidates cache on
+     * save.
+     *
+     * @param array $attributes Attributes to be saved.
+     *
+     * @return bool True on success, false otherwise.
+     * @since 0.1.0
+     */
+    public function setAndSave(array $attributes)
+    {
+        if (parent::setAndSave($attributes)) {
+            \Yii::app()->cacheHelper->invalidatePostsCache();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -210,10 +227,10 @@ class Category extends ActiveRecordLayer
      */
     public function relations()
     {
-        return array(
-            'posts' => array(self::HAS_MANY, 'Post', 'category_id'),
-            'postCount' => array(self::STAT, 'Post', 'category_id'),
-        );
+        return [
+            'posts' => [self::HAS_MANY, 'Post', 'category_id'],
+            'postCount' => [self::STAT, 'Post', 'category_id'],
+        ];
     }
     /**
      * Returns set of internationalized attribute labels.
@@ -223,11 +240,11 @@ class Category extends ActiveRecordLayer
      */
     public function getAttributeLabels()
     {
-        return array(
+        return [
             'name' => 'category.name',
             'slug' => 'category.slug',
             'post_count' => 'category.postCount',
-        );
+        ];
     }
 
     /**
@@ -238,15 +255,15 @@ class Category extends ActiveRecordLayer
      */
     public function rules()
     {
-        return array(
-            array(
-                array('name', 'slug',),
+        return [
+            [
+                ['name', 'slug',],
                 'length',
                 'allowEmpty' => false,
                 'min' => 3,
                 'max' => 50,
-            ),
-        );
+            ],
+        ];
     }
     /**
      * This method defines applied behaviors.
@@ -256,6 +273,6 @@ class Category extends ActiveRecordLayer
      */
     public function behaviors()
     {
-        return array('SlugBehavior');
+        return ['SlugBehavior'];
     }
 }
