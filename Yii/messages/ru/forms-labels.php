@@ -13,6 +13,7 @@ return array(
     'post.content' => 'Текст',
     'post.author' => 'Автор',
     'post.created' => 'Дата создания',
+    'post.commentCount' => 'Комментариев',
     'category.slug' => 'Адрес',
     'category.name' => 'Название',
     'comment.post_id' => 'Связанная запись',

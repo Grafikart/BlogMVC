@@ -371,6 +371,7 @@ class Post extends \ActiveRecordLayer
             'slug' => 'post.slug',
             'content' => 'post.content',
             'created' => 'post.created',
+            'commentCount' => 'post.commentCount',
         );
     }
     /**

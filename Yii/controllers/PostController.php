@@ -226,6 +226,7 @@ class PostController extends \BaseController
         $posts = \Post::model()
             ->paged($this->page->pageNumber, 10)
             ->by(\Yii::app()->user->id)
+            ->with('commentCount')
             ->findAll();
         if (empty($posts) && !$this->page->isFirstPage()) {
             throw new \EHttpException(404);

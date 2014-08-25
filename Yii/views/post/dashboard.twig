@@ -8,6 +8,7 @@
             <th class="text-center">{{ posts[0].getAttributeLabel('name') }}</th>
             <th class="text-center">{{ posts[0].getAttributeLabel('category_id') }}</th>
             <th class="text-center">{{ posts[0].getAttributeLabel('created') }}</th>
+            <th class="text-center">{{ posts[0].getAttributeLabel('commentCount') }}</th>
             <th class="text-center">{{ App.t.t('text.actions') }}</th>
         </tr>
     </thead>
@@ -26,6 +27,15 @@
                 </a>
             </td>
             <td>{{ post.created }}</td>
+            <td>
+                {% if post.commentCount == 0 %}
+                    0
+                {% else %}
+                    <a href="{{ this.createUrl('post/show', {'slug': post.slug, '#': 'comment-form'}) }}">
+                        {{ post.commentCount }}
+                    </a>
+                {% endif %}
+            </td>
             <td>
                 <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}" class="btn btn-info" role="view-post-link">
                     {{ App.t.t('control.view') }}

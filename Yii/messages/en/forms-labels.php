@@ -12,6 +12,7 @@ return array(
     'post.content' => 'Text',
     'post.author' => 'Author',
     'post.created' => 'Created',
+    'post.commentCount' => 'Comments',
     'category.slug' => 'Slug',
     'category.name' => 'Title',
     'comment.post_id' => 'Related post',
