@@ -105,6 +105,8 @@ article {
   padding: 10px; }
   article h2 {
     margin-top: 0; }
+  article img {
+    max-width: 100%; }
 
 .table > tbody > tr > td {
   vertical-align: baseline; }

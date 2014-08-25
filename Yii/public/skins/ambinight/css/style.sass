@@ -222,9 +222,10 @@ table
   th, td
     padding: 8px
     line-height: 1.42857143
-    vertical-align: top
   th
     background-color: $lightest-background-color
+.table > tbody > tr > td
+  vertical-align: baseline
 
 $i: 0
 $s: blockquote
@@ -234,3 +235,6 @@ $c: $lighter-background-color
     background-color: lighten($lighter-background-color, $i * 2.5)
   $s: "blockquote #{$s}"
   $i: $i + 1
+
+article img
+  max-width: 100%

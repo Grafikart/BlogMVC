@@ -176,10 +176,12 @@ table {
   margin: 5px; }
   table th, table td {
     padding: 8px;
-    line-height: 1.42857;
-    vertical-align: top; }
+    line-height: 1.42857; }
   table th {
     background-color: #484848; }
+
+.table > tbody > tr > td, table > tbody > tr > td {
+  vertical-align: baseline; }
 
 blockquote {
   background-color: #383838; }
@@ -198,3 +200,6 @@ blockquote blockquote blockquote blockquote blockquote {
 
 blockquote blockquote blockquote blockquote blockquote blockquote {
   background-color: #585858; }
+
+article img {
+  max-width: 100%; }
