@@ -163,6 +163,8 @@ class Comment extends ActiveRecordLayer
         $this->content = strip_tags($this->content);
         if (!\Yii::app()->user->getIsGuest()) {
             $this->username = '@'.\Yii::app()->user->username;
+        } else {
+            $this->username = ltrim($this->username, '@');
         }
         return true;
     }
