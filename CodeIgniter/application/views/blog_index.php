@@ -68,13 +68,7 @@
 					{/blog_entries}
 
                     <ul class="pagination">
-                        <li><a href="index.html">&laquo;</a></li>
-                        <li><a href="index.html">1</a></li>
-                        <li><a href="index.html">2</a></li>
-                        <li><a href="index.html">3</a></li>
-                        <li><a href="index.html">4</a></li>
-                        <li><a href="index.html">5</a></li>
-                        <li><a href="index.html">&raquo;</a></li>
+                        {pagination}
                     </ul>
                 </div>
 
