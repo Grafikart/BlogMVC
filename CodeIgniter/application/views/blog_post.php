@@ -93,27 +93,20 @@
                             </div>
                         </form>
 
-                        <h3>2 Commentaires</h3>
+                        <h3>{comments_cnt} Commentaire(s)</h3>
 
+                        {comments}
+                        <hr />
                         <div class="row">
                             <div class="col-md-2">
-                                <img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
+                                <img src="http://lorempicsum.com/futurama/100/100/{id}" width="100%">
                             </div>
                             <div class="col-md-10">
-                                <p><strong>Username</strong> 10 hours ago</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
+                                <p><strong>{username}</strong> {time_ago} ago</p>
+                                <p>{content}</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <hr>
-                            <div class="col-md-2">
-                                <img src="http://lorempicsum.com/futurama/100/100/5" width="100%">
-                            </div>
-                            <div class="col-md-10">
-                                <p><strong>Username</strong> 11 days ago</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-                            </div>
-                        </div>
+                        {/comments}
                     </section>
 
 
@@ -124,22 +117,12 @@
 
                     <h4>Categories</h4>
                     <div class="list-group">
-                        <a href="category.html" class="list-group-item">
-                            <span class="badge">14</span>
-                            Category #1
+                        {categories}
+                        <a href="{category_url}" class="list-group-item">
+                            <span class="badge">{post_count}</span>
+                            {name}
                         </a>
-                        <a href="category.html" class="list-group-item">
-                            <span class="badge">5</span>
-                            Category #2
-                        </a>
-                        <a href="category.html" class="list-group-item">
-                            <span class="badge">1</span>
-                            Category #3
-                        </a>
-                        <a href="category.html" class="list-group-item">
-                            <span class="badge">7</span>
-                            Category #4
-                        </a>
+                        {/categories}
                     </div>
 
                     <h4>Last posts</h4>

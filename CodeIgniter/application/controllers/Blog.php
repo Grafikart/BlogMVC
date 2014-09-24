@@ -44,12 +44,17 @@ class Blog extends CI_Controller
 		$this->load->database();
 	}
 
+	protected function _load_categories() 
+	{
+		$categories = $this->db->get('categories')->result_array();
+		return array_map(function($a) {
+			$a['category_url'] = base_url('category/'.$a['slug']);
+			return $a;
+		}, $categories);
+	}
+
 	public function index()
 	{
-		// loading date_helper.php, comes along with helpful methods like mysql_to_unix(), etc...
-		// also load custom file blog_helper (see application/helpers/blog_helper.php)
-		$this->load->helper(array('date','blog'));
-
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
 		$this->load->model('posts_model');
 
@@ -73,14 +78,14 @@ class Blog extends CI_Controller
 			'use_page_numbers' 	=> TRUE,
 			'query_string_segment' => 'page',
 			'page_query_string' => TRUE,
-			'first_link' => '<<',
-			'last_link' => '>>',
-			'next_link' => '>',
-			'prev_link' => '<',
-			'full_tag_open' => '<li>',
-			'full_tag_close' => '</li>',
-			'cur_tag_open' => '<a>',
-			'cur_tag_close' => '</a>'
+			'first_link' 		=> '<<',
+			'last_link' 		=> '>>',
+			'next_link'		 	=> '>',
+			'prev_link' 		=> '<',
+			'full_tag_open' 	=> '<li>',
+			'full_tag_close' 	=> '</li>',
+			'cur_tag_open' 		=> '<a>',
+			'cur_tag_close' 	=> '</a>'
 		);
 		$this->pagination->initialize($pagination);
 
@@ -90,11 +95,12 @@ class Blog extends CI_Controller
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
 			'blog_entries'	=> $blog_entries,
-			'pagination'	=> $this->pagination->create_links()
+			'pagination'	=> $this->pagination->create_links(),
+			'categories'	=> $this->_load_categories()
 		));
 	}
 
-	public function article($slug='') 
+	public function article($slug='')
 	{
 		if(empty($slug))
 			show_404();
@@ -103,16 +109,30 @@ class Blog extends CI_Controller
 		$this->load->helper('date');
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
 		$this->load->model('posts_model');
+
 		$article = $this->posts_model->slug((string) $slug);
 
 		if(!$article)
 			show_404();
 
+		// MARKDOWN PLUG IN (from michelf/php-markdown)
+		// Installed via composer (see composer.json require : "michelf/php-markdown": "1.4.*")
+		// Proper way to load markdown plugin : load custom library Class hosting the plug-in feature (see application/librairies/Markdown.php)
+		$this->load->library('markdown');
+		$article[0]['content'] = $this->markdown->apply($article[0]['content']);
+
+		// article comments
+		$comments = $this->posts_model->post_comments($article[0]['id']);
+
+		// Comments
 		$this->parser->parse('blog_post', array(
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
-			'article'	=> $article
+			'article'		=> $article,
+			'categories'	=> $this->_load_categories(),
+			'comments'		=> $comments,
+			'comments_cnt'	=> count($comments)
 		));
 	}
 }

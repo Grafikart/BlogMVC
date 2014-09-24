@@ -9,6 +9,10 @@ class Posts_model extends CI_Model
 	
 	protected function _format_article($articles=array()) 
 	{
+		// loading date_helper.php, comes along with helpful methods like mysql_to_unix(), etc...
+		// also load custom file blog_helper (see application/helpers/blog_helper.php)
+		get_instance()->load->helper(array('date','blog'));
+
 		foreach ($articles as $key => &$row) 
 		{
 			$row['post_url'] 		= base_url($row['slug']);
@@ -50,6 +54,18 @@ class Posts_model extends CI_Model
 			->get('posts p',$pagination_cnt,$from)
 			->result_array()
 		);
-	} 
+	}
+
+	public function post_comments($post_id=0)
+	{
+		// load date_helper from CI's app singleton
+		get_instance()->load->helper('date');
+
+		$comments = $this->db->get_where('comments',array('post_id' => (int)$post_id))->result_array();
+		return array_map(function($a){
+			$a['time_ago'] = timespan($a['created'],time(),2);
+			return $a;
+		},$comments);
+	}
 }
 ?>
