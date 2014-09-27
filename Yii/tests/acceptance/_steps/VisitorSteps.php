@@ -59,14 +59,12 @@ class VisitorSteps extends \WebGuy
     public function fillCommentForm($comment=null, $username=null, $email=null)
     {
         $I = $this;
-        $email = $email?$email:'';
-        $comment = $comment?$comment:'';
-        $username = $username?$username:'';
+        $email = $email ? $email : '';
+        $comment = $comment ? $comment : '';
+        $username = $username ? $username : '';
         $I->fillField(\PostPage::$commentTextArea, $comment);
-        try {
+        if ($username) {
             $I->fillField(\PostPage::$commentUsernameField, $username);
-        } catch (\UnknownServerException $e) {
-            // field is disabled
         }
         $I->fillField(\PostPage::$commentEmailField, $email);
     }

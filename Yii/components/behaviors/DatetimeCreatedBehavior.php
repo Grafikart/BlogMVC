@@ -17,10 +17,12 @@ class DatetimeCreatedBehavior extends \CActiveRecordBehavior
      * Automatically sets `created` field to `NOW()` SQL function result if
      * owner is new model.
      *
+     * @param CModelEvent $event Passed event instance.
+     *
      * @return void
      * @since 0.1.0
      */
-    public function beforeSave()
+    public function beforeSave($event)
     {
         if ($this->getOwner()->getIsNewRecord()) {
             $dt = new \DateTime();

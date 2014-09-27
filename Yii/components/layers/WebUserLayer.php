@@ -206,7 +206,7 @@ class WebUserLayer extends \CWebUser
      * @since 0.1.0
      */
     public function login(
-        \IUserIdentity $identity,
+        $identity,
         $duration = 0,
         $mute = false
     ) {

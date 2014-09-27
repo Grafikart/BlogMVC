@@ -11,6 +11,7 @@ $random = md5(microtime());
 
 $I->autoLogin();
 $I->amOnPage(\UsersDashboardPage::$url);
+$I->seeCurrentUrlEquals(\UsersDashboardPage::$url);
 $I->click(\UsersDashboardPage::$createNewButtonSelector);
 
 

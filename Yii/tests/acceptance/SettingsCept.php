@@ -8,6 +8,7 @@ $I->amGoingTo('Tweak themes, languages and names');
 
 $I->autoLogin();
 $I->amOnPage(\OptionsPage::$url);
+$I->seeCurrentUrlEquals(\OptionsPage::$url);
 $I->setCookie('useDefaultLanguage', 'true');
 \OptionsPage::of($I)->updateOptions(
     'Horse Tickler\'s Dagger Fan Club',

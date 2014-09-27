@@ -222,7 +222,7 @@ class Comment extends ActiveRecordLayer
         \Yii::app()->db
             ->createCommand()
             ->update(
-                self::tableName(),
+                self::model()->tableName(),
                 array('username' => $newUsername,),
                 'LOWER(username) = :old_username',
                 array(':old_username' => $oldUsername,)
