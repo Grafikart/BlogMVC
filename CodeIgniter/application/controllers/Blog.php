@@ -1,5 +1,15 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-class Blog extends CI_Controller 
+/**
+ * Blog Controller Class
+ *
+ * The Controller in charge of displaying all the blog pages
+ *
+ * @class		Blog
+ * @extends		CI_Controller
+ * @category	Controller
+ * @link		https://ellislab.com/codeigniter/user-guide/general/controllers.html
+ */
+class Blog extends CI_Controller
 {
 	public function __construct() 
 	{
@@ -102,18 +112,55 @@ class Blog extends CI_Controller
 
 	public function article($slug='')
 	{
+		// If no slug was specified, redirect to the HTTP 404 error
 		if(empty($slug))
 			show_404();
 
 		// loading date_helper.php, comes along with helpful methods like mysql_to_unix(), etc...
 		$this->load->helper('date');
+
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
 		$this->load->model('posts_model');
 
+		// fetch article data
 		$article = $this->posts_model->slug((string) $slug);
 
+		// if no article found, redirect to 404 error
 		if(!$article)
 			show_404();
+
+		// load custom form validation library from CodeIgniter (will be used in action_post_comment() method)
+		// we need to load the library here for display purpose in the template (set_value() function)
+		// see https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html
+		$this->load->library('form_validation');
+
+		FB::log($this->input->post('post_comment'),'post_comment');
+
+		$valid_form = true;
+
+		// user wants to submit a comment
+		if($this->input->post('post_comment') !== NULL) 
+		{
+			$this->form_validation->set_rules('username', 'Username', 'required');
+			$this->form_validation->set_rules('body', 'Commentaire', 'required');
+			$this->form_validation->set_rules('email', 'Email', 'required');
+
+			// if all validations are ok, insert the comment entry
+			if($valid_form = $this->form_validation->run())
+			{
+				// Note: All values are escaped automatically producing safer queries.
+				// set https://ellislab.com/codeigniter/user-guide/database/active_record.html
+				$this->db->insert('comments',array(
+					'post_id' 	=> $this->input->post('post_id'),
+					'username' 	=> $this->input->post('username'),
+					'content' 	=> $this->input->post('body',TRUE), // XSS filter
+					'mail' 	=> $this->input->post('email'),
+					'created' 	=> date("Y-m-d H:i:s")
+				));
+
+				$this->form_validation->reset_validation();
+			}
+		}
 
 		// MARKDOWN PLUG IN (from michelf/php-markdown)
 		// Installed via composer (see composer.json require : "michelf/php-markdown": "1.4.*")
@@ -129,10 +176,16 @@ class Blog extends CI_Controller
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
+			'post_comment_action' => current_url(),
 			'article'		=> $article,
+			'post_id'		=> $article[0]['id'],
 			'categories'	=> $this->_load_categories(),
+			'show_error_msg'=> $valid_form ? array() : array(array(true)), // trigger display of the overall error message ?
 			'comments'		=> $comments,
-			'comments_cnt'	=> count($comments)
+			'comments_cnt'	=> count($comments),
+			'email_has_error_class'		=> strlen($this->form_validation->error('email')) > 0 ? 'has-error' : '',
+			'username_has_error_class'	=> strlen($this->form_validation->error('username')) > 0 ? 'has-error' : '',
+			'body_has_error_class'		=> strlen($this->form_validation->error('body')) > 0 ? 'has-error' : ''
 		));
 	}
 }

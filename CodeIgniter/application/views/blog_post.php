@@ -70,26 +70,33 @@
 
                         <h3>Comment this post</h3>
 
+                        {show_error_msg}
                         <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+                        {/show_error_msg}
 
-                        <form role="form">
+                        <form role="form" method="post" action="{post_comment_action}">
+                            <input type="hidden" name="post_id" value="{post_id}">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Your email">
+                                    <div class="form-group {email_has_error_class}">
+                                        <input type="email" name="email" value="<?php echo set_value('email'); ?>" class="form-control" placeholder="Your email">
+                                        <span class="help-block"><?php echo form_error('email'); ?></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group has-error">
-                                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+
+                                    <div class="form-group {username_has_error_class}">
+                                        <input type="text" name="username" value="<?php echo set_value('username'); ?>" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+                                        <span class="help-block"><?php echo form_error('username'); ?></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="3" placeholder="Your comment"></textarea>
+                            <div class="form-group {body_has_error_class}">
+                                <textarea class="form-control" name="body" value="<?php echo set_value('body'); ?>" rows="3" placeholder="Your comment"></textarea>
+                                 <span class="help-block"><?php echo form_error('body'); ?></span>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" name="post_comment" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
 
