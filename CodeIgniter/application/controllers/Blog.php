@@ -134,8 +134,6 @@ class Blog extends CI_Controller
 		// see https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html
 		$this->load->library('form_validation');
 
-		FB::log($this->input->post('post_comment'),'post_comment');
-
 		$valid_form = true;
 
 		// user wants to submit a comment
@@ -154,7 +152,7 @@ class Blog extends CI_Controller
 					'post_id' 	=> $this->input->post('post_id'),
 					'username' 	=> $this->input->post('username'),
 					'content' 	=> $this->input->post('body',TRUE), // XSS filter
-					'mail' 	=> $this->input->post('email'),
+					'mail' 		=> $this->input->post('email'),
 					'created' 	=> date("Y-m-d H:i:s")
 				));
 
@@ -186,6 +184,53 @@ class Blog extends CI_Controller
 			'email_has_error_class'		=> strlen($this->form_validation->error('email')) > 0 ? 'has-error' : '',
 			'username_has_error_class'	=> strlen($this->form_validation->error('username')) > 0 ? 'has-error' : '',
 			'body_has_error_class'		=> strlen($this->form_validation->error('body')) > 0 ? 'has-error' : ''
+		));
+	}
+
+	public function category($category_slug) 
+	{
+		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
+		$this->load->model('posts_model');
+
+		// load CodeIgniter's pagination Class (see system/librairies/Pagination)
+		// Access via $this->pagination->*
+		$this->load->library('pagination');
+		
+		// get parameter 'page' from request
+		$page = (int) $this->input->get('page');
+
+		// load blog entries from db
+		$blog_entries = $this->posts_model->paginate($page?$page:1,array('category_slug' => $category_slug));
+		$posts_cnt = $this->posts_model->count_all_category($category_slug);
+
+		// pagination class parameters
+		$pagination = array(
+			'base_url' 			=> base_url(),
+			'total_rows' 		=> $posts_cnt,
+			'per_page' 			=> $this->config->item('pagination_cnt','blog'),
+			'num_links'	 		=> 4,
+			'use_page_numbers' 	=> TRUE,
+			'query_string_segment' => 'page',
+			'page_query_string' => TRUE,
+			'first_link' 		=> '<<',
+			'last_link' 		=> '>>',
+			'next_link'		 	=> '>',
+			'prev_link' 		=> '<',
+			'full_tag_open' 	=> '<li>',
+			'full_tag_close' 	=> '</li>',
+			'cur_tag_open' 		=> '<a>',
+			'cur_tag_close' 	=> '</a>'
+		);
+		$this->pagination->initialize($pagination);
+
+		// set variables to CodeIgniter's template parser
+		$this->parser->parse('blog_index', array(
+			'host'   		=> $_SERVER['HTTP_HOST'],
+			'url_root'   	=> base_url(),
+			'url_admin'   	=> base_url('admin'),
+			'blog_entries'	=> $blog_entries,
+			'pagination'	=> $this->pagination->create_links(),
+			'categories'	=> $this->_load_categories()
 		));
 	}
 }
