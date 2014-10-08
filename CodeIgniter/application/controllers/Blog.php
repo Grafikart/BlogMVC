@@ -92,6 +92,46 @@ class Blog extends CI_Controller
 		return $this->pagination;
 	}
 
+	public function action($action) 
+	{
+		switch ($action) 
+		{
+			case 'login':
+				// load custom form validation library from CodeIgniter (will be used in action_post_comment() method)
+				// we need to load the library here for display purpose in the template (set_value() function)
+				// see https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html
+				$this->load->library('form_validation');
+
+				// user wants to submit a comment
+				if($this->input->post('post_admin_login') !== NULL) 
+				{
+					$this->form_validation->set_rules('username', 'Login', 'trim|required|xss_clean');
+					$this->form_validation->set_rules('password', 'Mot de passe', 'trim|required|md5');
+
+					// if all validations are ok, insert the comment entry
+					if($this->form_validation->run())
+					{
+						$this->load->model('users_model');
+						$user = $this->users_model->get_user($this->input->post('username'),$this->input->post('password'));
+
+						if($user) 
+						{
+							$this->load->driver('session');
+							$this->session->set_userdata('admin',$this->input->post('username'));
+							redirect('/admin');
+							exit;
+						}
+					}
+				}
+				redirect('/login');
+			break;
+			
+			default:
+				# code...
+				break;
+		}
+	}
+
 	public function index()
 	{
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
@@ -235,6 +275,17 @@ class Blog extends CI_Controller
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->_get_pagination($posts_cnt)->create_links(),
 			'categories'	=> $this->_load_categories()
+		));
+	}
+
+	public function login() 
+	{
+		// set variables to CodeIgniter's template parser
+		$this->parser->parse('login', array(
+			'host'   		=> $_SERVER['HTTP_HOST'],
+			'url_root'   	=> base_url(),
+			'url_admin'   	=> base_url('admin'),
+			'url_login'   	=> base_url('action/login')
 		));
 	}
 }

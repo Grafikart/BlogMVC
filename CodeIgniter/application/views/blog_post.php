@@ -10,7 +10,7 @@
         <title>Blog | MyDomain.com</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="assets/css/bootstrap.css" rel="stylesheet">
+        <link href="{url_root}assets/css/bootstrap.css" rel="stylesheet">
         <style>
             body {
                 padding-top: 50px;
