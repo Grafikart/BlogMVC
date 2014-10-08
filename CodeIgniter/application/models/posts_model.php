@@ -54,6 +54,8 @@ class Posts_model extends CI_Model
 
 		if(array_key_exists('category_slug', $filters))
 			$this->db->where('c.slug',$filters['category_slug']);
+		if(array_key_exists('author_id', $filters))
+			$this->db->where('u.id',$filters['author_id']);
 
 		return $this->_format_article($this->db->get('posts p',$pagination_cnt,$from)->result_array());
 	}
@@ -81,6 +83,14 @@ class Posts_model extends CI_Model
 		return $this->db
 			->join('categories c','p.category_id = c.id')
 			->where('c.slug',$category_slug)
+			->count_all_results('posts p');
+	}
+
+	public function count_all_author($author_id) 
+	{
+		return $this->db
+			->join('users u','u.id = p.user_id')
+			->where('u.id',$author_id)
 			->count_all_results('posts p');
 	}
 }

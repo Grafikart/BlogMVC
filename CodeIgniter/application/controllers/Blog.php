@@ -63,21 +63,11 @@ class Blog extends CI_Controller
 		}, $categories);
 	}
 
-	public function index()
+	protected function _get_pagination($posts_cnt) 
 	{
-		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
-		$this->load->model('posts_model');
-
 		// load CodeIgniter's pagination Class (see system/librairies/Pagination)
 		// Access via $this->pagination->*
 		$this->load->library('pagination');
-		
-		// get parameter 'page' from request
-		$page = (int) $this->input->get('page');
-
-		// load blog entries from db
-		$blog_entries = $this->posts_model->paginate($page?$page:1);
-		$posts_cnt = $this->db->count_all('posts');
 
 		// pagination class parameters
 		$pagination = array(
@@ -97,7 +87,22 @@ class Blog extends CI_Controller
 			'cur_tag_open' 		=> '<a>',
 			'cur_tag_close' 	=> '</a>'
 		);
+
 		$this->pagination->initialize($pagination);
+		return $this->pagination;
+	}
+
+	public function index()
+	{
+		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
+		$this->load->model('posts_model');
+		
+		// get parameter 'page' from request
+		$page = (int) $this->input->get('page');
+
+		// load blog entries from db
+		$blog_entries = $this->posts_model->paginate($page?$page:1);
+		$posts_cnt = $this->db->count_all('posts');
 
 		// set variables to CodeIgniter's template parser
 		$this->parser->parse('blog_index', array(
@@ -105,7 +110,7 @@ class Blog extends CI_Controller
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
 			'blog_entries'	=> $blog_entries,
-			'pagination'	=> $this->pagination->create_links(),
+			'pagination'	=> $this->_get_pagination($posts_cnt)->create_links(),
 			'categories'	=> $this->_load_categories()
 		));
 	}
@@ -191,10 +196,6 @@ class Blog extends CI_Controller
 	{
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
 		$this->load->model('posts_model');
-
-		// load CodeIgniter's pagination Class (see system/librairies/Pagination)
-		// Access via $this->pagination->*
-		$this->load->library('pagination');
 		
 		// get parameter 'page' from request
 		$page = (int) $this->input->get('page');
@@ -203,25 +204,28 @@ class Blog extends CI_Controller
 		$blog_entries = $this->posts_model->paginate($page?$page:1,array('category_slug' => $category_slug));
 		$posts_cnt = $this->posts_model->count_all_category($category_slug);
 
-		// pagination class parameters
-		$pagination = array(
-			'base_url' 			=> base_url(),
-			'total_rows' 		=> $posts_cnt,
-			'per_page' 			=> $this->config->item('pagination_cnt','blog'),
-			'num_links'	 		=> 4,
-			'use_page_numbers' 	=> TRUE,
-			'query_string_segment' => 'page',
-			'page_query_string' => TRUE,
-			'first_link' 		=> '<<',
-			'last_link' 		=> '>>',
-			'next_link'		 	=> '>',
-			'prev_link' 		=> '<',
-			'full_tag_open' 	=> '<li>',
-			'full_tag_close' 	=> '</li>',
-			'cur_tag_open' 		=> '<a>',
-			'cur_tag_close' 	=> '</a>'
-		);
-		$this->pagination->initialize($pagination);
+		// set variables to CodeIgniter's template parser
+		$this->parser->parse('blog_index', array(
+			'host'   		=> $_SERVER['HTTP_HOST'],
+			'url_root'   	=> base_url(),
+			'url_admin'   	=> base_url('admin'),
+			'blog_entries'	=> $blog_entries,
+			'pagination'	=> $this->_get_pagination($posts_cnt)->create_links(),
+			'categories'	=> $this->_load_categories()
+		));
+	}
+
+	public function author($author_id) 
+	{
+		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
+		$this->load->model('posts_model');
+		
+		// get parameter 'page' from request
+		$page = (int) $this->input->get('page');
+
+		// load blog entries from db
+		$blog_entries = $this->posts_model->paginate($page?$page:1,array('author_id' => $author_id));
+		$posts_cnt = $this->posts_model->count_all_author($author_id);
 
 		// set variables to CodeIgniter's template parser
 		$this->parser->parse('blog_index', array(
@@ -229,7 +233,7 @@ class Blog extends CI_Controller
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
 			'blog_entries'	=> $blog_entries,
-			'pagination'	=> $this->pagination->create_links(),
+			'pagination'	=> $this->_get_pagination($posts_cnt)->create_links(),
 			'categories'	=> $this->_load_categories()
 		));
 	}

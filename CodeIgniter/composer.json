@@ -7,7 +7,7 @@
 	
 	"require-dev": {
 		"firephp/firephp-core": "dev-master",
-		"mikey179/vfsStream": "1.1.*"
+		"mikey179/vfsStream": "1.1.*",
 	},
 	
 	"config": {

@@ -7,5 +7,11 @@ $baseDir = dirname(dirname($vendorDir));
 
 return array(
     'org\\bovigo\\vfs' => array($vendorDir . '/mikey179/vfsStream/src/main/php'),
+    'TokenReflection' => array($vendorDir . '/andrewsville/php-token-reflection'),
+    'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'Michelf' => array($vendorDir . '/michelf/php-markdown'),
+    'Kdyby\\Events\\' => array($vendorDir . '/kdyby/events/src'),
+    'Kdyby\\Console\\' => array($vendorDir . '/kdyby/console/src'),
+    'FSHL' => array($vendorDir . '/kukulich/fshl'),
+    'ApiGen' => array($vendorDir . '/apigen/apigen/src'),
 );
