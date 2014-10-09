@@ -9,7 +9,7 @@
         <title>Blog | Admin panel</title>
 
         <!-- Bootstrap core CSS -->
-        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="{url_root}assets/css/bootstrap.css" rel="stylesheet">
         <style>
                 body {
                         padding-top: 50px;
@@ -34,7 +34,7 @@
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.html">< Back to front</a></li>
+                        <li><a href="{url_root}">< Back to front</a></li>
                     </ul>
                 </div>
 
@@ -45,20 +45,20 @@
 
             <h1>Edit post</h1>
 
-            <p><a href="admin_index.html">< Back to posts</a></p>
+            <p><a href="{url_admin}">< Back to posts</a></p>
 
-            <form action="#" id="PostAdminEditForm" method="post" accept-charset="utf-8">
+            <form action="{form_action}" id="PostAdminEditForm" method="post" accept-charset="utf-8">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="PostName">Name :</label>
-                            <input name="data[Post][name]" class="form-control" maxlength="255" type="text" value="Space Pilot 3000" id="PostName" required="required">
+                            <input name="data[Post][name]" class="form-control" maxlength="255" type="text" value="{post_name}" id="PostName" required="required">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="PostSlug">Slug :</label>
-                            <input name="data[Post][slug]" class="form-control" maxlength="255" type="text" value="space-pilot-3000" id="PostSlug" required="required">
+                            <input name="data[Post][slug]" class="form-control" maxlength="255" type="text" value="{post_slug}" id="PostSlug" required="required">
                         </div>
                     </div>
                 </div>
@@ -67,9 +67,9 @@
                         <div class="form-group">
                             <label for="PostCategoryId">Category :</label>
                             <select name="data[Post][category_id]" class="form-control" id="PostCategoryId">
-                                <option value="1">category #1</option>
-                                <option value="2">Category #2</option>
-                                <option value="3">Category #3</option>
+                                {categories}
+                                <option value="{id}" {selected}>{name}</option>
+                                {/categories}
                             </select>
                         </div>
                     </div>
@@ -77,17 +77,19 @@
                         <div class="form-group">
                             <label for="PostUserId">Author :</label>
                             <select name="data[Post][user_id]" class="form-control" id="PostUserId">
-                                <option value="1">Author #1</option>
+                                {authors}
+                                <option value="{id}" {selected}>{username}</option>
+                                {/authors}
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="form-group required">
                     <label for="PostContent">Content :</label>
-                    <textarea name="data[Post][content]" class="form-control" cols="30" rows="6" id="PostContent" required="required">I don't want to be rescued. So I really am important? How I feel when I'm drunk is correct? Leela's gonna kill me. It's a T. It goes "tuh". File not found. She also liked to shut up! ## The Why of Fry I love this planet! I've got wealth, fame, and access to the depths of sleaze that those things bring. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Alright, let's mafia things up a bit. Joey, burn down the ship. Clamps, burn down the crew. * So I really am important? How I feel when I'm drunk is correct? * No! The cat shelter's on to me. * No, she'll probably make me do it. ### My Three Suns OK, this has gotta stop. I'm going to remind Fry of his humanity the way only a woman can. Why yes! Thanks for noticing. Now, now. Perfectly symmetrical violence never solved anything. #### A Clockwork Origin You can see how I lived before I met you. Can we have Bender Burgers again? I guess because my parents keep telling me to be more ladylike. As though! Hey! I'm a porno-dealing monster, what do I care what you think? You know, I was God once. 1. You lived before you met me?! 2. They're like sex, except I'm having them! 3. You, a bobsleder!? That I'd like to see! ##### Leela's Homeworld Yep, I remember. They came in last at the Olympics, then retired to promote alcoholic beverages! Large bet on myself in round one. Actually, that's still true. Ask her how her day was. In your time, yes, but nowadays shut up! Besides, these are adult stemcells, harvested from perfectly healthy adults whom I killed for their stemcells. Why not indeed!</textarea>
+                    <textarea name="data[Post][content]" class="form-control" cols="30" rows="6" id="PostContent" required="required">{post_content}</textarea>
                 </div>
                 <div class="submit">
-                    <input class="btn btn-primary" type="submit" value="Edit">
+                    <input class="btn btn-primary" type="submit" value="{label_action}">
                 </div>
             </form>
 

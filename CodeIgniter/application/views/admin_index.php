@@ -46,7 +46,7 @@
 
             <h1>Manage posts</h1>
 
-            <p><a href="admin_edit.html" class="btn btn-primary">Add a new post</a></p>
+            <p><a href="{url_admin}/post/" class="btn btn-primary">Add a new post</a></p>
 
             <table class="table table-striped">
                 <thead>
@@ -59,34 +59,23 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {blog_entries}
                     <tr>
-                        <td>3</td>
-                        <td>The Route of All Evil</td>
-                        <td>09/24/2013 10:00</td>
-                        <td>Category #1</td>
+                        <td>{id}</td>
+                        <td>{name}</td>
+                        <td>{category}</td>
+                        <td>{post_date}</td>
                         <td>
-                            <a href="admin_edit.html" class="btn btn-primary">Edit</a>
-                            <a href="admin_index.html" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+                            <a href="<?php echo base_url('admin'); ?>/post/{id}" class="btn btn-primary">Edit</a>
+                            <a href="<?php echo base_url('admin'); ?>/delete/{id}" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
                         </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>The Route of All Evil</td>
-                        <td>09/24/2013 09:00</td>
-                        <td>Category #1</td>
-                        <td>
-                            <a href="admin_edit.html" class="btn btn-primary">Edit</a>
-                            <a href="admin_index.html" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
-                        </td>
-                    </tr>
+                    {/blog_entries}
                 </tbody>
             </table>
 
-            <ul class="pagination">
-                <li class="prev"><a href="#" rel="prev">Previous</a></li>
-                <li><a href="#">1</a></li>
-                <li class="active"><a>2</a></li>
-                <li class="disabled"><a>Next</a></li>
+             <ul class="pagination">
+                {pagination}
             </ul>
 
 

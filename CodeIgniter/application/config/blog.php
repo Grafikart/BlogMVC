@@ -28,7 +28,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $config['blog'] = array(
 	'pagination_cnt'		=> 5, 
-	'post_resume_length' 	=> 500 
+	'post_resume_length' 	=> 500,
+	'pagination_datas' 		=> array(
+		'per_page' 			=> 5,
+		'num_links'	 		=> 4,
+		'use_page_numbers' 	=> TRUE,
+		'query_string_segment' => 'page',
+		'page_query_string' => TRUE,
+		'first_link' 		=> '<<',
+		'last_link' 		=> '>>',
+		'next_link'		 	=> '>',
+		'prev_link' 		=> '<',
+		'full_tag_open' 	=> '<li>',
+		'full_tag_close' 	=> '</li>',
+		'cur_tag_open' 		=> '<a>',
+		'cur_tag_close' 	=> '</a>'
+	) 
 );
 
 /* End of file blog.php */

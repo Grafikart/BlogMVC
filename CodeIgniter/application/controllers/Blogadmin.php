@@ -48,6 +48,8 @@ class Blogadmin extends CI_Controller
 		$this->load->helper('url');
 		// initialize the php session and load the native CI's session object
 		$this->load->driver('session');
+		// load site-specific config directives
+		$this->load->config('blog');
 
 		if($this->session->userdata('admin') === NULL) 
 		{
@@ -60,53 +62,111 @@ class Blogadmin extends CI_Controller
 		$this->load->database();
 	}
 
-	public function action($action) 
-	{
-		switch ($action) 
-		{
-			case 'login':
-				// load custom form validation library from CodeIgniter (will be used in action_post_comment() method)
-				// we need to load the library here for display purpose in the template (set_value() function)
-				// see https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html
-				$this->load->library('form_validation');
-
-				// user wants to submit a comment
-				if($this->input->post('post_admin_login') !== NULL) 
-				{
-					$this->form_validation->set_rules('username', 'Login', 'trim|required|xss_clean');
-					$this->form_validation->set_rules('password', 'Mot de passe', 'trim|required|md5');
-
-					// if all validations are ok, insert the comment entry
-					if($this->form_validation->run())
-					{
-						$this->load->model('users_model');
-						$user = $this->users_model->get_user($this->input->post('username'),$this->input->post('password'));
-
-						if($user) {
-							redirect('/admin');
-							exit;
-						}
-					}
-				}
-				redirect('/login');
-			break;
-			
-			default:
-				# code...
-				break;
-		}
-	}
-
 	public function index()
 	{
-		$blog_entries = $this->db->get('posts')->result();
+		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
+		$this->load->model('posts_model');
 
+		// get parameter 'page' from request
+		$page = (int) $this->input->get('page');
+
+		// load blog entries from db
+		$blog_entries = $this->posts_model->paginate($page?$page:1);
+
+		$posts_cnt = $this->db->count_all('posts');
+
+		// load custom MY_Pagination Class inherited from CodeIgniter's pagination Class (see application/librairies/MY_Pagination)
+		// Access via $this->pagination->*
+		$this->load->library('pagination',array('total_rows' => $posts_cnt, 'base_url' => base_url('admin')));
 		$this->parser->parse('admin_index', array(
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
+			'url_admin'   	=> base_url('admin'),
 			'url_logout'   	=> base_url('admin/logout'),
-			// 'blog_entries'	=> $blog_entries
+			'pagination'	=> $this->pagination->create_links(),
+			'blog_entries'	=> $blog_entries
 		));
+	}
+
+	public function post($post_id = 0) 
+	{
+		$post_datas = array(
+			'name' => '',
+			'slug' => '',
+			'content' => '',
+			'category_id' => 0,
+			'user_id' => 0
+		);
+
+		// load custom form validation library from CodeIgniter
+		// we need to load the library here to handle reuse of submitted values
+		// see https://ellislab.com/codeigniter/user-guide/libraries/form_validation.html
+		$this->load->library('form_validation');
+
+		// Admin wants to edit post, load post datas
+		if($post_id && !count($this->input->post())) 
+		{
+			$post_datas = $this->db->get_where('posts',array('id' => $post_id))->row_array();
+		}
+
+		// Form submitted ?
+		if($this->input->post()) 
+		{
+			// Load form datas 
+			$post_form = $this->input->post('data[Post]');
+			$post_datas = array_merge($post_datas,$post_form);
+
+			$this->form_validation
+				->set_rules('data[Post][name]','Nom','trim|required')
+				->set_rules('data[Post][content]','Contenu','trim|required')
+				->set_rules('data[Post][slug]','slug','trim|required');
+
+			if($this->form_validation->run())
+			{
+				$post_datas['created'] = date('Y-m-d H:i:s');
+
+				// Edit post ?
+				if($post_id) {
+					$this->db->where('id',$post_id)->update('posts',$post_datas);
+				}
+				// Add post
+				else {
+					$this->db->insert('posts',$post_datas);
+				}
+				redirect('/admin');
+			}
+		}
+
+		$categories = $this->db->get('categories')->result_array();
+		foreach ($categories as &$category) {
+			$category['selected'] = $category['id'] == $post_datas['category_id'] ? 'selected':'';
+		}
+
+		$users = $this->db->get('users')->result_array();
+		foreach ($users as &$user) {
+			$user['selected'] = $user['id'] == $post_datas['user_id'] ? 'selected':'';
+		}
+
+		$this->parser->parse('admin_edit', array(
+			'host'   		=> $_SERVER['HTTP_HOST'],
+			'url_root'   	=> base_url(),
+			'url_admin'   	=> base_url('admin'),
+			'url_logout'   	=> base_url('admin/logout'),
+			'form_action'	=> $post_id ? base_url('admin/post/'.$post_id) : base_url('admin/post/'),
+			'label_action'	=> $post_id ? 'Editer' : 'Ajouter',
+			'post_name'		=> $post_datas['name'],
+			'post_slug'		=> $post_datas['slug'],
+			'post_content'	=> $post_datas['content'],
+			'categories'	=> $categories,
+			'authors'		=> $users
+		));
+	}
+
+	public function delete($post_id=0) 
+	{
+		$this->db->delete('posts',array('id' => $post_id));
+		$this->db->delete('comments',array('post_id' => $post_id));
+		redirect('/admin');
 	}
 
 	public function logout() 
