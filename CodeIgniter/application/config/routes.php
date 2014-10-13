@@ -75,8 +75,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['action/(:any)'] = 'Blog/action/$1';
-$route['category/(:any)'] = 'Blog/category/$1';
-$route['author/(:num)'] = 'Blog/author/$1';
+$route['category/(:any)'] = 'Blog/index/category/$1';
+$route['author/(:num)'] = 'Blog/index/author/$1';
 $route['login'] = 'Blog/login/';
 $route['cache'] = 'Blog/cache/';
 $route['admin'] = 'Blogadmin';

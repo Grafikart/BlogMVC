@@ -125,7 +125,7 @@ class Blog extends CI_Controller
 		}
 	}
 
-	public function index()
+	public function index($filter=NULL,$filter_id=NULL)
 	{
 		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
 		$this->load->model('posts_model');
@@ -134,8 +134,21 @@ class Blog extends CI_Controller
 		$page = (int) $this->input->get('page');
 
 		// load blog entries from db
-		$blog_entries = $this->posts_model->paginate($page?$page:1);
-		$posts_cnt = $this->db->count_all('posts');
+		switch($filter) 
+		{
+			case 'category' :
+				$blog_entries = $this->posts_model->paginate($page?$page:1,array('category_slug' => $filter_id));
+				$posts_cnt = $this->posts_model->count_all_category($filter_id);
+			break;
+			case 'author' :
+				$blog_entries = $this->posts_model->paginate($page?$page:1,array('author_id' => $filter_id));
+				$posts_cnt = $this->posts_model->count_all_author($filter_id);
+			break;
+			default :
+				// load blog entries from db
+				$blog_entries = $this->posts_model->paginate($page?$page:1);
+				$posts_cnt = $this->db->count_all('posts');
+		}
 
 		// load custom MY_Pagination Class inherited from CodeIgniter's pagination Class (see application/librairies/MY_Pagination)
 		// Access via $this->pagination->*
@@ -227,62 +240,6 @@ class Blog extends CI_Controller
 			'email_has_error_class'		=> strlen($this->form_validation->error('email')) > 0 ? 'has-error' : '',
 			'username_has_error_class'	=> strlen($this->form_validation->error('username')) > 0 ? 'has-error' : '',
 			'body_has_error_class'		=> strlen($this->form_validation->error('body')) > 0 ? 'has-error' : ''
-		));
-	}
-
-	public function category($category_slug) 
-	{
-		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
-		$this->load->model('posts_model');
-		
-		// get parameter 'page' from request
-		$page = (int) $this->input->get('page');
-
-		// load blog entries from db
-		$blog_entries = $this->posts_model->paginate($page?$page:1,array('category_slug' => $category_slug));
-		$posts_cnt = $this->posts_model->count_all_category($category_slug);
-
-		// load custom MY_Pagination Class inherited from CodeIgniter's pagination Class (see application/librairies/MY_Pagination)
-		// Access via $this->pagination->*
-		$this->load->library('pagination',array('total_rows' => $posts_cnt, 'base_url' => base_url()));
-
-		// set variables to CodeIgniter's template parser
-		$this->parser->parse('blog_index', array(
-			'host'   		=> $_SERVER['HTTP_HOST'],
-			'url_root'   	=> base_url(),
-			'url_admin'   	=> base_url('admin'),
-			'url_login'   	=> base_url('login'),
-			'blog_entries'	=> $blog_entries,
-			'pagination'	=> $this->pagination->create_links(),
-			'sidebar'		=> $this->_load_sidebar()
-		));
-	}
-
-	public function author($author_id) 
-	{
-		// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
-		$this->load->model('posts_model');
-		
-		// get parameter 'page' from request
-		$page = (int) $this->input->get('page');
-
-		// load blog entries from db
-		$blog_entries = $this->posts_model->paginate($page?$page:1,array('author_id' => $author_id));
-		$posts_cnt = $this->posts_model->count_all_author($author_id);
-
-		// load custom MY_Pagination Class inherited from CodeIgniter's pagination Class (see application/librairies/MY_Pagination)
-		// Access via $this->pagination->*
-		$this->load->library('pagination',array('total_rows' => $posts_cnt, 'base_url' => base_url()));
-
-		// set variables to CodeIgniter's template parser
-		$this->parser->parse('blog_index', array(
-			'host'   		=> $_SERVER['HTTP_HOST'],
-			'url_root'   	=> base_url(),
-			'url_admin'   	=> base_url('admin'),
-			'url_login'   	=> base_url('login'),
-			'blog_entries'	=> $blog_entries,
-			'pagination'	=> $this->pagination->create_links(),
-			'sidebar'		=> $this->_load_sidebar()
 		));
 	}
 
