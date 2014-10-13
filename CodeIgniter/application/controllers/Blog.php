@@ -63,6 +63,28 @@ class Blog extends CI_Controller
 		}, $categories);
 	}
 
+	protected function _load_sidebar()
+	{
+		// https://ellislab.com/codeigniter/user-guide/libraries/caching.html
+		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+		$sidebar = $this->cache->get('sidebar');
+
+		if (!$sidebar)
+		{
+			// loading application/models/Posts_model.php Class (now accessible via $this->posts_model)
+			$this->load->model('posts_model');
+			$last_posts = $this->posts_model->lasts(2);
+
+			// Save into the cache for 5 minutes
+			$sidebar = $this->parser->parse('sidebar', array(
+				'posts'			=> $last_posts,
+				'categories'	=> $this->_load_categories()
+			),TRUE);
+			$this->cache->save('sidebar', $sidebar, 300);
+		}
+		return $sidebar;
+	}
+
 	public function action($action) 
 	{
 		switch ($action) 
@@ -127,7 +149,7 @@ class Blog extends CI_Controller
 			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
-			'categories'	=> $this->_load_categories()
+			'sidebar'		=> $this->_load_sidebar()
 		));
 	}
 
@@ -198,7 +220,7 @@ class Blog extends CI_Controller
 			'post_comment_action' => current_url(),
 			'article'		=> $article,
 			'post_id'		=> $article[0]['id'],
-			'categories'	=> $this->_load_categories(),
+			'sidebar'		=> $this->_load_sidebar(),
 			'show_error_msg'=> $valid_form ? array() : array(array(true)), // trigger display of the overall error message ?
 			'comments'		=> $comments,
 			'comments_cnt'	=> count($comments),
@@ -232,7 +254,7 @@ class Blog extends CI_Controller
 			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
-			'categories'	=> $this->_load_categories()
+			'sidebar'		=> $this->_load_sidebar()
 		));
 	}
 
@@ -260,7 +282,7 @@ class Blog extends CI_Controller
 			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
-			'categories'	=> $this->_load_categories()
+			'sidebar'		=> $this->_load_sidebar()
 		));
 	}
 
@@ -282,5 +304,6 @@ class Blog extends CI_Controller
 			'url_login'   	=> base_url('action/login')
 		));
 	}
+
 }
 ?>

@@ -26,6 +26,15 @@ class Posts_model extends CI_Model
 		return $articles; 
 	}
 
+	public function lasts($nb = 2) 
+	{
+		return $this->_format_article($this->db
+			->order_by('created DESC')
+			->get('posts',2) // limit 2
+			->result_array()
+		);
+	}
+
 	public function slug($slug='') 
 	{
 		return $this->_format_article($this->db

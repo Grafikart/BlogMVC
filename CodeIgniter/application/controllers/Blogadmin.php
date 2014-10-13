@@ -133,6 +133,9 @@ class Blogadmin extends CI_Controller
 				else {
 					$this->db->insert('posts',$post_datas);
 				}
+				// https://ellislab.com/codeigniter/user-guide/libraries/caching.html
+				$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+				$this->cache->delete('sidebar');
 				redirect('/admin');
 			}
 		}
@@ -164,8 +167,12 @@ class Blogadmin extends CI_Controller
 
 	public function delete($post_id=0) 
 	{
+		// https://ellislab.com/codeigniter/user-guide/libraries/caching.html
+		$this->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+
 		$this->db->delete('posts',array('id' => $post_id));
 		$this->db->delete('comments',array('post_id' => $post_id));
+		$this->cache->delete('sidebar');
 		redirect('/admin');
 	}
 

@@ -78,6 +78,7 @@ $route['action/(:any)'] = 'Blog/action/$1';
 $route['category/(:any)'] = 'Blog/category/$1';
 $route['author/(:num)'] = 'Blog/author/$1';
 $route['login'] = 'Blog/login/';
+$route['cache'] = 'Blog/cache/';
 $route['admin'] = 'Blogadmin';
 $route['admin/(:any)'] = 'Blogadmin/$1';
 $route['admin/(:any)/(:num)'] = 'Blogadmin/$1/$2';

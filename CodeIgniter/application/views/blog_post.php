@@ -121,26 +121,7 @@
                 </div>
 
                 <div class="col-md-4 sidebar">
-
-                    <h4>Categories</h4>
-                    <div class="list-group">
-                        {categories}
-                        <a href="{category_url}" class="list-group-item">
-                            <span class="badge">{post_count}</span>
-                            {name}
-                        </a>
-                        {/categories}
-                    </div>
-
-                    <h4>Last posts</h4>
-                    <div class="list-group">
-                        <a href="post.html" class="list-group-item">
-                            The Route of All Evil
-                        </a>
-                        <a href="post.html" class="list-group-item">
-                            Good news everyone !
-                        </a>
-                    </div>
+                    {sidebar}
                 </div><!-- /.sidebar -->
             </div>
 
