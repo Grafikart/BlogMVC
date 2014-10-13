@@ -124,6 +124,7 @@ class Blog extends CI_Controller
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
+			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
 			'categories'	=> $this->_load_categories()
@@ -228,6 +229,7 @@ class Blog extends CI_Controller
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
+			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
 			'categories'	=> $this->_load_categories()
@@ -255,6 +257,7 @@ class Blog extends CI_Controller
 			'host'   		=> $_SERVER['HTTP_HOST'],
 			'url_root'   	=> base_url(),
 			'url_admin'   	=> base_url('admin'),
+			'url_login'   	=> base_url('login'),
 			'blog_entries'	=> $blog_entries,
 			'pagination'	=> $this->pagination->create_links(),
 			'categories'	=> $this->_load_categories()
@@ -263,6 +266,14 @@ class Blog extends CI_Controller
 
 	public function login() 
 	{
+		// Redirect admin if he's already logged in
+		$this->load->driver('session');
+		if($this->session->userdata('admin') !== NULL) 
+		{
+			redirect('admin/');
+			exit;
+		}
+
 		// set variables to CodeIgniter's template parser
 		$this->parser->parse('login', array(
 			'host'   		=> $_SERVER['HTTP_HOST'],

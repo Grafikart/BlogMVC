@@ -35,7 +35,7 @@
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li><a href="login/">Admin</a></li>
+                        <li><a href="{url_login}">Admin</a></li>
                     </ul>
                 </div>
 
