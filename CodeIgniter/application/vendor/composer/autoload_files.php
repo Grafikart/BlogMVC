@@ -6,7 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname(dirname($vendorDir));
 
 return array(
-    $vendorDir . '/tracy/tracy/src/shortcuts.php',
-    $vendorDir . '/kdyby/events/src/Doctrine/compatibility.php',
     $vendorDir . '/firephp/firephp-core/lib/FirePHPCore/fb.php',
 );
