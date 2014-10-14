@@ -1,0 +1,36 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>{{ users[0].getAttributeLabel('id') }}</th>
+            <th>{{ users[0].getAttributeLabel('username') }}</th>
+            <th>{{ users[0].getAttributeLabel('postCount') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr{{ user.id == App.request.getQuery('created', 0)?' class="success"' }}>
+                <td>{{ user.id }}</td>
+                <td>
+                    {{ user.username }}
+                    {% if App.user.id == user.id %}
+                        <a href="{{ this.createUrl('user/profile') }}" class="btn btn-primary btn-xs" role="edit-profile-link">
+                            {{ App.t.t('control.edit') }}
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if user.postCount %}
+                        <a href="{{ this.createUrl('user/index', {'id': user.id}) }}" role="user-page-link">
+                            {{ user.postCount }}
+                        </a>
+                    {% else %}
+                        {{ user.postCount }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h2>{{ App.t.t('heading.yourPosts') }}</h2>
+<div class="container">
+    <div class="row">
+        {{ App.t.t('paragraph.userPostsAdminNotice', {
+            '{postsAmount}': App.t.t('text.postsAmount', user.postCount),
+            '{commentsAmount}': App.t.t('text.commentsAmount', user.commentCount),
+            '{dashboardUrl}': this.createUrl('post/dashboard')
+        }) }}
+    </div>
+</div>
+
+<h2>{{ App.t.t('heading.options') }}</h2>
+<div class="container">
+    <div class="row">
+        {{ App.t.t('paragraph.usersAdminNotice', {
+            '{dashboardUrl}': this.createUrl('user/dashboard')
+        }) }}
+    </div>
+    <div class="row">
+        {{ App.t.t('paragraph.userOptionsAdminNotice', {
+            '{dashboardUrl}': this.createUrl('user/profile')
+        }) }}
+    </div>
+    <div class="row">
+        {{ App.t.t('paragraph.serviceOptionsAdminNotice', {
+            '{optionsUrl}': this.createUrl('admin/options')
+        }) }}
+    </div>
+</div>
+
+<h2>{{ App.t.t('heading.help') }}</h2>
+<div class="container">
+    <div class="row">
+        {{ App.t.t('paragraph.helpAdminNotice', {
+            '{helpUrl}': this.createUrl('admin/help')
+        }) }}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends '/views/layouts/main.twig' %}
+{% block content %}
+    {% if users %}
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th class="text-center">{{ users[0].getAttributeLabel('username') }}</th>
+                    <th class="text-center">{{ users[0].getAttributeLabel('postCount') }}</th>
+                </tr>
+            </thead>
+            {% for user in users %}
+                <tr data-user-id="{{ user.id }}">
+                    <td>{{ user.username }}</td>
+                    <td>
+                        {% if user.postCount > 0 %}
+                            <a href="{{ this.createUrl('user/index', {'id': user.id}) }}">
+                                {{ user.postCount }}
+                            </a>
+                        {% else %}
+                            {{ user.postCount }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{{ App.t.t('text.noRegisteredUsers') }}</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,16 @@
+# Vendor stuff
+/vendor/
+
+# Local stuff
+*.log
+
+# Local config
+/config/db.php
+/config/web.php
+/composer.lock
+
+# IDE project files
+/nbproject/
+/.project/
+/.settings/
+/.idea

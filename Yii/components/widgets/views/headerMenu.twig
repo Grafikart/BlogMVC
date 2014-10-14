@@ -1,0 +1,23 @@
+<ul class="{{ this.class }}">
+    <li>
+        <a href="{{ this.controller.createUrl('post/index') }}">
+            {{ App.name }}
+        </a>
+    </li>
+    {% for nodeName, rootNode in tree %}
+        {% if rootNode['tree']|length > 0 %}
+            <li>
+                <a href="{{ this.controller.createUrl(rootNode['route']) }}">
+                    {{ nodeName }}
+                </a>
+                <ul>
+                    {% for subNode in rootNode['tree'] %}
+                        <li{{ subNode['more-link']?' class="more-link"' }}>
+                            <a href="{{ subNode['href'] }}">{{ subNode['title'] }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

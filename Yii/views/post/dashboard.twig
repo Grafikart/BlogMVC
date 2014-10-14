@@ -1,0 +1,59 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+{% if posts|length > 0 %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th class="text-center">{{ posts[0].getAttributeLabel('id') }}</th>
+            <th class="text-center">{{ posts[0].getAttributeLabel('name') }}</th>
+            <th class="text-center">{{ posts[0].getAttributeLabel('category_id') }}</th>
+            <th class="text-center">{{ posts[0].getAttributeLabel('created') }}</th>
+            <th class="text-center">{{ posts[0].getAttributeLabel('commentCount') }}</th>
+            <th class="text-center">{{ App.t.t('text.actions') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr id="post-{{ post.id }}" class="text-center">
+            <td>{{ post.id }}</td>
+            <td>
+                <a href="{{ this.createUrl('post/show', {'slug': post.slug}) }}">
+                    {{ post.name }}
+                </a>
+            </td>
+            <td>
+                <a href="{{ this.createUrl('category/edit', {'slug': post.category.slug}) }}">
+                    {{ post.category.name }}
+                </a>
+            </td>
+            <td>{{ post.created }}</td>
+            <td>
+                {% if post.commentCount == 0 %}
+                    0
+                {% else %}
+                    <a href="{{ this.createUrl('post/show', {'slug': post.slug, '#': 'comment-form'}) }}">
+                        {{ post.commentCount }}
+                    </a>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ this.createUrl('post/show', {'slug':post.slug}) }}" class="btn btn-info" role="view-post-link">
+                    {{ App.t.t('control.view') }}
+                </a>
+                <a href="{{ this.createUrl('post/edit', {'id':post.id}) }}" class="btn btn-primary" role="edit-post-link">
+                    {{ App.t.t('control.edit') }}
+                </a>
+                <a href="{{ this.createUrl('post/delete', {'id':post.id}) }}" class="btn btn-danger" role="delete-post-link">
+                    {{ App.t.t('control.delete') }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <div class="alert alert-info">
+        {{ App.t.t('text.noPostsYet') }}
+    </div>
+{% endif %}
+{% endblock %}

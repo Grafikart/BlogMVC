@@ -1,0 +1,36 @@
+{% extends 'views/layouts/admin.twig' %}
+{% block content %}
+<h2>{{ App.t.t('heading.statistics') }}</h2>
+<table class="table table-striped" role="service-statistics">
+    <tbody>
+    {% for option, value in statistics %}
+        <tr class="row-{{ loop.index }}">
+            <td role="stats-entry">{{ option }}</td>
+            <td role="stats-value">{{ value }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>{{ App.t.t('heading.serviceStatus') }}</h2>
+<table class="table table-striped" role="server-status">
+    <tbody>
+    {% for option, value in status %}
+        <tr class="row-{{ loop.index }}">
+            <td role="status-entry">{{ option }}</td>
+            <td role="status-value">{{ value }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="alert alert-info">
+    <p>
+        {{ App.t.t('paragraph.serviceStatusCache') }}
+    </p>
+    <p class="text-center container">
+        <a class="btn btn-primary" href="{{ this.createUrl('admin/flushCache', {'returnUrl':App.request.requestUri}) }}" role="flush-cache-link">
+            {{ App.t.t('control.flushCache') }}
+        </a>
+    </p>
+</div>
+{% endblock %}

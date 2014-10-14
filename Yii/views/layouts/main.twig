@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% block head %}
+        {% include 'views/chunks/head.twig' %}
+    {% endblock %}
+    <body>
+    {% block top_menu %}
+        {% include 'views/chunks/top-menu.twig' %}
+    {% endblock %}
+        <div class="container">
+            {% block flash_messages %}
+                {% include 'views/chunks/flash-messages.twig' %}
+            {% endblock %}
+            <div class="row">
+                {% block content_wrap %}
+                <div class="{% block main_column_class %}col-md-12{% endblock %}">
+                    {% block before_content %}
+                        {% block page_header %}
+                            <div class="page-header">
+                                {% include 'views/chunks/page-header.twig' %}
+                            </div>
+                        {% endblock %}
+                    {% endblock %}
+                    {% block content %}
+                    {% endblock %}
+                    {% block after_content %}
+                    {% endblock %}
+
+                    {% block pagination %}
+                        {{ void(this.widget('PaginationWidget', {
+                            'currentPage': this.page.pageNumber,
+                            'totalPages': this.page.totalPages,
+                            'route': this.page.route,
+                            'routeOptions': this.page.routeOptions
+                        })) }}
+                    {% endblock %}
+                </div>
+                {% endblock %}
+                {% block after_content_wrap %}
+                {% endblock %}
+            </div>
+        </div><!-- /.container -->
+    </body>
+</html>
