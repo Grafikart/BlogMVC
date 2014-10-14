@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | path to your installation.
 |
 */
-$config['base_url']	= '/blogMVC/CodeIgniter/';
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------

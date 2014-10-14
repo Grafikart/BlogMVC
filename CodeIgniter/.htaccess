@@ -1,7 +1,6 @@
-Options -Indexes
-
-RewriteEngine On
-RewriteBase /blogMVC/CodeIgniter/
-
-RewriteCond $1 !^(index\.php|assets/|application/|robots\.txt)
-RewriteRule ^(.*)$ ./index.php?/$1 [L,QSA]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
