@@ -4,7 +4,7 @@ Installation
 CodeIgniter's source code isn't embedded with composer right now due to lack of support from CI's team. So all the source code from https://github.com/bcit-ci/CodeIgniter is already in the repo.
 
 -  Create database and dump sql file.
-
+-  Dump user_passw_update.sql in CodeIgniter's root folder to update the right access infos for the admin panel
 -  Change database settings in application/config/database.php
 -  Change global config in application/config/config.php
 -  Change routes config in application/config/routes.php
