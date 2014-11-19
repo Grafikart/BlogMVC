@@ -1,0 +1,20 @@
+<div class="page-header">
+	<h1>Blog</h1>
+	<p class="lead">Welcome on my blog</p>
+</div>
+
+<p:foreach>
+	<article>
+		<h2><a href="#{@url}">#{@name}</a></h2>
+
+		<p:call-template name="meta" />
+
+		<p>#{@strip_tags().shorten(450, 1)}</p>
+
+		<p class="text-right"><a href="#{@url}" class="btn btn-primary">Read more…</a></p>
+	</article>
+
+	<hr />
+</p:foreach>
+
+#{pagination=}

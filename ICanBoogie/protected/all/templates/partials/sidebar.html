@@ -1,0 +1,21 @@
+<p:cache:sidebar>
+
+<h4>Categories</h4>
+<div class="list-group">
+	<p:categories:home>
+		<p:foreach>
+			<a href="#{@url}" class="list-group-item"> <span class="badge">#{@post_count}</span> #{@name}</a>
+		</p:foreach>
+	</p:categories:home>
+</div>
+
+<h4>Last posts</h4>
+<div class="list-group">
+	<p:posts:latests>
+		<p:foreach>
+			<a href="#{@url}" class="list-group-item">#{@name}</a>
+		</p:foreach>
+	</p:posts:latests>
+</div>
+
+</p:cache:sidebar>

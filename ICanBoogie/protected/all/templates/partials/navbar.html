@@ -1,0 +1,27 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">Blog</a>
+		</div>
+		<div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+			<ul class="nav navbar-nav">
+				<p:choose>
+					<p:when test="in_admin">
+					<li><a href="/">&lt; Back to front</a></li>
+					</p:when>
+
+					<p:otherwise>
+					<li><a href="/admin">Admin</a></li>
+					</p:otherwise>
+				</p:choose>
+
+				<p:if test="user.is_authenticated">
+				<li><a href="#{user.url('signout')}">Logout</a></li>
+				</p:if>
+			</ul>
+		</div>
+	</div>
+</div>
