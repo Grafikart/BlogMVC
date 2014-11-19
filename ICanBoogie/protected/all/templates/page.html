@@ -1,0 +1,16 @@
+<p:decorate with="body">
+	<p:call-template name="navbar" />
+
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-8">
+				#{component=}
+			</div>
+
+			<div class="col-md-4 sidebar">
+				<p:call-template name="sidebar" />
+			</div>
+		</div>
+	</div>
+</p:decorate>

@@ -1,0 +1,22 @@
+<h3 id="comments">
+<p:translate native=":count comments">
+	<p:with-param name=":count" select="count" />
+</p:translate>
+</h3>
+
+<p:foreach>
+<div class="row">
+	<p:if test="self.position.greater(1)">
+		<hr />
+	</p:if>
+
+	<div class="col-md-2">
+		#{@author.portrait=}
+	</div>
+	<div class="col-md-10">
+		<p><strong>#{@author}</strong> <p:time:ago select="@created" /></p>
+
+		#{@=}
+	</div>
+</div>
+</p:foreach>
