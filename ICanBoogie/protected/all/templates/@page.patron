@@ -1,15 +1,14 @@
 <p:decorate with="body">
-	<p:call-template name="navbar" />
+	<p:render partial="navbar" />
 
 	<div class="container">
-
 		<div class="row">
 			<div class="col-md-8">
-				#{component=}
+				#{content=}
 			</div>
 
 			<div class="col-md-4 sidebar">
-				<p:call-template name="sidebar" />
+				<p:render partial="sidebar" />
 			</div>
 		</div>
 	</div>

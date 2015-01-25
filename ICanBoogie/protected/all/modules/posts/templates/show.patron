@@ -11,5 +11,5 @@
 	<h3>Comment this post</h3>
 
 	<p:comments:submit />
-	<p:comments />
+	<p:render select="@comments" />
 </section>

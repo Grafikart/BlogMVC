@@ -32,7 +32,7 @@ class SignInOperation extends \ICanBoogie\Operation
 
 		if (!$user || !$user->verify_password($password))
 		{
-			$errors['username'] = $errors->format("Unknown username/password combinaison");
+			$errors['username'] = $errors->format("Unknown username/password combination");
 			$errors['password'] = true;
 
 			return false;

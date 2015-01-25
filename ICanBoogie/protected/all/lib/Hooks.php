@@ -4,6 +4,14 @@ namespace BlogMVC;
 
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\DateTime;
+use ICanBoogie\Debug;
+use ICanBoogie\Exception\RescueEvent as RescueExceptionEvent;
+use ICanBoogie\HTTP\Response;
+use ICanBoogie\Operation;
+use ICanBoogie\Routing;
+use ICanBoogie\View\View;
+
+use Brickrouge\Alert;
 
 class Hooks
 {
@@ -11,36 +19,83 @@ class Hooks
 	 * Events
 	 */
 
-	static public function on_routing_dispatcher_dispatch(\ICanBoogie\Routing\Dispatcher\DispatchEvent $event)
+	static public function on_routing_dispatcher_dispatch(Routing\Dispatcher\DispatchEvent $event)
 	{
 		if (!$event->response || !$event->response->body)
 		{
 			return;
 		}
 
-		$event->response->body = new PageDecorator($event->response->body) . self::render_stats();
+		$event->response->body = $event->response->body . self::render_stats();
 	}
 
-	static public function on_exception_rescue(\ICanBoogie\Exception\RescueEvent $event)
+	static public function on_exception_rescue(RescueExceptionEvent $event)
 	{
-		$event->chain(function(\ICanBoogie\Exception\RescueEvent $event) {
+		$event->chain(function(RescueExceptionEvent $event, $target) {
 
-			if (!$event->response || !$event->response->body)
+			if ($event->response)
 			{
 				return;
 			}
 
-			$event->response->body = new PageDecorator($event->response->body);
+			try
+			{
+				$sunshine = new ExceptionSunshine($target);
+			    $html = \ICanBoogie\app()->render($sunshine, [
+
+				    'layout' => '@exception',
+
+			    ]);
+
+				$event->response = new Response($html, $sunshine->http_code, [
+
+					'X-Exception-Origin' => $sunshine->file
+
+				]);
+			}
+			catch (\Exception $e) { }
 
 		});
 	}
 
-	static public function on_posts_save(\ICanBoogie\Operation\ProcessEvent $event, \BlogMVC\Modules\Posts\SaveOperation $target)
+	static public function before_view_render(View\BeforeRender $event, View $target)
+	{
+		$target['user'] = $target->controller->user;
+		$target['in_admin'] = strpos($target->controller->route->id, 'admin:') === 0;
+		$target['alerts'] = [
+
+			'success' => new Alert(Debug::fetch_messages(\ICanBoogie\LogLevel::SUCCESS), [
+
+				Alert::CONTEXT => Alert::CONTEXT_SUCCESS
+
+			]),
+
+			'info' => new Alert(Debug::fetch_messages(\ICanBoogie\LogLevel::INFO), [
+
+				Alert::CONTEXT => Alert::CONTEXT_INFO
+
+			]),
+
+			'error' => new Alert(Debug::fetch_messages(\ICanBoogie\LogLevel::ERROR), [
+
+				Alert::CONTEXT => 'danger'
+
+			]),
+
+			'debug' => new Alert(Debug::fetch_messages(\ICanBoogie\LogLevel::DEBUG), [
+
+
+			])
+
+		];
+	}
+
+	static public function on_posts_save(Operation\ProcessEvent $event, Modules\Posts\SaveOperation $target)
 	{
 		self::revoke_cached_sidebar();
 	}
 
-	static public function on_posts_delete(\ICanBoogie\Operation\ProcessEvent $event, \BlogMVC\Modules\Posts\DeleteOperation $target)
+	static public function on_posts_delete(Operation\ProcessEvent $event, Modules\Posts\DeleteOperation $target)
 	{
 		self::revoke_cached_sidebar();
 	}
@@ -85,7 +140,7 @@ class Hooks
 
 		if (!$datetime)
 		{
-			return;
+			return null;
 		}
 
 		$diff = DateTime::now()->diff($datetime);
@@ -130,9 +185,9 @@ class Hooks
 	 */
 	static private function render_stats()
 	{
-		$boot_time = round((microtime(true) - $_SERVER['ICANBOOGIE_READY_TIME_FLOAT']) * 1000, 3);
+		$boot_time = round(($_SERVER['ICANBOOGIE_READY_TIME_FLOAT'] - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 3);
 		$total_time = round((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000, 3);
 
-		return "<!-- booted in: $boot_time, completed in $total_time ms -->";
+		return "<!-- booted in: $boot_time ms, completed in $total_time ms -->";
 	}
 }

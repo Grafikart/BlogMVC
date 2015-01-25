@@ -7,7 +7,7 @@ return [
 	'categories:view' => [
 
 		'pattern' => '/category/:slug',
-		'controller' => 'BlogMVC\Modules\Posts\ListController'
+		'controller' => __NAMESPACE__ . '\CategoriesController#show'
 
 	]
 

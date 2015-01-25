@@ -42,6 +42,7 @@ return [
 	],
 
 	Descriptor::NS => __NAMESPACE__,
-	Descriptor::TITLE => 'Posts'
+	Descriptor::TITLE => 'Posts',
+	Descriptor::REQUIRES => [ 'category' ]
 
 ];
