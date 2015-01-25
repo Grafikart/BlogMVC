@@ -4,7 +4,7 @@
 		"icanboogie/activerecord": "~2.1",
 		"icanboogie/module": "~2.1",
 		"icanboogie/icanboogie": "~2.1",
-		"icybee/patron": "~1.3",
+		"icybee/patron": ">=1.3.3",
 		"icybee/patron-render-support": "~0.1",
 		"icybee/bluetihi": "~0.0",
 		"brickrouge/brickrouge": "~2.1",
