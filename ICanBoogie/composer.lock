@@ -763,12 +763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ICanBoogie/Module.git",
-                "reference": "d9dace971b39a1831f5112e0bfc18fc1a39b868c"
+                "reference": "52c9c0eda3a3b99d10e265011614c152aab097a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ICanBoogie/Module/zipball/d9dace971b39a1831f5112e0bfc18fc1a39b868c",
-                "reference": "d9dace971b39a1831f5112e0bfc18fc1a39b868c",
+                "url": "https://api.github.com/repos/ICanBoogie/Module/zipball/52c9c0eda3a3b99d10e265011614c152aab097a8",
+                "reference": "52c9c0eda3a3b99d10e265011614c152aab097a8",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +824,7 @@
                 "framework",
                 "module"
             ],
-            "time": "2015-01-25 00:26:13"
+            "time": "2015-01-25 13:28:44"
         },
         {
             "name": "icanboogie/operation",
