@@ -2,11 +2,11 @@
 
 namespace BlogMVC;
 
-use ICanBoogie\GetterTrait;
+use ICanBoogie\Accessor\AccessorTrait;
 
 class ExceptionSunshine
 {
-	use GetterTrait;
+	use AccessorTrait;
 
 	const MAX_STRING_LEN = 16;
 

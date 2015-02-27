@@ -7,7 +7,7 @@ use ICanBoogie\Routing\Route;
 
 class CategoriesController extends ActionController
 {
-	protected function any_show()
+	protected function action_show()
 	{
 		return $this->forward_to($this->routes['posts:category']);
 	}

@@ -8,8 +8,7 @@ return [
 
 			'dsn' => 'mysql:dbname=blogmvc',
 			'username' => 'root',
-			'password' => 'root',
-			'#timezone' => '+00.00'
+			'password' => 'root'
 
 		]
 	]

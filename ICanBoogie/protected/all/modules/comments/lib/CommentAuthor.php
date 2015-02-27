@@ -2,10 +2,12 @@
 
 namespace BlogMVC\Modules\Comments;
 
-use ICanBoogie\GetterTrait;
+use ICanBoogie\Accessor\AccessorTrait;
 
 class CommentAuthor
 {
+	use AccessorTrait;
+
 	static private $instances = [];
 
 	static public function from($username)
@@ -17,8 +19,6 @@ class CommentAuthor
 
 		return self::$instances[$username];
 	}
-
-	use GetterTrait;
 
 	private $username;
 

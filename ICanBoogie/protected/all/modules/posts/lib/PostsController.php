@@ -22,7 +22,7 @@ class PostsController extends ActionController
 {
 	const LIMIT = 5;
 
-	protected function any_index()
+	protected function action_index()
 	{
 		$request = $this->request;
 
@@ -36,7 +36,7 @@ class PostsController extends ActionController
 		]);
 	}
 
-	protected function any_show()
+	protected function action_show()
 	{
 		$records = $this->fetch_records([ 'limit' => 1, 'order' => 'created' ] + $this->request->params);
 
@@ -48,9 +48,9 @@ class PostsController extends ActionController
 		$this->view->content = current($records);
 	}
 
-	protected function any_admin()
+	protected function action_admin()
 	{
-		$this->any_index();
+		$this->action_index();
 
 		$this->view->content = new Admin([
 
@@ -65,23 +65,23 @@ class PostsController extends ActionController
 		]);
 	}
 
-	protected function any_new()
+	protected function action_new()
 	{
 		$this->view->content = new EditForm;
 		$this->view['title'] = "Edit post";
 		$this->view['back_link'] = new A("< Back to posts", $this->routes['admin:posts:index']);
 	}
 
-	protected function any_edit($id)
+	protected function action_edit($id)
 	{
 		$post = $this->model[$id];
 		$values = $this->request->params + $post->to_array();
 
-		$this->any_new();
+		$this->action_new();
 		$this->view->content[Form::VALUES] = $values;
 	}
 
-	protected function any_delete($id)
+	protected function action_delete($id)
 	{
 		$post = $this->model[$id];
 

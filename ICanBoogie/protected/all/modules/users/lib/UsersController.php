@@ -12,13 +12,13 @@ class UsersController extends ActionController
 		return 'admin';
 	}
 
-	public function get_signin()
+	protected function action_signin()
 	{
 		$this->view->template = null;
 		$this->view->content = new SignInForm;
 	}
 
-	public function any_signout()
+	protected function action_signout()
 	{
 		return Request::from('/api/users/sign-out')->post();
 	}
