@@ -4,6 +4,7 @@ namespace BlogMVC\Modules\Users;
 
 use ICanBoogie\ActiveRecord\RecordNotFound;
 use ICanBoogie\AuthenticationRequired;
+use ICanBoogie\HTTP\Request;
 use ICanBoogie\HTTP\Response;
 
 class Hooks
@@ -30,7 +31,8 @@ class Hooks
 
 	static public function on_authentication_required_rescue(\ICanBoogie\Exception\RescueEvent $event, \ICanBoogie\AuthenticationRequired $target)
 	{
-		$event->response = new Response(new SignInForm, $target->getCode());
+		$event->response = Request::from('/signin')->get();
+		$event->response->status = $target->getCode();
 	}
 
 	/*

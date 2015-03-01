@@ -3,6 +3,6 @@
 
 	<div class="container">
 		#{alerts.implode()=}
-		#{component=}
+		#{content=}
 	</div>
 </p:decorate>

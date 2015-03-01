@@ -1,0 +1,12 @@
+<p:decorate with="body">
+
+	<p:call-template name="navbar" />
+
+	<div class="container">
+		<h1>#{@title} <small>#{@code}</small></h1>
+
+		#{content=}
+
+	</div>
+
+</p:decorate>

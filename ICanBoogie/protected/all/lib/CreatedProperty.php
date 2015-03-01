@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the ICanBoogie package.
- *
- * (c) Olivier Laviale <olivier.laviale@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace BlogMVC;
 
 use ICanBoogie\ActiveRecord\DateTimePropertySupport;
@@ -40,7 +31,7 @@ trait CreatedProperty
 	/**
 	 * Sets the date and time at which the record was created.
 	 *
-	 * @param mixed $value
+	 * @param mixed $datetime
 	 */
 	protected function set_created($datetime)
 	{

@@ -12,12 +12,6 @@ return [
 
 			'post' => [ 'expression' => true, 'default' => 'this' ]
 
-		] ],
-
-		'comments' => [ $hooks . 'markup_comments', [
-
-			'post' => [ 'expression' => true, 'default' => 'this' ]
-
 		] ]
 
 	]

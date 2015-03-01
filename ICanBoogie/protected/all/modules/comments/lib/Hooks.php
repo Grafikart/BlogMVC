@@ -15,18 +15,4 @@ class Hooks
 
 		return $template ? $engine($template, $form) : $form;
 	}
-
-	static public function markup_comments(array $args, $engine, $template)
-	{
-		if (!$template)
-		{
-			$template = file_get_contents(DIR . 'templates/list.html');
-		}
-
-		$comments = $args['post']->comments->all;
-
-		$engine->context['count'] = count($comments);
-
-		return $engine($template, $comments);
-	}
 }

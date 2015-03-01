@@ -9,6 +9,7 @@ return [
 	'events' => [
 
 		'ICanBoogie\Routing\Dispatcher::dispatch' => $hooks . 'on_routing_dispatcher_dispatch',
+		'ICanBoogie\View\View::render:before' => $hooks . 'before_view_render',
 		'BlogMVC\Modules\Posts\SaveOperation::process' => $hooks . 'on_posts_save',
 		'BlogMVC\Modules\Posts\DeleteOperation::process' => $hooks . 'on_posts_delete',
 		'Exception::rescue' => $hooks . 'on_exception_rescue'

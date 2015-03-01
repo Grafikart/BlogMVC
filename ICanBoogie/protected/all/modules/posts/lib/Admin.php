@@ -2,8 +2,6 @@
 
 namespace BlogMVC\Modules\Posts;
 
-use Brickrouge\Element;
-
 class Admin extends \Brickrouge\ListView
 {
 	public function __construct(array $attributes=[])
