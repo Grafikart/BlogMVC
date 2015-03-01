@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d29597c76e571f4178b1811aa41ca122",
+    "hash": "8d35778f903ef4f8a155e7c29135ea3f",
     "packages": [
         {
             "name": "brickrouge/brickrouge",
@@ -70,16 +70,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Brickrouge/Listview.git",
-                "reference": "4f8776d95c1251c65abba28df0de7ece47cdd98a"
+                "reference": "a1009d84dffa39afe22da3e571ab0d59066bec00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Brickrouge/Listview/zipball/4f8776d95c1251c65abba28df0de7ece47cdd98a",
-                "reference": "4f8776d95c1251c65abba28df0de7ece47cdd98a",
+                "url": "https://api.github.com/repos/Brickrouge/Listview/zipball/a1009d84dffa39afe22da3e571ab0d59066bec00",
+                "reference": "a1009d84dffa39afe22da3e571ab0d59066bec00",
                 "shasum": ""
             },
             "require": {
                 "brickrouge/brickrouge": "~2.1",
+                "icanboogie/accessor": "~1.0",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -105,20 +106,20 @@
             "keywords": [
                 "mail"
             ],
-            "time": "2014-11-19 14:55:55"
+            "time": "2015-02-27 00:16:56"
         },
         {
             "name": "icanboogie/accessor",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ICanBoogie/Accessor.git",
-                "reference": "4e94bc4a2669f4614aab6cc69ec3496f399a596b"
+                "reference": "54abd129ad916c5be57ff8681b3b41f8c1a3dbbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ICanBoogie/Accessor/zipball/4e94bc4a2669f4614aab6cc69ec3496f399a596b",
-                "reference": "4e94bc4a2669f4614aab6cc69ec3496f399a596b",
+                "url": "https://api.github.com/repos/ICanBoogie/Accessor/zipball/54abd129ad916c5be57ff8681b3b41f8c1a3dbbe",
+                "reference": "54abd129ad916c5be57ff8681b3b41f8c1a3dbbe",
                 "shasum": ""
             },
             "require": {
@@ -150,7 +151,7 @@
                 "getter",
                 "setter"
             ],
-            "time": "2015-02-01 14:52:04"
+            "time": "2015-03-01 11:12:00"
         },
         {
             "name": "icanboogie/activerecord",
@@ -215,18 +216,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ICanBoogie/bind-activerecord.git",
-                "reference": "2665fb43a838445e2f01058f99a517031e866a76"
+                "reference": "8fd9f106f2b5aa1aa9bae78d6df495fe1f69a39d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ICanBoogie/bind-activerecord/zipball/2665fb43a838445e2f01058f99a517031e866a76",
-                "reference": "2665fb43a838445e2f01058f99a517031e866a76",
+                "url": "https://api.github.com/repos/ICanBoogie/bind-activerecord/zipball/8fd9f106f2b5aa1aa9bae78d6df495fe1f69a39d",
+                "reference": "8fd9f106f2b5aa1aa9bae78d6df495fe1f69a39d",
                 "shasum": ""
             },
             "require": {
                 "icanboogie/activerecord": ">=2.2.0",
                 "icanboogie/icanboogie": ">=2.2.0",
-                "php": ">=5.6.0"
+                "php": ">=5.5.0"
             },
             "type": "library",
             "extra": {
@@ -257,7 +258,7 @@
             ],
             "description": "Binds ActiveRecord to ICanBoogie",
             "homepage": "http://icanboogie.org/",
-            "time": "2015-02-25 18:35:31"
+            "time": "2015-02-28 19:16:39"
         },
         {
             "name": "icanboogie/bind-cldr",
@@ -1316,16 +1317,16 @@
         },
         {
             "name": "icanboogie/storage",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ICanBoogie/Storage.git",
-                "reference": "10dcc5228b84c30ec759b4ee0ebd5ec65a398026"
+                "reference": "a525be499ab476b1358136032de4d00c7500617e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ICanBoogie/Storage/zipball/10dcc5228b84c30ec759b4ee0ebd5ec65a398026",
-                "reference": "10dcc5228b84c30ec759b4ee0ebd5ec65a398026",
+                "url": "https://api.github.com/repos/ICanBoogie/Storage/zipball/a525be499ab476b1358136032de4d00c7500617e",
+                "reference": "a525be499ab476b1358136032de4d00c7500617e",
                 "shasum": ""
             },
             "require": {
@@ -1355,7 +1356,7 @@
                 "cache",
                 "storage"
             ],
-            "time": "2015-01-13 13:32:24"
+            "time": "2015-02-27 09:17:14"
         },
         {
             "name": "icanboogie/view",
@@ -1451,21 +1452,21 @@
         },
         {
             "name": "icybee/patron",
-            "version": "v1.3.3",
+            "version": "v1.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Icybee/Patron.git",
-                "reference": "3b2b8e024acc7c9209c4615c858cbbfa70d076a9"
+                "reference": "b47b7ff5464399526b8705626246978d9b939082"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Icybee/Patron/zipball/3b2b8e024acc7c9209c4615c858cbbfa70d076a9",
-                "reference": "3b2b8e024acc7c9209c4615c858cbbfa70d076a9",
+                "url": "https://api.github.com/repos/Icybee/Patron/zipball/b47b7ff5464399526b8705626246978d9b939082",
+                "reference": "b47b7ff5464399526b8705626246978d9b939082",
                 "shasum": ""
             },
             "require": {
-                "icanboogie/common": "~1.2",
-                "icanboogie/render": "~0.1",
+                "icanboogie/common": "~1.2.2",
+                "icanboogie/render": "~0.3.1",
                 "icybee/bluetihi": ">=0.0.2",
                 "php": ">=5.4.0"
             },
@@ -1514,20 +1515,20 @@
                 "html",
                 "template"
             ],
-            "time": "2015-01-25 21:00:21"
+            "time": "2015-02-28 14:15:06"
         },
         {
             "name": "icybee/patron-render-support",
-            "version": "v0.1.2",
+            "version": "v0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Icybee/patron-render-support.git",
-                "reference": "dd761770520846f1c2162998386bcb61ecd9d70d"
+                "reference": "bc03b7a26fb2b3a4496aa25c707fc31c88245aed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Icybee/patron-render-support/zipball/dd761770520846f1c2162998386bcb61ecd9d70d",
-                "reference": "dd761770520846f1c2162998386bcb61ecd9d70d",
+                "url": "https://api.github.com/repos/Icybee/patron-render-support/zipball/bc03b7a26fb2b3a4496aa25c707fc31c88245aed",
+                "reference": "bc03b7a26fb2b3a4496aa25c707fc31c88245aed",
                 "shasum": ""
             },
             "require": {
@@ -1565,7 +1566,7 @@
                 "patron",
                 "render"
             ],
-            "time": "2015-02-08 18:56:47"
+            "time": "2015-03-01 11:59:41"
         },
         {
             "name": "psr/log",
