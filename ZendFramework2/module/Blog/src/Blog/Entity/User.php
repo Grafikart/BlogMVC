@@ -63,7 +63,7 @@ class User
         return $this->password;
     }
 
-    function getPosts()
+    public function getPosts()
     {
         return $this->posts;
     }
@@ -89,7 +89,7 @@ class User
         return $this;
     }
 
-    function addPost(Post $post)
+    public function addPost(Post $post)
     {
         if (! $this->posts->contains($post)) {
             $this->posts->add($post);
@@ -98,7 +98,7 @@ class User
         return $this;
     }
 
-    function removePost(Post $post)
+    public function removePost(Post $post)
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);

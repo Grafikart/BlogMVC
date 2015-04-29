@@ -9,7 +9,6 @@ namespace Blog\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
 use Zend\Mvc\MvcEvent;
-
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Stdlib\Hydrator\DoctrineEntity;

@@ -10,7 +10,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CacheServiceFactory implements FactoryInterface
 {
-
     /**
      * @param  ServiceLocatorInterface $serviceLocator
      * @return CacheService

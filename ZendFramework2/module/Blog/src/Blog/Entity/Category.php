@@ -56,54 +56,54 @@ class Category
         $this->posts = new ArrayCollection();
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getSlug()
+    public function getSlug()
     {
         return $this->slug;
     }
 
-    function getPostCount()
+    public function getPostCount()
     {
         // TODO
         return $this->postCount;
     }
 
-    function getPosts()
+    public function getPosts()
     {
         return $this->posts;
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = $id;
 
         return $this;
     }
 
-    function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
 
         return $this;
     }
 
-    function setSlug($slug)
+    public function setSlug($slug)
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    function addPost(Post $post)
+    public function addPost(Post $post)
     {
         if (! $this->posts->contains($post)) {
             $this->posts->add($post);
@@ -112,7 +112,7 @@ class Category
         return $this;
     }
 
-    function removePost(Post $post)
+    public function removePost(Post $post)
     {
         if ($this->posts->contains($post)) {
             $this->posts->removeElement($post);

@@ -32,8 +32,8 @@ class PostService
     public function getPostBySlug($slug)
     {
         return $this->getRepository()->findOneBy(array(
-                'slug' => $slug,
-            ));
+            'slug' => $slug,
+        ));
     }
 
     public function getPostById($id)

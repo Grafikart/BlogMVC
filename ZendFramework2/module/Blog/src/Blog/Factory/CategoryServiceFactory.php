@@ -9,7 +9,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CategoryServiceFactory implements FactoryInterface
 {
-
     /**
      * @param  ServiceLocatorInterface $serviceLocator
      * @return CategoryService

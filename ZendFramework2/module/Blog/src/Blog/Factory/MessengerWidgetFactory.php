@@ -7,8 +7,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\FlashMessenger;
 
-class MessengerWidgetFactory implements FactoryInterface {
-
+class MessengerWidgetFactory implements FactoryInterface
+{
     /**
      * Create service
      *
@@ -23,6 +23,4 @@ class MessengerWidgetFactory implements FactoryInterface {
 
         return $viewHelper;
     }
-
-
 }

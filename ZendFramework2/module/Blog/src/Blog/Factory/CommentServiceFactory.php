@@ -9,7 +9,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CommentServiceFactory implements FactoryInterface
 {
-
     /**
      * @param  ServiceLocatorInterface $serviceLocator
      * @return CommentService
