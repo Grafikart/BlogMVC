@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\models\Comment;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -46,11 +47,13 @@ class PostController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
+        $commentForm = new Comment();
         $comments =  $model->getComments()->orderBy('created')->all();
 
         return $this->render('view', [
             'model' => $model,
             'comments' => $comments,
+            'commentForm' => $commentForm,
         ]);
     }
 

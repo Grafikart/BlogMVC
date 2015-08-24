@@ -29,10 +29,22 @@ class Comment extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function scenarios()
+    {
+        return [
+            'create' => [
+                'post_id', 'username', 'mail', 'content', 'created'
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
-            [['post_id', 'username', 'mail', 'content', 'created'], 'required'],
+            [['post_id', 'username', 'mail', 'content', 'created'], 'required', 'on' => 'create'],
             [['post_id'], 'integer'],
             [['content'], 'string'],
             [['created'], 'safe'],

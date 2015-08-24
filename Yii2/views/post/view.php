@@ -23,7 +23,35 @@ $this->params['breadcrumbs'][] = $this->title;
     </section>
 
     <aside>
-        <h2><?php echo count($comments); ?> Commentaires</h2>
+        <h2>Add Comment</h2>
+        <?php if ($commentForm->hasErrors() === true): ?>
+            <div class="alert alert-danger">
+                <?php echo Html::errorSummary($commentForm); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php echo Html::beginForm('/comment/create', ['postId', $model->id], 'post', ['role' => 'form']); ?>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <?php echo Html::activeTextInput($commentForm, 'mail', ['placeholder' => 'Your email', 'class' => 'form-control']);?>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <?php echo Html::activeTextInput($commentForm, 'username', ['placeholder' => 'Your username', 'class' => 'form-control']);?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo Html::activeTextArea($commentForm, 'content', ['placeholder' => 'Your comment', 'class' => 'form-control']);?>
+                </div>
+            <div class="form-group">
+                <?php echo Html::submitButton('Submit', ['class' => 'btn btn-primary']);?>
+            </div>
+        <?php echo Html::endForm(); ?>
+
+        <h3><?php echo count($comments); ?> Commentaires</h3>
         <?php foreach($comments as $comment): ?>
             <article>
                 <?php echo Html::decode($comment->username); ?>
