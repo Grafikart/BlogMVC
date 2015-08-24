@@ -45,8 +45,12 @@ class PostController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $comments =  $model->getComments()->orderBy('created')->all();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'comments' => $comments,
         ]);
     }
 
