@@ -18,7 +18,7 @@ use yii\helpers\Html;
             <article>
                 <div class="row">
                     <div class="col-lg-12 col-md-4">
-                        <h2><?php echo Html::decode($post->name); ?></h2>
+                        <h2><?php echo Html::decode(Html::a($post->name, ['/post/view/', 'id' => $post->id])); ?></h2>
 
                         <p>
                             Category: <?php echo Html::a($post->category->name, '#'); ?>, by <?php echo Html::a(ucfirst($post->user->username), '#'); ?> on <?php echo Yii::$app->formatter->asDate($post->created, 'long'); ?>
