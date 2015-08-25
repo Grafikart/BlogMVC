@@ -9,7 +9,7 @@ use yii\helpers\Html;
             echo Html::a(
                 $category->name
                 .Html::tag('span', $category->getPosts()->count(), ['class' => 'badge']),
-                $category->id,
+                ['/category/view', 'id' => $category->id],
                 ['class' => 'list-group-item']
             );
         endforeach;
@@ -18,12 +18,12 @@ use yii\helpers\Html;
 <h4>Last posts</h4>
 <div class="list-group">
     <?php
-    foreach($posts as $post):
-        echo Html::a(
-            $post->name,
-            $post->id,
-            ['class' => 'list-group-item']
-        );
-    endforeach;
+        foreach($posts as $post):
+            echo Html::a(
+                $post->name,
+                ['/post/view', 'id' => $post->id],
+                ['class' => 'list-group-item']
+            );
+        endforeach;
     ?>
 </div>
