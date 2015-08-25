@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -49,10 +50,26 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $posts = Post::find()->all();
+        //build a DB to get all post
+        $query = Post::find();
+
+        //get total number of post (but do not fetch post yet)
+        $count = $query->count();
+
+        //create a pagination
+        $pagination = new Pagination([
+            'totalCount' => $count,
+            'pageSize' => 2,
+        ]);
+
+        //limit the query using the pagination and fetch articles
+        $posts = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('index', [
-            'posts' => $posts
+            'posts' => $posts,
+            'pagination' => $pagination,
         ]);
     }
 

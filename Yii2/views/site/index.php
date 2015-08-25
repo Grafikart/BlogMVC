@@ -4,6 +4,7 @@
 
 $this->title = 'My Yii Application';
 use yii\helpers\Html;
+use yii\widgets\LinkPager;
 ?>
 <div class="site-index">
 
@@ -30,5 +31,12 @@ use yii\helpers\Html;
                 </div>
             </article>
         <?php endforeach; ?>
+    </div>
+    <div class="pagination">
+        <?php
+            echo LinkPager::widget([
+                'pagination' => $pagination,
+            ]);
+        ?>
     </div>
 </div>
