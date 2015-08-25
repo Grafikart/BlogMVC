@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         <?php endif; ?>
 
-        <?php echo Html::beginForm(['/comment/create', 'postId', $model->id], 'post', ['role' => 'form']); ?>
+        <?php echo Html::beginForm('', 'post', ['role' => 'form']); ?>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">

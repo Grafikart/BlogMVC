@@ -46,15 +46,28 @@ class PostController extends Controller
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $commentForm = new Comment();
-        $comments =  $model->getComments()->orderBy('created')->all();
+        try {
+            Yii::trace('Trace :' . __METHOD__, __METHOD__);
 
-        return $this->render('view', [
-            'model' => $model,
-            'comments' => $comments,
-            'commentForm' => $commentForm,
-        ]);
+            $model = $this->findModel($id);
+            $commentForm = new Comment(['scenario' => 'create']);
+            if (($commentForm->load($_POST) === true) && ($commentForm->validate() === true)) {
+                $commentForm->created = Yii::$app->formatter->asDateTime('now', 'php:Y-m-d H:i:s');
+                $commentForm->post_id = $id;
+                $commentForm->save();
+            }
+
+            $comments = $model->getComments()->orderBy('created')->all();
+
+            return $this->render('view', [
+                'model' => $model,
+                'comments' => $comments,
+                'commentForm' => $commentForm,
+            ]);
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
     }
 
     /**

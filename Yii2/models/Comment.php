@@ -33,7 +33,7 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
             'create' => [
-                'post_id', 'username', 'mail', 'content', 'created'
+                'username', 'mail', 'content', 'created'
             ],
         ];
     }
@@ -44,7 +44,7 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['post_id', 'username', 'mail', 'content', 'created'], 'required', 'on' => 'create'],
+            [['username', 'mail', 'content'], 'required', 'on' => 'create'],
             [['post_id'], 'integer'],
             [['content'], 'string'],
             [['created'], 'safe'],
