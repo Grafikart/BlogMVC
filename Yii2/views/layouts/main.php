@@ -8,6 +8,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\widgets\Sidebar;
 
 AppAsset::register($this);
 ?>
@@ -52,7 +53,19 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= $content ?>
+            <div class="row">
+                <div class="col-md-8">
+                    <main role="main">
+                        <?php echo $content ?>
+                    </main>
+                </div>
+                <div class="col-md-4">
+                    <aside class="sidebar">
+                        <?php echo Sidebar::widget([]); ?>
+                    </aside>
+                </div>
+            </div>
+
     </div>
 </div>
 
