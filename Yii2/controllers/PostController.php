@@ -70,6 +70,20 @@ class PostController extends Controller
         }
     }
 
+    public function actionDelete($id)
+    {
+        try {
+            Yii::trace('Trace :' . __METHOD__, __METHOD__);
+
+            $model = $this->findModel($id);
+
+            $model->delete();
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+    }
+
     /**
      * Finds the Post model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
