@@ -38,9 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created',
                 'label' => 'Creation date',
-                'value' => function($model, $key, $index, $column) {
-                    return Yii::$app->formatter->asDateTime($model->created, 'php: d-m-Y H:i:s');
-                },
+                'format' => ['date', 'php:d-m-y H:i:s'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
