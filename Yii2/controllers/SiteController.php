@@ -50,42 +50,59 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        //build a DB to get all post
-        $query = Post::find();
+        try {
+            Yii::trace('Trace : ' . __METHOD__, __METHOD__);
 
-        //get total number of post (but do not fetch post yet)
-        $count = $query->count();
+            //build a DB to get all post
+            $query = Post::find();
 
-        //create a pagination
-        $pagination = new Pagination([
-            'totalCount' => $count,
-            'pageSize' => 2,
-        ]);
+            //get total number of post (but do not fetch post yet)
+            $count = $query->count();
 
-        //limit the query using the pagination and fetch articles
-        $posts = $query->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+            //create a pagination
+            $pagination = new Pagination([
+                'totalCount' => $count,
+                'pageSize' => 2,
+            ]);
 
-        return $this->render('index', [
-            'posts' => $posts,
-            'pagination' => $pagination,
-        ]);
+            //limit the query using the pagination and fetch articles
+            $posts = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+
+            return $this->render('index', [
+                'posts' => $posts,
+                'pagination' => $pagination,
+            ]);
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
     }
 
     public function actionLogin()
     {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
+        try {
+            Yii:trace('Trace : '.__METHOD__, __METHOD__);
+
+            $response = null;
+            $model = new LoginForm();
+            if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                $response = $this->redirect(['/admin/post']);
+            }
+
+            if ($response === null) {
+                $response = $this->render('login', [
+                    'model' => $model,
+                ]);
+            }
+
+            return $response;
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
         }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     public function actionLogout()
@@ -93,23 +110,5 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
-    }
-
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionAbout()
-    {
-        return $this->render('about');
     }
 }
