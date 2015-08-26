@@ -1,0 +1,64 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'Posts';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="post-index">
+
+    <h1><?php echo Html::encode($this->title) ?></h1>
+
+    <p>
+        <?php echo Html::a('Create Post', ['create'], ['class' => 'btn btn-primary']) ?>
+    </p>
+
+    <?php echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            'id',
+            [
+                'attribute' => 'category_id',
+                'label' => 'Category',
+                'value' => 'category.name',
+            ],
+            [
+                'attribute' => 'user_id',
+                'label' => 'Username',
+                'value' => 'user.username',
+            ],
+            [
+                'attribute' => 'name',
+                'label' => 'Title',
+            ],
+            [
+                'attribute' => 'created',
+                'label' => 'Creation date',
+                'value' => function($model, $key, $index, $column) {
+                    return Yii::$app->formatter->asDateTime($model->created, 'php: d-m-Y H:i:s');
+                },
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Actions',
+                'template' => '{view} {update} {delete}',
+                'buttons' => [
+                    'view' => function($url, $model, $key) {
+                        return Html::a('Edit', ['/post/view/', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                    },
+                    'update' => function($url, $model, $key) {
+                        return Html::a('update', ['/post/update/', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                    },
+                    'delete' => function($url, $model, $key) {
+                        return Html::a('Delete', ['/post/delete/', 'id' => $model->id], ['class' => 'btn btn-danger']);
+                    }
+                ]
+            ],
+        ],
+    ]); ?>
+
+</div>
