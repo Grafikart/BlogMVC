@@ -21,6 +21,8 @@ use Yii;
  */
 class Post extends \yii\db\ActiveRecord
 {
+    public $category_name;
+
     /**
      * @inheritdoc
      */
@@ -29,13 +31,20 @@ class Post extends \yii\db\ActiveRecord
         return 'posts';
     }
 
+    public function scenarios()
+    {
+        return [
+            'create' => ['category_name', 'name', 'content'],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['category_id', 'user_id', 'name', 'slug', 'content', 'created'], 'required'],
+            [['category_name', 'name', 'content'], 'required'],
             [['category_id', 'user_id'], 'integer'],
             [['content'], 'string'],
             [['created'], 'safe'],

@@ -4,8 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Comment;
+use app\models\Category;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,6 +39,38 @@ class PostController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionCreate()
+    {
+        try {
+            Yii::trace('Trace :' . __METHOD__, __METHOD__);
+
+            $response = null;
+            $model = new Post(['scenario' => 'create']);
+            $query = (new \yii\db\Query())->select('name, id')->from('categories')->all();
+            $categories = ArrayHelper::map($query, 'id', 'name');
+            if (($model->load($_POST) === true) && ($model->validate() === true)) {
+                $model->category_id = (int)$model->category_name;
+                $model->created = Yii::$app->formatter->asDateTime('now', 'php:Y-m-d H:i:s');
+                $model->user_id = Yii::$app->user->id;
+                $status = $model->save();
+                if ($status === true) {
+                    $response = $this->redirect(['/post/view', 'id' => $model->id]);
+                }
+            }
+
+            if ($response === null) {
+                $response = $this->render('create', [
+                    'model' => $model,
+                    'categories' => $categories,
+                ]);
+            }
+            return $response;
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
     }
 
     /**
