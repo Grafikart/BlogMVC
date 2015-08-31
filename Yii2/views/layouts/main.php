@@ -9,7 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\widgets\Sidebar;
-
+var_dump(Yii::$app->user->identity);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -27,26 +27,26 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => 'Blog',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            Yii::$app->user->isGuest ?
-                ['label' => 'Admin', 'url' => ['/site/login']] :
-                [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ],
-        ],
-    ]);
-    NavBar::end();
+        NavBar::begin([
+            'brandLabel' => 'Blog',
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => [
+                'class' => 'navbar-inverse navbar-fixed-top',
+            ],
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'items' => [
+                Yii::$app->user->isGuest ?
+                    ['label' => 'Admin', 'url' => ['/admin/login']] :
+                    [
+                        'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                        'url' => ['/admin/logout'],
+                        'linkOptions' => ['data-method' => 'post']
+                    ],
+            ],
+        ]);
+        NavBar::end();
     ?>
 
     <div class="container">

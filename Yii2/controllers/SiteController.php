@@ -7,7 +7,6 @@ use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use app\models\Post;
 
 class SiteController extends Controller
@@ -79,37 +78,5 @@ class SiteController extends Controller
             Yii::error($e->getMessage(), __METHOD__);
             throw $e;
         }
-    }
-
-    public function actionLogin()
-    {
-        try {
-            Yii:trace('Trace : '.__METHOD__, __METHOD__);
-
-            $response = null;
-            $model = new LoginForm();
-            if ($model->load(Yii::$app->request->post()) && $model->login()) {
-                $response = $this->redirect(['/admin/post']);
-            }
-
-            if ($response === null) {
-                $response = $this->render('login', [
-                    'model' => $model,
-                ]);
-            }
-
-            return $response;
-        } catch(Exception $e) {
-            Yii::error($e->getMessage(), __METHOD__);
-            throw $e;
-        }
-
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
     }
 }
