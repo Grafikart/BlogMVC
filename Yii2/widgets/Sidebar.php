@@ -5,6 +5,7 @@ namespace app\widgets;
 use app\models\Post;
 use app\models\Category;
 use yii\base\Widget;
+use Yii;
 
 class Sidebar extends Widget
 {
@@ -18,7 +19,7 @@ class Sidebar extends Widget
     {
         parent::init();
 
-        $this->posts = Post::find()->orderBy('created')->limit(10)->all();
+        $this->posts = Post::find()->orderBy('created')->limit(Yii::$app->params['pagination'])->orderBy('id DESC')->all();
         $this->categories = Category::find()->limit(5)->all();
     }
 

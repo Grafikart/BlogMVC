@@ -68,6 +68,7 @@ class SiteController extends Controller
             //limit the query using the pagination and fetch articles
             $posts = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
+                ->orderBy('id DESC')
                 ->all();
 
             return $this->render('index', [

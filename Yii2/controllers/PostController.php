@@ -91,7 +91,7 @@ class PostController extends Controller
                 $commentForm->save();
             }
 
-            $comments = $model->getComments()->orderBy('created')->all();
+            $comments = $model->getComments()->orderBy('created DESC')->all();
 
             return $this->render('view', [
                 'model' => $model,
