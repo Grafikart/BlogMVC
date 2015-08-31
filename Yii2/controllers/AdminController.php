@@ -33,7 +33,7 @@ class AdminController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => Post::find(),
             'pagination' => [
-                'pageSize' => 3,
+                'pageSize' => Yii::$app->params['pagination'],
             ]
         ]);
 

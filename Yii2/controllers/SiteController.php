@@ -62,7 +62,7 @@ class SiteController extends Controller
             //create a pagination
             $pagination = new Pagination([
                 'totalCount' => $count,
-                'pageSize' => 2,
+                'pageSize' => Yii::$app->params['pagination'],
             ]);
 
             //limit the query using the pagination and fetch articles
