@@ -6,6 +6,7 @@ $this->title = 'My Yii Application';
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 use yii\widgets\LinkPager;
+use kartik\markdown\Markdown;
 
 ?>
 <div class="site-index">
@@ -27,7 +28,7 @@ use yii\widgets\LinkPager;
                             Category: <?php echo Html::a($post->category->name, '#'); ?>, by <?php echo Html::a(ucfirst($post->user->username), '#'); ?> on <?php echo Yii::$app->formatter->asDate($post->created, 'long'); ?>
                         </p>
                         <p>
-                            <?php echo Html::decode(nl2br(StringHelper::byteSubstr($post->content, 0, 400))).'...'; ?>
+                            <?php echo Html::decode(nl2br(StringHelper::byteSubstr(Markdown::convert($post->content), 0, 400))).'...'; ?>
                             <br>
                             <?php
                                 echo Html::a('Read more...', ['/post/view', 'id' => $post->id], ['class' => 'col-md-2 pull-right btn btn-primary']);
