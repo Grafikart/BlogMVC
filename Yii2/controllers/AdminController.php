@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\LoginForm;
+use app\models\User;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -67,7 +67,7 @@ class AdminController extends Controller
             Yii::trace('Trace : '.__METHOD__, __METHOD__);
 
             $response = null;
-            $model = new LoginForm();
+            $model = new User(['scenario' => 'login']);
             if ($model->load(Yii::$app->request->post()) && $model->login()) {
                 $response = $this->redirect(['/admin/index']);
             }

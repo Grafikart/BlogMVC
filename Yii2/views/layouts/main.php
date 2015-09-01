@@ -9,7 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\widgets\Sidebar;
-var_dump(Yii::$app->user->identity);
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>

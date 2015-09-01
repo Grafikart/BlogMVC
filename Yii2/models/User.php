@@ -3,24 +3,14 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
+use Yii;
 
-class User extends ActiveRecord implements \yii\web\IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
     public $authKey;
     public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '1',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-    ];
+    public $rememberMe = true;
 
     public static function tableName()
     {
@@ -40,14 +30,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        die('findIdentityByAccessToken');
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
 
-        return null;
     }
 
     /**
@@ -58,9 +41,6 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-
-        var_dump(User::find()->where(['username' => $username])->one());
-        exit;
         return User::find()->where(['username' => $username])->one();
     }
 
@@ -88,26 +68,59 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->authKey === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param  string  $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
+    public function scenarios()
     {
-        return $this->password === $password;
+        return [
+            'default' => ['username', 'password'],
+            'login' => ['username', 'password']
+        ];
     }
 
     /**
-     * @inheritdoc
+     * @return array the validation rules.
      */
     public function rules()
     {
         return [
-            [['username', 'password'], 'required'],
-            [['username', 'password'], 'string', 'max' => 255]
+            // username and password are both required
+            [['username', 'password'], 'required', 'on' => ['login']],
+            // rememberMe must be a boolean value
+            ['rememberMe', 'boolean'],
+            // password is validated by validatePassword()
+            ['password', 'validatePassword'],
         ];
+    }
+
+    /**
+     * Validates the password.
+     * This method serves as the inline validation for password.
+     *
+     * @param string $attribute the attribute currently being validated
+     * @param array $params the additional name-value pairs given in the rule
+     */
+    public function validatePassword($attribute)
+    {
+        $user = $this->getUser();
+        if (!Yii::$app->getSecurity()->validatePassword($this->$attribute, $user->password)) {
+            $this->addError($attribute, 'Incorrect username or password.');
+        }
+    }
+
+    /**
+     * Logs in a user using the provided username and password.
+     * @return boolean whether the user is logged in successfully
+     */
+    public function login()
+    {
+        if ($this->validate()) {
+            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+        }
+        return false;
+    }
+
+    public function getUser()
+    {
+        return User::findByUsername($this->username);
     }
 
     /**
