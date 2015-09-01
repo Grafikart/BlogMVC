@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Users;
+use app\models\User;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,7 +33,7 @@ class UsersController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Users::find(),
+            'query' => User::find(),
         ]);
 
         return $this->render('index', [
@@ -60,7 +60,7 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Users();
+        $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -112,7 +112,7 @@ class UsersController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Users::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
