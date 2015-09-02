@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <?php echo Html::activeTextInput($commentForm, 'mail', ['placeholder' => 'Your email', 'class' => 'form-control']);?>
+                        <?php echo Html::activeInput('email', $commentForm, 'mail', ['placeholder' => 'Your email', 'class' => 'form-control']);?>
                     </div>
                 </div>
                 <div class="col-md-6">
