@@ -4,7 +4,6 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Comment;
-use app\models\Category;
 use app\models\Post;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
@@ -104,14 +103,27 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * delete post
+     *
+     * @param $id
+     * @throws Exception
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
     public function actionDelete($id)
     {
         try {
             Yii::trace('Trace :' . __METHOD__, __METHOD__);
 
             $model = $this->findModel($id);
+            Comment::deleteAll('post_id = '.$id);
 
-            $model->delete();
+            if ($model->delete() === false) {
+                throw new \Exception('Erreur durant la suppression');
+            }
+
+            return $this->redirect(['/post/index']);
         } catch(Exception $e) {
             Yii::error($e->getMessage(), __METHOD__);
             throw $e;
