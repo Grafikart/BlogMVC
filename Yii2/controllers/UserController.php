@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
+use app\models\Post;
 use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,7 +14,7 @@ use yii\filters\VerbFilter;
 /**
  * UsersController implements the CRUD actions for Users model.
  */
-class UsersController extends Controller
+class UserController extends Controller
 {
     public function behaviors()
     {
@@ -88,6 +90,44 @@ class UsersController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    /**
+     * get post from a user
+     *
+     * @param $id
+     * @return string
+     * @throws Exception
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
+    public function actionPosts($id)
+    {
+        try {
+            Yii::trace('Trace in :'.__METHOD__, __METHOD__);
+
+            $model  = $this->findModel($id);
+            $query = $model->getPosts();
+            $count = $query->count();
+            $pagination = new Pagination([
+                'totalCount' => $count,
+                'pageSize' => Yii::$app->params['pagination'],
+            ]);
+
+            $posts = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->orderBy('created DESC')
+                ->all();
+
+            return $this->render('posts', [
+                'posts' => $posts,
+                'pagination' => $pagination,
+            ]);
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+
     }
 
     /**
