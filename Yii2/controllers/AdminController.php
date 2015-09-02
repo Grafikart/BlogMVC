@@ -21,12 +21,20 @@ class AdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['index', 'logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['index'],
+                        'allow' => false,
+                        'roles' => ['@'],
+                        'denyCallback' => function($rule, $action) {
+                            throw new \Exception('You are not allowed to access to this section');
+                        }
                     ],
                 ],
             ],
