@@ -82,21 +82,27 @@ class PostController extends Controller
         try {
             Yii::trace('Trace :' . __METHOD__, __METHOD__);
 
+            $response = null;
             $model = $this->findModel($id);
             $commentForm = new Comment(['scenario' => 'create']);
             if (($commentForm->load($_POST) === true) && ($commentForm->validate() === true)) {
                 $commentForm->created = Yii::$app->formatter->asDateTime('now', 'php:Y-m-d H:i:s');
                 $commentForm->post_id = $id;
-                $commentForm->save();
+                if ($commentForm->save() === true) {
+                    $response = $this->redirect(['/post/view', 'id' => $id]);
+                }
             }
-
+            //get all comments
             $comments = $model->getComments()->orderBy('created DESC')->all();
 
-            return $this->render('view', [
-                'model' => $model,
-                'comments' => $comments,
-                'commentForm' => $commentForm,
-            ]);
+            if ($response === null) {
+                $response = $this->render('view', [
+                    'model' => $model,
+                    'comments' => $comments,
+                    'commentForm' => $commentForm,
+                ]);
+            }
+            return $response;
         } catch(Exception $e) {
             Yii::error($e->getMessage(), __METHOD__);
             throw $e;
