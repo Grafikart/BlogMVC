@@ -9,7 +9,7 @@ use yii\helpers\Html;
             echo Html::a(
                 $category->name
                 .Html::tag('span', $category->getPosts()->count(), ['class' => 'badge']),
-                ['/category/view', 'id' => $category->id],
+                ['/category/posts', 'slug' => $category->slug],
                 ['class' => 'list-group-item']
             );
         endforeach;
