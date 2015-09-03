@@ -9,8 +9,7 @@ use Yii;
 
 class Sidebar extends Widget
 {
-    public $categories;
-    public $posts;
+    public $data;
 
     /**
      * @inheritdoc
@@ -18,9 +17,16 @@ class Sidebar extends Widget
     public function init()
     {
         parent::init();
-
-        $this->posts = Post::find()->orderBy('created')->limit(Yii::$app->params['pagination'])->orderBy('id DESC')->all();
-        $this->categories = Category::find()->limit(5)->all();
+        $cache = Yii::$app->cache;
+        $sidebarCacheName = isset(Yii::$app->params['cache']['sidebar']) ? Yii::$app->params['cache']['sidebar'] : null;
+        if ($sidebarCacheName !== null) {
+            $this->data = $cache->get($sidebarCacheName);
+            if ($this->data === false) {
+                $this->data['posts'] = Post::find()->orderBy('created')->limit(Yii::$app->params['pagination'])->orderBy('id DESC')->all();
+                $this->data['categories'] = Category::find()->limit(Yii::$app->params['pagination'])->all();
+                $cache->set($sidebarCacheName, $this->data);
+            }
+        }
     }
 
     /**
@@ -29,8 +35,7 @@ class Sidebar extends Widget
     public function run()
     {
         return $this->render('sidebar', [
-           'posts' => $this->posts,
-            'categories' => $this->categories,
+            'data' => $this->data,
         ]);
     }
 }

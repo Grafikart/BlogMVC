@@ -55,6 +55,10 @@ class PostController extends Controller
                 $model->user_id = Yii::$app->user->id;
                 $status = $model->save();
                 if ($status === true) {
+                    $sidebarCacheName = isset(Yii::$app->params['cache']['sidebar']) ? Yii::$app->params['cache']['sidebar'] : null;
+                    if ($sidebarCacheName !== null) {
+                        Yii::$app->cache->delete($sidebarCacheName);
+                    }
                     $response = $this->redirect(['/post/view', 'id' => $model->id]);
                 }
             }
@@ -127,6 +131,10 @@ class PostController extends Controller
 
             if ($model->delete() === false) {
                 throw new \Exception('Erreur durant la suppression');
+            }
+            $sidebarCacheName = isset(Yii::$app->params['cache']['sidebar']) ? Yii::$app->params['cache']['sidebar'] : null;
+            if ($sidebarCacheName !== null) {
+                Yii::$app->cache->delete($sidebarCacheName);
             }
 
             return $this->redirect(['/post/index']);
