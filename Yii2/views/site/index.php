@@ -21,7 +21,7 @@ use kartik\markdown\Markdown;
         <?php foreach($posts as $post): ?>
             <article>
                 <div class="row">
-                    <div class="col-lg-12 col-md-4">
+                    <div class="col-lg-12 col-md-12">
                         <h2><?php echo Html::decode(Html::a($post->name, ['/post/view/', 'id' => $post->id])); ?></h2>
 
                         <p>
