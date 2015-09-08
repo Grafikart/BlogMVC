@@ -6,6 +6,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'homeUrl' => ['/site/index'],
     'modules' => [
         'markdown' => [
             'class' => 'kartik\markdown\Module'
@@ -22,6 +23,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'loginUrl' => ['/admin/index'],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -43,6 +45,25 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'urlManager' => [
+            //'enablePrettyUrl' => true,
+            'showScriptName' => true,
+            'rules' => [
+                'homepage' => '/',
+                'homepage' => 'site/index',
+
+
+                //user
+                'author/<id:\d+>' => 'user/posts',
+                'author/<id:\d+>' => 'user/posts',
+
+                //admin
+                'admin' => 'admin/login',
+
+                //category
+                'category/<slug:[\w|-]+>' => 'category/posts',
+            ]
+        ]
     ],
     'params' => $params,
 ];
