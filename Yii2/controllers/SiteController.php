@@ -2,38 +2,16 @@
 
 namespace app\controllers;
 
-use Yii;
-use yii\data\Pagination;
-use yii\filters\AccessControl;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
 use app\models\Post;
+use yii\data\Pagination;
+use yii\web\Controller;
+use Yii;
 
 class SiteController extends Controller
 {
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function actions()
     {
         return [
@@ -47,6 +25,13 @@ class SiteController extends Controller
         ];
     }
 
+    /**
+     * display all posts
+     *
+     * @return string
+     * @throws Exception
+     * @throws \Exception
+     */
     public function actionIndex()
     {
         try {

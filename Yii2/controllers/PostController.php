@@ -2,20 +2,23 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\Comment;
 use app\models\Post;
-use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * PostController implements the CRUD actions for Post model.
  */
 class PostController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -26,20 +29,12 @@ class PostController extends Controller
     }
 
     /**
-     * Lists all Post models.
-     * @return mixed
+     * create a post
+     *
+     * @return null|string|\yii\web\Response
+     * @throws Exception
+     * @throws \Exception
      */
-    public function actionIndex()
-    {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Post::find(),
-        ]);
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
     public function actionCreate()
     {
         try {
@@ -47,7 +42,7 @@ class PostController extends Controller
 
             $response = null;
             $model = new Post(['scenario' => 'create']);
-            $query = (new \yii\db\Query())->select('name, id')->from('categories')->all();
+            $query = (new Query())->select('name, id')->from('categories')->all();
             $categories = ArrayHelper::map($query, 'id', 'name');
             if (($model->load($_POST) === true) && ($model->validate() === true)) {
                 $model->category_id = (int)$model->category_name;
@@ -78,6 +73,7 @@ class PostController extends Controller
 
     /**
      * Displays a single Post model.
+     *
      * @param integer $id
      * @return mixed
      */

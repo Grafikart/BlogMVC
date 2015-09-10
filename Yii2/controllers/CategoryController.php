@@ -3,11 +3,10 @@
 namespace app\controllers;
 
 use app\models\Category;
-use Yii;
 use yii\data\Pagination;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * UsersController implements the CRUD actions for Users model.
@@ -15,18 +14,6 @@ use yii\filters\VerbFilter;
 class CategoryController extends Controller
 {
     public $defaultAction = 'posts';
-
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * get post from a user

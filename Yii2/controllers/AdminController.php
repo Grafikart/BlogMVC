@@ -2,13 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\User;
 use app\models\Post;
+use app\models\User;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use Yii;
 
 /**
@@ -16,26 +16,35 @@ use Yii;
  */
 class AdminController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
+
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['index', 'logout'],
+                'only' => ['index', 'login', 'logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['index', 'logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                     [
                         'actions' => ['index'],
                         'allow' => false,
-                        'roles' => ['@'],
+                        'roles' => ['?'],
                         'denyCallback' => function($rule, $action) {
                             throw new \Exception('You are not allowed to access to this section');
                         }
                     ],
+                    [
+                        'actions' => ['login'],
+                        'allow' => false,
+                        'roles' => ['@'],
+                    ]
                 ],
             ],
             'verbs' => [
@@ -45,21 +54,30 @@ class AdminController extends Controller
     }
 
     /**
-     * Lists all Post models.
+     * Lists all Post models with CRUD actions
+     *
      * @return mixed
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Post::find(),
-            'pagination' => [
-                'pageSize' => Yii::$app->params['pagination'],
-            ]
-        ]);
+        try {
+            Yii::trace('Trace : '.__METHOD__, __METHOD__);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+            $dataProvider = new ActiveDataProvider([
+                'query' => Post::find(),
+                'pagination' => [
+                    'pageSize' => Yii::$app->params['pagination'],
+                ]
+            ]);
+
+            return $this->render('index', [
+                'dataProvider' => $dataProvider,
+            ]);
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+
     }
 
     /**
