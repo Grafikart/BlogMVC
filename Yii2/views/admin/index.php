@@ -46,13 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{view} {update} {delete}',
                 'buttons' => [
                     'view' => function($url, $model, $key) {
-                        return Html::a('Edit', ['/post/view/', 'id' => $model->id], ['class' => 'btn btn-primary']);
+                        return Html::a('view', ['/post/view/', 'id' => $model->id], ['class' => 'btn btn-primary']);
                     },
                     'update' => function($url, $model, $key) {
                         return Html::a('update', ['/post/update/', 'id' => $model->id], ['class' => 'btn btn-primary']);
                     },
                     'delete' => function($url, $model, $key) {
-                        return Html::a('Delete', ['/post/delete/', 'id' => $model->id], ['class' => 'btn btn-danger']);
+                        return Html::a('delete', ['/post/delete/', 'id' => $model->id], ['class' => 'btn btn-danger']);
                     }
                 ]
             ],
