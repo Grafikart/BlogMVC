@@ -77,19 +77,22 @@ class PostController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($slug)
     {
         try {
             Yii::trace('Trace :' . __METHOD__, __METHOD__);
 
+            $model = Post::find()->where(['slug' => $slug])->one();
+            if ($model === null) {
+                throw new NotFoundHttpException();
+            }
             $response = null;
-            $model = $this->findModel($id);
             $commentForm = new Comment(['scenario' => 'create']);
             if (($commentForm->load($_POST) === true) && ($commentForm->validate() === true)) {
                 $commentForm->created = Yii::$app->formatter->asDateTime('now', 'php:Y-m-d H:i:s');
-                $commentForm->post_id = $id;
+                $commentForm->post_id = $model->id;
                 if ($commentForm->save() === true) {
-                    $response = $this->redirect(['/post/view', 'id' => $id]);
+                    $response = $this->redirect(['/post/view', 'slug' => $slug]);
                 }
             }
             //get all comments

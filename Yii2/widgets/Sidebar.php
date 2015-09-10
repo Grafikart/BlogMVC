@@ -22,7 +22,7 @@ class Sidebar extends Widget
         if ($sidebarCacheName !== null) {
             $this->data = $cache->get($sidebarCacheName);
             if ($this->data === false) {
-                $this->data['posts'] = Post::find()->orderBy('created')->limit(Yii::$app->params['pagination'])->orderBy('id DESC')->all();
+                $this->data['posts'] = Post::find()->limit(Yii::$app->params['pagination'])->orderBy('created DESC')->all();
                 $this->data['categories'] = Category::find()->limit(Yii::$app->params['pagination'])->all();
                 $cache->set($sidebarCacheName, $this->data);
             }

@@ -21,7 +21,7 @@ use yii\helpers\Html;
         foreach($data['posts'] as $post):
             echo Html::a(
                 $post->name,
-                ['/post/view', 'id' => $post->id],
+                ['/post/view', 'slug' => $post->slug],
                 ['class' => 'list-group-item']
             );
         endforeach;
