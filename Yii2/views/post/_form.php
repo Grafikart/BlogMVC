@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
         }
     ?>
 
-    <?= $form->field($model, 'category_name')->dropdownList($categories, ['prompt' => 'Choose a category'])->label('Category') ?>
+    <?= $form->field($model, 'category_name')->dropdownList($categories, ['empty' => 'Choose a category'])->label('Category') ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

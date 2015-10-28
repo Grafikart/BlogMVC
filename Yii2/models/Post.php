@@ -35,6 +35,7 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             'create' => ['category_name', 'name', 'content'],
+            'update' => ['category_name', 'name', 'content'],
         ];
     }
 

@@ -54,7 +54,7 @@ class PostController extends Controller
                     if ($sidebarCacheName !== null) {
                         Yii::$app->cache->delete($sidebarCacheName);
                     }
-                    $response = $this->redirect(['/post/view', 'id' => $model->id]);
+                    $response = $this->redirect(['/post/view', 'slug' => $model->slug]);
                 }
             }
 
@@ -111,6 +111,53 @@ class PostController extends Controller
             throw $e;
         }
     }
+
+    /**
+     * update Post model.
+     *
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($slug)
+    {
+        try {
+            Yii::trace('Trace :' . __METHOD__, __METHOD__);
+
+            $model = Post::find()->where(['slug' => $slug])->one();
+            if ($model === null) {
+                throw new NotFoundHttpException();
+            }
+            $response = null;
+            $model->scenario = 'update';
+            $query = (new Query())->select('name, id')->from('categories')->all();
+            $categories = ArrayHelper::map($query, 'id', 'name');
+            if (($model->load($_POST) === true) && ($model->validate() === true)) {
+                $model->category_id = (int)$model->category_name;
+                $model->created = Yii::$app->formatter->asDateTime('now', 'php:Y-m-d H:i:s');
+                $model->user_id = Yii::$app->user->id;
+                $status = $model->save();
+                if ($status === true) {
+                    $sidebarCacheName = isset(Yii::$app->params['cache']['sidebar']) ? Yii::$app->params['cache']['sidebar'] : null;
+                    if ($sidebarCacheName !== null) {
+                        Yii::$app->cache->delete($sidebarCacheName);
+                    }
+                    $response = $this->redirect(['/post/view', 'slug' => $model->slug]);
+                }
+            }
+
+            if ($response === null) {
+                $response = $this->render('create', [
+                    'model' => $model,
+                    'categories' => $categories,
+                ]);
+            }
+            return $response;
+        } catch(Exception $e) {
+            Yii::error($e->getMessage(), __METHOD__);
+            throw $e;
+        }
+    }
+
 
     /**
      * delete post
