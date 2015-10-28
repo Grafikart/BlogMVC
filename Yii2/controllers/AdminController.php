@@ -16,6 +16,8 @@ use Yii;
  */
 class AdminController extends Controller
 {
+    public $defaultAction = 'login';
+
     /**
      * @inheritdoc
      */
@@ -33,17 +35,25 @@ class AdminController extends Controller
                         'roles' => ['@'],
                     ],
                     [
+                        'actions' => ['login'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
                         'actions' => ['index'],
                         'allow' => false,
                         'roles' => ['?'],
                         'denyCallback' => function($rule, $action) {
-                            throw new \Exception('You are not allowed to access to this section');
+                            return $this->redirect(['login']);
                         }
                     ],
                     [
                         'actions' => ['login'],
                         'allow' => false,
                         'roles' => ['@'],
+                        'denyCallback' => function($rule, $action) {
+                            return $this->redirect(['index']);
+                        }
                     ]
                 ],
             ],
