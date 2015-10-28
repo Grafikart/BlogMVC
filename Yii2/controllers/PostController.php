@@ -183,7 +183,7 @@ class PostController extends Controller
                 Yii::$app->cache->delete($sidebarCacheName);
             }
 
-            return $this->redirect(['/post/index']);
+            return $this->redirect(['/admin/index']);
         } catch(Exception $e) {
             Yii::error($e->getMessage(), __METHOD__);
             throw $e;
