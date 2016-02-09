@@ -194,7 +194,7 @@ return array(
 		'View'            => 'Illuminate\Support\Facades\View',
 
 		'Markdown' 		  => 'GrahamCampbell\Markdown\Facades\Markdown',
-		'BootForm'        => 'Grafikart\Facades\Bootform'
+		'BootForm'        => 'Grafikart\Facades\BootForm'
 	),
 
 );
