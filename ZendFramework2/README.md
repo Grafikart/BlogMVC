@@ -3,7 +3,8 @@ Checkout project and run composer install
 # BlogMVC | ZendFramework 2
 
 ## Install
-- Change db settings in ```config/autoload/doctrine.local.php```
+- Copy ```config/autoload/doctrine.local.php.dist``` to ```config/autoload/doctrine.local.php```
+  and change the settings
 - Run composer : ```composer install```
 - Create database using ```dump.sql```
 
