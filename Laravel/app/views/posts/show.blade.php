@@ -7,7 +7,7 @@
             <h1>{{ $post->name }}</h1>
 
             <p><small>
-                Category : <a href="{{ $post->category->url }}">{{ $post->category->name }}</a>,
+                Category : <a href="{{ $post->category_url }}">{{ $post->category->name }}</a>,
                 by <a href="index.html">{{ $post->user->username }}</a> on <em>{{ $post->created_at->format('F jS, H:i') }}</em>
             </small></p>
 
