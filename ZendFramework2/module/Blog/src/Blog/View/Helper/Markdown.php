@@ -2,6 +2,7 @@
 /**
  * Blog
  */
+
 namespace Blog\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;

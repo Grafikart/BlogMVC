@@ -36,9 +36,13 @@ class PostController extends CoreController
     /** @var  AddPostForm */
     private $addPostForm;
 
-    public function __construct(PostService $postService, CommentService $commentService, CommentForm $commentForm,
-        EditPostForm $editPostForm, AddPostForm $addPostForm)
-    {
+    public function __construct(
+        PostService $postService,
+        CommentService $commentService,
+        CommentForm $commentForm,
+        EditPostForm $editPostForm,
+        AddPostForm $addPostForm
+    ) {
         $this->postService    = $postService;
         $this->commentService = $commentService;
         $this->commentForm    = $commentForm;

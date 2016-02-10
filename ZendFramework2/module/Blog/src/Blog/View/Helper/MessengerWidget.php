@@ -8,7 +8,6 @@ use Zend\View\Model\ViewModel;
 
 class MessengerWidget extends AbstractHelper
 {
-
     /** @var \Zend\View\Helper\FlashMessenger $flashMessenger */
     private $flashMessenger;
 
@@ -18,9 +17,6 @@ class MessengerWidget extends AbstractHelper
     }
 
     /**
-     * @param mixed $errors
-     * @param mixed $infos
-     * @param mixed $success
      * @return string
      */
     public function __invoke()

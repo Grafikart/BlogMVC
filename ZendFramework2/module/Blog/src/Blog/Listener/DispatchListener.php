@@ -12,7 +12,6 @@ use Zend\Mvc\MvcEvent;
 
 class DispatchListener extends AbstractListenerAggregate
 {
-
     /** @var  CacheService */
     private $cacheService;
 

@@ -10,7 +10,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class DispatchListenerFactory implements FactoryInterface
 {
-
     /**
      * @param  ServiceLocatorInterface $serviceLocator
      * @return DispatchListener

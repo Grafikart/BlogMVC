@@ -17,16 +17,16 @@ class Truncate extends AbstractHelper
             $text = strip_tags($text);
         }
 
-        $trunc_at_space = true;
+        $truncAtSpace = true;
         $limit     -= strlen('');
-        $string_length  = strlen($text);
+        $stringLength = strlen($text);
 
-        if ($string_length <= $limit){
+        if ($stringLength <= $limit) {
             return $text;
         }
 
-        if ( $trunc_at_space && ($space_position = strrpos($text, ' ', $limit - $string_length)) ) {
-            $limit = $space_position;
+        if ($truncAtSpace && ($spacePosition = strrpos($text, ' ', $limit - $stringLength))) {
+            $limit = $spacePosition;
         }
 
         return substr_replace($text, '', $limit) . '...';

@@ -10,7 +10,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class PostServiceFactory implements FactoryInterface
 {
-
     /**
      * @param  ServiceLocatorInterface $serviceLocator
      * @return PostService

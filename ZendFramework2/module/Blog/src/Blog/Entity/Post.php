@@ -85,27 +85,27 @@ class Post
         $this->comments = new ArrayCollection();
     }
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getSlug()
+    public function getSlug()
     {
         return $this->slug;
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 
-    function getCreated()
+    public function getCreated()
     {
         if ($this->created) {
             return clone $this->created;
@@ -113,71 +113,71 @@ class Post
         return $this->created;
     }
 
-    function getCategory()
+    public function getCategory()
     {
         return $this->category;
     }
 
-    function getUser()
+    public function getUser()
     {
         return $this->user;
     }
 
-    function getComments()
+    public function getComments()
     {
         return $this->comments;
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = $id;
 
         return $this;
     }
 
-    function setName($name)
+    public function setName($name)
     {
         $this->name = $name;
 
         return $this;
     }
 
-    function setSlug($slug)
+    public function setSlug($slug)
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
         $this->content = $content;
 
         return $this;
     }
 
-    function setCreated(DateTime $created)
+    public function setCreated(DateTime $created)
     {
         $this->created = clone $created;
 
         return $this;
     }
 
-    function setCategory(Category $category)
+    public function setCategory(Category $category)
     {
         $this->category = $category;
 
         return $this;
     }
 
-    function setUser(User $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
 
         return $this;
     }
 
-    function addComments(Comment $comments)
+    public function addComments(Comment $comments)
     {
         if (! $this->comments->contains($comments)) {
             $this->comments->add($comments);
@@ -186,7 +186,7 @@ class Post
         return $this;
     }
 
-    function removeComments(Comment $comments)
+    public function removeComments(Comment $comments)
     {
         if ($this->comments->contains($comments)) {
             $this->comments->removeElement($comments);

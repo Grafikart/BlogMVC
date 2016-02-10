@@ -61,72 +61,72 @@ class Comment
      */
     private $post;
 
-    function getId()
+    public function getId()
     {
         return $this->id;
     }
 
-    function getUsername()
+    public function getUsername()
     {
         return $this->username;
     }
 
-    function getMail()
+    public function getMail()
     {
         return $this->mail;
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 
-    function getCreated()
+    public function getCreated()
     {
         return $this->created;
     }
 
-    function getPost()
+    public function getPost()
     {
         return $this->post;
     }
 
-    function setId($id)
+    public function setId($id)
     {
         $this->id = $id;
 
         return $this;
     }
 
-    function setUsername($username)
+    public function setUsername($username)
     {
         $this->username = $username;
 
         return $this;
     }
 
-    function setMail($mail)
+    public function setMail($mail)
     {
         $this->mail = $mail;
 
         return $this;
     }
 
-    function setContent($content)
+    public function setContent($content)
     {
         $this->content = $content;
 
         return $this;
     }
 
-    function setCreated(DateTime $created)
+    public function setCreated(DateTime $created)
     {
         $this->created = clone $created;
 
         return $this;
     }
 
-    function setPost(Post $post)
+    public function setPost(Post $post)
     {
         $this->post = $post;
 

@@ -62,7 +62,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'flashMessages' => function($sm) {
+                'flashMessages' => function ($sm) {
                     $flashmessenger = $sm->getServiceLocator()
                         ->get('ControllerPluginManager')
                         ->get('flashmessenger');
@@ -90,13 +90,13 @@ class Module implements
              */
             'initializers' => array(
                 'ObjectManagerInitializer' => function ($element, $formElements) {
-                        if ($element instanceof ObjectManagerAwareInterface) {
-                            $services = $formElements->getServiceLocator();
-                            $entityManager = $services->get('orm_em');
+                    if ($element instanceof ObjectManagerAwareInterface) {
+                        $services = $formElements->getServiceLocator();
+                        $entityManager = $services->get('orm_em');
 
-                            $element->setObjectManager($entityManager);
-                        }
-                    },
+                        $element->setObjectManager($entityManager);
+                    }
+                },
             ),
         );
     }

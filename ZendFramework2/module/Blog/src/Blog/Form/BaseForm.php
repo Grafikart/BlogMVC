@@ -13,7 +13,7 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 
 abstract class BaseForm extends Form
 {
-    private $_options = array(
+    private $options = array(
         'method' => 'post'
     );
 
@@ -21,7 +21,7 @@ abstract class BaseForm extends Form
     {
         parent::__construct($name);
 
-        $options = ArrayUtils::merge($this->_options, $options);
+        $options = ArrayUtils::merge($this->options, $options);
 
         $this->setName(strtolower($name));
         $this->setAttribute('method', (isset($options['method']) ? $options['method'] : 'post'));

@@ -11,13 +11,11 @@ namespace Blog\Controller;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\View\Model\ViewModel;
-
 use Blog\Form\ConnexionForm;
 use Blog\Entity\User;
 
 class ConnexionController extends CoreController
 {
-
     /**
      * @var ConnexionForm
      */
