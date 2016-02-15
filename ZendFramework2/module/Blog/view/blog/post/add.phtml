@@ -6,16 +6,10 @@
 <?php echo $this->form()->openTag($this->form); ?>
 <?php $postForm = $this->form->get('post'); ?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="form-group">
                 <?php echo $this->formLabel($postForm->get('name')) ?>
                 <?php echo $this->formInput($postForm->get('name')) ?>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <?php echo $this->formLabel($postForm->get('slug')) ?>
-                <?php echo $this->formInput($postForm->get('slug')) ?>
             </div>
         </div>
     </div>

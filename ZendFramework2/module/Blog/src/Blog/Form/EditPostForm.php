@@ -34,7 +34,6 @@ class EditPostForm extends Form
                     'name',
                     'category',
                     'user',
-                    'slug',
                     'content',
                 ),
                 'csrf_post',

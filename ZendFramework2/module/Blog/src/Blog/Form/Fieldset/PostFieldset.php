@@ -80,20 +80,6 @@ class PostFieldset extends Fieldset implements
 
         $this->add(
             array(
-                'name' => 'slug',
-                'type' => 'Zend\Form\Element\Text',
-                'attributes' => array(
-                    'class' => 'form-control',
-                    'placeholder' => 'PLACEHOLDER_SLUG',
-                ),
-                'options' => array(
-                    'label' => 'INPUT_SLUG',
-                ),
-            )
-        );
-
-        $this->add(
-            array(
                 'name' => 'content',
                 'type' => 'Zend\Form\Element\Textarea',
                 'attributes' => array(
@@ -139,9 +125,6 @@ class PostFieldset extends Fieldset implements
             ),
             'user' => array(
                 'required' => true,
-            ),
-            'slug' => array(
-                'required' => false,
             ),
             'content' => array(
                 'required' => true,
