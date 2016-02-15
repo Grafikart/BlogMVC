@@ -145,13 +145,6 @@ class Post
         return $this;
     }
 
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
     public function setContent($content)
     {
         $this->content = $content;
@@ -204,16 +197,5 @@ class Post
     public function preSave()
     {
         $this->setCreated(new DateTime());
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function preUpdate()
-    {
-        if ('' == trim($this->getSlug())) {
-            $this->setSlug(\Gedmo\Sluggable\Util\Urlizer::urlize($this->getName()));
-        }
     }
 }
