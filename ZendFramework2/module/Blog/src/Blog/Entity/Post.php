@@ -4,6 +4,7 @@ namespace Blog\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use DateTime;
 
 /**
@@ -35,6 +36,8 @@ class Post
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255, nullable=false)
+     *
+     * @Gedmo\Slug(fields={"name"}, separator="-", unique=true)
      */
     private $slug;
 
