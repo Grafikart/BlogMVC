@@ -1,4 +1,5 @@
-
+@()
+@import views.html.helpers.pagination
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -81,13 +82,7 @@
                     <hr>
 
                     <ul class="pagination">
-                        <li><a href="index.scala.html">&laquo;</a></li>
-                        <li><a href="index.scala.html">1</a></li>
-                        <li><a href="index.scala.html">2</a></li>
-                        <li><a href="index.scala.html">3</a></li>
-                        <li><a href="index.scala.html">4</a></li>
-                        <li><a href="index.scala.html">5</a></li>
-                        <li><a href="index.scala.html">&raquo;</a></li>
+                        @pagination(int2Integer(0), int2Integer(5))
                     </ul>
                 </div>
 
