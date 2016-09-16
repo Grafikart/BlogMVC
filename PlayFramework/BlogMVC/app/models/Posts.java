@@ -45,6 +45,8 @@ public class Posts {
 
   public Posts() {
     this.id = 0L;
+    this.name = "";
+    this.slug = null;
     this.contents = "";
   }
 

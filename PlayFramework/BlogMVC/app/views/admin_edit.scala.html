@@ -1,4 +1,4 @@
-@(post: Posts, userList: java.util.List[Users])
+@(post: Posts, userList: java.util.List[Users], categoryList: java.util.List[Categories])
 
 <!DOCTYPE html>
 <html lang="en">
@@ -54,13 +54,13 @@
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="PostName">Name :</label>
-                            <input name="name" class="form-control" maxlength="255" type="text" value="Space Pilot 3000" id="PostName" required="required">
+                            <input name="name" class="form-control" maxlength="255" type="text" value="@post.name" id="PostName" required="required">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="PostSlug">Slug :</label>
-                            <input name="slug" class="form-control" maxlength="255" type="text" value="space-pilot-3000" id="PostSlug" required="required">
+                            <input name="slug" class="form-control" maxlength="255" type="text" value="@if(post.slug != null){ @post.slug.name}" id="PostSlug" required="required">
                         </div>
                     </div>
                 </div>
@@ -69,17 +69,18 @@
                         <div class="form-group">
                             <label for="PostCategoryId">Category :</label>
                             <select name="category_id" class="form-control" id="PostCategoryId">
-                                <option value="1">category #1</option>
-
+                                @for(c<-categoryList) {
+                                    <option value="@c.id">@c.name</option>
+                                }
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="PostUserId">Author :</label>
-                            <select name="data[Post][user_id]" class="form-control" id="PostUserId">
+                            <select name="user_id" class="form-control" id="PostUserId">
                                 @for(u <- userList){
-                                    <option value="@u.id">@u.username</option>
+                                    <option value="@u.id" @if(post.user != null && post.user.id == u.id){ selected="selected" } >@u.username</option>
                                 }
                             </select>
                         </div>
@@ -87,7 +88,7 @@
                 </div>
                 <div class="form-group required">
                     <label for="PostContent">Content :</label>
-                    <textarea name="data[Post][content]" class="form-control" cols="30" rows="6" id="PostContent" required="required">@post.contents</textarea>
+                    <textarea name="content" class="form-control" cols="30" rows="6" id="PostContent" required="required">@post.contents</textarea>
                 </div>
                 <div class="submit">
                     <input class="btn btn-primary" type="submit" value="Edit">

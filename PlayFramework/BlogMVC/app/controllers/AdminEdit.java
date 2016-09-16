@@ -1,6 +1,7 @@
 package controllers;
 
 import helpers.Secured;
+import models.Categories;
 import models.Posts;
 import models.Users;
 import play.db.jpa.Transactional;
@@ -17,12 +18,12 @@ import play.mvc.Security;
 public class AdminEdit extends Controller {
 
   public Result newPost() {
-    return ok(views.html.admin_edit.render(new Posts(), Users.findAll()));
+    return ok(views.html.admin_edit.render(new Posts(), Users.findAll(), Categories.findAll()));
   }
 
   public Result editPost(Long postId) {
     Posts posts = Posts.find(postId);
-    return ok(views.html.admin_edit.render(posts, Users.findAll()));
+    return ok(views.html.admin_edit.render(posts, Users.findAll(), Categories.findAll()));
   }
 
   public Result savePost(Long postId) {

@@ -36,6 +36,7 @@ public class Categories {
       return null;
     }
   }
+
   public static Categories find(String name) {
     try {
       return JPA.em().createQuery("SELECT c FROM Categories c WHERE c.name = :name", Categories.class).setParameter("name", name).getSingleResult();
@@ -44,9 +45,10 @@ public class Categories {
       return null;
     }
   }
+
   public static List<Categories> findAll() {
     try {
-      return JPA.em().createQuery("SELECT c FROM Categories c WHERE c.name = :name", Categories.class).getResultList();
+      return JPA.em().createQuery("SELECT c FROM Categories c", Categories.class).getResultList();
     } catch (Exception e) {
       Logger.error(e.getMessage());
       return new ArrayList<>();

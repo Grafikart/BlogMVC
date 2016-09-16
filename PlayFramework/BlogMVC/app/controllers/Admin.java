@@ -43,6 +43,7 @@ public class Admin extends Controller {
     session().clear();
     //TODO replace by token
     session("email", username);
+    session("id", user.id.toString());
     return redirect(routes.Admin.index());
   }
 
