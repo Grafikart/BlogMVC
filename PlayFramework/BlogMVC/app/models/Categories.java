@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
@@ -18,7 +19,8 @@ public class Categories {
   @GeneratedValue(strategy = GenerationType.AUTO)
   public Long id;
   public String name;
-  public String slug;
+  @OneToOne
+  public Slug slug;
   @OneToMany
   public List<Posts> associatedPost;
 }

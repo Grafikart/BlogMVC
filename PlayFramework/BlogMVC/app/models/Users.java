@@ -5,6 +5,8 @@ import play.db.jpa.JPA;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by greg on 16/09/2016.
@@ -27,6 +29,15 @@ public class Users {
           .getSingleResult();
     } catch (Exception e) {
       return null;
+    }
+  }
+
+  public static List<Users> findAll() {
+    try {
+      return JPA.em().createQuery("SELECT u FROM Users u", Users.class)
+          .getResultList();
+    } catch (Exception e) {
+      return new ArrayList<>();
     }
   }
 }
