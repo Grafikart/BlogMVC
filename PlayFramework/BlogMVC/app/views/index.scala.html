@@ -1,4 +1,4 @@
-@()
+@(currentPage: Integer, maxPage: Integer)
 @import views.html.helpers.pagination
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +82,7 @@
                     <hr>
 
                     <ul class="pagination">
-                        @pagination(int2Integer(0), int2Integer(5))
+                        @pagination(int2Integer(currentPage), int2Integer(5))
                     </ul>
                 </div>
 
