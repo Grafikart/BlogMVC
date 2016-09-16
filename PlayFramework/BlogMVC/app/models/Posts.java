@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.db.jpa.JPA;
 
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,21 +49,41 @@ public class Posts {
   }
 
   public static Posts find(Long id) {
-    return JPA.em().createQuery("SELECT p FROM Posts p WHERE p.id = :id", Posts.class)
-        .setParameter("id", id)
-        .getSingleResult();
+    try {
+      return JPA.em().createQuery("SELECT p FROM Posts p WHERE p.id = :id", Posts.class)
+          .setParameter("id", id)
+          .getSingleResult();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return null;
+    }
   }
 
   public static List<Posts> findAll() {
-    return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
+    try {
+      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return new ArrayList<>();
+    }
   }
 
   public static List<Posts> findFivePost() {
-    return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
+    try {
+      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return new ArrayList<>();
+    }
   }
 
   public static List<Posts> findFivePostFrom(Integer startPosition) {
-    return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).setFirstResult(startPosition).getResultList();
+    try {
+      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).setFirstResult(startPosition).getResultList();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return new ArrayList<>();
+    }
   }
 
 
