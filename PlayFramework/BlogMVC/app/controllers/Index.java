@@ -22,3 +22,4 @@ public class Index extends Controller {
     return ok(views.html.index.render(pageNb, all.size()));
   }
 }
+

@@ -31,12 +31,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.scala.html">Blog</a>
+                    <a class="navbar-brand" href="@routes.Index.index(1)">Blog</a>
                 </div>
 
                 <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li><a href="login.scala.html">Admin</a></li>
+                        <li><a href="@routes.Admin.adminLogin()">Admin</a></li>
                     </ul>
                 </div>
 
@@ -55,7 +55,7 @@
                         <h1>The Route of All Evil</h1>
                         <p><small>
                             Category : <a href="category.html">Nature</a>,
-                            by <a href="index.scala.html">John Doe</a> on <em>Aug 24th 2013</em>
+                            by <a href="@routes.Index.index(1)">John Doe</a> on <em>Aug 24th 2013</em>
                         </small></p>
                     </div>
 

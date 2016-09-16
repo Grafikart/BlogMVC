@@ -4,7 +4,12 @@
 
 # Home page
 GET     /                           controllers.Index.index(page: Integer ?= 1)
-GET     /index.scala.html           controllers.Index.index(page: Integer ?= 1)
+GET     /@routes.Index.index(1)           controllers.Index.index(page: Integer ?= 1)
+
+GET     /admin                      controllers.Admin.index
+GET     /adminLogin                 controllers.Admin.adminLogin
+POST    /adminLogin                 controllers.Admin.adminPostLogin
+GET     /adminLogout                controllers.Admin.adminLogout
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
