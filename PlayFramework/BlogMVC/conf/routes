@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           controllers.Index.index(page: Integer ?= 1)
-GET     /@routes.Index.index(1)           controllers.Index.index(page: Integer ?= 1)
+GET     /@routes.Index.index(1)     controllers.Index.index(page: Integer ?= 1)
 
 GET     /admin                      controllers.Admin.index
 GET     /adminLogin                 controllers.Admin.adminLogin
@@ -18,4 +18,5 @@ POST    /admin/save                 controllers.AdminEdit.savePost(postId: Long)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
+GET     /:slugName                  controllers.Slugs.slug(slugName: String)
     

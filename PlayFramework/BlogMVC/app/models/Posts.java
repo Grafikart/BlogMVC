@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import play.Logger;
 import play.db.jpa.JPA;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +37,7 @@ public class Posts {
 
   @NotEmpty
   public String name;
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   public Slug slug;
   @Column(columnDefinition = "TEXT")
   public String contents;
@@ -49,6 +50,8 @@ public class Posts {
     this.slug = null;
     this.contents = "";
   }
+
+
 
   public static Posts find(Long id) {
     try {

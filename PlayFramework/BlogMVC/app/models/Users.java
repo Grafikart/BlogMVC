@@ -31,6 +31,15 @@ public class Users {
       return null;
     }
   }
+  public static Users find(Long id) {
+    try {
+      return JPA.em().createQuery("SELECT u FROM Users u WHERE u.id = :id", Users.class)
+          .setParameter("id", id)
+          .getSingleResult();
+    } catch (Exception e) {
+      return null;
+    }
+  }
 
   public static List<Users> findAll() {
     try {

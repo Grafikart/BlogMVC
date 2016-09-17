@@ -3,14 +3,23 @@ package controllers;
 import helpers.Secured;
 import models.Categories;
 import models.Posts;
+import models.Slug;
 import models.Users;
+import org.joda.time.DateTime;
+import play.Logger;
+import play.data.DynamicForm;
+import play.data.Form;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
- * Created by greg on 17/09/2016.
+ * Created by grimaceplume on 17/09/2016.
  */
 
 @Transactional
@@ -27,6 +36,49 @@ public class AdminEdit extends Controller {
   }
 
   public Result savePost(Long postId) {
+    DynamicForm dynamicForm = Form.form().bindFromRequest();
+    String name = dynamicForm.get("name");
+    String slug = dynamicForm.get("slug");
+    String category_id = dynamicForm.get("category_id");
+    String user_id = dynamicForm.get("user_id");
+    String content = dynamicForm.get("content");
+
+    Posts post;
+
+    if (postId == 0) {
+      post = new Posts();
+    } else {
+      post = Posts.find(postId);
+      if (post == null) {
+        post = new Posts();
+        post.contents = content;
+        post.name = name;
+        flash("error", "This post id doesn't exist");
+        return badRequest(views.html.admin_edit.render(post, Users.findAll(), Categories.findAll()));
+      }
+    }
+    post.contents = content;
+    post.name = name;
+    if (post.name.length() == 0 || post.contents.length() == 0) {
+      return badRequest(views.html.admin_edit.render(post, Users.findAll(), Categories.findAll()));
+    }
+    post.slug = new Slug();
+    try {
+      post.slug.name = URLEncoder.encode(slug.length() > 0 ? slug : name, "UTF-8");
+    } catch (UnsupportedEncodingException e) {
+      Logger.error(e.getMessage());
+      return internalServerError();
+    }
+    post.slug.post = post;
+    try {
+      post.user = Users.find(Long.parseLong(user_id));
+      post.categories = Categories.find(Long.parseLong(category_id));
+    } catch (NumberFormatException e) {
+      Logger.error(e.getMessage());
+      return internalServerError();
+    }
+    post.created = DateTime.now();
+    JPA.em().persist(post);
     return redirect(routes.Admin.index());
   }
 }
