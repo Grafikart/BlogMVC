@@ -79,6 +79,6 @@ public class AdminEdit extends Controller {
     }
     post.created = DateTime.now();
     JPA.em().persist(post);
-    return redirect(routes.Admin.index());
+    return redirect(routes.Admin.index(1));
   }
 }

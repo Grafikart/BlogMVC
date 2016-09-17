@@ -1,6 +1,7 @@
 package controllers;
 
 import helpers.Secured;
+import models.Posts;
 import models.Users;
 import play.Logger;
 import play.data.DynamicForm;
@@ -10,6 +11,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import java.util.List;
+
 /**
  * Created by greg on 16/09/2016.
  */
@@ -18,9 +21,11 @@ import play.mvc.Security;
 public class Admin extends Controller {
 
   @Security.Authenticated(Secured.class)
-  public Result index() {
+  public Result index(Integer pageNb) {
     Logger.info("Admin.index()");
-    return ok(views.html.admin_index.render());
+    List<Posts> all = Posts.findFivePostFrom((pageNb - 1)  * 5);
+
+    return ok(views.html.admin_index.render(pageNb, all.size() / 5 + 1, all));
   }
 
   public Result adminLogin() {
@@ -44,7 +49,7 @@ public class Admin extends Controller {
     //TODO replace by token
     session("email", username);
     session("id", user.id.toString());
-    return redirect(routes.Admin.index());
+    return redirect(routes.Admin.index(1));
   }
 
   public Result adminLogout() {
