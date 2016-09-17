@@ -19,7 +19,7 @@ public class Index extends Controller {
     Logger.info("Index.index(pageNb: " + pageNb + ");" );
 
     List<Posts> all = Posts.findFivePostFrom((pageNb - 1)  * 5);
-    return ok(views.html.index.render(pageNb, all.size() / 5 + 1));
+    return ok(views.html.index.render(pageNb, all.size() / 5 + 1, all));
   }
 }
 

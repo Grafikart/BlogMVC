@@ -30,6 +30,9 @@ public class Admin extends Controller {
 
   public Result adminLogin() {
     Logger.info("Admin.adminLogin()");
+    if (session().get("id").length() > 0) {
+      redirect(routes.Admin.index(0));
+    }
     return ok(views.html.login.render());
   }
 

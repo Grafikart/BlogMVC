@@ -1,5 +1,6 @@
 package models;
 
+import helpers.TimeAgo;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -34,4 +35,8 @@ public class Comments {
   public String content;
   @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
   public DateTime created;
+
+  public String toAgo() {
+    return TimeAgo.toDuration((DateTime.now().getMillis() - this.created.getMillis()));
+  }
 }

@@ -1,4 +1,4 @@
-@(currentPage: Integer, maxPage: Integer)
+@(currentPage: Integer, maxPage: Integer, posts: java.util.List[Posts])
 @import views.html.helpers.pagination
 <!DOCTYPE html>
 <html lang="en">
@@ -57,16 +57,18 @@
                         <p class="lead">Welcome on my blog</p>
                     </div>
 
-                    <article>
-                        <h2><a href="post.scala.html">The Route of All Evil</a></h2>
-                        <p><small>
-                            Category : <a href="category.html">Nature</a>,
-                            by <a href="@routes.Index.index(1)">John Doe</a> on <em>Aug 24th 2013</em>
-                        </small></p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, numquam, praesentium, porro eius facilis aperiam deleniti veritatis explicabo magni eaque dolorem voluptatum necessitatibus beatae delectus quia itaque perferendis. Necessitatibus, tempore. Fugit, sit, sapiente asperiores illo iste laboriosam maiores voluptas laborum tempore quibusdam consequatur nihil itaque earum recusandae illum deserunt sequi. Fugiat, facere provident nobis ratione id in quos ex cum...</p>
-                        <p class="text-right"><a href="post.scala.html" class="btn btn-primary">Read more...</a></p>
-                    </article>
-
+                    @for(p <- posts) {
+                        <article>
+                            <h2><a href="@routes.Slugs.slug(p.slug.name)">@p.name</a></h2>
+                            <p><small>
+                            Category : <a href="@routes.Post.postByCategory(p.categories.id)">@p.categories.name</a>,
+                                by <a href="@routes.Post.postByAuthor(p.user.id)">@p.user.username</a> on <em>@p.created.monthOfYear().getAsText @p.created.dayOfMonth().getAsString @p.created.toString("YYYY")</em>
+                        </small>
+                            </p>
+                            <p>@if(p.contents.length > 450){@p.contents.substring(0, 450).replaceAll("<[^>]*>", ""); ...}else{ @p.contents.replaceAll("<[^>]*>", ""); }</p>
+                            <p class="text-right"><a href="@routes.Slugs.slug(p.slug.name)" class="btn btn-primary">Read more...</a></p>
+                        </article>
+                    }
                     <hr>
 
 

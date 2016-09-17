@@ -55,35 +55,12 @@
                         <h1>@post.name</h1>
                         <p><small>
                             Category : <a href="@routes.Post">@post.categories.name</a>,
-                            by <a href="@routes.Index.index(1)">John Doe</a> on <em>Aug 24th 2013</em>
+                            by <a href="@routes.Post.postByAuthor(post.user.id)">@post.user.username</a> on <em>@post.created.monthOfYear().getAsText @post.created.dayOfMonth().getAsString @post.created.toString("YYYY")</em>
                         </small></p>
                     </div>
 
                     <article>
-                        <p>Five hours? Aw, man! Couldn't you just get me the death penalty? Daylight and everything. What's with you kids? Every other day it's food, food, food. Alright, I'll get you some stupid food.</p>
-                        <h2>Bendin' in the Wind</h2>
-                        <img src="http://lorempicsum.com/futurama/200/150/1" class="img-thumbnail" style="float:left; margin-right:10px;">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Suscipit, modi, libero, earum, fugiat beatae ipsa quae accusamus eligendi minima eos sint consequuntur voluptate nihil inventore voluptatum? Possimus neque similique quam.</p>
-                        <p>Nemo, aliquam non nulla corporis veritatis molestiae omnis nobis dolores dicta dolorum accusamus porro ipsum rem tempora maxime quisquam accusantium facilis saepe consequatur qui doloribus iusto distinctio perspiciatis modi voluptatum?</p>
-                        <p>Illum temporibus natus cumque recusandae non fugiat quisquam fuga repellendus. Quas, esse, a rem possimus vero sequi fugit non dolor corrupti in similique repudiandae excepturi quidem perspiciatis soluta amet qui?</p>
-                        <ul>
-                        <li>Fetal stemcells, aren't those controversial?</li>
-                        <li>Yes! In your face, Gandhi!</li>
-                        <li>The key to victory is discipline, and that means a well made bed. You will practice until you can make your bed in your sleep.</li>
-                        </ul>
-                        <h3>Why Must I Be a Crustacean in Love?</h3>
-                        <img src="http://lorempicsum.com/futurama/200/150/2" class="img-thumbnail" style="float:right; margin-left:10px;">
-                        <p>We're rescuing ya. I'm Santa Claus! Have you ever tried just turning off the TV, sitting down with your children, and hitting them? Calculon is gonna kill us and it's all everybody else's fault! I just want to talk. It has nothing to do with mating. Fry, that doesn't make sense. Ummm&hellip;to eBay?</p>
-                        <h4>Attack of the Killer App</h4>
-                        <p>Why would I want to know that? It's toe-tappingly tragic! You won't have time for sleeping, soldier, not with all the bed making you'll be doing. I've got to find a way to escape the horrible ravages of youth. Suddenly, I'm going to the bathroom like clockwork, every three hours. And those jerks at Social Security stopped sending me checks. Now 'I'' have to pay ''them'! I was all of history's great robot actors - Acting Unit 0.8; Thespomat; David Duchovny! Five hours? Aw, man! Couldn't you just get me the death penalty?</p>
-                        <ol>
-                        <li>But, like most politicians, he promised more than he could deliver.</li>
-                        <li>Calculon is gonna kill us and it's all everybody else's fault!</li>
-                        <li>Bender?! You stole the atom.</li>
-                        </ol>
-                        <h5>A Tale of Two Santas</h5>
-                        <p>Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind Fry of his humanity the way only a woman can. Kif, I have mated with a woman. Inform the men. Look, everyone wants to be like Germany, but do we really have the pure strength of 'will'?</p>
-
+                        @Html(post.contents)
                     </article>
 
                     <hr>
@@ -115,27 +92,19 @@
                             </div>
                         </form>
 
-                        <h3>2 Commentaires</h3>
+                        <h3>@post.associatedComments.size() Commentaires</h3>
 
+                        @for(c <- post.associatedComments){
                         <div class="row">
                             <div class="col-md-2">
-                                <img src="http://lorempicsum.com/futurama/100/100/4" width="100%">
+                                <img src="http://lorempicsum.com/futurama/100/100/@(c.id % 9 + 1)" width="100%">
                             </div>
                             <div class="col-md-10">
-                                <p><strong>Username</strong> 10 hours ago</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
+                                <p><strong>@c.username</strong> @c.toAgo </p>
+                                <p>@c.content</p>
                             </div>
                         </div>
-                        <div class="row">
-                            <hr>
-                            <div class="col-md-2">
-                                <img src="http://lorempicsum.com/futurama/100/100/5" width="100%">
-                            </div>
-                            <div class="col-md-10">
-                                <p><strong>Username</strong> 11 days ago</p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-                            </div>
-                        </div>
+                        }
                     </section>
 
 

@@ -64,6 +64,7 @@ public class AdminEdit extends Controller {
     }
     post.slug = new Slug();
     try {
+      //TODO check if already exist
       post.slug.name = URLEncoder.encode(slug.length() > 0 ? slug : name, "UTF-8");
     } catch (UnsupportedEncodingException e) {
       Logger.error(e.getMessage());

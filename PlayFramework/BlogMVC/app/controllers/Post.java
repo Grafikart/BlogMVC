@@ -16,7 +16,7 @@ import java.util.List;
 public class Post extends Controller {
 
   //TODO Pagination
-  public Result post(Long authorId) {
+  public Result postByAuthor(Long authorId) {
     List<Posts> posts = Posts.findAllByAuthor(Users.find(authorId));
     if (posts == null) {
       //TODO add custom 404 page
