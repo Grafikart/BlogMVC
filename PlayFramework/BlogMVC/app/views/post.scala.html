@@ -1,4 +1,4 @@
-
+@(post: Posts)
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,9 +52,9 @@
 
 
                     <div class="page-header">
-                        <h1>The Route of All Evil</h1>
+                        <h1>@post.name</h1>
                         <p><small>
-                            Category : <a href="category.html">Nature</a>,
+                            Category : <a href="@routes.Post">@post.categories.name</a>,
                             by <a href="@routes.Index.index(1)">John Doe</a> on <em>Aug 24th 2013</em>
                         </small></p>
                     </div>

@@ -73,6 +73,17 @@ public class Posts {
     }
   }
 
+  public static List<Posts> findAllByAuthor(Users user) {
+    try {
+      return JPA.em().createQuery("SELECT p FROM Posts p WHERE p.user =:user ORDER BY p.created DESC", Posts.class)
+          .setParameter("user", user)
+          .getResultList();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return new ArrayList<>();
+    }
+  }
+
   public static List<Posts> findFivePost() {
     try {
       return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
