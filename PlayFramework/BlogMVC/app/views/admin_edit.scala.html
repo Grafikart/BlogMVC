@@ -60,7 +60,7 @@
                     <div class="col-md-6">
                         <div class="form-group required">
                             <label for="PostSlug">Slug :</label>
-                            <input name="slug" class="form-control" maxlength="255" type="text" value="@if(post.slug != null){ @post.slug.name}" id="PostSlug" required="required">
+                            <input name="slug" class="form-control" maxlength="255" type="text" value="@if(post.slug != null){@Html(post.slug.name)}" id="PostSlug" required="required">
                         </div>
                     </div>
                 </div>

@@ -62,10 +62,14 @@ public class AdminEdit extends Controller {
     if (post.name.length() == 0 || post.contents.length() == 0) {
       return badRequest(views.html.admin_edit.render(post, Users.findAll(), Categories.findAll()));
     }
-    post.slug = new Slug();
+    if (postId == 0)
+      post.slug = new Slug();
     try {
       //TODO check if already exist
       post.slug.name = URLEncoder.encode(slug.length() > 0 ? slug : name, "UTF-8");
+      while (post.id == null && Slug.find(post.slug.name) != null) {
+        post.slug.name += "_new";
+      }
     } catch (UnsupportedEncodingException e) {
       Logger.error(e.getMessage());
       return internalServerError();

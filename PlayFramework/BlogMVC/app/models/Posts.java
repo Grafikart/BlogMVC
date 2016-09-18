@@ -40,7 +40,7 @@ public class Posts {
 
   @NotEmpty
   public String name;
-  @OneToOne(cascade = CascadeType.ALL)
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "post")
   public Slug slug;
   @Column(columnDefinition = "TEXT")
   public String contents;
