@@ -16,7 +16,9 @@ import play.mvc.Result;
 import play.mvc.Security;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 /**
  * Created by grimaceplume on 17/09/2016.
@@ -64,16 +66,7 @@ public class AdminEdit extends Controller {
     }
     if (postId == 0)
       post.slug = new Slug();
-    try {
-      //TODO check if already exist
-      post.slug.name = URLEncoder.encode(slug.length() > 0 ? slug : name, "UTF-8");
-      while (post.id == null && Slug.find(post.slug.name) != null) {
-        post.slug.name += "_new";
-      }
-    } catch (UnsupportedEncodingException e) {
-      Logger.error(e.getMessage());
-      return internalServerError();
-    }
+    if (assignSlug(name, slug, post)) return internalServerError();
     post.slug.post = post;
     try {
       post.user = Users.find(Long.parseLong(user_id));
@@ -85,5 +78,25 @@ public class AdminEdit extends Controller {
     post.created = DateTime.now();
     JPA.em().persist(post);
     return redirect(routes.Admin.index(1));
+  }
+
+  private boolean assignSlug(String name, String slug, Posts post) {
+    try {
+      String decode = URLDecoder.decode(slug, "UTF-8");
+      if (Objects.equals(decode, name)) {
+        return false;
+      }
+    } catch (UnsupportedEncodingException ignored) {
+    }
+    try {
+      post.slug.name = URLEncoder.encode(slug.length() > 0 ? slug : name, "UTF-8");
+      while (post.id == null && Slug.find(post.slug.name) != null) {
+        post.slug.name += "_new";
+      }
+    } catch (UnsupportedEncodingException e) {
+      Logger.error(e.getMessage());
+      return true;
+    }
+    return false;
   }
 }
