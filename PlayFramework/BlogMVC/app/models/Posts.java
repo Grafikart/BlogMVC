@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Posts {
   @ManyToOne
   public Users user;
   @OneToMany(mappedBy = "post")
+  @OrderBy("created DESC")
   public List<Comments> associatedComments;
 
   @NotEmpty
