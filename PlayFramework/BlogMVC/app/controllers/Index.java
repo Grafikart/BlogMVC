@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Categories;
 import models.Posts;
 import play.Logger;
 import play.db.jpa.Transactional;
@@ -19,7 +20,9 @@ public class Index extends Controller {
     Logger.info("Index.index(pageNb: " + pageNb + ");" );
 
     List<Posts> all = Posts.findFivePostFrom((pageNb - 1)  * 5);
-    return ok(views.html.index.render(pageNb, all.size() / 5 + 1, all));
+    List<Posts> lastFivePost = Posts.findLastFivePost();
+    List<Categories> allCategories = Categories.findAll();
+    return ok(views.html.index.render(pageNb, all.size() / 5 + 1, all, lastFivePost, allCategories));
   }
 }
 

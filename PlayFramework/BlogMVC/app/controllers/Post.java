@@ -22,7 +22,9 @@ public class Post extends Controller {
       //TODO add custom 404 page
       return notFound();
     }
-    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
+    List<Posts> lastFivePost = Posts.findLastFivePost();
+    List<Categories> allCategories = Categories.findAll();
+    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts, lastFivePost, allCategories));
   }
 
   public Result postByCategory(Integer pageNb, Long categoryId) {
@@ -31,6 +33,8 @@ public class Post extends Controller {
       //TODO add custom 404 page
       return notFound();
     }
-    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
+    List<Posts> lastFivePost = Posts.findLastFivePost();
+    List<Categories> allCategories = Categories.findAll();
+    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts, lastFivePost, allCategories));
   }
 }

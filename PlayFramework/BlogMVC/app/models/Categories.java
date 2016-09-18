@@ -25,7 +25,7 @@ public class Categories {
   public String name;
   @OneToOne
   public Slug slug;
-  @OneToMany
+  @OneToMany(mappedBy = "categories")
   public List<Posts> associatedPost;
 
   public static Categories find(Long id) {

@@ -42,7 +42,7 @@ public class Posts {
   public Slug slug;
   @Column(columnDefinition = "TEXT")
   public String contents;
-  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime") //Store in timestamp form instead of bytes in db
   public DateTime created;
 
   public Posts() {
@@ -112,9 +112,11 @@ public class Posts {
   }
 
 
-  public static List<Posts> findFivePost() {
+  public static List<Posts> findLastFivePost() {
     try {
-      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).getResultList();
+      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class)
+          .setMaxResults(5)
+          .getResultList();
     } catch (Exception e) {
       Logger.error(e.getMessage());
       return new ArrayList<>();
@@ -132,6 +134,4 @@ public class Posts {
       return new ArrayList<>();
     }
   }
-
-
 }
