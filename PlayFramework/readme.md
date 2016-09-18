@@ -25,4 +25,8 @@ If you already have a postgresql server, you must create :
 - A user named "postgres" with "admin" as a password
 - Or, you can change these parameters in application.conf file.
 
+### Improvements TODO
+
+Improve security (xss attack may happen)
+
 **Enjoy!**
