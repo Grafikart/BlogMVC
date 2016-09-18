@@ -7,6 +7,8 @@ GET         /                            controllers.Index.index(page: Integer ?
 
 GET         /author/:id                  controllers.Post.postByAuthor(page: Integer ?= 1, id: Long)
 GET         /category/:id                controllers.Post.postByCategory(page: Integer ?=1, id: Long)
+GET         /post/:id                    controllers.Post.post(id: Long)
+POST        /post/:id/addComment         controllers.Post.addComment(id: Long)
 
 GET         /admin                       controllers.Admin.index(page: Integer ?= 1)
 GET         /adminLogin                  controllers.Admin.adminLogin

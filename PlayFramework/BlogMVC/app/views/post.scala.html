@@ -1,6 +1,8 @@
 @(post: Posts, lastFivePosts: java.util.List[Posts], allCategories: java.util.List[Categories])
+@import play.mvc.Http.Context.Implicit.flash
 @import views.html.helpers.last_posts
 @import views.html.helpers.categories
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,24 +73,25 @@
                     <section class="comments">
 
                         <h3>Comment this post</h3>
+                        @if(flash().get("error")) {
+                            <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+                        }
 
-                        <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
-
-                        <form role="form">
+                        <form role="form" action="@routes.Post.addComment(post.id)" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="email" class="form-control" placeholder="Your email">
+                                        <input name="email" type="email" class="form-control" placeholder="Your email">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group has-error">
-                                        <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+                                    <div class="form-group">
+                                        <input name="username" type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="3" placeholder="Your comment"></textarea>
+                                <textarea name="content" class="form-control" rows="3" placeholder="Your comment"></textarea>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -107,6 +110,7 @@
                                 <p>@c.content</p>
                             </div>
                         </div>
+                            <br>
                         }
                     </section>
 

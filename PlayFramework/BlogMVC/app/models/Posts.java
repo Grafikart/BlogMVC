@@ -33,7 +33,7 @@ public class Posts {
   public Categories categories;
   @ManyToOne
   public Users user;
-  @OneToMany
+  @OneToMany(mappedBy = "post")
   public List<Comments> associatedComments;
 
   @NotEmpty
