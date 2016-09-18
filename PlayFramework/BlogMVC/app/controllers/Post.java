@@ -76,6 +76,7 @@ public class Post extends Controller {
     Comments comments = comment.toComment(post);
     Logger.info("Post.addComment(), new comment: " + comments);
     JPA.em().persist(comments);
+    JPA.em().flush();
     return post(postId);
   }
 }
