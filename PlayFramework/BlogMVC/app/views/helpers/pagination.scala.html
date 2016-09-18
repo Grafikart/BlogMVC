@@ -2,20 +2,20 @@
 
 @pageCase(nb: Integer, left: Boolean)= {
     @if(currentPage - nb > 0 && left) {
-        <li><a href="@routes.Index.index(currentPage - nb)">@(currentPage - nb)</a></li>
+        <li><a href="?page=@(currentPage - nb)">@(currentPage - nb)</a></li>
     }
     @if(currentPage + nb <= maxPage && !left) {
-        <li><a href="@routes.Index.index(currentPage + nb)">@(currentPage + nb)</a></li>
+        <li><a href="?page=@(currentPage + nb)">@(currentPage + nb)</a></li>
     }
 }
 
 <ul class="pagination">
 
-    <li><a href="@routes.Index.index(1)">&laquo;</a></li>
+    <li><a href="?page=1">&laquo;</a></li>
     @pageCase(2, true)
     @pageCase(1, true)
     @pageCase(0, true)
     @pageCase(1, false)
     @pageCase(2, false)
-    <li><a href="@routes.Index.index(maxPage)">&raquo;</a></li>
+    <li><a href="?page=@(maxPage)">&raquo;</a></li>
 </ul>

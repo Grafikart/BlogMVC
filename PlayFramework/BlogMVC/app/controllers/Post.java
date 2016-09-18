@@ -22,7 +22,6 @@ public class Post extends Controller {
       //TODO add custom 404 page
       return notFound();
     }
-//    return ok();
     return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
   }
 
@@ -32,7 +31,6 @@ public class Post extends Controller {
       //TODO add custom 404 page
       return notFound();
     }
-//    return ok();
     return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
   }
 }

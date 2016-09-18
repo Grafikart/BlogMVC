@@ -123,7 +123,10 @@ public class Posts {
 
   public static List<Posts> findFivePostFrom(Integer startPosition) {
     try {
-      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class).setFirstResult(startPosition).getResultList();
+      return JPA.em().createQuery("SELECT p FROM Posts p ORDER BY p.created DESC", Posts.class)
+          .setFirstResult(startPosition)
+          .setMaxResults(5)
+          .getResultList();
     } catch (Exception e) {
       Logger.error(e.getMessage());
       return new ArrayList<>();
