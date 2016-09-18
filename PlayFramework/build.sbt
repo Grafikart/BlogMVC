@@ -28,3 +28,7 @@ PlayKeys.externalizeResources := false
 libraryDependencies += "org.jadira.usertype" % "usertype.core" % "6.0.1.GA"
 
 libraryDependencies += "org.pegdown" % "pegdown" % "1.6.0"
+
+libraryDependencies ++= Seq(
+  cache
+)
