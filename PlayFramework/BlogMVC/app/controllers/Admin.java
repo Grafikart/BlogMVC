@@ -6,6 +6,7 @@ import models.Users;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -60,5 +61,11 @@ public class Admin extends Controller {
 
     session().clear();
     return redirect(routes.Index.index(1));
+  }
+
+  public Result adminDeletePost(Long postId) {
+    Logger.info("Admin.adminDeletePost(postId: " + postId + ")");
+    JPA.em().remove(Posts.find(postId));
+    return redirect(routes.Admin.index(1));
   }
 }

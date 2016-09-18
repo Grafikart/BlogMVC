@@ -64,11 +64,11 @@
                         <tr>
                             <td>@p.id</td>
                             <td>@p.name</td>
-                            <td>@p.created.toString("dd/mm/yyyy hh:mm")</td>
                             <td>@p.categories.name</td>
+                            <td>@p.created.toString("dd/mm/yyyy hh:mm")</td>
                             <td>
-                                <a href="admin_edit.scala.html" class="btn btn-primary">Edit</a>
-                                <a href="admin_@routes.Index.index(1)" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
+                                <a href="@routes.AdminEdit.editPost(p.id)" class="btn btn-primary">Edit</a>
+                                <a href="@routes.Admin.adminDeletePost(p.id)" class="btn btn-danger" onclick="return confirm('Are you sure ?')">Delete</a>
                             </td>
                         </tr>
                     }

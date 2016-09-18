@@ -13,10 +13,12 @@ GET     /admin                      controllers.Admin.index(page: Integer ?= 1)
 GET     /adminLogin                 controllers.Admin.adminLogin
 POST    /adminLogin                 controllers.Admin.adminPostLogin
 GET     /adminLogout                controllers.Admin.adminLogout
+GET     /admin/:postId/delete       controllers.Admin.adminDeletePost(postId: Long)
 
-GET     /admin/new                  controllers.AdminEdit.newPost()
-GET     /admin/edit                 controllers.AdminEdit.editPost(postId: Long)
-POST    /admin/save                 controllers.AdminEdit.savePost(postId: Long)
+GET     /admin/new                controllers.AdminEdit.newPost()
+GET     /admin/:postId/edit                 controllers.AdminEdit.editPost(postId: Long)
+POST    /admin/:postId/save                 controllers.AdminEdit.savePost(postId: Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
