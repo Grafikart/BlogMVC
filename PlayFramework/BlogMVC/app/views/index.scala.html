@@ -61,8 +61,8 @@
                         <article>
                             <h2><a href="@routes.Slugs.slug(p.slug.name)">@p.name</a></h2>
                             <p><small>
-                            Category : <a href="@routes.Post.postByCategory(p.categories.id)">@p.categories.name</a>,
-                                by <a href="@routes.Post.postByAuthor(p.user.id)">@p.user.username</a> on <em>@p.created.monthOfYear().getAsText @p.created.dayOfMonth().getAsString @p.created.toString("YYYY")</em>
+                            Category : <a href="@routes.Post.postByCategory(1, p.categories.id)">@p.categories.name</a>,
+                                by <a href="@routes.Post.postByAuthor(1, p.user.id)">@p.user.username</a> on <em>@p.created.monthOfYear().getAsText @p.created.dayOfMonth().getAsString @p.created.toString("YYYY")</em>
                         </small>
                             </p>
                             <p>@if(p.contents.length > 450){@p.contents.substring(0, 450).replaceAll("<[^>]*>", ""); ...}else{ @p.contents.replaceAll("<[^>]*>", ""); }</p>

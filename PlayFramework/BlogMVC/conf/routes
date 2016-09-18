@@ -3,25 +3,24 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Index.index(page: Integer ?= 1)
-#GET     /@routes.Index.index(1)     controllers.Index.index(page: Integer ?= 1)
+GET         /                            controllers.Index.index(page: Integer ?= 1)
 
-GET     /author/:id                 controllers.Post.postByAuthor(id: Long)
-GET     /category/:id               controllers.Post.postByCategory(id: Long)
+GET         /author/:id                  controllers.Post.postByAuthor(page: Integer ?= 1, id: Long)
+GET         /category/:id                controllers.Post.postByCategory(page: Integer ?=1, id: Long)
 
-GET     /admin                      controllers.Admin.index(page: Integer ?= 1)
-GET     /adminLogin                 controllers.Admin.adminLogin
-POST    /adminLogin                 controllers.Admin.adminPostLogin
-GET     /adminLogout                controllers.Admin.adminLogout
-GET     /admin/:postId/delete       controllers.Admin.adminDeletePost(postId: Long)
+GET         /admin                       controllers.Admin.index(page: Integer ?= 1)
+GET         /adminLogin                  controllers.Admin.adminLogin
+POST        /adminLogin                  controllers.Admin.adminPostLogin
+GET         /adminLogout                 controllers.Admin.adminLogout
+GET         /admin/:postId/delete        controllers.Admin.adminDeletePost(postId: Long)
 
-GET     /admin/new                controllers.AdminEdit.newPost()
-GET     /admin/:postId/edit                 controllers.AdminEdit.editPost(postId: Long)
-POST    /admin/:postId/save                 controllers.AdminEdit.savePost(postId: Long)
+GET         /admin/new                   controllers.AdminEdit.newPost()
+GET         /admin/:postId/edit          controllers.AdminEdit.editPost(postId: Long)
+POST        /admin/:postId/save          controllers.AdminEdit.savePost(postId: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET         /assets/*file                controllers.Assets.at(path="/public", file)
 
-GET     /:slugName                  controllers.Slugs.slug(slugName: String)
+GET         /:slugName                   controllers.Slugs.slug(slugName: String)
     

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,6 @@ public class Posts {
   }
 
 
-
   public static Posts find(Long id) {
     try {
       return JPA.em().createQuery("SELECT p FROM Posts p WHERE p.id = :id", Posts.class)
@@ -74,15 +74,43 @@ public class Posts {
   }
 
   public static List<Posts> findAllByAuthor(Users user) {
+    return findAllByAuthorFrom(user, 0, 0);
+  }
+
+  public static List<Posts> findAllByAuthorFrom(Users user, Integer from, Integer limit) {
     try {
-      return JPA.em().createQuery("SELECT p FROM Posts p WHERE p.user =:user ORDER BY p.created DESC", Posts.class)
-          .setParameter("user", user)
-          .getResultList();
+      TypedQuery<Posts> query = JPA.em().createQuery("SELECT p FROM Posts p WHERE p.user =:user ORDER BY p.created DESC", Posts.class)
+          .setFirstResult(from)
+          .setParameter("user", user);
+      if (limit != 0) {
+        query = query.setMaxResults(limit);
+      }
+      return query.getResultList();
     } catch (Exception e) {
       Logger.error(e.getMessage());
       return new ArrayList<>();
     }
   }
+
+  public static List<Posts> findAllByCategories(Categories c) {
+    return findAllByCategoriesFrom(c, 0, 0);
+  }
+
+  public static List<Posts> findAllByCategoriesFrom(Categories categories, Integer from, Integer limit) {
+    try {
+      TypedQuery<Posts> query = JPA.em().createQuery("SELECT p FROM Posts p WHERE p.categories =:c ORDER BY p.created DESC", Posts.class)
+          .setFirstResult(from)
+          .setParameter("c", categories);
+      if (limit != 0) {
+        query = query.setMaxResults(limit);
+      }
+      return query.getResultList();
+    } catch (Exception e) {
+      Logger.error(e.getMessage());
+      return new ArrayList<>();
+    }
+  }
+
 
   public static List<Posts> findFivePost() {
     try {

@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Categories;
 import models.Posts;
 import models.Users;
 import play.db.jpa.Transactional;
@@ -15,18 +16,23 @@ import java.util.List;
 @Transactional
 public class Post extends Controller {
 
-  //TODO Pagination
-  public Result postByAuthor(Long authorId) {
-    List<Posts> posts = Posts.findAllByAuthor(Users.find(authorId));
+  public Result postByAuthor(Integer pageNb, Long authorId) {
+    List<Posts> posts = Posts.findAllByAuthorFrom(Users.find(authorId), (pageNb - 1)  * 5, 5);
     if (posts == null) {
       //TODO add custom 404 page
       return notFound();
     }
-    return ok();
-    //    return ok(views.html.post.render(posts));
+//    return ok();
+    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
   }
 
-  public Result postByCategory(Long id) {
-    return ok();
+  public Result postByCategory(Integer pageNb, Long categoryId) {
+    List<Posts> posts = Posts.findAllByCategoriesFrom(Categories.find(categoryId), (pageNb - 1)  * 5, 5);
+    if (posts == null) {
+      //TODO add custom 404 page
+      return notFound();
+    }
+//    return ok();
+    return ok(views.html.index.render(pageNb, posts.size() / 5 + 1, posts));
   }
 }
