@@ -34,7 +34,7 @@ public class Posts {
   public Categories categories;
   @ManyToOne
   public Users user;
-  @OneToMany(mappedBy = "post")
+  @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
   @OrderBy("created DESC")
   public List<Comments> associatedComments;
 

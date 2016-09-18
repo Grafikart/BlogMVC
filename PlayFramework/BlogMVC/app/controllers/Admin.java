@@ -31,7 +31,7 @@ public class Admin extends Controller {
 
   public Result adminLogin() {
     Logger.info("Admin.adminLogin()");
-    if (session().get("id").length() > 0) {
+    if (session().get("id") != null) {
       return redirect(routes.Admin.index(1));
     }
     return ok(views.html.login.render());
@@ -65,7 +65,11 @@ public class Admin extends Controller {
 
   public Result adminDeletePost(Long postId) {
     Logger.info("Admin.adminDeletePost(postId: " + postId + ")");
+    if (session().get("id") == null) {
+      return forbidden();
+    }
     JPA.em().remove(Posts.find(postId));
+    JPA.em().flush();
     return redirect(routes.Admin.index(1));
   }
 }
