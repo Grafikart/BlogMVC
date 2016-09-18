@@ -67,7 +67,7 @@
                                 by <a href="@routes.Post.postByAuthor(1, p.user.id)">@p.user.username</a> on <em>@p.created.monthOfYear().getAsText @p.created.dayOfMonth().getAsString @p.created.toString("YYYY")</em>
                         </small>
                             </p>
-                            <p>@if(p.contents.length > 450){@p.contents.substring(0, 450).replaceAll("<[^>]*>", ""); ...}else{ @p.contents.replaceAll("<[^>]*>", ""); }</p>
+                            <p>@p.toResume</p>
                             <p class="text-right"><a href="@routes.Slugs.slug(p.slug.name)" class="btn btn-primary">Read more...</a></p>
                         </article>
                     }

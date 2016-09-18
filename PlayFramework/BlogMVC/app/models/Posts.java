@@ -3,6 +3,7 @@ package models;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.DateTime;
+import org.pegdown.PegDownProcessor;
 import play.Logger;
 import play.db.jpa.JPA;
 
@@ -135,5 +136,15 @@ public class Posts {
       Logger.error(e.getMessage());
       return new ArrayList<>();
     }
+  }
+
+  public String toHtml() {
+    PegDownProcessor pegDownProcessor = new PegDownProcessor();
+    return pegDownProcessor.markdownToHtml(this.contents);
+  }
+
+  public String toResume() {
+    String s = this.toHtml().replaceAll("<[^>]*>", "");
+    return (s.length() > 450 ? s.substring(0, 450) + "..." : s);
   }
 }
