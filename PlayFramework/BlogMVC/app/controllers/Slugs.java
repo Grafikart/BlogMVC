@@ -19,7 +19,9 @@ public class Slugs extends Controller {
       Logger.error("Slugs.slug notFound");
       return notFound();
     }
-    //TODO add, categories slug support
+    if (slug.categorie != null) {
+      return redirect(routes.Post.postByCategory(1, slug.categorie.id));
+    }
     return ok(views.html.post.render(slug.post));
   }
 }
