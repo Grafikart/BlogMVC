@@ -73,7 +73,7 @@ public class AdminEdit extends Controller {
       post.categories = Categories.find(Long.parseLong(category_id));
     } catch (NumberFormatException e) {
       Logger.error(e.getMessage());
-      return internalServerError();
+      return internalServerError(e.getMessage());
     }
     post.created = DateTime.now();
     JPA.em().persist(post);
