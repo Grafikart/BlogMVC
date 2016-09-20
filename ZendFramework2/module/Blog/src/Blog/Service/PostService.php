@@ -48,10 +48,6 @@ class PostService
 
     public function addPost(Post $post)
     {
-        if (!$post->getSlug()) {
-            $post->setSlug(str_replace(' ', '-', strtolower($post->getName())));
-        }
-
         $this->em->persist($post);
         $this->em->flush($post);
 
@@ -60,10 +56,6 @@ class PostService
 
     public function updatePost(Post $post)
     {
-        if (!$post->getSlug()) {
-            $post->setSlug(str_replace(' ', '-', strtolower($post->getName())));
-        }
-
         $this->em->flush($post);
 
         $this->cacheService->generateCache($this);

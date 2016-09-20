@@ -1,5 +1,12 @@
 <?php
 return array(
+    'eventmanager' => array(
+        'orm_default' => array(
+            'subscribers' => array(
+                'Gedmo\Sluggable\SluggableListener',
+            ),
+        ),
+    ),
     'driver' => array(
         'blog_driver' => array(
             'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
