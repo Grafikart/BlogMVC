@@ -3,6 +3,7 @@
 namespace Acme\BlogBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Knp\Component\Pager\Paginator;
 
 /**
  * PostRepository
@@ -12,6 +13,54 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
+    /**
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function createFindPostsQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('p, c, u')
+            ->leftJoin('p.category', 'c')
+            ->leftJoin('p.user', 'u')
+            ->orderBy('p.created', 'desc')
+        ;
+
+        return $qb;
+    }
+
+    /**
+     * @param Paginator $paginator
+     * @param $page
+     * @param $perPage
+     *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function allPosts(Paginator $paginator, $page, $perPage)
+    {
+        $qb = $this->createFindPostsQueryBuilder();
+
+        return $paginator->paginate($qb->getQuery(), $page, $perPage);
+    }
+
+    /**
+     * @param $id
+     * @param Paginator $paginator
+     * @param $page
+     * @param $perPage
+     *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function authorPosts($id, Paginator $paginator, $page, $perPage)
+    {
+        $qb = $this->createFindPostsQueryBuilder();
+
+        $qb->where('u.id = :userId');
+        $qb->setParameter('userId', $id);
+
+        return $paginator->paginate($qb->getQuery(), $page, $perPage);
+    }
+
     /**
      * @param array $conditions
      *
