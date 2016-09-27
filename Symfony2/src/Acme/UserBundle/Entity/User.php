@@ -57,15 +57,12 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
-
     /**
      * @var array
-     * 
+     *
      * @ORM\Column(name="roles", type="array")
      */
     private $roles;
-
-
 
     /**
      * Constructor
@@ -77,17 +74,18 @@ class User implements UserInterface, \Serializable
         $this->roles = array();
     }
 
-    public function __toString(){
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
         return $this->getUsername();
     }
-
-
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -103,14 +101,14 @@ class User implements UserInterface, \Serializable
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -126,14 +124,14 @@ class User implements UserInterface, \Serializable
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    
+
         return $this;
     }
 
     /**
      * Get salt
      *
-     * @return string 
+     * @return string
      */
     public function getSalt()
     {
@@ -149,14 +147,14 @@ class User implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -172,14 +170,14 @@ class User implements UserInterface, \Serializable
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -195,14 +193,14 @@ class User implements UserInterface, \Serializable
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
-    
+
         return $this;
     }
 
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -215,7 +213,8 @@ class User implements UserInterface, \Serializable
      * @param string $role
      * @return User
      */
-    public function addRole($role){
+    public function addRole($role)
+    {
         $roles = $this->getRoles();
         $roles[] = $role;
         $this->roles = array_unique($roles);
@@ -229,7 +228,8 @@ class User implements UserInterface, \Serializable
      * @param array $roles
      * @return User
      */
-    public function setRoles(array $roles){
+    public function setRoles(array $roles)
+    {
         $this->roles = $roles;
 
         return $this;
@@ -266,6 +266,8 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * @param string $serialized
+     *
      * @see \Serializable::unserialize()
      */
     public function unserialize($serialized)
