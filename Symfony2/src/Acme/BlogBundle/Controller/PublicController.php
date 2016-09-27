@@ -4,31 +4,47 @@ namespace Acme\BlogBundle\Controller;
 
 use Acme\BlogBundle\Entity\Comment;
 use Acme\BlogBundle\Form\CommentType;
-use Acme\BlogBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Public controller
  */
 class PublicController extends AbstractController
 {
-
     /**
      * List all posts
+     *
+     * @param Request $request
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->listPosts();
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $posts = $em->getRepository('AcmeBlogBundle:Post')
+            ->allPosts($this->get('knp_paginator'), $request->get('page', 1), 10);
+
+        return $this->render('AcmeBlogBundle:Public:index.html.twig', array(
+            'posts' => $posts,
+        ));
     }
 
     /**
      * List all posts of an Author
      *
      * @param int $id
+     * @param Request $request
      */
-    public function authorAction($id)
+    public function authorAction($id, Request $request)
     {
-        return $this->listPosts(array(
-            'u.id'  => $id,
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $posts = $em->getRepository('AcmeBlogBundle:Post')
+            ->authorPosts($id, $this->get('knp_paginator'), $request->get('page', 1), 10);
+
+        return $this->render('AcmeBlogBundle:Public:index.html.twig', array(
+            'posts' => $posts,
         ));
     }
 
