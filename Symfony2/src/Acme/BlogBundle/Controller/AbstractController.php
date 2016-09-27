@@ -2,17 +2,23 @@
 
 namespace Acme\BlogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\Common\Cache\ApcCache;
+use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Doctrine\Common\Cache\ApcCache,
-	Doctrine\Common\Cache\FilesystemCache;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Abstract controller
  */
 abstract class AbstractController extends Controller
 {
-    protected function paginate($query, $limit = 5){
+    /**
+     * @param $query
+     * @param int $limit
+     * @return Paginator
+     */
+    protected function paginate($query, $limit = 5)
+    {
         $request = $this->getRequest();
         $page = (int) $request->get('page') ?: 1;
 
@@ -27,10 +33,11 @@ abstract class AbstractController extends Controller
     /**
      * Select the best cache
      */
-    protected function getCache(){
-    	return function_exists('apc_fetch')
-    		? new ApcCache()
-    		: new FilesystemCache('../app/cache/filecache')
-    	;
+    protected function getCache()
+    {
+        return function_exists('apc_fetch')
+            ? new ApcCache()
+            : new FilesystemCache('../app/cache/filecache')
+        ;
     }
 }

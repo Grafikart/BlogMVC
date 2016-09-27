@@ -2,6 +2,7 @@
 
 namespace Acme\BlogBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,7 +49,7 @@ class Comment
     private $content;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="created", type="datetime")
      */
@@ -67,27 +68,26 @@ class Comment
      */
     private $post;
 
-
-
-
     /**
      * Constructor
      */
-    public function __construct(){
-        $this->created = new \DateTime();
+    public function __construct()
+    {
+        $this->created = new DateTime();
     }
 
-    public function __toString(){
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
         return $this->getContent();
     }
-
-
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -104,14 +104,14 @@ class Comment
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -128,14 +128,14 @@ class Comment
     public function setMail($mail)
     {
         $this->mail = $mail;
-    
+
         return $this;
     }
 
     /**
      * Get mail
      *
-     * @return string 
+     * @return string
      */
     public function getMail()
     {
@@ -152,14 +152,14 @@ class Comment
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -169,21 +169,21 @@ class Comment
     /**
      * Set created
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Comment
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -193,21 +193,21 @@ class Comment
     /**
      * Set post
      *
-     * @param \Acme\BlogBundle\Entity\Post $post
+     * @param Post $post
      *
      * @return Comment
      */
-    public function setPost(\Acme\BlogBundle\Entity\Post $post = null)
+    public function setPost(Post $post = null)
     {
         $this->post = $post;
-    
+
         return $this;
     }
 
     /**
      * Get post
      *
-     * @return \Acme\BlogBundle\Entity\Post 
+     * @return \Acme\BlogBundle\Entity\Post
      */
     public function getPost()
     {

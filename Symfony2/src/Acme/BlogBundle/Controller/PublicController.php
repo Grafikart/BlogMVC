@@ -2,9 +2,9 @@
 
 namespace Acme\BlogBundle\Controller;
 
-use Acme\BlogBundle\Controller\AbstractController,
-    Acme\BlogBundle\Entity\Comment,
-    Acme\BlogBundle\Form\CommentType;
+use Acme\BlogBundle\Entity\Comment;
+use Acme\BlogBundle\Form\CommentType;
+use Acme\BlogBundle\Controller\AbstractController;
 
 /**
  * Public controller
@@ -22,6 +22,8 @@ class PublicController extends AbstractController
 
     /**
      * List all posts of an Author
+     *
+     * @param int $id
      */
     public function authorAction($id)
     {
@@ -32,6 +34,8 @@ class PublicController extends AbstractController
 
     /**
      * List all posts of a category
+     *
+     * @param string $slug
      */
     public function categoryAction($slug)
     {
@@ -40,6 +44,11 @@ class PublicController extends AbstractController
         ));
     }
 
+    /**
+     * @param array $conditions
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     private function listPosts($conditions = array())
     {
         $em = $this->getDoctrine()->getManager();
@@ -52,10 +61,11 @@ class PublicController extends AbstractController
             'posts' => $posts,
         ));
     }
-    
 
     /**
      * Finds and displays a post
+     *
+     * @param string $slug
      */
     public function showAction($slug)
     {
@@ -63,8 +73,9 @@ class PublicController extends AbstractController
 
         $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBySlug($slug);
 
-        if (!$post)
+        if (! $post) {
             throw $this->createNotFoundException('Unable to find this post.');
+        }
 
         $request = $this->getRequest();
 
@@ -76,10 +87,10 @@ class PublicController extends AbstractController
         ));
 
         // If it's a submit, valid and save the comment
-        if('POST' == $request->getMethod()){
+        if ('POST' == $request->getMethod()) {
             $form->handleRequest($request);
 
-            if ($form->isValid()){
+            if ($form->isValid()) {
                 $em->persist($comment);
                 $em->flush();
 
@@ -87,23 +98,22 @@ class PublicController extends AbstractController
             }
         }
 
-
         return $this->render('AcmeBlogBundle:Public:show.html.twig', array(
             'post'  => $post,
             'form'  => $form->createView(),
         ));
     }
 
-
     /**
      * Sidebar action
      */
-    public function sidebarAction(){
+    public function sidebarAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $cache = $this->getCache();
 
-        if($cache->contains('acme_blog_sidebar')){
+        if ($cache->contains('acme_blog_sidebar')) {
             $sidebar = $cache->fetch('acme_blog_sidebar');
         } else {
             $categories = $em->getRepository('AcmeBlogBundle:Category')->findAllWithCount();

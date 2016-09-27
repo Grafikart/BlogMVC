@@ -4,9 +4,9 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use Acme\BlogBundle\Controller\AbstractController,
-    Acme\BlogBundle\Entity\Post,
-    Acme\BlogBundle\Form\PostType;
+use Acme\BlogBundle\Entity\Post;
+use Acme\BlogBundle\Form\PostType;
+use Acme\BlogBundle\Controller\AbstractController;
 
 /**
  * Admin Post controller
@@ -15,6 +15,8 @@ class AdminPostController extends AbstractController
 {
     /**
      * List all posts
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
@@ -32,16 +34,22 @@ class AdminPostController extends AbstractController
 
     /**
      * Create or Edit a Post
+     *
+     * @param Request $request
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function manageAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        if($id !== null){
+        if ($id !== null) {
             $post = $em->getRepository('AcmeBlogBundle:Post')->find($id);
 
-            if (!$post)
+            if (! $post) {
                 throw $this->createNotFoundException('Unable to find this post.');
+            }
         } else {
             $post = new Post();
         }
@@ -53,7 +61,7 @@ class AdminPostController extends AbstractController
         ));
 
         // If it's a submit, valid and save
-        if('POST' == $request->getMethod()){
+        if ('POST' == $request->getMethod()) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -61,8 +69,9 @@ class AdminPostController extends AbstractController
                 $em->flush();
 
                 // New post : update post count
-                if($post->getId() == null)
+                if ($post->getId() == null) {
                     $this->updateCategoryPostCount($post->getCategory());
+                }
 
                 return $this->redirectAdmin();
             }
@@ -76,14 +85,17 @@ class AdminPostController extends AbstractController
 
     /**
      * Delete a post
+     *
+     * @param int $id
      */
     public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository('AcmeBlogBundle:Post')->find($id);
 
-        if (!$post)
+        if (! $post) {
             throw $this->createNotFoundException('Unable to find this post.');
+        }
 
         $em->remove($post);
         $em->flush();
@@ -92,7 +104,6 @@ class AdminPostController extends AbstractController
 
         return $this->redirectAdmin();
     }
-
 
     /**
      * Custom redirect helper to admin index

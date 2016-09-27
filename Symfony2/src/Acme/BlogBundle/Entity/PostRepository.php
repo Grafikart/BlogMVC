@@ -12,31 +12,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostRepository extends EntityRepository
 {
-	public function findAllQuery($conditions = array()){
-		$qb = $this->createQueryBuilder('p')
-			->select('p, c, u')
-			->leftJoin('p.category', 'c')
-			->leftJoin('p.user', 'u')
-			->orderBy('p.created', 'DESC')
-		;
+    /**
+     * @param array $conditions
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findAllQuery($conditions = array())
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('p, c, u')
+            ->leftJoin('p.category', 'c')
+            ->leftJoin('p.user', 'u')
+            ->orderBy('p.created', 'DESC')
+        ;
 
-		foreach($conditions as $k => $v)
-			$qb->andWhere("$k = '$v'");
+        foreach ($conditions as $k => $v) {
+            $qb->andWhere("$k = '$v'");
+        }
 
-		$qb
-			->getQuery()
-		;
-		return $qb;
-	}
+        $qb
+            ->getQuery()
+        ;
+        return $qb;
+    }
 
-
-	public function findLast($limit = 1){
-		return $this->createQueryBuilder('p')
-			->select('p')
-			->orderBy('p.created', 'DESC')
-			->getQuery()
-			->setMaxResults($limit)
-			->getResult()
-		;
-	}
+    /**
+     * @param int $limit
+     *
+     * @return mixed
+     */
+    public function findLast($limit = 1)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p')
+            ->orderBy('p.created', 'DESC')
+            ->getQuery()
+            ->setMaxResults($limit)
+            ->getResult()
+        ;
+    }
 }

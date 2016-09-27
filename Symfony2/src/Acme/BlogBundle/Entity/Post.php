@@ -2,9 +2,12 @@
 
 namespace Acme\BlogBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Acme\UserBundle\Entity\User;
 use Acme\BlogBundle\Util\Urlizer;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Category
@@ -48,7 +51,7 @@ class Post
     private $content;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="created", type="datetime")
      */
@@ -89,15 +92,13 @@ class Post
      */
     private $comments;
 
-
-
-
     /**
      * Constructor
      */
-    public function __construct(){
-        $this->created = new \DateTime(); 
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    public function __construct()
+    {
+        $this->created = new DateTime();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -107,25 +108,28 @@ class Post
      * Update created date
      * Generate slug if is not defined
      */
-    public function preSave(){
-        $this->created = new \DateTime(); 
+    public function preSave()
+    {
+        $this->created = new DateTime();
 
         $slugifiedSlug = Urlizer::urlize($this->getSlug());
-        if($this->getSlug() === null || empty($slugifiedSlug))
+        if ($this->getSlug() === null || empty($slugifiedSlug)) {
             $this->slug = Urlizer::urlize($this->getName());
+        }
     }
 
-    public function __toString(){
+    /*
+     *
+     */
+    public function __toString()
+    {
         return $this->getName();
     }
-
-
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -142,14 +146,14 @@ class Post
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -166,14 +170,14 @@ class Post
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -190,14 +194,14 @@ class Post
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -207,21 +211,21 @@ class Post
     /**
      * Set created
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Post
      */
     public function setCreated($created)
     {
         $this->created = $created;
-    
+
         return $this;
     }
 
     /**
      * Get created
      *
-     * @return \DateTime 
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -231,21 +235,21 @@ class Post
     /**
      * Set category
      *
-     * @param \Acme\BlogBundle\Entity\Category $category
+     * @param Category $category
      *
      * @return Post
      */
-    public function setCategory(\Acme\BlogBundle\Entity\Category $category = null)
+    public function setCategory(Category $category = null)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
     /**
      * Get category
      *
-     * @return \Acme\BlogBundle\Entity\Category 
+     * @return Category
      */
     public function getCategory()
     {
@@ -255,23 +259,23 @@ class Post
     /**
      * Add comments
      *
-     * @param \Acme\BlogBundle\Entity\Comment $comments
+     * @param Comment $comments
      *
      * @return Post
      */
-    public function addComment(\Acme\BlogBundle\Entity\Comment $comments)
+    public function addComment(Comment $comments)
     {
         $this->comments[] = $comments;
-    
+
         return $this;
     }
 
     /**
      * Remove comments
      *
-     * @param \Acme\BlogBundle\Entity\Comment $comments
+     * @param Comment $comments
      */
-    public function removeComment(\Acme\BlogBundle\Entity\Comment $comments)
+    public function removeComment(Comment $comments)
     {
         $this->comments->removeElement($comments);
     }
@@ -279,7 +283,7 @@ class Post
     /**
      * Get comments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getComments()
     {
@@ -289,21 +293,21 @@ class Post
     /**
      * Set user
      *
-     * @param \Acme\UserBundle\Entity\User $user
+     * @param User $user
      *
      * @return Post
      */
-    public function setUser(\Acme\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Acme\UserBundle\Entity\User 
+     * @return User
      */
     public function getUser()
     {

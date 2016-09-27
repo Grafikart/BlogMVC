@@ -1,10 +1,10 @@
 <?php
 namespace Acme\BlogBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Acme\BlogBundle\Entity\Category;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
 class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -14,11 +14,9 @@ class LoadCategoryData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $manager)
     {
         // Create 3 categories
-        for($i = 1; $i < 4; $i++){
+        for ($i = 1; $i < 4; $i++) {
             $category = new Category();
-            $category
-                ->setName('Category #' . $i)
-            ;
+            $category->setName('Category #' . $i);
 
             $manager->persist($category);
         }
