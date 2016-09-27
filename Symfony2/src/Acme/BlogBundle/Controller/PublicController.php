@@ -64,6 +64,8 @@ class PublicController extends AbstractController
      * @param array $conditions
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @deprecated
      */
     private function listPosts($conditions = array())
     {

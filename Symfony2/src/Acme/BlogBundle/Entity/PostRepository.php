@@ -65,6 +65,8 @@ class PostRepository extends EntityRepository
      * @param array $conditions
      *
      * @return \Doctrine\ORM\QueryBuilder
+     *
+     * @deprecated
      */
     public function findAllQuery($conditions = array())
     {
