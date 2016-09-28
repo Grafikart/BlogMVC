@@ -62,6 +62,24 @@ class PostRepository extends EntityRepository
     }
 
     /**
+     * @param string $slug
+     * @param Paginator $paginator
+     * @param $page
+     * @param $perPage
+     *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function categoryPosts($slug, Paginator $paginator, $page, $perPage)
+    {
+        $qb = $this->createFindPostsQueryBuilder();
+
+        $qb->where('c.slug = :slug');
+        $qb->setParameter('slug', $slug);
+
+        return $paginator->paginate($qb->getQuery(), $page, $perPage);
+    }
+
+    /**
      * @param array $conditions
      *
      * @return \Doctrine\ORM\QueryBuilder

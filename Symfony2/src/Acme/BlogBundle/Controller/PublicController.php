@@ -52,11 +52,20 @@ class PublicController extends AbstractController
      * List all posts of a category
      *
      * @param string $slug
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categoryAction($slug)
+    public function categoryAction($slug, Request $request)
     {
-        return $this->listPosts(array(
-            'c.slug'  => $slug,
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $posts = $em->getRepository('AcmeBlogBundle:Post')
+            ->categoryPosts($slug, $this->get('knp_paginator'), $request->get('page', 1), 10);
+
+        return $this->render('AcmeBlogBundle:Public:index.html.twig', array(
+            'posts' => $posts,
         ));
     }
 
