@@ -7,6 +7,9 @@ framework:
         strict_requirements: true
     profiler: { only_exceptions: false }
 
+twig:
+    cache:            false
+
 web_profiler:
     toolbar: true
     intercept_redirects: false
