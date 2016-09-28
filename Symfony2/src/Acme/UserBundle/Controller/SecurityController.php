@@ -2,11 +2,18 @@
 
 namespace Acme\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class SecurityController
+ * @package Acme\UserBundle\Controller
+ */
 class SecurityController extends Controller
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function loginAction()
     {
         $request = $this->getRequest();

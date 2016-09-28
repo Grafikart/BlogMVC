@@ -2,9 +2,10 @@
 
 namespace Acme\BlogBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Acme\BlogBundle\Util\Urlizer;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Category
@@ -53,40 +54,40 @@ class Category
      */
     private $posts;
 
-
-
-
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->posts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
-    
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      *
      * Generate slug if is not defined
      */
-    public function preSave(){
+    public function preSave()
+    {
         $slugifiedSlug = Urlizer::urlize($this->getSlug());
-        if($this->getSlug() === null || empty($slugifiedSlug))
+        if ($this->getSlug() === null || empty($slugifiedSlug)) {
             $this->slug = Urlizer::urlize($this->getName());
+        }
     }
-    
-    public function __toString(){
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
         return $this->getName();
     }
-
-
-
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -103,14 +104,14 @@ class Category
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -127,14 +128,14 @@ class Category
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -144,23 +145,23 @@ class Category
     /**
      * Add posts
      *
-     * @param \Acme\BlogBundle\Entity\Post $posts
+     * @param Post $posts
      *
      * @return Category
      */
-    public function addPost(\Acme\BlogBundle\Entity\Post $posts)
+    public function addPost(Post $posts)
     {
         $this->posts[] = $posts;
-    
+
         return $this;
     }
 
     /**
      * Remove posts
      *
-     * @param \Acme\BlogBundle\Entity\Post $posts
+     * @param Post $posts
      */
-    public function removePost(\Acme\BlogBundle\Entity\Post $posts)
+    public function removePost(Post $posts)
     {
         $this->posts->removeElement($posts);
     }
@@ -168,7 +169,7 @@ class Category
     /**
      * Get posts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPosts()
     {

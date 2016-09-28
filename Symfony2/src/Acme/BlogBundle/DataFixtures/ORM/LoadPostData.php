@@ -1,11 +1,15 @@
 <?php
 namespace Acme\BlogBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture,
-    Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Acme\BlogBundle\Entity\Post;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
+/**
+ * Class LoadPostData
+ * @package Acme\BlogBundle\DataFixtures\ORM
+ */
 class LoadPostData extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
@@ -216,15 +220,13 @@ Kif might! I wish! It's a nickel. OK, this has gotta stop. I'm going to remind F
             ),
         );
 
-
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
-
         // Create posts
-        foreach($this->postsData as $postData){
+        foreach ($this->postsData as $postData) {
             $post = new Post();
 
             $category = $manager->getRepository('AcmeBlogBundle:Category')->findOneBySlug($postData['category']);

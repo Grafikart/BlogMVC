@@ -9,6 +9,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class TimeAgoExtension extends \Twig_Extension
 {
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**
@@ -21,6 +24,9 @@ class TimeAgoExtension extends \Twig_Extension
         $this->translator = $translator;
     }
 
+    /**
+     * @return array
+     */
     public function getFilters()
     {
         return array(
@@ -28,12 +34,16 @@ class TimeAgoExtension extends \Twig_Extension
         );
     }
 
-
+    /**
+     * @param \DateTime $date
+     *
+     * @return string
+     */
     public function timeAgoFilter(\DateTime $date)
     {
         $diff = date_create()->diff($date);
         $seconds = $diff->days * 86400 + $diff->h * 3600 + $diff->i * 60 + $diff->s;
-     
+
         $format = $this->translator->transChoice(join('|', array(
             '[0,60[Just now',
             '|[60,120[%i minute ago',
@@ -45,12 +55,15 @@ class TimeAgoExtension extends \Twig_Extension
             '|[31556926,63113852[%y year ago',
             '|[63113852,+Inf[%d years ago',
         )), $seconds);
-     
+
         return $diff->format($format);
     }
 
-
-    public function getName(){
+    /**
+     * @return string
+     */
+    public function getName()
+    {
         return 'Acme_BlogBundle_TimeAgo';
     }
 }

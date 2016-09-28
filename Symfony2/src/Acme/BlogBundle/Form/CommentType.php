@@ -6,6 +6,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Class CommentType
+ * @package Acme\BlogBundle\Form
+ */
 class CommentType extends AbstractType
 {
         /**
@@ -20,7 +24,7 @@ class CommentType extends AbstractType
             ->add('content')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
