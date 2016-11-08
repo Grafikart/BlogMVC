@@ -19,7 +19,7 @@ defmodule Blogmvc.Mixfile do
   def application do
     [mod: {Blogmvc, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex, :scrivener_ecto, :scrivener_html, :timex]]
+                    :phoenix_ecto, :mariaex, :scrivener_ecto, :scrivener_html, :timex, :earmark]]
   end
 
   # Specifies which paths to compile per environment.
@@ -41,7 +41,8 @@ defmodule Blogmvc.Mixfile do
      {:cowboy, "~> 1.0"},
      {:scrivener_ecto, "~> 1.0"},
      {:scrivener_html, "~> 1.1"},
-     {:timex, "~> 3.1"}
+     {:timex, "~> 3.1"},
+     {:earmark, "~> 1.0"}
      ]
   end
 

@@ -8,7 +8,7 @@ defmodule Blogmvc.PostView do
       words
         |> Enum.slice(0..length)
         |> Enum.join(" ")
-        |> Kernel.<> leading
+        |> Kernel.<>(leading)
     else
       content
     end

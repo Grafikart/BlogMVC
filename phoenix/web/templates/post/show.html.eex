@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-8">
+    <article>
+      <h1><%= @post.name %></a></h1>
+      <p><small>
+        Category : <a href="{{ $post->category_url }}"><%= @post.category.name %></a>,
+        by <a href="{{ $post->author_url }}"><%= @post.user.username %></a> on <em><%= Timex.format!(@post.created, "{Mshort} {D}th {YYYY}") %></em>
+      </small></p>
+      <p><%= raw Earmark.to_html(@post.content) %></p>
+    </article>
+    </div>
+    </div>

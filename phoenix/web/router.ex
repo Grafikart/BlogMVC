@@ -17,6 +17,7 @@ defmodule Blogmvc.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PostController, :index
+    get "/articles/:slug", PostController, :show
   end
 
   # Other scopes may use custom stacks.
