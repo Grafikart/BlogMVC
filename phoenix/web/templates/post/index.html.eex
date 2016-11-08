@@ -27,6 +27,6 @@
 
   </div>
 
-  @cacheinclude('elements.sidebar', 'sidebar')
+  <%= render "sidebar.html", conn: @conn %>
 
 </div>

@@ -11,7 +11,7 @@ defmodule Blogmvc.PostController do
   end
 
   def show(conn, %{"slug" => slug}) do
-    post = Repo.get_by!(preload(Post, [:user, :category]), slug: slug)
+    post = Repo.get_by!(preload(Post, [:user, :category, :comments]), slug: slug)
     render conn, :show, post: post
   end
 

@@ -7,6 +7,10 @@ defmodule Blogmvc.Category do
     field :post_count, :integer
   end
 
+  def sidebar do
+    Blogmvc.Category
+  end
+
   @doc """
   Builds a changeset based on the `struct` and `params`.
   """

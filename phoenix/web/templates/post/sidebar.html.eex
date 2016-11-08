@@ -1,0 +1,24 @@
+<div class="col-md-4 sidebar">
+
+  <h4>Categories</h4>
+
+  <div class="list-group">
+    <%= for category <- Blogmvc.Repo.all(Blogmvc.Category.sidebar()) do %>
+    <a href="category.html" class="list-group-item">
+      <span class="badge">14</span>
+      <%= category.name %>
+    </a>
+    <%= end %>
+  </div>
+
+  <p>&nbsp;</p>
+
+  <h4>Last posts</h4>
+  <div class="list-group">
+    <%= for post <- Blogmvc.Repo.all(Blogmvc.Post.last2()) do %>
+    <a href="<%= post_path(@conn, :show, post.slug) %>" class="list-group-item">
+      <%= post.name %>
+    </a>
+    <%= end %>
+  </div>
+</div>

@@ -1,50 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>Hello Blogmvc!</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
-    <!--<link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">-->
-  </head>
+  <title>Hello Blogmvc!</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+        integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+</head>
 
-  <body>
+<body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">Blog</a>
-            </div>
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+  <a class="navbar-brand" href="<%= post_path(@conn, :index) %>">Blog</a>
+  <ul class="nav navbar-nav float-xs-right">
+    <li class="nav-item">
+      <a class="nav-link" href="#">Admin</a>
+    </li>
+  </ul>
+</nav>
 
-            <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
-                <ul class="nav navbar-nav">
-                    <li><a href="login.html">Admin</a></li>
-                </ul>
-            </div>
+<div class="container">
+  <main role="main">
+    <%= render @view_module, @view_template, assigns %>
+  </main>
 
-        </div><!-- /.container -->
-    </div>
+</div> <!-- /container -->
 
-    <div class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
-    </div> <!-- /container -->
-
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-  </body>
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script
+src = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"
+integrity = "sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK"
+crossorigin = "anonymous" ></script>
+</body>
 </html>
