@@ -18,6 +18,7 @@ defmodule Blogmvc.Comment do
     struct
     |> cast(params, [:username, :mail, :content])
     |> validate_required([:username, :mail, :content])
+    |> validate_format(:mail, ~r/.+@[^\.]+.*/, message: "This email doesn't seem to be valid'")
   end
 
 end

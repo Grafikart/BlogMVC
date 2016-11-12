@@ -1,5 +1,6 @@
 <div class="row">
   <div class="col-md-8">
+
     <article>
       <h1><%= @post.name %></a></h1>
       <p>
@@ -12,32 +13,33 @@
       <p><%= raw Earmark.to_html(@post.content) %></p>
     </article>
 
-    <section class="comments">
+    <section class="comments" id="commentForm">
 
       <h3>Comment this post</h3>
 
-      <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+      <%= if get_flash(@conn, :error) do %>
+      <div class="alert alert-danger"><%= get_flash(@conn, :error) %></div>
+      <% end %>
+      <%= if get_flash(@conn, :success) do %>
+      <div class="alert alert-success"><%= get_flash(@conn, :success) %></div>
+      <% end %>
 
-      <form role="form" lpformnum="1">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <input type="email" class="form-control" placeholder="Your email">
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="form-group has-error">
-              <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
-            </div>
-          </div>
+      <%= form_for @comment, post_comment_path(@conn, :create, @post.id), fn f -> %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= input f, :mail, false, placeholder: "Your email" %>
         </div>
-        <div class="form-group">
-          <textarea class="form-control" rows="3" placeholder="Your comment"></textarea>
+        <div class="col-md-6">
+          <%= input f, :username, false, placeholder: "Your username" %>
         </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
+      </div>
+      <%= textarea f, :content, false, placeholder: "Your comment" %>
+      <div class="form-group">
+        <%= submit "Envoyer" %>
+      </div>
+      <%= hidden_input f, :post_id %>
+      <% end %>
+
 
       <h3>2 Commentaires</h3>
 
@@ -53,7 +55,6 @@
       </div>
       <%= end %>
     </section>
-
 
 
   </div>

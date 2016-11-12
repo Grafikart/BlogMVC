@@ -18,6 +18,10 @@ defmodule Blogmvc.Router do
 
     get "/", PostController, :index
     get "/articles/:slug", PostController, :show
+
+    resources "/posts", PostController, only: [] do
+      resources "/comments", CommentController, only: [:create]
+    end
   end
 
   # Other scopes may use custom stacks.

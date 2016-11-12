@@ -43,7 +43,8 @@ defmodule Blogmvc.Mixfile do
      {:scrivener_html, "~> 1.1"},
      {:timex, "~> 3.1"},
      {:earmark, "~> 1.0"},
-     {:phoenix_simple_form, "~> 0.0.2"}
+     {:phoenix_simple_form, "~> 0.0.2"},
+     {:bootform, git: "https://github.com/Grafikart/elixir-bootform.git"}
      ]
   end
 
