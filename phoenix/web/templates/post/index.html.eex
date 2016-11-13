@@ -12,7 +12,7 @@
     <article>
       <h2><a href="<%= post_path(@conn, :show, post.slug) %>"><%= post.name %></a></h2>
       <p><small>
-        Category : <a href="{{ $post->category_url }}"><%= post.category.name %></a>,
+        Category : <a href="<%= post_path(@conn, :category, post.category.slug) %>"><%= post.category.name %></a>,
         by <a href="{{ $post->author_url }}"><%= post.user.username %></a> on <em><%= Timex.format!(post.created, "{Mshort} {D}th {YYYY}") %></em>
       </small></p>
       <p><%= truncate(post.content, 60) %></p>

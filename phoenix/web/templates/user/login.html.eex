@@ -1,0 +1,7 @@
+<h1>Login</h1>
+
+<%= form_for @user, user_path(@conn, :login), fn f -> %>
+    <%= input f, :username, "Username" %>
+    <%= input f, :username, "password", type: :password %>
+    <%= submit "Login" %>
+<% end %>

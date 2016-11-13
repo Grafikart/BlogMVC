@@ -9,6 +9,10 @@ defmodule Blogmvc.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :auth do
+    plug Blogmvc.Plugs.Auth
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -17,11 +21,20 @@ defmodule Blogmvc.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PostController, :index
+    get "/login", UserController, :login
     get "/articles/:slug", PostController, :show
+    get "/category/:slug", PostController, :category
 
     resources "/posts", PostController, only: [] do
       resources "/comments", CommentController, only: [:create]
     end
+  end
+
+  scope "/admin" do
+    pipe_through :browser
+    pipe_through :auth
+
+    resources "/posts", Blogmvc.Admin.PostController
   end
 
   # Other scopes may use custom stacks.

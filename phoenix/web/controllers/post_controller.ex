@@ -3,11 +3,18 @@ defmodule Blogmvc.PostController do
   use Blogmvc.Web, :controller
   alias Blogmvc.Post
   alias Blogmvc.Comment
+  alias Blogmvc.Category
 
   def index(conn, params) do
+    posts = get_posts(Post, params)
+    render conn, "index.html", posts: posts
+  end
+
+  def category(conn, %{"slug" => slug} = params) do
+    category = Repo.get_by!(Category, slug: slug)
     posts = Post
-      |> preload([:user, :category])
-      |> Repo.paginate(Map.put(params, :page_size, 2))
+      |> where(category_id: ^category.id)
+      |> get_posts(params)
     render conn, "index.html", posts: posts
   end
 
@@ -18,6 +25,12 @@ defmodule Blogmvc.PostController do
       false -> get_flash(conn, :changeset)
     end
     render conn, :show, post: post, comment: comment
+  end
+
+  defp get_posts(query, params) do
+    query
+      |> preload([:user, :category])
+      |> Repo.paginate(Map.put(params, :page_size, 2))
   end
 
 end
