@@ -22,6 +22,7 @@ defmodule Blogmvc.Router do
 
     get "/", PostController, :index
     get "/login", UserController, :login
+    post "/login", UserController, :do_login
     get "/articles/:slug", PostController, :show
     get "/category/:slug", PostController, :category
 
@@ -30,11 +31,12 @@ defmodule Blogmvc.Router do
     end
   end
 
-  scope "/admin" do
+  scope "/admin", Blogmvc.Admin, as: :admin do
     pipe_through :browser
     pipe_through :auth
 
-    resources "/posts", Blogmvc.Admin.PostController
+    get "/", PostController, :index
+    resources "/posts", PostController, except: [:index]
   end
 
   # Other scopes may use custom stacks.

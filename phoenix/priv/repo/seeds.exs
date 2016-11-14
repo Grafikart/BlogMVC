@@ -9,3 +9,10 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+alias Blogmvc.Repo
+alias Blogmvc.User
+
+Repo.insert!(%User{
+  username: "admin",
+  password: Comeonin.Bcrypt.hashpwsalt("admin")
+})

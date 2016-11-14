@@ -19,7 +19,7 @@ defmodule Blogmvc.Mixfile do
   def application do
     [mod: {Blogmvc, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :mariaex, :scrivener_ecto, :scrivener_html, :timex, :earmark, :phoenix_simple_form]]
+                    :phoenix_ecto, :mariaex, :scrivener_ecto, :scrivener_html, :timex, :earmark, :bootform, :comeonin]]
   end
 
   # Specifies which paths to compile per environment.
@@ -43,7 +43,7 @@ defmodule Blogmvc.Mixfile do
      {:scrivener_html, "~> 1.1"},
      {:timex, "~> 3.1"},
      {:earmark, "~> 1.0"},
-     {:phoenix_simple_form, "~> 0.0.2"},
+     {:comeonin, "~> 2.5"},
      {:bootform, git: "https://github.com/Grafikart/elixir-bootform.git"}
      ]
   end

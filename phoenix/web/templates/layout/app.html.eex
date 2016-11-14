@@ -19,7 +19,7 @@
   <a class="navbar-brand" href="<%= post_path(@conn, :index) %>">Blog</a>
   <ul class="nav navbar-nav float-xs-right">
     <li class="nav-item">
-      <a class="nav-link" href="#">Admin</a>
+      <a class="nav-link" href="<%= admin_post_path(@conn, :index) %>">Admin</a>
     </li>
   </ul>
 </nav>
