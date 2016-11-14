@@ -19,4 +19,8 @@ defmodule Blogmvc.Category do
     |> cast(params, [:name, :slug, :post_count])
     |> validate_required([:name, :slug, :post_count])
   end
+
+  def list do
+    from(c in Blogmvc.Category, select: {c.name, c.id})
+  end
 end

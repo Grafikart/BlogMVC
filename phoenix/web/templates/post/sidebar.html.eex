@@ -4,8 +4,8 @@
 
   <div class="list-group">
     <%= for category <- Blogmvc.Repo.all(Blogmvc.Category.sidebar()) do %>
-    <a href="category.html" class="list-group-item">
-      <span class="badge">14</span>
+    <a href="<%= post_path(@conn, :category, category.slug) %>" class="list-group-item">
+      <span class="tag tag-pill tag-default float-xs-right"><%= category.post_count %></span>
       <%= category.name %>
     </a>
     <%= end %>

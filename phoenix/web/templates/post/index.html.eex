@@ -13,9 +13,9 @@
       <h2><a href="<%= post_path(@conn, :show, post.slug) %>"><%= post.name %></a></h2>
       <p><small>
         Category : <a href="<%= post_path(@conn, :category, post.category.slug) %>"><%= post.category.name %></a>,
-        by <a href="{{ $post->author_url }}"><%= post.user.username %></a> on <em><%= Timex.format!(post.created, "{Mshort} {D}th {YYYY}") %></em>
+        by <a href="<%= post_path(@conn, :author, post.user.id) %>"><%= post.user.username %></a> on <em><%= Timex.format!(post.inserted_at, "{Mshort} {D}th {YYYY}") %></em>
       </small></p>
-      <p><%= truncate(post.content, 60) %></p>
+      <p><%= post.content |> markdown |> truncate(60) %></p>
       <p class="text-right"><a href="<%= post_path(@conn, :show, post.slug) %>" class="btn btn-primary">Read more...</a></p>
     </article>
 

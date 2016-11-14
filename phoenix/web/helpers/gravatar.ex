@@ -1,6 +1,6 @@
-defmodule Blogmvc.Helpers.Gravatar do
+defmodule Blogmvc.GravatarHelpers do
 
-  def link(email) do
+  def gravatar(email) do
     "http://1.gravatar.com/avatar/" <> md5(email) <> "?s=200&r=pg&d=mm"
   end
 

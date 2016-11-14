@@ -6,7 +6,7 @@
       <p>
         <small>
           Category : <a href="<%= post_path(@conn, :category, @post.category.slug) %>"><%= @post.category.name %></a>,
-          by <a href="{{ $post->author_url }}"><%= @post.user.username %></a> on <em><%= Timex.format!(@post.created,
+          by <a href="<%= post_path(@conn, :author, @post.user.id) %>"><%= @post.user.username %></a> on <em><%= Timex.format!(@post.inserted_at,
           "{Mshort} {D}th {YYYY}") %></em>
         </small>
       </p>
@@ -34,26 +34,27 @@
         </div>
       </div>
       <%= textarea f, :content, false, placeholder: "Your comment" %>
-      <div class="form-group">
-        <%= submit "Envoyer" %>
-      </div>
+      <%= submit "Comment" %>
       <%= hidden_input f, :post_id %>
+      <p>&nbsp;</p>
       <% end %>
 
+      <%= unless Enum.empty?(@post.comments) do %>
+        <h3><%= @comments_count |> Integer.to_string %> Commentaire<%= if (@comments_count > 1), do: "s" %></h3>
 
-      <h3>2 Commentaires</h3>
-
-      <%= for comment <- @post.comments do %>
-      <div class="row">
-        <div class="col-md-2">
-          <img src="<%= Blogmvc.Helpers.Gravatar.link(comment.mail) %>" width="100%">
+        <%= for comment <- @post.comments do %>
+        <div class="row">
+          <div class="col-md-2">
+            <img src="<%= gravatar(comment.mail) %>" width="100%">
+          </div>
+          <div class="col-md-10">
+            <p><strong><%= comment.username %></strong> <%= from_now(comment.inserted_at) %></p>
+            <p><%= comment.content %></p>
+          </div>
         </div>
-        <div class="col-md-10">
-          <p><strong><%= comment.username %></strong> 10 hours ago</p>
-          <p><%= comment.content %></p>
-        </div>
-      </div>
-      <%= end %>
+        <p>&nbsp;</p>
+        <%= end %>
+      <% end %>
     </section>
 
 

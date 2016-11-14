@@ -8,7 +8,7 @@ defmodule Blogmvc.Comment do
 
     belongs_to :post, Blogmvc.Post
 
-    timestamps(@timestamps_opts ++ [inserted_at: :created, updated_at: false])
+    timestamps(@timestamps_opts ++ [updated_at: false])
   end
 
   @doc """

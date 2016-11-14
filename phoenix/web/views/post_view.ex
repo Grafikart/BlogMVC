@@ -1,9 +1,10 @@
 defmodule Blogmvc.PostView do
   use Blogmvc.Web, :view
-  import Scrivener.HTML
 
   def truncate(content, length, leading \\ "...") do
-    words = String.split(content)
+    words = content
+      |> HtmlSanitizeEx.strip_tags
+      |> String.split
     if length(words) > length do
       words
         |> Enum.slice(0..length)
@@ -12,6 +13,10 @@ defmodule Blogmvc.PostView do
     else
       content
     end
+  end
+
+  def markdown(content) do
+    Earmark.to_html(content)
   end
 
 end

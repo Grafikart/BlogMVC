@@ -22,6 +22,7 @@ defmodule Blogmvc.Web do
 
       import Ecto
       import Ecto.Changeset
+      import Blogmvc.Changeset
       import Ecto.Query
     end
   end
@@ -58,6 +59,9 @@ defmodule Blogmvc.Web do
       import Blogmvc.ErrorHelpers
       import Blogmvc.Gettext
       import Bootform
+      import Scrivener.HTML
+      import Blogmvc.TimeHelpers
+      import Blogmvc.GravatarHelpers
     end
   end
 

@@ -32,4 +32,8 @@ defmodule Blogmvc.User do
       end
   end
 
+  def list do
+    from(u in __MODULE__, select: {u.username, u.id})
+  end
+
 end

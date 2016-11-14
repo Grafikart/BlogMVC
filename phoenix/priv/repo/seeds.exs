@@ -16,3 +16,6 @@ Repo.insert!(%User{
   username: "admin",
   password: Comeonin.Bcrypt.hashpwsalt("admin")
 })
+
+Repo.insert!(%Category{name: "Demo", slug: "demo"})
+Repo.insert!(%Category{name: "Demo 2", slug: "demo-2"})

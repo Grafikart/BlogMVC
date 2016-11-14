@@ -11,6 +11,7 @@ defmodule Blogmvc.Router do
 
   pipeline :auth do
     plug Blogmvc.Plugs.Auth
+    plug :put_layout, {Blogmvc.LayoutView, :admin}
   end
 
   pipeline :api do
@@ -25,6 +26,7 @@ defmodule Blogmvc.Router do
     post "/login", UserController, :do_login
     get "/articles/:slug", PostController, :show
     get "/category/:slug", PostController, :category
+    get "/author/:id", PostController, :author
 
     resources "/posts", PostController, only: [] do
       resources "/comments", CommentController, only: [:create]
@@ -36,7 +38,7 @@ defmodule Blogmvc.Router do
     pipe_through :auth
 
     get "/", PostController, :index
-    resources "/posts", PostController, except: [:index]
+    resources "/posts", PostController, except: [:index, :show]
   end
 
   # Other scopes may use custom stacks.

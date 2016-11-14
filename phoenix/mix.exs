@@ -44,7 +44,9 @@ defmodule Blogmvc.Mixfile do
      {:timex, "~> 3.1"},
      {:earmark, "~> 1.0"},
      {:comeonin, "~> 2.5"},
-     {:bootform, git: "https://github.com/Grafikart/elixir-bootform.git"}
+     {:slugger, "~> 0.1.0"},
+     {:bootform, git: "https://github.com/Grafikart/elixir-bootform.git"},
+     {:html_sanitize_ex, "~> 1.0.0"}
      ]
   end
 

@@ -1,1 +1,34 @@
-<h1>Hello</h1>
+<h2>Manage posts</h2>
+
+<p>
+  <%= link "New post", to: admin_post_path(@conn, :new), class: "btn btn-primary" %>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Publication date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for post <- @posts do %>
+    <tr>
+      <td><%= post.id %></td>
+      <td><%= post.name %></td>
+      <td><%= post.category.name %></td>
+      <td><%= Timex.format!(post.inserted_at, "{0M}/{0D}/{YYYY} {h24}:{0m}") %></td>
+      <td class="text-right">
+        <%= link "Edit", to: admin_post_path(@conn, :edit, post), class: "btn btn-primary" %>
+        <%= link "Delete", to: admin_post_path(@conn, :delete, post), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= pagination_links @posts, view_style: :bootstrap_v4 %>
+
