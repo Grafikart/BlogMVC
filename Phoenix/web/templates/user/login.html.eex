@@ -1,0 +1,11 @@
+<h1>Login</h1>
+
+<%= if get_flash(@conn, :error) do %>
+<div class="alert alert-danger"><%= get_flash(@conn, :error) %></div>
+<% end %>
+
+<%= form_for @user, user_path(@conn, :login), fn f -> %>
+    <%= input f, :username, "Username" %>
+    <%= input f, :password, "password", type: :password %>
+    <%= submit "Login" %>
+<% end %>

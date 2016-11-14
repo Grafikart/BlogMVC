@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Backend</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css"
+        integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
+  <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+</head>
+
+<body>
+
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+  <div class="container">
+    <a class="navbar-brand" href="<%= admin_post_path(@conn, :index) %>">Backend</a>
+    <ul class="nav navbar-nav float-xs-right">
+      <li class="nav-item">
+        <a class="nav-link" href="<%= post_path(@conn, :index) %>">Frontend</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <main role="main">
+
+    <%= if get_flash(@conn, :error) do %>
+    <div class="alert alert-danger"><%= get_flash(@conn, :error) %></div>
+    <% end %>
+    <%= if get_flash(@conn, :success) do %>
+    <div class="alert alert-success"><%= get_flash(@conn, :success) %></div>
+    <% end %>
+
+    <%= render @view_module, @view_template, assigns %>
+  </main>
+
+</div> <!-- /container -->
+
+<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<script
+src = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"
+integrity = "sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK"
+crossorigin = "anonymous" ></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-8">
+
+    <article>
+      <h1><%= @post.name %></a></h1>
+      <p>
+        <small>
+          Category : <a href="<%= post_path(@conn, :category, @post.category.slug) %>"><%= @post.category.name %></a>,
+          by <a href="<%= post_path(@conn, :author, @post.user.id) %>"><%= @post.user.username %></a> on <em><%= Timex.format!(@post.inserted_at,
+          "{Mshort} {D}th {YYYY}") %></em>
+        </small>
+      </p>
+      <p><%= raw Earmark.to_html(@post.content) %></p>
+    </article>
+
+    <section class="comments" id="commentForm">
+
+      <h3>Comment this post</h3>
+
+      <%= if get_flash(@conn, :error) do %>
+      <div class="alert alert-danger"><%= get_flash(@conn, :error) %></div>
+      <% end %>
+      <%= if get_flash(@conn, :success) do %>
+      <div class="alert alert-success"><%= get_flash(@conn, :success) %></div>
+      <% end %>
+
+      <%= form_for @comment, post_comment_path(@conn, :create, @post.id), fn f -> %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= input f, :mail, false, placeholder: "Your email" %>
+        </div>
+        <div class="col-md-6">
+          <%= input f, :username, false, placeholder: "Your username" %>
+        </div>
+      </div>
+      <%= textarea f, :content, false, placeholder: "Your comment" %>
+      <%= submit "Comment" %>
+      <%= hidden_input f, :post_id %>
+      <p>&nbsp;</p>
+      <% end %>
+
+      <%= unless Enum.empty?(@post.comments) do %>
+        <h3><%= @comments_count |> Integer.to_string %> Commentaire<%= if (@comments_count > 1), do: "s" %></h3>
+
+        <%= for comment <- @post.comments do %>
+        <div class="row">
+          <div class="col-md-2">
+            <img src="<%= gravatar(comment.mail) %>" width="100%">
+          </div>
+          <div class="col-md-10">
+            <p><strong><%= comment.username %></strong> <%= from_now(comment.inserted_at) %></p>
+            <p><%= comment.content %></p>
+          </div>
+        </div>
+        <p>&nbsp;</p>
+        <%= end %>
+      <% end %>
+    </section>
+
+
+  </div>
+
+  <%= render "sidebar.html", conn: @conn %>
+
+</div>
+

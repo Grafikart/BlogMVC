@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-8">
+
+
+    <div class="page-header">
+      <h1>Blog</h1>
+      <p class="lead">Welcome on my blog</p>
+    </div>
+
+    <%= for post <- @posts.entries do %>
+
+    <article>
+      <h2><a href="<%= post_path(@conn, :show, post.slug) %>"><%= post.name %></a></h2>
+      <p><small>
+        Category : <a href="<%= post_path(@conn, :category, post.category.slug) %>"><%= post.category.name %></a>,
+        by <a href="<%= post_path(@conn, :author, post.user.id) %>"><%= post.user.username %></a> on <em><%= Timex.format!(post.inserted_at, "{Mshort} {D}th {YYYY}") %></em>
+      </small></p>
+      <p><%= post.content |> markdown |> truncate(60) %></p>
+      <p class="text-right"><a href="<%= post_path(@conn, :show, post.slug) %>" class="btn btn-primary">Read more...</a></p>
+    </article>
+
+    <hr>
+
+    <%= end %>
+
+    <%= pagination_links @posts, view_style: :bootstrap_v4 %>
+
+  </div>
+
+  <%= render "sidebar.html", conn: @conn %>
+
+</div>
