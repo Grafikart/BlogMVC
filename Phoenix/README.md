@@ -1,4 +1,4 @@
-# [WIP] Blogmvc with elixir
+# Blogmvc with elixir
 
 To start your Phoenix app:
 
