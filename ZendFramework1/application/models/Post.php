@@ -12,32 +12,39 @@ class Application_Model_Post
 	protected $_created;
 
 
-	public function __construct(array $options = null)
+	static function from_sql_row($row)
 	{
-		if (is_array($options)) {
+		$post = new Application_Model_Post();
+		return $post->hydrate_from_sql_row($row);
+	}
+
+
+	function __construct(array $options = null)
+	{
+		if($options){
 			$this->setOptions($options);
 		}
 	}
  
-	public function __set($name, $value)
+	function __set($name, $value)
 	{
 		$method = 'set' . $name;
 		if (('mapper' == $name) || !method_exists($this, $method)) {
-			throw new Exception('Invalid guestbook property');
+			throw new Exception("Can't set property $name");
 		}
 		$this->$method($value);
 	}
  
-	public function __get($name)
+	function __get($name)
 	{
 		$method = 'get' . $name;
 		if (('mapper' == $name) || !method_exists($this, $method)) {
-			throw new Exception('Invalid guestbook property');
+			throw new Exception("Can't get property $name");
 		}
 		return $this->$method();
 	}
  
-	public function setOptions(array $options)
+	function setOptions(array $options)
 	{
 		$methods = get_class_methods($this);
 		foreach ($options as $key => $value) {
@@ -48,6 +55,16 @@ class Application_Model_Post
 		}
 		return $this;
 	}
+
+	function hydrate_from_sql_row($row){
+		return $this->setId($row->id)
+			->setCategoryId($row->category_id)
+			->setUserId($row->user_id)
+			->setName($row->name)
+			->setSlug($row->slug)
+			->setContent($row->content)
+			->setCreated($row->created);
+	}
  
 	
 	function getId(){ return $this->_id; }
@@ -57,15 +74,15 @@ class Application_Model_Post
 		return $this;
 	}
 
-	function getCategory_id(){ $this->$_category_id; }
-	function setCategory_id($category_id)
+	function getCategoryId(){ return $this->_category_id; }
+	function setCategoryId($category_id)
 	{
 		$this->_category_id = $category_id;
 		return $this;
 	}
 
-	function getUser_id(){ return $this->_user_id; }
-	function setUser_id($user_id)
+	function getUserId(){ return $this->_user_id; }
+	function setUserId($user_id)
 	{
 		$this->_user_id = $user_id;
 		return $this;
