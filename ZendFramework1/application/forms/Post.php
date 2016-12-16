@@ -7,6 +7,8 @@ class Application_Form_Post extends Zend_Form
 	{
 		$this->setMethod('post');
 
+		$this->addElement('hidden', 'id');
+
 		$this->addElement('text', 'name', array(
 				'label'	=> 'Name of this post',
 				'required' => true,

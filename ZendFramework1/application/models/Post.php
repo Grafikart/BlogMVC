@@ -83,6 +83,20 @@ class Application_Model_Post
 			->setContent($row->content)
 			->setCreated($row->created);
 	}
+
+	/**
+	 * Export data to populate form
+	 * @return Array as data
+	 */
+	function formData(){
+		return array(
+			'id' => $this->_id,
+			'name' => $this->_name,
+			'content' => $this->_content,
+			'categoryId' => $this->_category_id,
+			'userId' => $this->_user_id
+		);
+	}
  
 	
 	function getId(){ return $this->_id; }

@@ -1,6 +1,11 @@
-<p><?= $this->post->getContent() ?></p>
-
 <ul>
 	<li>author: <?= $this->post->getUserId() ?></li>
 	<li>category: <?= $this->post->getCategoryId() ?></li>
+</ul>
+
+<p><?= $this->post->getContent() ?></p>
+
+<ul>
+	<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'edit','id'=>$this->post->id )) ?>">editer</a></li>
+	<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'delete','id'=>$this->post->id )) ?>">supprimer</a></li>
 </ul>
