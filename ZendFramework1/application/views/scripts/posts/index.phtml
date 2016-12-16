@@ -1,8 +1,20 @@
 <h1>Posts#Index</h1>
-<ul>
-	<?php foreach ($this->entries as $post): ?>
-		<li><?= $post->name ?></li>
-	<?php endforeach ?>
-</ul>
+
+
+<?php foreach ($this->entries as $post): ?>
+	<article>
+		<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>"><?= $post->name ?></a></h2>
+
+		<p><?= substr($post->getContent(),0,250 )?> <a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>">see more</a></p>
+
+		<ul>
+			<li>author: <?= $post->getUserId() ?></li>
+			<li>category: <?= $post->getCategoryId() ?></li>
+			<li>category: <?= $post->getCategoryId() ?></li>
+		</ul>
+		
+	</article>
+<?php endforeach ?>
+
 
 <a href="<?= $this->url(array('controller' => 'posts', 'action' => 'new')) ?>">Add a new post</a>

@@ -14,6 +14,7 @@
         <controllerFile controllerName="Posts">
           <actionMethod actionName="index"/>
           <actionMethod actionName="new"/>
+          <actionMethod actionName="show"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -42,6 +43,10 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Posts">
             <viewScriptFile forActionName="new"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Posts">
+          <viewControllerScriptsDirectory forControllerName="Posts">
+            <viewScriptFile forActionName="show"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

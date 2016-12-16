@@ -52,6 +52,7 @@ class Application_Model_PostMapper
 		}
 		$row = $result->current();
 		$post->hydrate_from_sql_row($row);
+		return $post;
 	}
  
 	public function fetchAll()

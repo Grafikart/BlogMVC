@@ -12,10 +12,28 @@ class Application_Model_Post
 	protected $_created;
 
 
+	/** 
+	 * Instanciate a Post from an SQL row
+	 * @param $row Array as SQL row
+	 * @return Post
+	 */
 	static function from_sql_row($row)
 	{
 		$post = new Application_Model_Post();
 		return $post->hydrate_from_sql_row($row);
+	}
+
+	/**
+	 * Find a Post by their id
+	 * @param $id Interger as Post id
+	 * @return Post as post founded
+	 * @return Null if not founded
+	 */
+	static function from_id($id)
+	{
+		$post = new Application_Model_Post();
+		$map = new Application_Model_PostMapper();
+		return $map->find($id, $post);
 	}
 
 

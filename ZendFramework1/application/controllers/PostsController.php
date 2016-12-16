@@ -14,6 +14,16 @@ class PostsController extends Zend_Controller_Action
 		$this->view->entries = $post->fetchAll();
 	}
 
+	public function showAction()
+	{
+		$id =  $this->_getParam('id', 0);
+		if($post = Application_Model_Post::from_id($id)){
+			$this->view->post = $post;
+		}else{
+			throw new Zend_Controller_Action_Exception('This post does not exist', 404);
+		}
+	}
+
 	public function newAction()
 	{
 		$form    = new Application_Form_Post();
