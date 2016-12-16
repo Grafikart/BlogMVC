@@ -8,7 +8,7 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	/**
 	 * 
 	 */
-	function get($id) {
+	function findById($id) {
 		$result = $this->find($id);
 		if (0 == count($result)) {
 			throw new Exception("Can't find Post n°$id");
@@ -54,7 +54,16 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		} else {
 			unset($data['id']);
 			$data['created'] = time();
-			$this->getDbTable()->insert($data);
+			$this->insert($data);
 		}
+	}
+
+
+	/**
+	 * 
+	 */
+	public function deletePost(Application_Model_Post $post)
+	{
+		$this->delete('id ='.$post->getId());
 	}
 }

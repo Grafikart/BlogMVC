@@ -1,0 +1,5 @@
+<p>Do you really want to delet this post: <a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$this->post->id )) ?>"><?= $this->post->name ?></a>?</p>
+
+<form method="POST">
+	<input type="submit" value="yes!">
+</form>

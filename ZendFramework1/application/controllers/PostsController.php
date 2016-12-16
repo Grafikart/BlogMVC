@@ -61,9 +61,22 @@ class PostsController extends Zend_Controller_Action
 			$form->populate($post->formData());
 			$this->view->form = $form;
 		}
-
-		
 	}
+
+	public function deleteAction()
+	{
+		// get the post
+		$post = $this->fetchPost();
+
+		if ($this->getRequest()->isPost()) {
+			$posts = new Application_Model_DbTable_Posts();
+			$posts->deletePost( $this->view->post );
+			return $this->_helper->redirector('index');
+		}else{
+			$this->view->title = 'Delete '.$post->name.' ?';
+		}
+	}
+
 	/**
 	 * Get the post from param GET id and set in view
 	 * throw an error if not found
@@ -71,7 +84,7 @@ class PostsController extends Zend_Controller_Action
 	private function fetchPost(){
 		$id =  $this->_getParam('id', 0);
 		$posts = new Application_Model_DbTable_Posts();
-		if($post = $posts->get($id)){
+		if($post = $posts->findById($id)){
 			$this->view->post = $post;
 			return $post;
 		}else{
