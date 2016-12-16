@@ -3,27 +3,25 @@
 class PostsController extends Zend_Controller_Action
 {
 
-	public function init()
-	{
+    public function init()
+    {
 		/* Initialize action controller here */
-	}
+    }
 
-	public function indexAction()
-	{
+    public function indexAction()
+    {
 		$this->view->title = "Posts#Index";
 		$posts = new Application_Model_DbTable_Posts();
 		$this->view->entries = $posts->all();
-	}
+    }
 
-	
-
-	public function showAction()
-	{
+    public function showAction()
+    {
 		$this->view->title = $this->fetchPost()->name;
-	}
+    }
 
-	public function newAction()
-	{
+    public function newAction()
+    {
 		$this->view->title = "Posts#New";
 		$form    = new Application_Form_Post();
 		$request = $this->getRequest();
@@ -39,10 +37,10 @@ class PostsController extends Zend_Controller_Action
 		}
 
 		$this->view->form = $form;
-	}
+    }
 
-	public function editAction()
-	{
+    public function editAction()
+    {
 		// get the post
 		$post = $this->fetchPost();
 
@@ -61,10 +59,10 @@ class PostsController extends Zend_Controller_Action
 			$form->populate($post->formData());
 			$this->view->form = $form;
 		}
-	}
+    }
 
-	public function deleteAction()
-	{
+    public function deleteAction()
+    {
 		// get the post
 		$post = $this->fetchPost();
 
@@ -75,13 +73,15 @@ class PostsController extends Zend_Controller_Action
 		}else{
 			$this->view->title = 'Delete '.$post->name.' ?';
 		}
-	}
+    }
 
-	/**
-	 * Get the post from param GET id and set in view
-	 * throw an error if not found
-	 */
-	private function fetchPost(){
+    /**
+     * Get the post from param GET id and set in view
+     * throw an error if not found
+     *
+     */
+    private function fetchPost()
+    {
 		$id =  $this->_getParam('id', 0);
 		$posts = new Application_Model_DbTable_Posts();
 		if($post = $posts->findById($id)){
@@ -90,6 +90,15 @@ class PostsController extends Zend_Controller_Action
 		}else{
 			throw new Zend_Controller_Action_Exception('This post does not exist', 404);
 		}
-	}
+    }
+
+    public function adminAction()
+    {
+        $posts = new Application_Model_DbTable_Posts();
+		$this->view->entries = $posts->all();
+    }
+
 
 }
+
+

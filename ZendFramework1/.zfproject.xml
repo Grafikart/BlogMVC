@@ -17,6 +17,7 @@
           <actionMethod actionName="edit"/>
           <actionMethod actionName="show"/>
           <actionMethod actionName="delete"/>
+          <actionMethod actionName="admin"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -57,6 +58,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Posts">
             <viewScriptFile forActionName="delete"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Posts">
+            <viewScriptFile forActionName="admin"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
