@@ -11,8 +11,8 @@ class PostsController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->view->title = "Posts#Index";
-		$post = new Application_Model_PostMapper();
-		$this->view->entries = $post->fetchAll();
+		$posts = new Application_Model_DbTable_Posts();
+		$this->view->entries = $posts->all();
 	}
 
 	
@@ -32,9 +32,8 @@ class PostsController extends Zend_Controller_Action
 			if ($form->isValid($request->getPost())) {
 
 				$post = new Application_Model_Post($form->getValues());
-
-				$mapper  = new Application_Model_PostMapper();
-				$mapper->save($post);
+				$posts = new Application_Model_DbTable_Posts();
+				$posts->save($post);
 				return $this->_helper->redirector('index');
 			}
 		}
@@ -53,9 +52,8 @@ class PostsController extends Zend_Controller_Action
 		if ($this->getRequest()->isPost()) {
 			if ($form->isValid($request->getPost())) {
 				$post = new Application_Model_Post($form->getValues());
-
-				$mapper  = new Application_Model_PostMapper();
-				$mapper->save($post);
+				$posts = new Application_Model_DbTable_Posts();
+				$posts->save($post);
 				return $this->_helper->redirector('index');
 			}
 		}else{
@@ -72,7 +70,8 @@ class PostsController extends Zend_Controller_Action
 	 */
 	private function fetchPost(){
 		$id =  $this->_getParam('id', 0);
-		if($post = Application_Model_Post::from_id($id)){
+		$posts = new Application_Model_DbTable_Posts();
+		if($post = $posts->get($id)){
 			$this->view->post = $post;
 			return $post;
 		}else{

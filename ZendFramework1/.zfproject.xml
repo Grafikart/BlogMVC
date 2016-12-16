@@ -28,10 +28,9 @@
       </layoutsDirectory>
       <modelsDirectory>
         <dbTableDirectory>
-          <dbTableFile dbTableName="Post"/>
+          <dbTableFile dbTableName="Posts"/>
         </dbTableDirectory>
         <modelFile modelName="Post"/>
-        <modelFile modelName="PostMapper"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
