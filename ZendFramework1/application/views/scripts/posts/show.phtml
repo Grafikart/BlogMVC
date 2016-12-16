@@ -1,11 +1,90 @@
-<ul>
-	<li>author: <?= $this->post->getUserId() ?></li>
-	<li>category: <?= $this->post->getCategoryId() ?></li>
-</ul>
+<div class="row">
 
-<p><?= $this->post->getContent() ?></p>
+	<div class="col-md-8">
 
-<ul>
-	<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'edit','id'=>$this->post->id )) ?>">editer</a></li>
-	<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'delete','id'=>$this->post->id )) ?>">supprimer</a></li>
-</ul>
+		<div class="page-header">
+			<h1><?= $this->title ?></h1>
+			<p>Welcome to my blog</p>
+		</div>
+
+		<article>
+			<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$this->post->id )) ?>"><?= $this->post->name ?></a></h2>
+
+			<p><small>
+				Category: <?= $this->post->getCategoryId() ?>, 
+				by <?= $this->post->getUserId() ?>
+				on <?= $this->post->getCreated() ?>
+			</small></p>
+
+
+			<p><?= $this->post->getContent() ?></p>
+			
+		</article>
+
+		<hr/>
+
+		<section class="comments">
+
+            <h3>Comment this post</h3>
+
+
+            <form role="form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input class="form-control" type="email" placeholder="Your email">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input class="form-control" id="exampleInputEmail1" type="text" placeholder="Your username">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" placeholder="Your comment" rows="3">Your comment</textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+
+            <h3>2 Commentaires</h3>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <img width="100%" src="http://lorempicsum.com/futurama/100/100/4">
+                </div>
+                <div class="col-md-10">
+                    <p><strong>Username</strong> 10 hours ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
+                </div>
+            </div>
+            <div class="row">
+                <hr>
+                <div class="col-md-2">
+                    <img width="100%" src="http://lorempicsum.com/futurama/100/100/5">
+                </div>
+                <div class="col-md-10">
+                    <p><strong>Username</strong> 11 days ago</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
+                </div>
+            </div>
+        </section>
+
+
+	</div>
+
+	<div class="col-md-4 sidebar">
+		<h4>Categories</h4>
+		<div class="list-group">
+			
+		</div>
+		
+		<h4>Last posts</h4>
+		<div class="list-group">
+			
+		</div>
+	</div>
+	
+</div>

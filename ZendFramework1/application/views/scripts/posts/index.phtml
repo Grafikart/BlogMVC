@@ -1,22 +1,45 @@
-<?php foreach ($this->entries as $post): ?>
-	<article>
-		<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>"><?= $post->name ?></a></h2>
+<div class="row">
 
-		<ul>
-			<li>author: <?= $post->getUserId() ?></li>
-			<li>category: <?= $post->getCategoryId() ?></li>
-		</ul>
+	<div class="col-md-8">
 
-		<p><?= substr($post->getContent(),0,250 )?> <a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>">see more</a></p>
+		<div class="page-header">
+			<h1><?= $this->title ?></h1>
+			<p>Welcome to my blog</p>
+		</div>
 
-		<ul>
-			<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'edit','id'=>$post->id )) ?>">editer</a></li>
-			<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'delete','id'=>$post->id )) ?>">supprimer</a></li>
-		</ul>
+		<?php foreach ($this->entries as $post): ?>
+			<article>
+				<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>"><?= $post->name ?></a></h2>
+
+				<p><small>
+					Category: <?= $post->getCategoryId() ?>, 
+					by <?= $post->getUserId() ?>
+					on <?= $post->getCreated() ?>
+				</small></p>
+
+
+				<p><?= substr($post->getContent(),0,250 )?></p>
+
+				<p class="text-right">
+					<a class="btn btn-primary" href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>">Read more...</a>
+				</p>
+				
+			</article>
+		<?php endforeach ?>
+
+
+	</div>
+
+	<div class="col-md-4 sidebar">
+		<h4>Categories</h4>
+		<div class="list-group">
+			
+		</div>
 		
-		
-	</article>
-<?php endforeach ?>
-
-
-<a href="<?= $this->url(array('controller' => 'posts', 'action' => 'new')) ?>">Add a new post</a>
+		<h4>Last posts</h4>
+		<div class="list-group">
+			
+		</div>
+	</div>
+	
+</div>
