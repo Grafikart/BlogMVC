@@ -20,7 +20,11 @@
       <formsDirectory>
         <formFile formName="Post"/>
       </formsDirectory>
-      <layoutsDirectory enabled="false"/>
+      <layoutsDirectory>
+        <layoutScriptsDirectory>
+          <layoutScriptFile layoutName="layout"/>
+        </layoutScriptsDirectory>
+      </layoutsDirectory>
       <modelsDirectory>
         <dbTableDirectory>
           <dbTableFile dbTableName="Post"/>

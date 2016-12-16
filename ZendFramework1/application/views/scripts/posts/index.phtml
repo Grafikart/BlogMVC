@@ -1,6 +1,3 @@
-<h1>Posts#Index</h1>
-
-
 <?php foreach ($this->entries as $post): ?>
 	<article>
 		<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>"><?= $post->name ?></a></h2>
@@ -9,7 +6,6 @@
 
 		<ul>
 			<li>author: <?= $post->getUserId() ?></li>
-			<li>category: <?= $post->getCategoryId() ?></li>
 			<li>category: <?= $post->getCategoryId() ?></li>
 		</ul>
 		

@@ -1,0 +1,15 @@
+<?php
+echo $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
+echo $this->doctype();
+echo $this->headTitle($this->title);
+?>
+
+<nav>
+	<ul>
+		<li><a href="<?= $this->url(array('controller'=>'index', 'action'=>'index')) ?>">Home</a></li>
+		<li><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'index')) ?>">Posts</a></li>
+	</ul>
+</nav>
+
+<h1><?= $this->title ?></h1>
+<?= $this->layout()->content; ?>
