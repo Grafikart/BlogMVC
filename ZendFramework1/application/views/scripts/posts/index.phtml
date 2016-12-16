@@ -9,7 +9,7 @@
 
 		<?php foreach ($this->entries as $post): ?>
 			<article>
-				<h2><a href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>"><?= $post->name ?></a></h2>
+				<h2><a href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>"><?= $post->name ?></a></h2>
 
 				<p><small>
 					Category: <?= $post->getCategoryId() ?>, 
@@ -21,7 +21,7 @@
 				<p><?= substr($post->getContent(),0,250 )?></p>
 
 				<p class="text-right">
-					<a class="btn btn-primary" href="<?= $this->url(array('controller'=>'posts', 'action'=>'show','id'=>$post->id )) ?>">Read more...</a>
+					<a class="btn btn-primary" href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>">Read more...</a>
 				</p>
 				
 			</article>

@@ -17,6 +17,13 @@ $router->addRoute('admin',
 	)
 );
 
+$router->addRoute('view_post', 
+	new Zend_Controller_Router_Route(
+		':id',
+		array('controller' => 'posts', 'action' => 'show')
+	)
+);
+
 $router->addRoute('edit_post', 
 	new Zend_Controller_Router_Route(
 		'admin/:id/edit',
