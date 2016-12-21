@@ -11,10 +11,10 @@
 			<h2><?= $this->post->name ?></a></h2>
 
 			<p><small>
-				Category: <?= $this->post->getCategoryId() ?>, 
-				by <?= $this->post->getUserId() ?>
-				on <?= $this->post->getCreated() ?>
-			</small></p>
+                Category: <?= $this->post->getCategoryId() ?>, 
+                by <?= $this->post->getUserId() ?>
+                on <?= DateTime::createFromFormat('U', $this->post->getCreated() )->format('d/m/Y') ?>
+            </small></p>
 
 
 			<p><?= $this->post->getContent() ?></p>

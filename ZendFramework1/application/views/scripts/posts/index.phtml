@@ -14,7 +14,7 @@
 				<p><small>
 					Category: <?= $post->getCategoryId() ?>, 
 					by <?= $post->getUserId() ?>
-					on <?= $post->getCreated() ?>
+					on <?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?>
 				</small></p>
 
 
