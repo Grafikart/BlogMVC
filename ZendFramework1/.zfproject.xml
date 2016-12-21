@@ -38,6 +38,7 @@
           <dbTableFile dbTableName="Posts"/>
         </dbTableDirectory>
         <modelFile modelName="Post"/>
+        <modelFile modelName="User"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
