@@ -1,0 +1,11 @@
+<div class="page-header">
+		<h1><?= $this->title ?></h1>
+		<p>CRUD Posts</p>
+</div>
+
+<h2>Please login to access to this area</h2>
+
+<?php
+	$this->form->setAction($this->url());
+	echo $this->form;
+?>

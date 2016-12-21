@@ -13,13 +13,13 @@ $router->addRoute('home',
 $router->addRoute('admin', 
 	new Zend_Controller_Router_Route(
 		'admin',
-		array('controller' => 'posts', 'action' => 'admin')
+		array('controller' => 'admin', 'action' => 'index')
 	)
 );
 
 $router->addRoute('view_post', 
 	new Zend_Controller_Router_Route(
-		':id',
+		'posts/:id',
 		array('controller' => 'posts', 'action' => 'show')
 	)
 );
