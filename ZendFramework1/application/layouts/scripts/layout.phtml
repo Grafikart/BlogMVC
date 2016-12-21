@@ -36,6 +36,11 @@
 	</nav>
 
 	<div class="container">
+
+		<?php if($this->error): ?>
+			<p class="alert alert-warning"><?= $this->error ?></p>
+		<?php endif ?>
+
 		<?= $this->layout()->content; ?>
 	</div>
 

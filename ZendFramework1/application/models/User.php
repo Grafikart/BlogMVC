@@ -26,6 +26,15 @@ class Application_Model_User
 			$this->setOptions($options);
 		}
 	}
+
+	/**
+	 * Check if password correspond to the crypted password
+	 * @param $password (String) as clear pasword
+	 * @return (Boolean) true if correspond
+	 */
+	function isPassword($password){
+		return $this->encrypt($password) === $this->_password ;
+	}
  
 	function __set($name, $value)
 	{
@@ -89,7 +98,7 @@ class Application_Model_User
 
 	function getPassword(){return $this->_password;}
 	function setPassword($password){
-		$this->_password = $this->encrypt($password) ;
+		$this->_password = $password ;
 		return $this;
 	}
 

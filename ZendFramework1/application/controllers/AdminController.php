@@ -12,7 +12,7 @@ class AdminController extends Zend_Controller_Action
     {
         $session_admin = new Zend_Session_Namespace('admin');
         if(isset($session_admin->id)){
-
+            // OH YEAH, YOU ARE CONNECTED
         }else{
         	return $this->_helper->redirector('login');
         }
@@ -23,14 +23,20 @@ class AdminController extends Zend_Controller_Action
         $form = new Application_Form_Admin();
         $request = $this->getRequest();
 
-        if ($this->getRequest()->isPost()) {
-            if ($form->isValid($request->getPost())) {
-                $users = new Application_Model_DbTable_Users();
-                $user = $users->findByUsername($_POST['username']);
+        // Check if request is POST & form is correct 
+        if ($this->getRequest()->isPost() && $form->isValid($request->getPost() )) {
+            $users = new Application_Model_DbTable_Users();
+            $user = $users->findByUsername($_POST['username']);
+
+            if($user->isPassword($_POST['password'])){
                 $session_admin = new Zend_Session_Namespace('admin');
                 $session_admin->id = $user->getId();
                 return $this->_helper->redirector('index');
+
+            }else{
+                $this->view->error = "User doesn't exist or password don't match";
             }
+            
         }
         $this->view->title = "Admin";
         $this->view->form = $form;
@@ -38,8 +44,3 @@ class AdminController extends Zend_Controller_Action
 
 
 }
-
-
-
-
-
