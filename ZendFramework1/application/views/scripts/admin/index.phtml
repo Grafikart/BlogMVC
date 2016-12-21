@@ -1,4 +1,42 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Admin</b> and script/action name <b>index</b></p>
+<div class="row">
+
+
+		<div class="page-header">
+			<h1>Admin</h1>
+			<p>Edit posts</p>
+		</div>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Publication date</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			<?php foreach ($this->entries as $post): ?>
+				<tr>
+
+					<td><?= $post->id ?></td>
+					<td><?= $post->name ?></td>
+					<td><?= $post->getCategoryId() ?></td>
+					<td><?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?></td>
+					<td>
+						<a class="btn btn-primary" href="<?= $this->url( array('id'=>$post->id), 'edit_post' )?>">Edit</a>
+						<a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="<?= $this->url( array('id'=>$post->id), 'delete_post' )?>">Delete</a>
+					</td>
+					
+				</tr>
+			<?php endforeach ?>
+
+				
+			</tbody>
+		</table>
+
+	
+	
 </div>

@@ -13,6 +13,9 @@ class AdminController extends Zend_Controller_Action
         $session_admin = new Zend_Session_Namespace('admin');
         if(isset($session_admin->id)){
             // OH YEAH, YOU ARE CONNECTED
+            $posts = new Application_Model_DbTable_Posts();
+            $this->view->entries = $posts->all();
+
         }else{
         	return $this->_helper->redirector('login');
         }
