@@ -24,7 +24,7 @@
 				<tr>
 
 					<td><?= $post->id ?></td>
-					<td><?= $post->name ?></td>
+					<td><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></td>
 					<td><?= $post->getCategoryId() ?></td>
 					<td><?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?></td>
 					<td>

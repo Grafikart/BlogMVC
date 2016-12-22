@@ -16,7 +16,7 @@
 		<?php foreach ($this->entries as $user): ?>
 			<tr>
 				<td><?= $user->id ?></td>
-				<td><a href="<?= $this->url( array('id'=>$user->id), 'view_user') ?>"><?= $user->username ?></a></td>
+				<td><?= $this->partial('users/_link.phtml', array('user'=>$user)) ?></td>
 			</tr>
 		<?php endforeach ?>
 

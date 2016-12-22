@@ -9,11 +9,11 @@
 
 		<?php foreach ($this->entries as $post): ?>
 			<article>
-				<h2><a href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>"><?= $post->name ?></a></h2>
+				<h2><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></h2>
 
 				<p><small>
 					Category: <?= $post->getCategoryId() ?>, 
-					by <a href="<?= $this->url( array('id'=>$post->user()->id), 'view_user') ?>"><?= $post->user()->username ?></a>
+					by <?= $this->partial('users/_link.phtml', array('user'=>$post->user())) ?>
 					on <?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?>
 				</small></p>
 
