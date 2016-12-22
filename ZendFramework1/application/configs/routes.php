@@ -24,16 +24,23 @@ $router->addRoute('view_post',
 	)
 );
 
+$router->addRoute('new_post', 
+	new Zend_Controller_Router_Route(
+		'admin/posts/new',
+		array('controller' => 'posts', 'action' => 'new')
+	)
+);
+
 $router->addRoute('edit_post', 
 	new Zend_Controller_Router_Route(
-		'admin/:id/edit',
+		'admin/posts/:id/edit',
 		array('controller' => 'posts', 'action' => 'edit')
 	)
 );
 
 $router->addRoute('delete_post', 
 	new Zend_Controller_Router_Route(
-		'admin/:id/delete',
+		'admin/posts/:id/delete',
 		array('controller' => 'posts', 'action' => 'delete')
 	)
 );

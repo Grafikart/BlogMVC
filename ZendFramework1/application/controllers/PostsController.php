@@ -22,6 +22,8 @@ class PostsController extends Zend_Controller_Action
 
     public function newAction()
     {
+    	$this->checkAdmin();
+
 		$this->view->title = "Posts#New";
 		$form    = new Application_Form_Post();
 		$request = $this->getRequest();
@@ -41,6 +43,8 @@ class PostsController extends Zend_Controller_Action
 
     public function editAction()
     {
+    	$this->checkAdmin();
+
 		// get the post
 		$post = $this->fetchPost();
 
@@ -63,6 +67,8 @@ class PostsController extends Zend_Controller_Action
 
     public function deleteAction()
     {
+    	$this->checkAdmin();
+
 		// get the post
 		$post = $this->fetchPost();
 
@@ -92,13 +98,16 @@ class PostsController extends Zend_Controller_Action
 		}
     }
 
-    public function adminAction()
+    /**
+     * Throw a 403 error if user isn't logged
+     */
+    private function checkAdmin()
     {
-        $posts = new Application_Model_DbTable_Posts();
-		$this->view->entries = $posts->all();
+        $session_admin = new Zend_Session_Namespace('admin');
+        if(!isset($session_admin->id)){
+        	throw new Zend_Controller_Action_Exception('Oh crap, you are not logged as admin..', 403);
+        }
     }
-
-
 }
 
 
