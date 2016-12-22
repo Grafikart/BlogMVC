@@ -44,3 +44,10 @@ $router->addRoute('delete_post',
 		array('controller' => 'posts', 'action' => 'delete')
 	)
 );
+
+$router->addRoute('view_user', 
+	new Zend_Controller_Router_Route(
+		'users/:id',
+		array('controller' => 'users', 'action' => 'show')
+	)
+);

@@ -16,9 +16,9 @@ class Application_Model_DbTable_Users extends Zend_Db_Table_Abstract
 			throw new Exception("Can't find Post n°$id");
 		}else{
 			$row = $result->current();
-			$post = new Application_Model_Post();
-			$post->hydrate_from_sql_row($row);
-			return $post;
+			$user = new Application_Model_User();
+			$user->hydrate_from_sql_row($row);
+			return $user;
 		}
 	}
 
@@ -50,7 +50,7 @@ class Application_Model_DbTable_Users extends Zend_Db_Table_Abstract
 	function all() {
 		$results = $this->fetchAll();
 		foreach ($results as $row) {
-			yield Application_Model_Post::from_sql_row($row);
+			yield Application_Model_User::from_sql_row($row);
 		}
 	}
 

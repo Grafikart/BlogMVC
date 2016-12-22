@@ -15,8 +15,8 @@ class Application_Model_User
 	 */
 	static function from_sql_row($row)
 	{
-		$post = new Application_Model_Post();
-		return $post->hydrate_from_sql_row($row);
+		$user = new Application_Model_User();
+		return $user->hydrate_from_sql_row($row);
 	}
 
 
@@ -83,6 +83,7 @@ class Application_Model_User
 			'password' => $this->_password,
 		);
 	}
+
 
 	function getId(){return $this->_id;}
 	function setId($id){

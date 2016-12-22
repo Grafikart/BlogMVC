@@ -23,6 +23,10 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="login"/>
         </controllerFile>
+        <controllerFile controllerName="Users">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="show"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Post"/>
@@ -73,6 +77,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Admin">
             <viewScriptFile forActionName="login"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Users">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Users">
+            <viewScriptFile forActionName="show"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
