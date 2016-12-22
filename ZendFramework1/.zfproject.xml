@@ -27,10 +27,16 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="show"/>
         </controllerFile>
+        <controllerFile controllerName="Categories">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="show"/>
+          <actionMethod actionName="new"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory>
         <formFile formName="Post"/>
         <formFile formName="Admin"/>
+        <formFile formName="Category"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>
@@ -43,6 +49,7 @@
         </dbTableDirectory>
         <modelFile modelName="Post"/>
         <modelFile modelName="User"/>
+        <modelFile modelName="Category"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -83,6 +90,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Users">
             <viewScriptFile forActionName="show"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Categories">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Categories">
+            <viewScriptFile forActionName="show"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Categories">
+            <viewScriptFile forActionName="new"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
