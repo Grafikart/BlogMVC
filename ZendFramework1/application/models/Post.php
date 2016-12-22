@@ -11,6 +11,8 @@ class Application_Model_Post
 	protected $_content;
 	protected $_created;
 
+	protected $_user;
+
 
 	/** 
 	 * Instanciate a Post from an SQL row
@@ -69,6 +71,28 @@ class Application_Model_Post
 			->setSlug($row->slug)
 			->setContent($row->content)
 			->setCreated($row->created);
+	}
+
+
+	/**
+	 * Get user from user_id data
+	 * @return Application_Model_User as user founded
+	 */
+	function user(){
+		// check if user is already loaded, if not, we fetch it from database
+		if($this->_user){
+			return $this->_user;
+		}else{
+			$users = new Application_Model_DbTable_Users();
+			if($user = $users->findById($this->_user_id)){
+				$this->_user = $user;
+				return $user ;
+			}else{
+				throw new Exception("Can't fetch user data");
+			}
+		}
+
+		
 	}
 
 	/**

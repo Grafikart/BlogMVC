@@ -13,7 +13,7 @@
 
 				<p><small>
 					Category: <?= $post->getCategoryId() ?>, 
-					by <?= $post->getUserId() ?>
+					by <a href="<?= $this->url( array('id'=>$post->user()->id), 'view_user') ?>"><?= $post->user()->username ?></a>
 					on <?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?>
 				</small></p>
 

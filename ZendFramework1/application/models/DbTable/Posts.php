@@ -11,7 +11,7 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	function findById($id) {
 		$result = $this->find($id);
 		if (0 == count($result)) {
-			throw new Exception("Can't find Post n°$id");
+			throw new Exception("Can't find User n°$id");
 		}else{
 			$row = $result->current();
 			$post = new Application_Model_Post();
