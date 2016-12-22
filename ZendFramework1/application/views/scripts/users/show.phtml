@@ -4,6 +4,34 @@
 		<h1><?= $this->user->username ?></h1>
 	</div>
 
-	
+</div>
 
+<div class="row">
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Publication date</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			<?php foreach ($this->user->posts() as $post): ?>
+				<tr>
+
+					<td><a href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>"><?= $post->name ?></a></td>
+					<td><?= $post->getCategoryId() ?></td>
+					<td><?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?></td>
+					
+				</tr>
+			<?php endforeach ?>
+
+				
+			</tbody>
+		</table>
+
+	
+	
 </div>

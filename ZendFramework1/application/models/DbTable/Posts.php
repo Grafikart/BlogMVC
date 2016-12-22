@@ -20,6 +20,24 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		}
 	}
 
+	/**
+	 * Get all posts by user id
+	 * @param $user_id (Integer)
+	 * @yield Application_Model_User
+	 */
+	function findAllByUserId($user_id) {
+		$results = $this->fetchAll(
+			$this->select()
+				->where( 'user_id= :user_id' )
+				->bind(array(':user_id'=>$user_id))
+		);
+
+		foreach ($results as $result) {
+			$post = new Application_Model_Post();
+			yield $post->hydrate_from_sql_row($result);
+		}
+	}
+
 
 	/**
 	 * 
