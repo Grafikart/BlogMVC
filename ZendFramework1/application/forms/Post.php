@@ -33,19 +33,11 @@ class Application_Form_Post extends Zend_Form
 			)
 		);
 
-		$this->addElement('text', 'userId', array(
-				'label'	=> 'Id of the creator',
-				'required' => true,
-				'filters' => array('Int'),
-				'class' => 'form-control'
-			)
-		);
-
 
 		$this->addElement('submit', 'submit', array(
 				'ignore' => true,
 				'label' => 'create this post',
-				'class' => 'form-control'
+				'class' => 'btn btn-primary'
 			)
 		);
 
