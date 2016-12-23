@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
-CREATE TABLE `users` (
-	`id`	INTEGER NOT NULL,
+CREATE TABLE "users" (
+	`id`	INTEGER,
 	`username`	TEXT NOT NULL UNIQUE,
 	`password`	TEXT NOT NULL,
 	PRIMARY KEY(id)
@@ -53,4 +53,12 @@ Vivamus consectetur, enim vitae blandit tempor, dui velit hendrerit enim, non or
 Fusce rutrum neque eu viverra aliquam. Aliquam tristique feugiat mauris, dapibus consequat nisl faucibus id. Fusce vestibulum maximus mi, nec mollis lorem congue mollis. Quisque vitae euismod erat, suscipit molestie elit. Pellentesque euismod vitae magna eget semper. Vestibulum justo lacus, bibendum vel feugiat non, lacinia in nibh. Praesent nec aliquet magna, ut maximus diam. Aliquam cursus ultricies leo quis consequat. Nam nec leo mauris. Mauris lobortis nunc ex, vitae efficitur ligula facilisis eget. In varius non purus eget rhoncus.',1481884074),
  (10,0,1,'01',NULL,'Another test',1481895813),
  (11,0,1,'My first post as admin connected',NULL,'Hello',1482417506);
+CREATE TABLE "categories" (
+	`id`	INTEGER,
+	`name`	TEXT UNIQUE,
+	`slug`	TEXT,
+	PRIMARY KEY(id)
+);
+INSERT INTO `categories` (id,name,slug) VALUES (1,'Hello','hello'),
+ (2,'World','world');
 COMMIT;
