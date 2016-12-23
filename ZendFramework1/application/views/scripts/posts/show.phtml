@@ -65,16 +65,6 @@
 
 	</div>
 
-	<div class="col-md-4 sidebar">
-		<h4>Categories</h4>
-		<div class="list-group">
-			
-		</div>
-		
-		<h4>Last posts</h4>
-		<div class="list-group">
-			
-		</div>
-	</div>
+	<?= $this->partial('posts/_news.phtml', array('categories'=>$this->categories, 'last_posts'=>$this->last_posts )) ?>
 	
 </div>

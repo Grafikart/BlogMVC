@@ -11,21 +11,6 @@
 
 	</div>
 
-	<div class="col-md-4 sidebar">
-		<h4>Categories</h4>
-		<ul class="list-group">
-			<?php foreach ($this->categories as $category): ?>
-				<li class="list-group-item">
-					<?= $this->partial('categories/_link.phtml', array('category'=>$category)) ?>
-					<span class="badge"><?= iterator_count( $category->posts() ) ?></span>
-				</li>
-			<?php endforeach ?>
-		</ul>
-		
-		<h4>Last posts</h4>
-		<div class="list-group">
-			
-		</div>
-	</div>
+	<?= $this->partial('posts/_news.phtml', array('categories'=>$this->categories, 'last_posts'=>$this->last_posts )) ?>
 	
 </div>

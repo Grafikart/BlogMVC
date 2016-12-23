@@ -42,12 +42,21 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 
 
 	/**
-	 * 
+	 * Fetch all data. $limit can be passed o limit number of results
 	 */
-	function all() {
-		$results = $this->fetchAll();
-		foreach ($results as $row) {
-			yield Application_Model_Post::from_sql_row($row);
+	function all($limit= null) {
+
+		$query = $this->select()->order("id DESC");
+		if($limit){
+			$query = $this->select()->limit($limit)->order("id DESC");
+		}
+
+
+		$results = $this->fetchAll($query);
+
+		foreach ($results as $result) {
+			$post = new Application_Model_Post();
+			yield $post->hydrate_from_sql_row($result);
 		}
 	}
 

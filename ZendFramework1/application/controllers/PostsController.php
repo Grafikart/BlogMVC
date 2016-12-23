@@ -17,11 +17,17 @@ class PostsController extends Zend_Controller_Action
 
 		$categories = new Application_Model_DbTable_Categories();
 		$this->view->categories = $categories->all();
+		$this->view->last_posts = $posts->all(5);
 	}
 
 	public function showAction()
 	{
 		$this->view->title = $this->fetchPost()->name;
+
+		$posts = new Application_Model_DbTable_Posts();
+		$categories = new Application_Model_DbTable_Categories();
+		$this->view->categories = $categories->all();
+		$this->view->last_posts = $posts->all(5);
 	}
 
 	public function newAction()
@@ -92,7 +98,6 @@ class PostsController extends Zend_Controller_Action
 	/**
 	 * Get the post from param GET id and set in view
 	 * throw an error if not found
-	 *
 	 */
 	private function fetchPost()
 	{

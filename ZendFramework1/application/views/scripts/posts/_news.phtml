@@ -1,0 +1,20 @@
+<div class="col-md-4 sidebar">
+	<h4>Categories</h4>
+	<ul class="list-group">
+		<?php foreach ($this->categories as $category): ?>
+			<li class="list-group-item">
+				<?= $this->partial('categories/_link.phtml', array('category'=>$category)) ?>
+				<span class="badge"><?= iterator_count( $category->posts() ) ?></span>
+			</li>
+		<?php endforeach ?>
+	</ul>
+	
+	<h4>Last posts</h4>
+	<div class="list-group">
+		<?php foreach ($this->last_posts as $post): ?>
+			<li class="list-group-item">
+				<?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?>
+			</li>
+		<?php endforeach ?>
+	</div>
+</div>
