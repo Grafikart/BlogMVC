@@ -7,7 +7,7 @@
 			<p>Welcome to my blog</p>
 		</div>
 
-		<?php foreach ($this->entries as $post): ?>
+		<?php foreach ($this->posts as $post): ?>
 			<article>
 				<h2><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></h2>
 
@@ -32,9 +32,14 @@
 
 	<div class="col-md-4 sidebar">
 		<h4>Categories</h4>
-		<div class="list-group">
-			
-		</div>
+		<ul class="list-group">
+			<?php foreach ($this->categories as $category): ?>
+				<li class="list-group-item">
+					<?= $category->name ?>
+					<span class="badge"><?= iterator_count( $category->posts() ) ?></span>
+				</li>
+			<?php endforeach ?>
+		</ul>
 		
 		<h4>Last posts</h4>
 		<div class="list-group">

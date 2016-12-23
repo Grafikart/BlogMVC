@@ -20,16 +20,18 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		}
 	}
 
+
 	/**
-	 * Get all posts by user id
-	 * @param $user_id (Integer)
-	 * @yield Application_Model_User
+	 * Get all posts by column and its value
+	 * @param $column (String) as column name
+	 * @param $value (String) as value searched
+	 * @yield Application_Model_Post
 	 */
-	function findAllByUserId($user_id) {
+	function findAllBy($column, $value) {
 		$results = $this->fetchAll(
 			$this->select()
-				->where( 'user_id= :user_id' )
-				->bind(array(':user_id'=>$user_id))
+				->where( "$column = :$column" )
+				->bind(array(":$column"=>$value))
 		);
 
 		foreach ($results as $result) {

@@ -11,8 +11,12 @@ class PostsController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->view->title = "Posts#Index";
+
 		$posts = new Application_Model_DbTable_Posts();
-		$this->view->entries = $posts->all();
+		$this->view->posts = $posts->all();
+
+		$categories = new Application_Model_DbTable_Categories();
+		$this->view->categories = $categories->all();
 	}
 
 	public function showAction()
@@ -34,6 +38,7 @@ class PostsController extends Zend_Controller_Action
 				$post = new Application_Model_Post($form->getValues());
 				$session_admin = new Zend_Session_Namespace('admin');
 				$post->setUserId($session_admin->id);
+
 
 				$posts = new Application_Model_DbTable_Posts();
 				$posts->save($post);

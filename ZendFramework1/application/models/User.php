@@ -11,7 +11,7 @@ class Application_Model_User extends Application_Model_ActiveRecord
 
 	function posts(){
 		$posts = new Application_Model_DbTable_Posts();
-		foreach($posts->findAllByUserId($this->id) as $user){
+		foreach($posts->findAllBy('user_id', $this->id) as $user){
 			yield $user;
 		}
 	}
