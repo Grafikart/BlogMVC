@@ -1,4 +1,10 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Categories</b> and script/action name <b>show</b></p>
+<div class="row">
+
+
+	<div class="page-header">
+		<h1><?= $this->category->name ?></h1>
+	</div>
+
+	<?= $this->partial('posts/_list.phtml', array('posts'=> $this->category->posts())) ?>
+
 </div>

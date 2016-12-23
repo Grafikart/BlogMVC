@@ -7,26 +7,7 @@
 			<p>Welcome to my blog</p>
 		</div>
 
-		<?php foreach ($this->posts as $post): ?>
-			<article>
-				<h2><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></h2>
-
-				<p><small>
-					Category: <?= $post->getCategoryId() ?>, 
-					by <?= $this->partial('users/_link.phtml', array('user'=>$post->user())) ?>
-					on <?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?>
-				</small></p>
-
-
-				<p><?= substr($post->getContent(),0,250 )?></p>
-
-				<p class="text-right">
-					<a class="btn btn-primary" href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>">Read more...</a>
-				</p>
-				
-			</article>
-		<?php endforeach ?>
-
+		<?= $this->partial('posts/_list.phtml', array('posts'=> $this->posts)) ?>
 
 	</div>
 
@@ -35,7 +16,7 @@
 		<ul class="list-group">
 			<?php foreach ($this->categories as $category): ?>
 				<li class="list-group-item">
-					<?= $category->name ?>
+					<?= $this->partial('categories/_link.phtml', array('category'=>$category)) ?>
 					<span class="badge"><?= iterator_count( $category->posts() ) ?></span>
 				</li>
 			<?php endforeach ?>

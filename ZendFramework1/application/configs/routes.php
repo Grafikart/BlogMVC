@@ -51,3 +51,10 @@ $router->addRoute('view_user',
 		array('controller' => 'users', 'action' => 'show')
 	)
 );
+
+$router->addRoute('view_category', 
+	new Zend_Controller_Router_Route(
+		'category/:id',
+		array('controller' => 'categories', 'action' => 'show')
+	)
+);

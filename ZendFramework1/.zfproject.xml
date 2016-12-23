@@ -28,7 +28,6 @@
           <actionMethod actionName="show"/>
         </controllerFile>
         <controllerFile controllerName="Categories">
-          <actionMethod actionName="index"/>
           <actionMethod actionName="show"/>
           <actionMethod actionName="new"/>
         </controllerFile>

@@ -1,0 +1,15 @@
+<!-- display posts -->
+<?php foreach ($this->posts as $post): ?>
+	<article>
+		<h2><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></h2>
+
+		<?= $this->partial('posts/_header.phtml', array('post'=>$post)) ?>
+
+		<p><?= substr($post->getContent(),0,250 )?></p>
+
+		<p class="text-right">
+			<a class="btn btn-primary" href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>">Read more...</a>
+		</p>
+		
+	</article>
+<?php endforeach ?>

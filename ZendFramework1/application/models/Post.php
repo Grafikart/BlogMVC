@@ -11,6 +11,7 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 	protected $_created;
 
 	protected $_user;
+	protected $_category;
 
 
 
@@ -42,8 +43,25 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 				throw new Exception("Can't fetch user data");
 			}
 		}
+	}
 
-		
+	/**
+	 * Get category from category_id data
+	 * @return Application_Model_Category as user founded
+	 */
+	function category(){
+		// check if user is already loaded, if not, we fetch it from database
+		if($this->_category){
+			return $this->_category;
+		}else{
+			$categories = new Application_Model_DbTable_Categories();
+			if($category = $categories->findById($this->_category_id)){
+				$this->_category = $category;
+				return $category ;
+			}else{
+				throw new Exception("Can't fetch category data");
+			}
+		}
 	}
 
 	/**
