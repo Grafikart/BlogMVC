@@ -44,7 +44,7 @@ class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
 
 
 	/**
-	 * Get all Categorys
+	 * Get all Categories
 	 * @yield Application_Model_Category
 	 */
 	function all() {
@@ -52,6 +52,18 @@ class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
 		foreach ($results as $row) {
 			yield Application_Model_Category::from_sql_row($row);
 		}
+	}
+
+	/**
+	 * Get all values for select/options 
+	 * @return (array) as data for the select form
+	 */
+	function selectOptions() {
+		$results = array();
+		foreach ($this->all() as $category) {
+			$results[$category->id] = $category->name;
+		}
+		return $results;
 	}
 
 

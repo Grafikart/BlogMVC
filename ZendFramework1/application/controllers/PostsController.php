@@ -68,6 +68,10 @@ class PostsController extends Zend_Controller_Action
 		if ($this->getRequest()->isPost()) {
 			if ($form->isValid($request->getPost())) {
 				$post = new Application_Model_Post($form->getValues());
+
+				$session_admin = new Zend_Session_Namespace('admin');
+				$post->setUserId($session_admin->id);
+
 				$posts = new Application_Model_DbTable_Posts();
 				$posts->save($post);
 				return $this->_helper->redirector('index');
@@ -86,13 +90,11 @@ class PostsController extends Zend_Controller_Action
 		// get the post
 		$post = $this->fetchPost();
 
-		if ($this->getRequest()->isPost()) {
-			$posts = new Application_Model_DbTable_Posts();
-			$posts->deletePost( $this->view->post );
-			return $this->_helper->redirector('index');
-		}else{
-			$this->view->title = 'Delete '.$post->name.' ?';
-		}
+		
+		$posts = new Application_Model_DbTable_Posts();
+		$posts->deletePost( $this->view->post );
+		return $this->_helper->redirector('index');
+		
 	}
 
 	/**
