@@ -1,49 +1,12 @@
 <?php
 
-class Application_Model_User
+class Application_Model_User extends Application_Model_ActiveRecord
 {
 
 	protected $_id;
 	protected $_username;
 	protected $_password;
 
-
-	/** 
-	 * Instanciate a Post from an SQL row
-	 * @param $row Array as SQL row
-	 * @return Post
-	 */
-	static function from_sql_row($row)
-	{
-		$user = new Application_Model_User();
-		return $user->hydrate_from_sql_row($row);
-	}
-
-
-	function __construct(array $options = null)
-	{
-		if($options){
-			$this->setOptions($options);
-		}
-	}
- 
-	function __set($name, $value)
-	{
-		$method = 'set' . $name;
-		if (('mapper' == $name) || !method_exists($this, $method)) {
-			throw new Exception("Can't set property $name");
-		}
-		$this->$method($value);
-	}
- 
-	function __get($name)
-	{
-		$method = 'get' . $name;
-		if (('mapper' == $name) || !method_exists($this, $method)) {
-			throw new Exception("Can't get property $name");
-		}
-		return $this->$method();
-	}
 
 
 	function posts(){
@@ -62,17 +25,6 @@ class Application_Model_User
 		return $this->encrypt($password) === $this->_password ;
 	}
  
-	function setOptions(array $options)
-	{
-		$methods = get_class_methods($this);
-		foreach ($options as $key => $value) {
-			$method = 'set' . ucfirst($key);
-			if (in_array($method, $methods)) {
-				$this->$method($value);
-			}
-		}
-		return $this;
-	}
 
 	function hydrate_from_sql_row($row){
 		return $this->setId($row->id)
