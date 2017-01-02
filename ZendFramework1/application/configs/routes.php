@@ -52,6 +52,13 @@ $router->addRoute('delete_post',
 	)
 );
 
+$router->addRoute('new_category', 
+	new Zend_Controller_Router_Route(
+		'admin/categories/new',
+		array('controller' => 'categories', 'action' => 'new')
+	)
+);
+
 $router->addRoute('view_user', 
 	new Zend_Controller_Router_Route(
 		'users/:id',

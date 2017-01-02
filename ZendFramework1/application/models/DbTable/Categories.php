@@ -76,6 +76,7 @@ class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
 		$data = array(
 			'id' => $category->getId(),
 			'name' => $category->getName(),
+			'slug' => $category->generateSlug(),
 		);
 
 		if ( $id = $category->getId() ) {

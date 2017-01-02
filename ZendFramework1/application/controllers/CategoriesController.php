@@ -1,7 +1,10 @@
 <?php
+require_once 'AdminMiddleware.php';
 
 class CategoriesController extends Zend_Controller_Action
 {
+
+	use AdminMiddleware;
 
 	public function init()
 	{
@@ -22,7 +25,31 @@ class CategoriesController extends Zend_Controller_Action
 
 	public function newAction()
 	{
-		// action body
+		$this->checkAdmin();
+
+		$this->view->title = "Categories#New";
+		$form    = new Application_Form_Category();
+		$request = $this->getRequest();
+
+		if ($request->isPost()) {
+			if ($form->isValid($request->getPost())) {
+				//create a post with form value and session id
+				$category = new Application_Model_Category($form->getValues());
+				$session_admin = new Zend_Session_Namespace('admin');
+
+				$categories = new Application_Model_DbTable_Categories();
+				
+				try{
+					$categories->save($category);
+					return $this->_helper->getHelper('Redirector')
+					                    ->gotoRoute(array(), 'admin');
+				}catch(Exception $e){
+					$this->view->flash = array( 'warning' => "Can't create category: ".$e->getMessage() );
+				}
+			}
+		}
+
+		$this->view->form = $form;
 	}
 
 

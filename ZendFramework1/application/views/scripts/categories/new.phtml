@@ -1,4 +1,6 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Categories</b> and script/action name <b>new</b></p>
-</div>
+<h1><?= $this->title ?></h1>
+
+<?php
+	$this->form->setAction($this->url());
+	echo $this->form;
+?>

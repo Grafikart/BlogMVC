@@ -1,7 +1,10 @@
 <?php
+require_once 'AdminMiddleware.php';
 
 class PostsController extends Zend_Controller_Action
 {
+
+	use AdminMiddleware;
 
 	public function init()
 	{
@@ -131,16 +134,7 @@ class PostsController extends Zend_Controller_Action
 		}
 	}
 
-	/**
-	 * Throw a 403 error if user isn't logged
-	 */
-	private function checkAdmin()
-	{
-		$session_admin = new Zend_Session_Namespace('admin');
-		if(!isset($session_admin->id)){
-			throw new Zend_Controller_Action_Exception('Oh crap, you are not logged as admin..', 403);
-		}
-	}
+
 }
 
 
