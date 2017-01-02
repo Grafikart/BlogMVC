@@ -49,6 +49,7 @@
         <modelFile modelName="Post"/>
         <modelFile modelName="User"/>
         <modelFile modelName="Category"/>
+        <modelFile modelName="Comment"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>

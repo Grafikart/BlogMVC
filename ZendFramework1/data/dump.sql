@@ -51,6 +51,15 @@ Donec at massa et neque auctor congue. Quisque finibus eu mi quis viverra. Curab
 Vivamus consectetur, enim vitae blandit tempor, dui velit hendrerit enim, non ornare mauris purus non eros. Donec aliquet varius mauris vitae porta. Etiam lobortis placerat lectus ut semper. Nam malesuada mollis dui, non blandit metus feugiat quis. Sed in ligula sed ligula volutpat vestibulum eget ac eros. Etiam pellentesque auctor nisl, vel scelerisque magna maximus bibendum. Pellentesque placerat diam faucibus mi accumsan elementum. Nunc sed dui diam. Suspendisse est dolor, pellentesque sed molestie in, rutrum rhoncus dui. Mauris velit lectus, vestibulum id quam eget, malesuada lacinia est. Etiam varius iaculis quam, sed scelerisque libero egestas id. Donec congue lacus ligula. Curabitur ornare, lorem sed ultrices sagittis, nibh metus laoreet risus, id vestibulum sapien neque in leo. 
 
 Fusce rutrum neque eu viverra aliquam. Aliquam tristique feugiat mauris, dapibus consequat nisl faucibus id. Fusce vestibulum maximus mi, nec mollis lorem congue mollis. Quisque vitae euismod erat, suscipit molestie elit. Pellentesque euismod vitae magna eget semper. Vestibulum justo lacus, bibendum vel feugiat non, lacinia in nibh. Praesent nec aliquet magna, ut maximus diam. Aliquam cursus ultricies leo quis consequat. Nam nec leo mauris. Mauris lobortis nunc ex, vitae efficitur ligula facilisis eget. In varius non purus eget rhoncus.',1481884074);
+CREATE TABLE `comments` (
+	`id`	INTEGER,
+	`post_id`	INTEGER NOT NULL,
+	`username`	TEXT NOT NULL,
+	`mail`	TEXT NOT NULL,
+	`content`	TEXT NOT NULL,
+	`created`	INTEGER NOT NULL,
+	PRIMARY KEY(id)
+);
 CREATE TABLE "categories" (
 	`id`	INTEGER,
 	`name`	TEXT UNIQUE,
