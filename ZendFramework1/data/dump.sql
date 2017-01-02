@@ -68,5 +68,5 @@ CREATE TABLE "categories" (
 	PRIMARY KEY(id)
 );
 INSERT INTO `categories` (id,name,slug) VALUES (1,'Hello','hello'),
- (2,'World','world');
+ (7,'world','world');
 COMMIT;

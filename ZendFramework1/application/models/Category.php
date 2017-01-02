@@ -21,7 +21,8 @@ class Application_Model_Category extends Application_Model_ActiveRecord
 	
 	function hydrate_from_sql_row($row){
 		return $this->setId($row->id)
-			->setName($row->name) ;
+			->setName($row->name)
+			->setSlug($row->slug) ;
 	}
 
 	/**

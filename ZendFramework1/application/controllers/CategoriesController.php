@@ -14,13 +14,7 @@ class CategoriesController extends Zend_Controller_Action
 
 	public function showAction()
 	{
-		$id =  $this->_getParam('id', 0);
-		$categories = new Application_Model_DbTable_Categories();
-		if($category = $categories->findById($id)){
-			$this->view->category = $category;
-		}else{
-			throw new Zend_Controller_Action_Exception('This category does not exist', 404);
-		}
+		$this->view->category = $this->fetchCategoryBySlug();
 	}
 
 	public function newAction()
@@ -113,12 +107,27 @@ class CategoriesController extends Zend_Controller_Action
 	{
 		$id =  $this->_getParam('id', 0);
 		$categories = new Application_Model_DbTable_Categories();
+		return $this->fetchCategory( $categories->findById( $id) );
+	}
 
-		if($category =  $categories->findById( $id) ){
-			$this->view->category = $category;
-			return $category;
+	/**
+	 * Get the post from param GET slug and set in view
+	 * throw an error if not found
+	 */
+	private function fetchCategoryBySlug()
+	{
+		$slug =  $this->_getParam('slug', 0);
+		$categories = new Application_Model_DbTable_Categories();
+		return $this->fetchCategory( $categories->findBy('slug', $slug) );
+	}
+
+	private function fetchCategory($post)
+	{
+		if($post){
+			$this->view->post = $post;
+			return $post;
 		}else{
-			throw new Zend_Controller_Action_Exception('This category does not exist', 404);
+			throw new Zend_Controller_Action_Exception('This post does not exist', 404);
 		}
 	}
 

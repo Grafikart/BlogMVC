@@ -54,17 +54,15 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 	 */
 	function category(){
 		// check if user is already loaded, if not, we fetch it from database
-		if($this->_category){
-			return $this->_category;
-		}else{
+		if(!$this->_category){
 			$categories = new Application_Model_DbTable_Categories();
-			if($category = $categories->findById($this->_category_id)){
-				$this->_category = $category;
-				return $category ;
-			}else{
-				throw new Exception("Can't fetch category data");
+			try{
+				$this->_category = $categories->findById($this->_category_id);
+			}catch(Exception $e){
+				$this->_category = null;
 			}
 		}
+		return $this->_category;
 	}
 
 	/**

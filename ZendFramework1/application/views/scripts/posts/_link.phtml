@@ -1,1 +1,5 @@
-<a href="<?= $this->url(array('slug'=>$this->post->slug ), 'view_post') ?>"><?= $this->post->name ?></a>
+<?php if($this->post): ?>
+	<a href="<?= $this->url(array('slug'=>$this->post->slug ), 'view_post') ?>"><?= $this->post->name ?></a>
+<?php else: ?>
+	<i>Post deleted</i>
+<?php endif ?>

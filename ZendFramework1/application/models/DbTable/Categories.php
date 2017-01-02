@@ -22,23 +22,36 @@ class Application_Model_DbTable_Categories extends Zend_Db_Table_Abstract
 		}
 	}
 
+
 	/**
-	 * Get an Category by it's name
-	 * @param $name (String)
-	 * @return Application_Model_Category
+	 * Get first post by column and its value
+	 * @param $column (String) as column name
+	 * @param $value (String) as value searched
+	 * @return Application_Model_Post if founded
 	 */
-	function findByName($name) {
-		$result = $this->fetchRow(
+	function findBy($column, $value) {
+		foreach ($this->findAllBy($column, $value) as $post){
+			return $post;
+		}
+	}
+
+
+	/**
+	 * Get all posts by column and its value
+	 * @param $column (String) as column name
+	 * @param $value (String) as value searched
+	 * @yield Application_Model_Post
+	 */
+	function findAllBy($column, $value) {
+		$results = $this->fetchAll(
 			$this->select()
-				->where( 'name= :name' )
-				->bind(array(':name'=>$name))
+				->where( "$column = :$column" )
+				->bind(array(":$column"=>$value))
 		);
-		if (0 == count($result)) {
-			throw new Exception("Can't find Category with name = $name");
-		}else{
+
+		foreach ($results as $result) {
 			$category = new Application_Model_Category();
-			$category->hydrate_from_sql_row($result);
-			return $category;
+			yield $category->hydrate_from_sql_row($result);
 		}
 	}
 
