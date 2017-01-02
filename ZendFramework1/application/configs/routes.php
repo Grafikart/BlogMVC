@@ -1,81 +1,70 @@
 <?php
 
-$router->addRoute('home', 
-	new Zend_Controller_Router_Route(
-		'/',
-		array(
-			'controller' => 'posts',
-			'action'     => 'index'
-		) 
-	)
+$routes = array(
+	'home' => array(
+		'url' => '/',
+		'controller' => 'posts', 'action' => 'index'
+	),
+
+	'admin' => array(
+		'url' => 'admin',
+		'controller' => 'admin', 'action' => 'index'
+	),
+
+	'view_post' => array(
+		'url' => 'posts/:slug',
+		'controller' => 'posts', 'action' => 'show'
+	),
+	'new_post' => array(
+		'url' => 'admin/posts/new',
+		'controller' => 'posts', 'action' => 'new'
+	),
+	'edit_post' => array(
+		'url' => 'admin/posts/:id/edit',
+		'controller' => 'posts', 'action' => 'edit'
+	),
+	'delete_post' => array(
+		'url' => 'admin/posts/:id/delete',
+		'controller' => 'posts', 'action' => 'delete'
+	),
+	'comment_post' => array(
+		'url' => 'posts/:id/comment',
+		'controller' => 'comments', 'action' => 'create'
+	),
+
+
+	'view_category' => array(
+		'url' => 'categories/:slug',
+		'controller' => 'categories', 'action' => 'show'
+	),
+	'new_category' => array(
+		'url' => 'admin/categories/new',
+		'controller' => 'categories', 'action' => 'new'
+	),
+	'edit_category' => array(
+		'url' => 'admin/categories/:id/edit',
+		'controller' => 'categories', 'action' => 'edit'
+	),
+	'delete_category' => array(
+		'url' => 'admin/categroy/:id/delete',
+		'controller' => 'categories', 'action' => 'delete'
+	),
+
+	
+
+	'view_user' => array(
+		'url' => 'users/:id',
+		'controller' => 'users', 'action' => 'show'
+	),
 );
 
-$router->addRoute('admin', 
-	new Zend_Controller_Router_Route(
-		'admin',
-		array('controller' => 'admin', 'action' => 'index')
-	)
-);
 
-$router->addRoute('view_post', 
-	new Zend_Controller_Router_Route(
-		'posts/:slug',
-		array('controller' => 'posts', 'action' => 'show')
-	)
-);
 
-$router->addRoute('comment_post', 
-	new Zend_Controller_Router_Route(
-		'posts/:id/comment',
-		array('controller' => 'comments', 'action' => 'create')
-	)
-);
-
-$router->addRoute('new_post', 
-	new Zend_Controller_Router_Route(
-		'admin/posts/new',
-		array('controller' => 'posts', 'action' => 'new')
-	)
-);
-
-$router->addRoute('edit_post', 
-	new Zend_Controller_Router_Route(
-		'admin/posts/:id/edit',
-		array('controller' => 'posts', 'action' => 'edit')
-	)
-);
-
-$router->addRoute('delete_post', 
-	new Zend_Controller_Router_Route(
-		'admin/posts/:id/delete',
-		array('controller' => 'posts', 'action' => 'delete')
-	)
-);
-
-$router->addRoute('new_category', 
-	new Zend_Controller_Router_Route(
-		'admin/categories/new',
-		array('controller' => 'categories', 'action' => 'new')
-	)
-);
-
-$router->addRoute('edit_category', 
-	new Zend_Controller_Router_Route(
-		'admin/categories/:id/edit',
-		array('controller' => 'categories', 'action' => 'edit')
-	)
-);
-
-$router->addRoute('view_user', 
-	new Zend_Controller_Router_Route(
-		'users/:id',
-		array('controller' => 'users', 'action' => 'show')
-	)
-);
-
-$router->addRoute('view_category', 
-	new Zend_Controller_Router_Route(
-		'category/:id',
-		array('controller' => 'categories', 'action' => 'show')
-	)
-);
+foreach ($routes as $name => $data) {
+	$router->addRoute($name, 
+		new Zend_Controller_Router_Route(
+			$data['url'],
+			array('controller' => $data['controller'], 'action' => $data['action'] )
+		)
+	);
+}

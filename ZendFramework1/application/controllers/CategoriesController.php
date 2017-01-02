@@ -78,10 +78,31 @@ class CategoriesController extends Zend_Controller_Action
 				
 			}
 		}
-		
+
 		$this->view->title = 'Edit '.$category->name;
 		$form->populate($category->formData());
 		$this->view->form = $form;
+	}
+
+	public function deleteAction()
+	{
+		$this->checkAdmin();
+
+		// get the post
+		$category = $this->fetchCategoryById();
+
+		
+		$categories = new Application_Model_DbTable_Categories();
+		
+		try{
+			$categories->deleteCategory( $this->view->category );
+			$this->view->flash = array( 'success' => "Category deleted" );
+			return $this->_helper->getHelper('Redirector')
+			                    ->gotoRoute(array(), 'admin');
+		}catch(Exception $e){
+			$this->view->flash = array( 'warning' => "Can't create category: ".$e->getMessage() );
+		}
+		
 	}
 
 	/**

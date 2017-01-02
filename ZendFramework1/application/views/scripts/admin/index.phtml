@@ -65,7 +65,7 @@
 				<td><?= $category->name ?></td>
 				<td>
 					<a class="btn btn-primary" href="<?= $this->url( array('id'=>$category->id), 'edit_category' )?>">Edit</a>
-					<a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="<?= $this->url( array('id'=>$post->id), 'delete_post' )?>">Delete</a>
+					<a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="<?= $this->url( array('id'=>$category->id), 'delete_category' )?>">Delete</a>
 				</td>
 				
 			</tr>
