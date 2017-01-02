@@ -40,6 +40,18 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 		}
 	}
 
+	/**
+	 * Get first post by column and its value
+	 * @param $column (String) as column name
+	 * @param $value (String) as value searched
+	 * @return Application_Model_Post if founded
+	 */
+	function findBy($column, $value) {
+		foreach ($this->findAllBy($column, $value) as $post){
+			return $post;
+		}
+	}
+
 
 	/**
 	 * Fetch all data. $limit can be passed o limit number of results
@@ -72,7 +84,7 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 			'user_id' => $post->getUserId(),
 			'category_id' => $post->getCategoryId(),
 			'name' => $post->getName(),
-			'slug' => $post->getSlug(),
+			'slug' => $post->generateSlug(),
 			'content' => $post->getContent(),
 			'created' => time()
 		);

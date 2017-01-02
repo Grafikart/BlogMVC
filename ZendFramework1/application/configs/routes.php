@@ -19,7 +19,7 @@ $router->addRoute('admin',
 
 $router->addRoute('view_post', 
 	new Zend_Controller_Router_Route(
-		'posts/:id',
+		'posts/:slug',
 		array('controller' => 'posts', 'action' => 'show')
 	)
 );

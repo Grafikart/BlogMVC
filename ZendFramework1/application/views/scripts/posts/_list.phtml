@@ -8,7 +8,7 @@
 		<p><?= substr($post->getContent(),0,250 )?></p>
 
 		<p class="text-right">
-			<a class="btn btn-primary" href="<?= $this->url(array('id'=>$post->id ), 'view_post') ?>">Read more...</a>
+			<a class="btn btn-primary" href="<?= $this->url(array('slug'=>$post->slug ), 'view_post') ?>">Read more...</a>
 		</p>
 		
 	</article>

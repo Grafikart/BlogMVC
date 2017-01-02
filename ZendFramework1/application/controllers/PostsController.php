@@ -25,7 +25,7 @@ class PostsController extends Zend_Controller_Action
 		$posts = new Application_Model_DbTable_Posts();
 		$categories = new Application_Model_DbTable_Categories();
 
-		$this->view->title     = $this->fetchPost()->name;
+		$this->view->title     = $this->fetchPostBySlug()->name;
 		$this->view->form       = new Application_Form_Comment();
 		$this->view->categories = $categories->all();
 		$this->view->last_posts = $posts->all(5);
@@ -61,7 +61,7 @@ class PostsController extends Zend_Controller_Action
 		$this->checkAdmin();
 
 		// get the post
-		$post = $this->fetchPost();
+		$post = $this->fetchPostById();
 
 		$form    = new Application_Form_Post();
 		$request = $this->getRequest();
@@ -89,7 +89,7 @@ class PostsController extends Zend_Controller_Action
 		$this->checkAdmin();
 
 		// get the post
-		$post = $this->fetchPost();
+		$post = $this->fetchPostById();
 
 		
 		$posts = new Application_Model_DbTable_Posts();
@@ -98,15 +98,32 @@ class PostsController extends Zend_Controller_Action
 		
 	}
 
+
 	/**
 	 * Get the post from param GET id and set in view
 	 * throw an error if not found
 	 */
-	private function fetchPost()
+	private function fetchPostById()
 	{
 		$id =  $this->_getParam('id', 0);
 		$posts = new Application_Model_DbTable_Posts();
-		if($post = $posts->findById($id)){
+		return $this->fetchPost( $posts->findById( $id) );
+	}
+
+	/**
+	 * Get the post from param GET slug and set in view
+	 * throw an error if not found
+	 */
+	private function fetchPostBySlug()
+	{
+		$slug =  $this->_getParam('slug', 0);
+		$posts = new Application_Model_DbTable_Posts();
+		return $this->fetchPost( $posts->findBy('slug', $slug) );
+	}
+
+	private function fetchPost($post)
+	{
+		if($post){
 			$this->view->post = $post;
 			return $post;
 		}else{
