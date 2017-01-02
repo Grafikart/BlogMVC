@@ -12,6 +12,7 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 
 	protected $_user;
 	protected $_category;
+	protected $_comments;
 
 
 
@@ -61,6 +62,24 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 			}else{
 				throw new Exception("Can't fetch category data");
 			}
+		}
+	}
+
+	/**
+	 * Get category from category_id data
+	 * @return Application_Model_Category as user founded
+	 */
+	function comments(){
+		// check if user is already loaded, if not, we fetch it from database
+		if($this->_comments){
+			return $this->_comments;
+		}else{
+			$comments = new Application_Model_DbTable_Comments();
+
+			foreach ($comments->findAllBy('post_id', $this->_id) as $comment) {
+				$this->_comments[] = $comment ;
+			}
+			return $this->_comments;
 		}
 	}
 

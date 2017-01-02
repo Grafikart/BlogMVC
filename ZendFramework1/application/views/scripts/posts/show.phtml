@@ -23,27 +23,9 @@
             ?>
 
 
-            <h3>2 Commentaires</h3>
+            <?= $this->partial('comments/_list.phtml', array('comments'=>$this->post->comments() )) ?>
 
-            <div class="row">
-                <div class="col-md-2">
-                    <img width="100%" src="http://lorempicsum.com/futurama/100/100/4">
-                </div>
-                <div class="col-md-10">
-                    <p><strong>Username</strong> 10 hours ago</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-                </div>
-            </div>
-            <div class="row">
-                <hr>
-                <div class="col-md-2">
-                    <img width="100%" src="http://lorempicsum.com/futurama/100/100/5">
-                </div>
-                <div class="col-md-10">
-                    <p><strong>Username</strong> 11 days ago</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!</p>
-                </div>
-            </div>
+            
         </section>
 
 

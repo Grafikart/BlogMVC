@@ -3,7 +3,7 @@
 class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 {
 
-	protected $_name = 'comment';
+	protected $_name = 'comments';
 
 	/**
 	 * Get an Comment by it's primary key
@@ -51,6 +51,25 @@ class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 		$results = $this->fetchAll();
 		foreach ($results as $row) {
 			yield Application_Model_Comment::from_sql_row($row);
+		}
+	}
+
+	/**
+	 * Get all posts by column and its value
+	 * @param $column (String) as column name
+	 * @param $value (String) as value searched
+	 * @yield Application_Model_Post
+	 */
+	function findAllBy($column, $value) {
+		$results = $this->fetchAll(
+			$this->select()
+				->where( "$column = :$column" )
+				->bind(array(":$column"=>$value))
+		);
+
+		foreach ($results as $result) {
+			$post = new Application_Model_Comment();
+			yield $post->hydrate_from_sql_row($result);
 		}
 	}
 

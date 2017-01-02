@@ -60,6 +60,7 @@ CREATE TABLE `comments` (
 	`created`	INTEGER NOT NULL,
 	PRIMARY KEY(id)
 );
+INSERT INTO `comments` (id,post_id,username,mail,content,created) VALUES (1,7,'test','test@test.com','Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, laudantium voluptatibus quae doloribus dolorem earum dicta quasi. Fugit, eligendi, voluptatibus corporis deleniti perferendis accusantium totam harum dolor ab veniam laudantium!',0);
 CREATE TABLE "categories" (
 	`id`	INTEGER,
 	`name`	TEXT UNIQUE,
