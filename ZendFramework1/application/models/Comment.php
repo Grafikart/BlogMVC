@@ -25,6 +25,17 @@ class Application_Model_Comment extends Application_Model_ActiveRecord{
 		// TODO Regex validation
 		return true ;
 	}
+
+
+	/**
+	 * Count days between Comment's creation and today
+	 * @return (Integer) as number of days
+	 */
+	function days(){
+		$today = new DateTime();
+		$created = DateTime::createFromFormat('U', $this->created);
+		return $today->diff($created)->days;
+	}
  
 
 	function hydrate_from_sql_row($row){
