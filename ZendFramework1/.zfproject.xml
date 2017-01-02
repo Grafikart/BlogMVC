@@ -36,6 +36,7 @@
         <formFile formName="Post"/>
         <formFile formName="Admin"/>
         <formFile formName="Category"/>
+        <formFile formName="Comment"/>
       </formsDirectory>
       <layoutsDirectory>
         <layoutScriptsDirectory>

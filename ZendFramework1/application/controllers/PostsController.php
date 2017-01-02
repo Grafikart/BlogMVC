@@ -22,10 +22,11 @@ class PostsController extends Zend_Controller_Action
 
 	public function showAction()
 	{
-		$this->view->title = $this->fetchPost()->name;
-
 		$posts = new Application_Model_DbTable_Posts();
 		$categories = new Application_Model_DbTable_Categories();
+
+		$this->view->title     = $this->fetchPost()->name;
+		$this->view->form       = new Application_Form_Comment();
 		$this->view->categories = $categories->all();
 		$this->view->last_posts = $posts->all(5);
 	}
