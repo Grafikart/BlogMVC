@@ -65,6 +65,7 @@ class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 			$this->select()
 				->where( "$column = :$column" )
 				->bind(array(":$column"=>$value))
+				->order("created DESC")
 		);
 
 		foreach ($results as $result) {
