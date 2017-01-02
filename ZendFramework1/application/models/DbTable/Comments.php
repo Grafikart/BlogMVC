@@ -80,24 +80,31 @@ class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 	 */
 	public function save(Application_Model_Comment $comment)
 	{
-		// create an arry with data
-		$data = array(
-			'id'       => $comment->getId(),
-			'post_id'  => $comment->getPostId(),
-			'username' => $comment->getUsername(),
-			'mail'     => $comment->getMail(),
-			'content'  => $comment->getContent(),
-			'created'  => $comment->getCreated(),
-		);
 
-		if ( $id = $comment->getId() ) {
-			$this->update($data, array('id = ?' => $id));
+		if($comment->isValid()){
+			// create an arry with data
+			$data = array(
+				'id'       => $comment->getId(),
+				'post_id'  => $comment->getPostId(),
+				'username' => $comment->getUsername(),
+				'mail'     => $comment->getMail(),
+				'content'  => $comment->getContent(),
+				'created'  => $comment->getCreated(),
+			);
 
-		} else {
-			unset($data['id']);
-			$data['created'] = time();
-			$this->insert($data);
+			if ( $id = $comment->getId() ) {
+				$this->update($data, array('id = ?' => $id));
+
+			} else {
+				unset($data['id']);
+				$data['created'] = time();
+				$this->insert($data);
+			}
+
+		}else{
+			throw new Exception('Email is not valid');
 		}
+		
 	}
 
 

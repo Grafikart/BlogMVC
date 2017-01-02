@@ -18,12 +18,10 @@ class Application_Model_Comment extends Application_Model_ActiveRecord{
 
 	/**
 	 * Check if comment is valid (check if email is valid)
-	 * @param $password (String) as clear pasword
 	 * @return (Boolean) true if correspond
 	 */
-	function isValid($email){
-		// TODO Regex validation
-		return true ;
+	function isValid(){
+		return filter_var($this->_mail, FILTER_VALIDATE_EMAIL);
 	}
 
 
