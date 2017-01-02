@@ -26,7 +26,7 @@ class CommentsController extends Zend_Controller_Action
 				$comments = new Application_Model_DbTable_Comments();
 				$comments->save($comment);
 				return $this->_helper->getHelper('Redirector')
-					->gotoRoute(array('id' => $comment->getPostId() ), 'view_post');
+					->gotoRoute(array('slug' => $comment->post()->getSlug() ), 'view_post');
 			}
 		}
 	}

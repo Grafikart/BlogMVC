@@ -7,6 +7,8 @@ class Application_Form_Category extends Zend_Form
     {
         $this->setMethod('post');
 
+		$this->addElement('hidden', 'id');
+		
 		$this->addElement('text', 'name', array(
 				'label' => 'Name',
 				'required' => true,

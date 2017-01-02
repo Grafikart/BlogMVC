@@ -13,7 +13,7 @@ class Application_Model_Comment extends Application_Model_ActiveRecord{
 
 	function post(){
 		$posts = new Application_Model_DbTable_Posts();
-		return $posts->findBy('user_id', $this->id);
+		return $posts->findBy('id', $this->_post_id);
 	}
 
 	/**
