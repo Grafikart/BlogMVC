@@ -24,6 +24,18 @@ class Application_Model_Category extends Application_Model_ActiveRecord
 			->setName($row->name) ;
 	}
 
+	/**
+	 * Export data to populate form
+	 * @return Array as data
+	 */
+	function formData(){
+		return array(
+			'id' => $this->_id,
+			'name' => $this->_name,
+			'slug' => $this->_slug
+		);
+	}
+
 
 	function getId(){return $this->_id;}
 	function setId($id){

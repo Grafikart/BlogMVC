@@ -30,6 +30,7 @@
         <controllerFile controllerName="Categories">
           <actionMethod actionName="show"/>
           <actionMethod actionName="new"/>
+          <actionMethod actionName="edit"/>
         </controllerFile>
         <controllerFile controllerName="Comments">
           <actionMethod actionName="index"/>
@@ -110,6 +111,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Comments">
             <viewScriptFile forActionName="create"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Categories">
+            <viewScriptFile forActionName="edit"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

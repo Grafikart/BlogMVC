@@ -59,6 +59,13 @@ $router->addRoute('new_category',
 	)
 );
 
+$router->addRoute('edit_category', 
+	new Zend_Controller_Router_Route(
+		'admin/categories/:id/edit',
+		array('controller' => 'categories', 'action' => 'edit')
+	)
+);
+
 $router->addRoute('view_user', 
 	new Zend_Controller_Router_Route(
 		'users/:id',
