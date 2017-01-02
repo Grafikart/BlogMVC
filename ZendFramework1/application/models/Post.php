@@ -1,5 +1,7 @@
 <?php
+define('DS', DIRECTORY_SEPARATOR);
 require_once 'Slug.php';
+require_once APPLICATION_PATH.DS.'..'.DS.'library'.DS.'erusev'.DS.'Parsedown'.DS.'Parsedown.php';
 
 class Application_Model_Post extends Application_Model_ActiveRecord
 {
@@ -136,6 +138,14 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 		return $this;
 	}
 
+	/**
+	 * Get content parsed with Parsedown
+	 * http://parsedown.org/
+	 */
+	function content(){
+		$Parsedown = new Parsedown();
+		return $Parsedown->text($this->_content);
+	}
 	function getContent(){ return $this->_content; }
 	function setContent($content)
 	{
