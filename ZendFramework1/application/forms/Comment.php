@@ -7,9 +7,6 @@ class Application_Form_Comment extends Zend_Form
 	{
 		$this->setMethod('post');
 
-		$this->addElement('hidden', 'id');
-		$this->addElement('hidden', 'post_id');
-
 		$this->addElement('text', 'mail', array(
 				'label' => 'Email',
 				'required' => true,

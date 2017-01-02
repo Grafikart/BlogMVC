@@ -18,7 +18,7 @@
             <h3>Comment this post</h3>
 
             <?php
-                $this->form->setAction($this->url());
+                $this->form->setAction($this->url(array('id'=>$this->post->id ), 'comment_post'));
                 echo $this->form;
             ?>
 

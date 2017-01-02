@@ -66,7 +66,7 @@ class PostsController extends Zend_Controller_Action
 		$form    = new Application_Form_Post();
 		$request = $this->getRequest();
 
-		if ($this->getRequest()->isPost()) {
+		if ($request->isPost()) {
 			if ($form->isValid($request->getPost())) {
 				$post = new Application_Model_Post($form->getValues());
 

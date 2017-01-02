@@ -77,20 +77,24 @@ class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 	/**
 	 * 
 	 */
-	public function save(Application_Model_Comment $user)
+	public function save(Application_Model_Comment $comment)
 	{
 		// create an arry with data
 		$data = array(
-			'id' => $user->getId(),
-			'username' => $user->getCommentname(),
-			'password' => $user->getPassword(),
+			'id'       => $comment->getId(),
+			'post_id'  => $comment->getPostId(),
+			'username' => $comment->getUsername(),
+			'mail'     => $comment->getMail(),
+			'content'  => $comment->getContent(),
+			'created'  => $comment->getCreated(),
 		);
 
-		if ( $id = $user->getId() ) {
+		if ( $id = $comment->getId() ) {
 			$this->update($data, array('id = ?' => $id));
 
 		} else {
 			unset($data['id']);
+			$data['created'] = time();
 			$this->insert($data);
 		}
 	}
@@ -99,8 +103,8 @@ class Application_Model_DbTable_Comments extends Zend_Db_Table_Abstract
 	/**
 	 * 
 	 */
-	public function deleteComment(Application_Model_Comment $user)
+	public function deleteComment(Application_Model_Comment $comment)
 	{
-		$this->delete('id ='.$user->getId());
+		$this->delete('id ='.$comment->getId());
 	}
 }

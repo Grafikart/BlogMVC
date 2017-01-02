@@ -24,6 +24,13 @@ $router->addRoute('view_post',
 	)
 );
 
+$router->addRoute('comment_post', 
+	new Zend_Controller_Router_Route(
+		'posts/:id/comment',
+		array('controller' => 'comments', 'action' => 'create')
+	)
+);
+
 $router->addRoute('new_post', 
 	new Zend_Controller_Router_Route(
 		'admin/posts/new',
