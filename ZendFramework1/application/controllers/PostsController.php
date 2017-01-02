@@ -16,7 +16,10 @@ class PostsController extends Zend_Controller_Action
 		$this->view->title = "Posts#Index";
 
 		$posts = new Application_Model_DbTable_Posts();
-		$this->view->posts = $posts->all();
+
+		$paginator = Zend_Paginator::factory(iterator_to_array($posts->all()));
+		$paginator->setCurrentPageNumber($this->_getParam('page', 1));
+		$this->view->paginator = $paginator;
 
 		$categories = new Application_Model_DbTable_Categories();
 		$this->view->categories = $categories->all();

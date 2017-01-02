@@ -1,10 +1,15 @@
 <?php
 
+
+$router->addRoute('home', 
+	new Zend_Controller_Router_Route(
+		'/:page',
+		array('controller' => 'posts', 'action' => 'index', 'page' => 1 )
+	)
+);
+
+
 $routes = array(
-	'home' => array(
-		'url' => '/',
-		'controller' => 'posts', 'action' => 'index'
-	),
 
 	'admin' => array(
 		'url' => 'admin',

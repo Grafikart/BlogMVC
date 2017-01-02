@@ -1,0 +1,47 @@
+<?php if ($this->pageCount): ?>
+<div class="row">
+
+	<nav aria-label="Page navigation">
+
+		<ul class="pagination">
+
+			<!-- First page link -->
+			<?php if (isset($this->previous)): ?>
+				<li><a href="<?= $this->url(array('page' => $this->first)); ?>"> First </a></li>
+			<?php else: ?>
+				<li class="disabled"><a href="#" aria-label="First">First</a></li>
+			<?php endif; ?>
+			
+		 
+			<!-- Previous page link -->
+			<?php if (isset($this->previous)): ?>
+				<li><a href="<?= $this->url(array('page' => $this->previous)); ?>">&lt; Previous</a></li>
+			<?php else: ?>
+				<li class="disabled"><a href="#" aria-label="Previous">&lt; Previous</a></li>
+			<?php endif; ?>
+			
+		 
+			<!-- Next page link -->
+			<?php if (isset($this->next)): ?>
+				<li><a href="<?= $this->url(array('page' => $this->next)); ?>">Next &gt;</a></li>
+			<?php else: ?>
+				<li class="disabled"><a href="#" aria-label="Previous">&gt; Next</a></li>
+			<?php endif; ?>
+			
+		 
+			<!-- Last page link -->
+			<?php if (isset($this->next)): ?>
+				<li><a href="<?= $this->url(array('page' => $this->last)); ?>">Last</a></li>
+			<?php else: ?>
+				<li class="disabled"><a href="#" aria-label="Last">Last</a></li>
+			<?php endif; ?>
+		 
+
+		</ul>
+
+	</nav>
+		
+</div>
+
+
+<?php endif ?>

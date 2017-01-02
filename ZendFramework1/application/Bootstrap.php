@@ -14,4 +14,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$router = Zend_Controller_Front::getInstance()->getRouter();
 		include APPLICATION_PATH . "/configs/routes.php";
 	}
+
+	protected function _initControls()
+	{
+		Zend_View_Helper_PaginationControl::setDefaultViewPartial('controls.phtml');
+	}
 }

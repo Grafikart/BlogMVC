@@ -58,7 +58,7 @@ class Application_Model_DbTable_Posts extends Zend_Db_Table_Abstract
 	 */
 	function all($limit= null) {
 
-		$query = $this->select()->order("id DESC");
+		$query = $this->select()->order("created DESC");
 		if($limit){
 			$query = $this->select()->limit($limit)->order("id DESC");
 		}

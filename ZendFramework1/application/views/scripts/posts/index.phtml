@@ -7,7 +7,7 @@
 			<p>Welcome to my blog</p>
 		</div>
 
-		<?= $this->partial('posts/_list.phtml', array('posts'=> $this->posts)) ?>
+		<?= $this->partial('posts/_list.phtml', array('posts'=> $this->paginator)) ?>
 
 	</div>
 
