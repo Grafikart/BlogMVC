@@ -1,6 +1,4 @@
 <?php
-require_once 'Slug.php';
-
 
 class Application_Model_Category extends Application_Model_ActiveRecord
 {
@@ -18,7 +16,7 @@ class Application_Model_Category extends Application_Model_ActiveRecord
         }
     }
 
-    
+
     public function hydrate_from_sql_row($row)
     {
         return $this->setId($row->id)

@@ -1,5 +1,4 @@
 <?php
-require_once 'AdminMiddleware.php';
 
 class AdminController extends Zend_Controller_Action
 {

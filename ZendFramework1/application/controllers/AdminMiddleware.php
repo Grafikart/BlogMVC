@@ -2,7 +2,6 @@
 
 trait AdminMiddleware
 {
-
     /**
      * Throw a 403 error if user isn't logged
      */

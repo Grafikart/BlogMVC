@@ -1,5 +1,4 @@
 <?php
-require_once 'AdminMiddleware.php';
 
 class CategoriesController extends Zend_Controller_Action
 {
@@ -9,7 +8,6 @@ class CategoriesController extends Zend_Controller_Action
     {
         /* Initialize action controller here */
     }
-
 
     public function showAction()
     {
@@ -31,7 +29,7 @@ class CategoriesController extends Zend_Controller_Action
                 $session_admin = new Zend_Session_Namespace('admin');
 
                 $categories = new Application_Model_DbTable_Categories();
-                
+
                 try {
                     $categories->save($category);
                     return $this->_helper->getHelper('Redirector')
@@ -83,9 +81,9 @@ class CategoriesController extends Zend_Controller_Action
         // get the post
         $category = $this->fetchCategoryById();
 
-        
+
         $categories = new Application_Model_DbTable_Categories();
-        
+
         try {
             $categories->deleteCategory($this->view->category);
             $this->view->flash = array( 'success' => "Category deleted" );

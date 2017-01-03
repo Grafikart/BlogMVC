@@ -1,7 +1,4 @@
 <?php
-define('DS', DIRECTORY_SEPARATOR);
-require_once 'Slug.php';
-require_once APPLICATION_PATH.DS.'..'.DS.'library'.DS.'erusev'.DS.'Parsedown'.DS.'Parsedown.php';
 
 class Application_Model_Post extends Application_Model_ActiveRecord
 {
@@ -19,7 +16,6 @@ class Application_Model_Post extends Application_Model_ActiveRecord
 
     use Slug;
 
-
     public function hydrate_from_sql_row($row)
     {
         return $this->setId($row->id)
@@ -35,6 +31,7 @@ class Application_Model_Post extends Application_Model_ActiveRecord
     /**
      * Get user from user_id data
      * @return Application_Model_User as user founded
+     * @throws Exception
      */
     public function user()
     {
@@ -106,8 +103,8 @@ class Application_Model_Post extends Application_Model_ActiveRecord
             'userId' => $this->_user_id
         );
     }
- 
-    
+
+
     public function getId()
     {
         return $this->_id;

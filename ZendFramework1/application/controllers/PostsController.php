@@ -1,5 +1,4 @@
 <?php
-require_once 'AdminMiddleware.php';
 
 class PostsController extends Zend_Controller_Action
 {
@@ -96,7 +95,7 @@ class PostsController extends Zend_Controller_Action
         // get the post
         $post = $this->fetchPostById();
 
-        
+
         $posts = new Application_Model_DbTable_Posts();
         $posts->deletePost($this->view->post);
         return $this->_helper->redirector('index');
