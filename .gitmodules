@@ -1,0 +1,4 @@
+[submodule "Symfony3"]
+	path = Symfony3
+	url = https://github.com/Grafikart/BlogMVC-Symfony3.git
+	branch = master
