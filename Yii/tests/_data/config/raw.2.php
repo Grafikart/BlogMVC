@@ -1,1 +1,0 @@
-<?php return array('a'=>'b','c'=>__DIR__,'z'=>include 'raw.3.php');

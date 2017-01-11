@@ -1,9 +1,0 @@
-{% if App.user.hasMessages() %}
-    {% for message in App.user.getMessages() %}
-        {# ffu-code #}
-        {% set level_class = message['level']=='notice'?'info':message['level']=='success'?'success':'danger' %}
-        <div class="alert alert-{{ level_class }}">
-            {{ message['message'] }}
-        </div>
-    {% endfor %}
-{% endif %}

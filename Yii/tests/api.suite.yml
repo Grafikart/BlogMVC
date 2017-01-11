@@ -1,8 +1,0 @@
-class_name: ApiGuy
-modules:
-    enabled: [PhpBrowser, Asserts, REST]
-    config:
-        PhpBrowser:
-            url: 'http://ci.yii.blogmvc.dev'
-        REST:
-            url: 'http://ci.yii.blogmvc.dev'
