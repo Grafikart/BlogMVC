@@ -38,7 +38,6 @@
             </article>
             <hr>
 	    {% endfor %}
-
-	    {{ paginator.paginate(posts) }}
+	    {{ knp_pagination_render(posts) }}
     </div>
 {% endblock %}
