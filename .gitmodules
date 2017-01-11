@@ -2,3 +2,7 @@
 	path = Symfony3
 	url = https://github.com/Grafikart/BlogMVC-Symfony3.git
 	branch = master
+[submodule "Phoenix"]
+	path = Phoenix
+	url = https://github.com/Grafikart/BlogMVC-Phoenix.git
+	branch = master
