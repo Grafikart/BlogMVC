@@ -1,1 +1,0 @@
-<div class="alert alert-success"><strong>Well done !</strong> <?= $message; ?></div>

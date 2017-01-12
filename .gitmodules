@@ -10,3 +10,7 @@
 	path = Symfony2
 	url = https://github.com/Alex-D/BlogMVC-Symfony2
 	branch = master
+[submodule "CakePHP2"]
+	path = CakePHP2
+	url = https://github.com/TahiriAbdou/BlogMVC-CakePHP2
+	branch = master
