@@ -12,7 +12,7 @@ You have to create a blog app using the HTML samples inside the HTML directory :
 
 ### Database structure
 
-You have to use the same structure as [dump.sql](https://raw.github.com/Grafikart/blogmvc/master/dump.sql). You can rename table and fields depending of your Framework conventions and you can even use migrations if your framework support it.
+You can rename table and fields depending of your Framework conventions and you can even use migrations if your framework support it.
 
 * categories (HasMany **Post**)
 	* id
@@ -56,8 +56,8 @@ With great power, comes great routing ! (No seriously don't make the SEO guy ang
 * code for php >= 5.4 (it means you can use <?= !)
 * Post content is written using Markdown, you have to include a plugin (homemade or not) to convert this Markdown into HTML. (It's used to show how plugin work within each framework).
 * You have to login to access to the backend. The login is "admin" and the password is "admin" (use the users table to manage user).
-* Pagination is limited to 5 posts.
+* Pagination is limited to 5 posts per page.
 * Posts and Comments are ordered this way : the newer first.
 * Data has to be validated before saving (for Post and Comments, see the *database structure* section), there is no "antispam" for the comment submission.
-* The blog has a sidebar that is the same for every page and you have to cache it (the cache has to be deleted when a post is saved/deleted)
+* The blog has a sidebar that is the same for every page
 * Finally you have to create a readme.md to explain how to setup your framework and the requirements.

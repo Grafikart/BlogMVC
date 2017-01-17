@@ -20,3 +20,6 @@
 [submodule "CodeIgniter2"]
 	path = CodeIgniter2
 	url = https://github.com/Aphax/BlogMVC-CodeIgniter2.git
+[submodule "Laravel"]
+	path = Laravel
+	url = https://github.com/Grafikart/BlogMVC-Laravel.git
