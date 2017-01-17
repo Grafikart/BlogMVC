@@ -17,3 +17,6 @@
 [submodule "BlogMVC-ASPNETCore"]
 	path = BlogMVC-ASPNETCore
 	url = https://github.com/zyhou/BlogMVC-ASPNETCore
+[submodule "CodeIgniter2"]
+	path = CodeIgniter2
+	url = https://github.com/Aphax/BlogMVC-CodeIgniter2.git
