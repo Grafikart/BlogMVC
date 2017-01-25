@@ -14,3 +14,7 @@
 	path = CakePHP2
 	url = https://github.com/TahiriAbdou/BlogMVC-CakePHP2
 	branch = master
+[submodule "PlayFramework2"]
+	path = PlayFramework2
+	url = https://github.com/Aphax/BlogMVC-PlayFramework2.git
+	branch = master
