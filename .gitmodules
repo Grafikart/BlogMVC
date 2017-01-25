@@ -31,3 +31,7 @@
 [submodule "Laravel"]
 	path = Laravel
 	url = https://github.com/Grafikart/BlogMVC-Laravel.git
+[submodule "Laravel5"]
+	path = Laravel5
+	url = https://github.com/Grafikart/BlogMVC-Laravel.git
+	branch = master
