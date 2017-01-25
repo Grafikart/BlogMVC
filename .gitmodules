@@ -18,3 +18,7 @@
 	path = PlayFramework2
 	url = https://github.com/Aphax/BlogMVC-PlayFramework2.git
 	branch = master
+[submodule "ZendFramework2"]
+	path = ZendFramework2
+	url = https://github.com/Devitek/BlogMVC-ZendFramework2.git
+	branch = master
