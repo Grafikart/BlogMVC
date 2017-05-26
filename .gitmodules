@@ -35,3 +35,6 @@
 	path = Laravel5
 	url = https://github.com/Grafikart/BlogMVC-Laravel.git
 	branch = master
+[submodule "CakePHP 3"]
+	path = CakePHP 3
+	url = git@github.com:Kareylo/BlogMVC-CakePHP3.git
