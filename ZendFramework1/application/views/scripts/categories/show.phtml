@@ -1,0 +1,10 @@
+<div class="row">
+
+
+	<div class="page-header">
+		<h1><?= $this->category->name ?></h1>
+	</div>
+
+	<?= $this->partial('posts/_list.phtml', array('posts'=> $this->category->posts())) ?>
+
+</div>

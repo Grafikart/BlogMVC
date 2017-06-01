@@ -1,0 +1,81 @@
+<div class="page-header">
+		<h1>Admin</h1>
+		<p>Edit posts</p>
+	</div>
+
+
+<div class="row">
+
+	<h2>Posts</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Category</th>
+				<th>Publication date</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		<?php foreach ($this->posts as $post): ?>
+			<tr>
+
+				<td><?= $post->id ?></td>
+				<td><?= $this->partial('posts/_link.phtml', array('post'=>$post)) ?></td>
+				<td><?= $post->getCategoryId() ?></td>
+				<td><?= DateTime::createFromFormat('U', $post->getCreated() )->format('d/m/Y') ?></td>
+				<td>
+					<a class="btn btn-primary" href="<?= $this->url( array('id'=>$post->id), 'edit_post' )?>">Edit</a>
+					<a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="<?= $this->url( array('id'=>$post->id), 'delete_post' )?>">Delete</a>
+				</td>
+				
+			</tr>
+		<?php endforeach ?>
+
+			
+		</tbody>
+	</table>
+
+	<a class="btn btn-primary" href="<?= $this->url( array(), 'new_post' )?>">New post</a>
+
+	
+</div>
+
+<div class="row">
+
+	<h2>Categories</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		<?php foreach ($this->categories as $category): ?>
+			<tr>
+
+				<td><?= $category->id ?></td>
+				<td><?= $category->name ?></td>
+				<td>
+					<a class="btn btn-primary" href="<?= $this->url( array('id'=>$category->id), 'edit_category' )?>">Edit</a>
+					<a class="btn btn-danger" onclick="return confirm('Are you sure ?')" href="<?= $this->url( array('id'=>$category->id), 'delete_category' )?>">Delete</a>
+				</td>
+				
+			</tr>
+		<?php endforeach ?>
+
+			
+		</tbody>
+	</table>
+
+	<a class="btn btn-primary" href="<?= $this->url( array(), 'new_category' )?>">New category</a>
+
+	
+</div>

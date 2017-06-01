@@ -1,0 +1,5 @@
+<p><small>
+	Category: <?= $this->partial('categories/_link.phtml', array('category'=> $this->post->category() )) ?>, 
+	by <?= $this->partial('users/_link.phtml', array('user'=>$this->post->user())) ?>
+	on <?= DateTime::createFromFormat('U', $this->post->getCreated() )->format('d/m/Y') ?>
+</small></p>

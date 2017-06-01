@@ -1,0 +1,27 @@
+<div class="row">
+
+	<div class="page-header">
+		<h1>Users</h1>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		<?php foreach ($this->entries as $user): ?>
+			<tr>
+				<td><?= $user->id ?></td>
+				<td><?= $this->partial('users/_link.phtml', array('user'=>$user)) ?></td>
+			</tr>
+		<?php endforeach ?>
+
+			
+		</tbody>
+	</table>
+
+</div>

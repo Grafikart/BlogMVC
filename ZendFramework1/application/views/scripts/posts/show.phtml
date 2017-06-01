@@ -1,0 +1,36 @@
+<div class="row">
+
+	<div class="col-md-8">
+
+		<div class="page-header">
+			<h1><?= $this->partial('posts/_link.phtml', array('post'=>$this->post)) ?></h1>
+			<?= $this->partial('posts/_header.phtml', array('post'=>$this->post)) ?>
+		</div>
+
+
+		<p><?= $this->post->content() ?></p>
+			
+
+		<hr/>
+
+		<section class="comments">
+
+            <h3>Comment this post</h3>
+
+            <?php
+                $this->form->setAction($this->url(array('id'=>$this->post->id ), 'comment_post'));
+                echo $this->form;
+            ?>
+
+
+            <?= $this->partial('comments/_list.phtml', array('comments'=>$this->post->comments() )) ?>
+
+            
+        </section>
+
+
+	</div>
+
+	<?= $this->partial('posts/_news.phtml', array('categories'=>$this->categories, 'last_posts'=>$this->last_posts )) ?>
+	
+</div>
