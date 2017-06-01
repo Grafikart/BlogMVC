@@ -1,0 +1,11 @@
+@(categories: java.util.List[Categories])
+
+<h4>Categories</h4>
+<div class="list-group">
+    @for(c <- categories) {
+        <a href="@routes.Post.postByCategory(1, c.id)" class="list-group-item">
+            <span class="badge">@c.associatedPost.size</span>
+            @c.name
+        </a>
+    }
+</div>

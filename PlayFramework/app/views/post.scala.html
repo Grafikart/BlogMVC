@@ -1,0 +1,130 @@
+@(post: Posts, lastFivePosts: java.util.List[Posts], allCategories: java.util.List[Categories])
+@import play.mvc.Http.Context.Implicit.flash
+@import views.html.helpers.last_posts
+@import views.html.helpers.categories
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Blog | MyDomain.com</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 50px;
+            }
+            .sidebar{
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@routes.Index.index(1)">Blog</a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@routes.Admin.adminLogin()">Admin</a></li>
+                    </ul>
+                </div>
+
+            </div><!-- /.container -->
+        </div>
+
+
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-md-8">
+
+
+                    <div class="page-header">
+                        <h1>@post.name</h1>
+                        <p><small>
+                            Category : <a href="@routes.Post.postByCategory(1, post.categories.id)">@post.categories.name</a>,
+                            by <a href="@routes.Post.postByAuthor(1, post.user.id)">@post.user.username</a> on <em>@post.created.monthOfYear().getAsText @post.created.dayOfMonth().getAsString @post.created.toString("YYYY")</em>
+                        </small></p>
+                    </div>
+
+                    <article>
+                        @Html(post.toHtml)
+                    </article>
+
+                    <hr>
+
+                    <section class="comments">
+
+                        <h3>Comment this post</h3>
+                        @if(flash().get("error")) {
+                            <div class="alert alert-danger"><strong>Oh snap !</strong> you did some errors</div>
+                        }
+
+                        <form role="form" action="@routes.Post.addComment(post.id)" method="POST">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input name="email" type="email" class="form-control" placeholder="Your email">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input name="username" type="text" class="form-control" id="exampleInputEmail1" placeholder="Your username">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea name="content" class="form-control" rows="3" placeholder="Your comment"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <h3>@post.associatedComments.size() Commentaires</h3>
+
+                        @for(c <- post.associatedComments){
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img src="http://lorempicsum.com/futurama/100/100/@(c.id % 9 + 1)" width="100%">
+                            </div>
+                            <div class="col-md-10">
+                                <p><strong>@c.username</strong> @c.toAgo </p>
+                                <p>@c.content</p>
+                            </div>
+                        </div>
+                            <br>
+                        }
+                    </section>
+
+
+
+                </div>
+
+                <div class="col-md-4 sidebar">
+                    @categories(allCategories)
+                    @last_posts(lastFivePosts)
+                </div><!-- /.sidebar -->
+            </div>
+
+        </div><!-- /.container -->
+
+    </body>
+</html>

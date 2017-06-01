@@ -1,0 +1,101 @@
+@(post: Posts, userList: java.util.List[Users], categoryList: java.util.List[Categories])
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Blog | Admin panel</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+                body {
+                        padding-top: 50px;
+                }
+                .sidebar{
+                        margin-top: 50px;
+                }
+        </style>
+    </head>
+    <body>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="@routes.Index.index(1)">Blog</a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li><a href="@routes.Index.index(1)">< Back to front</a></li>
+                    </ul>
+                </div>
+
+            </div><!-- /.container -->
+        </div>
+
+        <div class="container">
+
+            <h1>Edit post</h1>
+
+            <p><a href="admin_@routes.Index.index(1)">< Back to posts</a></p>
+
+            <form action="@routes.AdminEdit.savePost(post.id)" id="PostAdminEditForm" method="post" accept-charset="utf-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="PostName">Name :</label>
+                            <input name="name" class="form-control" maxlength="255" type="text" value="@post.name" id="PostName" required="required">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            <label for="PostSlug">Slug :</label>
+                            <input name="slug" class="form-control" maxlength="255" type="text" value="@if(post.slug != null){@Html(post.slug.name)}" id="PostSlug" required="required">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="PostCategoryId">Category :</label>
+                            <select name="category_id" class="form-control" id="PostCategoryId">
+                                @for(c<-categoryList) {
+                                    <option value="@c.id">@c.name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="PostUserId">Author :</label>
+                            <select name="user_id" class="form-control" id="PostUserId">
+                                @for(u <- userList){
+                                    <option value="@u.id" @if(post.user != null && post.user.id == u.id){ selected="selected" } >@u.username</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label for="PostContent">Content :</label>
+                    <textarea name="content" class="form-control" cols="30" rows="6" id="PostContent" required="required">@post.contents</textarea>
+                </div>
+                <div class="submit">
+                    <input class="btn btn-primary" type="submit" value="Edit">
+                </div>
+            </form>
+
+
+        </div> <!-- /container -->
+    </body>
+</html>
