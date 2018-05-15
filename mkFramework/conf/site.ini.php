@@ -5,7 +5,7 @@ lifetime= 0
 autoload.enabled=0
 
 [encodage]
-;indique l'encodage des fichiers de code, utilise par defaut pour plugin_html::encode($texte) 
+;indique l'encodage des fichiers de code, utilise par defaut pour plugin_html::encode($texte)
 charset=ISO-8859-1
 
 [language]
@@ -14,7 +14,7 @@ default=fr
 allow=fr,en
 
 [auth]
-;note : >= php5.2 dans le php.ini 
+;note : >= php5.2 dans le php.ini
 session.use_cookies = 1
 session.use_only_cookies = 1
 session.cookie_httponly=1
@@ -59,20 +59,20 @@ class=plugin_log
 error=0
 warning=0
 application=0
-information=1
+information=0
 
 [check]
 class=plugin_check
 
 [site]
 ;Redirection
-;header : header('location:$url ') 
+;header : header('location:$url ')
 ;http: <html><head><META http-equiv="refresh" content="0; URL=$url ></head></html>
 redirection.default=header
 timezone=Europe/Paris
 
 [path]
-lib=../vendor/mkframework/mkframework/lib/framework/
+lib=../vendor/mkframework/mkframework-lib/
 
 data=../data/
 upload=../data/upload/
