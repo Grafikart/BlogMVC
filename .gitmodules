@@ -38,6 +38,9 @@
 [submodule "CakePHP 3"]
 	path = CakePHP 3
 	url = git@github.com:Kareylo/BlogMVC-CakePHP3.git
+[submodule "Siler"]
+	path = Siler
+	url = https://github.com/Kocal/BlogMVC-Siler.git
 [submodule "ZendFramework1"]
 	path = ZendFramework1
 	url = https://github.com/madeindjs/BlogMVC-ZendFramework1
