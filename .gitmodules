@@ -1,3 +1,7 @@
+[submodule "Symfony4"]
+	path = Symfony4
+	url = https://github.com/oussaka/BlogMVC-Symfony4.git
+	branch = master
 [submodule "Symfony3"]
 	path = Symfony3
 	url = https://github.com/Grafikart/BlogMVC-Symfony3.git
